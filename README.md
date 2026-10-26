@@ -33,7 +33,7 @@ flowchart TD
 
 | Step | Model | What it does |
 |---|---|---|
-| Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (how each is attached and moves), and the painting prompt. Never copies the listener's words. |
+| Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (how each is attached and moves), and the painting prompt. It is told never to copy the listener's words, and no picture carries text. |
 | Painter | `muse-image-1.0` | Paints the world, portrait for a phone. Built-in web search and shell are off. |
 | Critic | `muse-spark-1.3` (vision) | Looks at every painting before a listener does: people or faces, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. |
 | Revision | `muse-spark-1.3` | A rejected painting goes back to the art director with the critic's note, and the agent paints once more (two paintings at most). |
