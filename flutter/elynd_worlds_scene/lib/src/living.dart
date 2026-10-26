@@ -28,7 +28,7 @@ class WorldLight {
 /// What moves in nature in one world (the manifest's "living" block), ready to draw.
 ///
 /// [regions] is the region map SAM 3.1 made: red = water, green = sky,
-/// blue = grass, alpha = stream. [trees] sways the upper part of the painting
+/// blue = grass, alpha = 1 - stream. [trees] sways the upper part of the painting
 /// outside the sky. [lights] flicker. [particles] drift through the air.
 @immutable
 class WorldLiving {

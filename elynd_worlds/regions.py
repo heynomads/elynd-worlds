@@ -4,8 +4,10 @@ The art director lists them in `scene["nature"]` (water, sky, grass, stream,
 trees). For each of the first four, one SAM 3.1 request on the painting finds it;
 every confident mask of that concept is merged into one soft mask. The four masks
 become one picture, the region map (red = water, green = sky, blue = grass,
-alpha = stream), which the phone's shader reads to ripple the water, drift the
-clouds, wave the grass and let the stream flow. "trees" needs no mask: the phone
+alpha = 1 - stream), which the phone's shader reads to ripple the water, drift
+the clouds, wave the grass and let the stream flow. The stream is stored
+inverted on purpose: phones keep pictures premultiplied by alpha, so a mask in
+plain alpha would wipe the other three wherever there is no stream. "trees" needs no mask: the phone
 sways the upper part of the painting outside the sky.
 
 A glowing subject (a lantern, a candle) becomes a light that flickers, at the
@@ -34,7 +36,7 @@ PHRASES = {"water": "water", "sky": "sky", "grass": "grass", "stream": "stream"}
 class Regions:
     """What moves in a painting, for the phone."""
 
-    png: bytes | None = None                     # the region map, RGBA, half the painting's size
+    png: bytes | None = None                     # the region map, RGBA (alpha = 1 - stream), half size
     present: dict[str, bool] = field(default_factory=dict)
     coverage: dict[str, float] = field(default_factory=dict)
     horizon: float | None = None                 # where the water starts (fraction of the height)
@@ -100,7 +102,7 @@ async def find_regions(client, painting: bytes, scene: dict[str, Any], meter: Me
         # Soft edges, so a rippling lake meets a still shore without a seam.
         channels[name] = np.asarray(small.filter(ImageFilter.GaussianBlur(max(w2 / 180, 1.0))))
     if any(regions.present.values()):
-        rgba = np.dstack([channels[name] for name in CHANNELS])
+        rgba = np.dstack([channels["water"], channels["sky"], channels["grass"], 255 - channels["stream"]])
         out = io.BytesIO()
         Image.fromarray(rgba, "RGBA").save(out, format="PNG", optimize=True)
         regions.png = out.getvalue()

@@ -3,6 +3,7 @@
 //    sits on the screen (its coordinates are right);
 //  * with motion on, the water and the sky move and the land between them
 //    stays exactly as painted.
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -33,32 +34,21 @@ Future<Uint8List> _plate() async {
   ))!.buffer.asUint8List();
 }
 
-/// Regions (a map half the painting's size): sky (green) over the top third, land in the
-/// middle, water (red) from 0.6 down.
-Future<Uint8List> _regions() async {
-  const mw = _w ~/ 2, mh = _h ~/ 2;
-  final recorder = ui.PictureRecorder();
-  final canvas = Canvas(recorder);
-  canvas.drawRect(
-    const Rect.fromLTWH(0, 0, mw + 0.0, mh / 3),
-    Paint()..color = const Color(0xFF00FF00),
-  );
-  canvas.drawRect(
-    Rect.fromLTWH(0, mh * 0.6, mw + 0.0, mh * 0.4),
-    Paint()..color = const Color(0xFFFF0000),
-  );
-  final image = await recorder.endRecording().toImage(mw, mh);
-  return (await image.toByteData(
-    format: ui.ImageByteFormat.png,
-  ))!.buffer.asUint8List();
-}
-
 void main() {
   late MemoryImage plate, regions;
 
+  late MemoryImage streamRegions;
+
   setUpAll(() async {
     plate = MemoryImage(await _plate());
-    regions = MemoryImage(await _regions());
+    // Written exactly as elynd_worlds/regions.py writes a map (PNG, straight alpha, alpha =
+    // 1 - stream): the phone keeps it premultiplied, which once wiped the water and the sky.
+    regions = MemoryImage(
+      File('test/fixtures/regions_lake.png').readAsBytesSync(),
+    );
+    streamRegions = MemoryImage(
+      File('test/fixtures/regions_stream.png').readAsBytesSync(),
+    );
   });
   // The shader is loaded once per app run; each test has its own clock.
   setUp(LivingBackground.debugReset);
@@ -122,17 +112,19 @@ void main() {
 
   const living = WorldLiving(water: true, sky: true, horizon: 0.6);
 
-  Widget shader(double t, {bool still = false}) => LivingBackground(
-    plate: plate,
-    living: WorldLiving(
-      regions: regions,
-      water: living.water,
-      sky: living.sky,
-      horizon: living.horizon,
-    ),
-    clockSeconds: t,
-    still: still,
-  );
+  Widget shader(double t, {bool still = false, bool withStream = false}) =>
+      LivingBackground(
+        plate: plate,
+        living: WorldLiving(
+          regions: withStream ? streamRegions : regions,
+          water: living.water,
+          sky: living.sky,
+          stream: withStream,
+          horizon: living.horizon,
+        ),
+        clockSeconds: t,
+        still: still,
+      );
 
   int differing(Uint8List a, Uint8List b, int width, int y0, int y1) {
     var n = 0;
@@ -196,6 +188,36 @@ void main() {
         differing(a, b, _w, (_h / 3).ceil() + 3, (_h * 0.6).floor() - 3),
         0,
         reason: 'the land is still',
+      );
+    },
+  );
+
+  testWidgets(
+    'a stream flows, and the lake and the sky in the same map still move',
+    (tester) async {
+      final a = await shoot(tester, shader(0.0, withStream: true));
+      expect(drawing(), findsOneWidget);
+      final b = await shoot(tester, shader(0.7, withStream: true));
+      // The stream's band: map rows 30..40 = painting rows 60..80.
+      expect(
+        differing(a, b, _w, 62, 78),
+        greaterThan(_w),
+        reason: 'the stream flows',
+      );
+      expect(
+        differing(a, b, _w, 0, (_h / 3).floor() - 2),
+        greaterThan(0),
+        reason: 'the sky still drifts',
+      );
+      expect(
+        differing(a, b, _w, (_h * 0.6).ceil() + 3, _h),
+        greaterThan(_w),
+        reason: 'the water still ripples',
+      );
+      expect(
+        differing(a, b, _w, (_h / 3).ceil() + 3, 57),
+        0,
+        reason: 'the land above the stream is still',
       );
     },
   );

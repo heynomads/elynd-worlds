@@ -1,7 +1,8 @@
 #version 460 core
 // ELYND Worlds: the living painting. Moves each part of the painting as it moves
 // in nature, read from the region map SAM 3.1 made (red = water, green = sky,
-// blue = grass, alpha = stream):
+// blue = grass, alpha = 1 - stream; inverted so the premultiplied picture keeps
+// the other three wherever no stream flows):
 //   water   ripples travelling towards the viewer (shorter far away), reflections
 //           wobbling sideways, small glints on the bright parts
 //   grass   waves of wind rolling through it, the light catching the bent grass
@@ -81,7 +82,8 @@ void main() {
     float drift = 70.0 * k * m * sin(TAU * t / 90.0);
     col = mix(col, plateMirrored(vec2(px.x - drift, px.y)), reg.g);
   }
-  if (uOn.w > 0.5 && reg.a > 0.001) {
+  float stream = 1.0 - reg.a;
+  if (uOn.w > 0.5 && stream > 0.001) {
     float period = 1.6;
     float p1 = fract(t / period);
     float p2 = fract(p1 + 0.5);
@@ -90,7 +92,7 @@ void main() {
     vec3 s1 = plate(vec2(px.x + rx, px.y) - v * p1 * period);
     vec3 s2 = plate(vec2(px.x + rx, px.y) - v * p2 * period);
     float w1 = 1.0 - abs(2.0 * p1 - 1.0);
-    col = mix(col, s1 * w1 + s2 * (1.0 - w1), reg.a);
+    col = mix(col, s1 * w1 + s2 * (1.0 - w1), stream);
   }
 
   float lum = dot(col, vec3(0.33333));

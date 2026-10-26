@@ -319,10 +319,13 @@ async def test_sam_finds_the_water_and_the_sky_and_the_map_carries_them():
     assert regions.horizon == pytest.approx(110 / 200, abs=0.02)
     rgba = np.asarray(Image.open(io.BytesIO(regions.png)))
     assert rgba.shape == (100, 60, 4)                                   # half the painting's size
-    water, sky, grass, stream = (rgba[..., i] for i in range(4))
+    water, sky, grass, no_stream = (rgba[..., i] for i in range(4))
     assert water[90, 30] == 255 and water[10, 30] == 0                   # red: the water, at the bottom
     assert sky[10, 30] == 255 and sky[90, 30] == 0                       # green: the sky, at the top
-    assert grass.max() == 0 and stream.max() == 0
+    assert grass.max() == 0
+    # Alpha is 1 - stream: opaque wherever no stream flows, so a phone's premultiplied
+    # copy of the map keeps the water and the sky.
+    assert no_stream.min() == 255
     living = world.manifest()["living"]
     assert (living["regions"], living["water"], living["sky"], living["grass"], living["trees"]) == \
            ("regions.png", True, True, False, True)
