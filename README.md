@@ -4,9 +4,10 @@
 
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
 built during the Meta Global AI Developer Hackathon (Startup track, *Build for Your World*), gives each of those
-meditations a place you can see: a calm painting made from the meditation itself, whose foreground objects are
-cut out and move gently with the session. It greets you as you arrive, fades while your eyes are closed, returns in
-long silences and at the end, and stays with you afterwards as a card you can share.
+meditations a place you can see: a calm painting made from the meditation itself that lives as such a place
+would. Its water ripples, its clouds drift, its grass waves, a lantern flickers, and the objects in it move as such
+things move. It greets you as you arrive, fades while your eyes are closed, returns in long silences and at the
+end, and stays with you afterwards as a card you can share.
 
 > **What existed before, what is new.** ELYND, the meditation app (writing, voices, player), existed before
 > the hackathon. Earlier on the kickoff day we tried the Meta Model API in a separate private
@@ -15,7 +16,7 @@ long silences and at the end, and stays with you afterwards as a card you can sh
 
 ## How a world is made
 
-One agent run per meditation, four Meta models:
+One agent run per meditation, three Meta models:
 
 ```mermaid
 flowchart TD
@@ -23,35 +24,42 @@ flowchart TD
     D --> P[Muse Image · painter<br/>paints it, 9:16]
     P --> C[Muse Spark vision · critic<br/>safe? calm? on brief? score]
     P --> S[SAM 3.1 · cutter<br/>one layer per subject]
-    P --> E[Muse Image edit<br/>the scene without its subjects]
+    P --> E[Muse Image edit<br/>the scene without its moving subjects]
+    P --> N[SAM 3.1 · what moves in nature<br/>water, sky, grass, a stream]
     C -- rejected --> R[Muse Spark · revises its design<br/>from the critic's note] --> P
     C -- accepted --> Show[the still painting is shown at once]
     S --> Plate
-    E --> Plate[plate: the edit kept only under the subjects,<br/>tone-matched, checked clean by SAM 3.1]
-    Plate --> World[moving world: plate + layers<br/>+ anchors + focus + timeline]
+    E --> Plate[plate: the edit kept only where a moving layer is,<br/>tone-matched, checked clean by SAM 3.1]
+    Plate --> World[living world: plate + layers + region map<br/>+ anchors + focus + timeline]
+    N --> World
 ```
 
 | Step | Model | What it does |
 |---|---|---|
-| Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (how each is attached and moves), and the painting prompt. It is told never to copy the listener's words, and no picture carries text. |
+| Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (how each is attached, how it moves, whether it glows), what moves in nature (water, sky, grass, a stream, trees), what drifts through the air (leaves, snow, pollen, fireflies) and the painting prompt. It is told never to copy the listener's words, and no picture carries text. |
 | Painter | `muse-image-1.0` | Paints the world, portrait for a phone. Built-in web search and shell are off. |
 | Critic | `muse-spark-1.3` (vision) | Looks at every painting before a listener does: people or faces, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. |
 | Revision | `muse-spark-1.3` | A rejected painting goes back to the art director with the critic's note, and the agent paints once more (two paintings at most). |
-| Cutter | `sam-3.1` | Cuts each designed subject out as its own layer: asks name and plural at once, keeps only the near instances, fills holes, and records the outline box. |
-| Plate | `muse-image-1.0` edit + `sam-3.1` | Repaints the scene without the subjects; the repaint is used only under each subject's outline, colour-matched to its surroundings, and SAM checks that no subject is left. Otherwise a local fill. |
+| Cutter | `sam-3.1` | Cuts each designed subject out as its own layer: asks name and plural at once, keeps only the near instances, fills holes, and records the outline box. A layer is opaque two pixels past the outline, so it carries the subject's own soft edge. |
+| What moves | `sam-3.1` | Finds the water, the sky, the grass and a stream the design names, one request each, and packs them into one region map the phone's shader reads. A glowing subject becomes a light that flickers. |
+| Plate | `muse-image-1.0` edit + `sam-3.1` | Repaints the scene without the moving subjects; the repaint is used only where a moving layer is opaque, colour-matched to its surroundings, and SAM checks that no moving subject is left. Otherwise a local fill there. A still subject (a stone, a post) stays exactly as painted, and with nothing moving no repaint is asked for. At rest, plate and layers equal the painting. |
 
-The critique, the cutting and the repaint only need the painting, so they run at the same time; a rejection
-cancels the other two. The still painting is shown as soon as the critic accepts it (about 35 s after the
-script is written; 21–43 s in our runs), and the moving world follows (about 70 s; 59–89 s).
+The critique, the cutting, the repaint and the search for what moves only need the painting, so they run at the
+same time; a rejection cancels the others. The still painting is shown as soon as the critic accepts it (21–70 s
+after the script is written in our runs; the slower ones were made six at a time), and the living world follows
+(59–104 s).
 
 ## On the phone
 
 `flutter/elynd_worlds_scene` draws a world in a Flutter app:
 
-* **Calm, natural motion.** Things move only as they would: stones and posts stay still, a boat rises and falls a
-  little on the water and rolls a little, something in the air makes a slow loop, plants sway in a light wind about
-  where they grow, mist drifts. Nothing ever grows or shrinks. The whole world drifts like a very slow camera, near
-  layers a little more than the clean plate behind them: depth, which is what the cut-out layers are for.
+* **A living painting.** A fragment shader (`shaders/living.frag`) reads the region map and moves each part as it
+  moves in nature: ripples travel over the water towards the viewer and its reflections wobble, now and then the
+  sun glints on it; the clouds drift; waves of wind roll through the grass; a stream flows; the crowns sway; a
+  lantern flickers and its light with it. Leaves, snow, pollen or fireflies drift through the air.
+* **Objects move as such things move.** A boat sinks a little on the swell, rises back to where it is painted and
+  rolls; something in the air floats on a slow loop and a butterfly folds its wings now and then; plants sway
+  in gusts about where they grow; mist drifts. Stones, posts and cabins stay still. Nothing grows or shrinks.
 * **Eyes closed.** A per-second timeline follows the session: the whole world while the listener arrives
   (45 s), a glow while their eyes are closed, more of it in long silences, all of it at the end. Sleep worlds
   stay dim and end dark. The phone's (Dart) and the browser's (JavaScript) timelines are tested frame by frame
@@ -78,16 +86,17 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
 
 ## Cost
 
-Every step reports its usage to a meter priced with Meta's published rates. A world costs about **$0.05**:
-two Muse Spark calls, two Muse Image pictures and a handful of SAM images. The command line refuses to run
+Every step reports its usage to a meter priced with Meta's published rates. A world costs about **$0.06**
+($0.050–0.063 in our last six): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves)
+and a handful of SAM images. The command line refuses to run
 past a budget, and the ELYND backend stops making worlds at a total and a daily cap.
 
 ## See it in a browser
 
-`web/` is a gallery of worlds the agent made for the example meditations: they move as they do on the phone,
-**Play as a meditation** runs a session sped up (arriving, eyes closed, a long silence, the
-end), and each world shows how the agent made it: the design, the critic's score, the layers, the time and the
-cost. Serve the repository and open `/web/`:
+`web/` is a gallery of worlds the agent made for the example meditations. They live as they do on the phone:
+the page compiles the phone's own shader for WebGL 2 and uses the same motion. **Play as a meditation** runs a
+session sped up (arriving, eyes closed, a long silence, the end), and each world shows how the agent made it: the
+design, the critic's score, the layers, what moves, the time and the cost. Serve the repository and open `/web/`:
 
 ```bash
 python -m http.server 8000          # then http://localhost:8000/web/  (web/parity.html: the timeline check)
@@ -121,13 +130,15 @@ elynd_worlds/          the engine (Python)
   painter.py           Muse Image paints and repaints without the subjects
   critic.py            Muse Spark vision judges each painting
   cutter.py            SAM 3.1 cuts the layers
-  plate.py             the clean plate behind them
+  regions.py           SAM 3.1 finds the water, sky, grass and a stream
+  plate.py             the clean plate behind the moving layers
   director.py          the agent loop
   timeline.py          how much of the world shows over the session
   card.py              the share card
   meta.py              the client, privacy fields, cost meter
-flutter/elynd_worlds_scene/   the scene on the phone (Dart)
-web/                   the scene in a browser (JavaScript) and the gallery
+flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living painting's shader)
+web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
+scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
 ```
