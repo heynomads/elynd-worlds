@@ -4,10 +4,12 @@
 // blue = grass, alpha = 1 - stream; inverted so the premultiplied picture keeps
 // the other three wherever no stream flows):
 //   water   ripples travelling towards the viewer (shorter far away), reflections
-//           wobbling sideways, small glints on the bright parts
+//           wobbling sideways, now and then a tiny sparkle of sunlight on the
+//           bright parts, each at its own place (never a pattern)
 //   grass   waves of wind rolling through it, the light catching the bent grass
 //   trees   a light wind in the crowns, strongest at the top, never the sky
-//   sky     the clouds drifting slowly to one side and back (a plain shift)
+//   sky     the clouds drifting slowly to one side and back, less towards the
+//           painting's left and right edges (no paint is ever needed beyond them)
 //   stream  water flowing towards the viewer (two-phase flow)
 //   light   a lantern's flame flickering, and the light it throws
 // The reference is the first prototype renderer (tuned 540 px wide); every
@@ -34,11 +36,27 @@ vec3 plate(vec2 px) {
   return texture(uPlate, clamp(px / uSize, vec2(0.0005), vec2(0.9995))).rgb;
 }
 
-vec3 plateMirrored(vec2 px) {
-  float w = uSize.x - 1.0;
-  float x = abs(px.x);
-  if (x > w) x = 2.0 * w - x;
-  return plate(vec2(x, px.y));
+// A number in [0, 1) for each cell of a grid, the same on every device (a hash
+// without sine, Dave Hoskins).
+float hash(vec2 p) {
+  vec3 p3 = fract(vec3(p.xyx) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
+
+// Sunlight sparkling on the water: in some cells of a grid (q in reference
+// pixels) a tiny glint, flat as the water, at its own place, flashing for a
+// moment every few seconds; larger near the viewer (p: 0 at the horizon, 1 at
+// the bottom). One cell per pixel: each glint stays well inside its cell.
+float glitter(vec2 q, float p, float t) {
+  vec2 cell = vec2(24.0, 9.0);
+  vec2 c = floor(q / cell);
+  if (hash(c) > 0.4) return 0.0; // most places never sparkle
+  vec2 at = (c + 0.3 + 0.4 * vec2(hash(c + 17.3), hash(c + 41.9))) * cell;
+  float period = 2.4 + 2.2 * hash(c + 73.1);
+  float flash = pow(max(sin(TAU * (t / period + hash(c + 5.7))), 0.0), 30.0);
+  vec2 d = (q - at) / vec2(1.6 + 2.6 * p, 0.6 + 0.6 * p);
+  return flash * exp(-dot(d, d));
 }
 
 void main() {
@@ -61,8 +79,7 @@ void main() {
     float amp = (0.8 + 4.6 * p) * k * m;
     d.x += reg.r * amp * (sin(phase) + 0.35 * sin(across + px.y / (37.0 * k)));
     d.y += reg.r * 0.35 * amp * sin(phase * 0.7 + 1.3);
-    float g = clamp(sin(phase * 1.9 + px.x / (9.0 * k)) * sin(TAU * px.x / (61.0 * k) - TAU * t / 1.7), 0.0, 1.0);
-    glint = reg.r * 0.24 * pow(g, 6.0) * m;
+    glint = reg.r * glitter((px - d) / k, p, t) * m; // the glints ride the ripples
   }
   if (uOn.z > 0.5 && reg.b > 0.001) {
     float gust = 0.55 + 0.45 * sin(TAU * t / 6.5);
@@ -79,8 +96,9 @@ void main() {
 
   vec3 col = plate(px - d);
   if (uOn.y > 0.5 && reg.g > 0.001) {
-    float drift = 70.0 * k * m * sin(TAU * t / 90.0);
-    col = mix(col, plateMirrored(vec2(px.x - drift, px.y)), reg.g);
+    // Fading out to the left and right edges: it never reaches past them.
+    float drift = 40.0 * k * m * sin(TAU * t / 90.0) * sin(3.14159265 * clamp(uv.x, 0.0, 1.0));
+    col = mix(col, plate(vec2(px.x - drift, px.y)), reg.g);
   }
   float stream = 1.0 - reg.a;
   if (uOn.w > 0.5 && stream > 0.001) {
@@ -95,9 +113,10 @@ void main() {
     col = mix(col, s1 * w1 + s2 * (1.0 - w1), stream);
   }
 
-  float lum = dot(col, vec3(0.33333));
-  bright += glint * clamp((lum - 0.5) / 0.3, 0.0, 1.0);
   col *= bright;
+  // A glint only where the water is bright (the sun's or the sky's reflection).
+  float lum = dot(col, vec3(0.33333));
+  col = mix(col, vec3(1.0, 0.96, 0.88), clamp(glint * clamp((lum - 0.55) / 0.25, 0.0, 1.0), 0.0, 0.85));
 
   if (uLight.w > 0.5) {
     float n = sin(TAU * 1.7 * t) * 0.5 + sin(TAU * 2.9 * t + 1.1) * 0.3 + sin(TAU * 5.3 * t + 2.3) * 0.2;

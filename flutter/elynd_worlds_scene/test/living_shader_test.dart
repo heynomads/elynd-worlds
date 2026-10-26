@@ -197,7 +197,8 @@ void main() {
     (tester) async {
       final a = await shoot(tester, shader(0.0, withStream: true));
       expect(drawing(), findsOneWidget);
-      final b = await shoot(tester, shader(0.7, withStream: true));
+      // 1.3 s: the sky drifts slowly (a third of a pixel at 0.7 s in this small painting).
+      final b = await shoot(tester, shader(1.3, withStream: true));
       // The stream's band: map rows 30..40 = painting rows 60..80.
       expect(
         differing(a, b, _w, 62, 78),

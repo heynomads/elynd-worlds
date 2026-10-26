@@ -279,7 +279,7 @@ void main() {
             sway = 0.0,
             folded = 0,
             frames = 0;
-        var narrowest = 1.0;
+        var narrowest = 1.0, lowest = 1.0;
         for (var t = 0.0; t < 120; t += 1 / 30) {
           final boat = WorldMotion.layer(
             motion: 'float',
@@ -302,7 +302,14 @@ void main() {
             clockSeconds: t,
           );
           expect((boat.dx, boat.wings), (0.0, 1.0));
-          expect(boat.dy.abs(), lessThanOrEqualTo(WorldMotion.bob));
+          // Lower than painted, never higher: no light seam under the hull.
+          expect(
+            boat.dy,
+            inInclusiveRange(
+              WorldMotion.bob * WorldMotion.bobLeast - 1e-12,
+              WorldMotion.bob + 1e-12,
+            ),
+          );
           expect(boat.rotation.abs(), lessThanOrEqualTo(WorldMotion.bobRoll));
           expect((leaf.rotation, leaf.wings), (0.0, 1.0));
           expect(leaf.dx.abs(), lessThanOrEqualTo(WorldMotion.hoverX));
@@ -313,7 +320,8 @@ void main() {
             butterfly.wings,
             inInclusiveRange(WorldMotion.wingsFolded - 1e-9, 1.0),
           );
-          bob = math.max(bob, boat.dy.abs());
+          bob = math.max(bob, boat.dy);
+          lowest = math.min(lowest, boat.dy);
           roll = math.max(roll, boat.rotation.abs());
           loop = math.max(loop, leaf.dx.abs());
           sway = math.max(sway, branch.rotation.abs());
@@ -322,7 +330,7 @@ void main() {
           frames++;
         }
         // They do move, enough to see.
-        expect(bob, greaterThan(WorldMotion.bob * 0.6));
+        expect(bob - lowest, greaterThan(WorldMotion.bob * 0.6));
         expect(roll, greaterThan(WorldMotion.bobRoll * 0.6));
         expect(loop, greaterThan(WorldMotion.hoverX * 0.6));
         expect(sway, greaterThan(WorldMotion.sway * 0.6));
