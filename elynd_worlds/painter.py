@@ -8,9 +8,12 @@ were, so the rest of the picture stays exactly as painted.
 """
 from __future__ import annotations
 
+import io
 from typing import Any
 
-from .meta import NO_IMAGE_TOOLS, Meter, first_image, listener
+from PIL import Image
+
+from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listener
 from .settings import DEFAULT, Settings
 
 STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
@@ -32,11 +35,19 @@ def plate_prompt(scene: dict[str, Any]) -> str:
             "No new objects, no people, no text.")
 
 
+def _for_the_listener(user: str | None = None) -> dict[str, Any]:
+    who = user or listener.get()
+    return {"user": who} if who else {}
+
+
+def _marked(picture: bytes) -> bytes:
+    """Muse Image marks its pictures as made by AI; one that arrives without the mark gets it."""
+    return picture if is_marked(picture) else encode(Image.open(io.BytesIO(picture)), "PNG")
+
+
 async def paint(client, scene: dict[str, Any], meter: Meter, settings: Settings = DEFAULT,
                 user: str | None = None) -> bytes:
     """The painting of one scene, as PNG bytes."""
-    who = user or listener.get()
-    extra: dict[str, Any] = {"user": who} if who else {}
     response = await client.images.generate(
         model=settings.painter_model,
         prompt=painting_prompt(scene),
@@ -45,10 +56,10 @@ async def paint(client, scene: dict[str, Any], meter: Meter, settings: Settings 
         response_format="b64_json",
         extra_body={**NO_IMAGE_TOOLS, "output_format": "png"},
         timeout=settings.paint_timeout,
-        **extra,
+        **_for_the_listener(user),
     )
     meter.image("paint")
-    return first_image(response)
+    return _marked(first_image(response))
 
 
 async def paint_without_subjects(client, scene: dict[str, Any], painting: bytes, meter: Meter,
@@ -63,6 +74,7 @@ async def paint_without_subjects(client, scene: dict[str, Any], painting: bytes,
         response_format="b64_json",
         extra_body={**NO_IMAGE_TOOLS, "output_format": "png"},
         timeout=settings.paint_timeout,
+        **_for_the_listener(),
     )
     meter.image("plate_edit")
     return first_image(response)

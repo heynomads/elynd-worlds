@@ -13,7 +13,7 @@ from PIL import Image
 from elynd_worlds import Meditation, Meter, Settings, art_director, critic, cutter, plate, timeline
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
-from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, preview_jpeg
+from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
 from elynd_worlds.settings import Prices
 
 from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, STONE_BOX, W, FakeClient, png
@@ -202,11 +202,16 @@ def test_tone_match_moves_the_edit_towards_the_surroundings():
 
 # ─── the agent ──────────────────────────────────────────────────────────
 
+def pixels(picture: bytes) -> bytes:
+    return Image.open(io.BytesIO(picture)).convert("RGB").tobytes()
+
+
 async def test_a_world_is_shown_still_first_then_moves():
     client, shown = FakeClient(), []
 
     async def on_painting(painting, scene, verdict):
-        shown.append((painting == PAINTING, verdict["score"], "plate" in [s for s in client.calls if s == "plate"]))
+        shown.append((pixels(painting) == pixels(PAINTING), verdict["score"],
+                      "plate" in [s for s in client.calls if s == "plate"]))
 
     world = await make_world(client, MEDITATION, on_painting=on_painting)
     assert shown == [(True, 9, False)]
@@ -269,15 +274,26 @@ def test_the_focus_follows_the_cut_subjects_or_the_design():
     assert world.manifest()["focus"] == [0.55, 0.4375]
 
 
-async def test_every_request_keeps_no_copy_and_names_the_listener_anonymously():
+async def test_every_request_keeps_no_copy_and_names_the_listener_by_a_pseudonym():
     client = FakeClient()
     await make_world(client, MEDITATION, user="listener-7f3a")
     chats = [r for r in client.requests if "messages" in r]
     images = [r for r in client.requests if "prompt" in r and "messages" not in r]
     assert chats and all(r["extra_body"] == {"store": False, "safety_identifier": "listener-7f3a"} for r in chats)
-    assert any(r.get("user") == "listener-7f3a" for r in images)
+    assert len(images) == 2 and all(r.get("user") == "listener-7f3a" for r in images)  # painting and repaint
     assert client.sam_requests and all(r["store"] is False and r["safety_identifier"] == "listener-7f3a"
                                        for r in client.sam_requests)
+
+
+async def test_every_picture_a_listener_sees_is_marked_as_made_by_ai():
+    assert not is_marked(PAINTING)  # the fake Muse Image forgets the mark Meta's adds
+    world = await make_world(FakeClient(), MEDITATION)
+    pictures = [world.painting, world.plate, *(layer.png for layer in world.layers),
+                make_card(world.painting, "Still water holds the whole sky.")]
+    assert len(pictures) == 5 and all(is_marked(p) for p in pictures)
+    for picture in pictures:  # real XMP that image tools read, not just bytes
+        info = Image.open(io.BytesIO(picture)).info
+        assert b"trainedAlgorithmicMedia" in str(info.get("xmp") or info.get("XML:com.adobe.xmp")).encode()
 
 
 # ─── timeline ───────────────────────────────────────────────────────────

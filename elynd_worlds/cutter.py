@@ -30,7 +30,7 @@ from meta_sam_parser import SegmentationMaskRecord, decode_mask_to_raster, image
     parse_responses_stream
 from PIL import Image, ImageDraw, ImageFilter
 
-from .meta import Meter, data_url, privacy_fields
+from .meta import Meter, data_url, encode, privacy_fields
 from .settings import DEFAULT, Settings
 
 IRREGULAR_PLURALS = {
@@ -159,9 +159,7 @@ def cutout(painting: Image.Image, mask01: np.ndarray, feather_px: float = 2.0) -
     alpha = np.maximum(np.asarray(hard), soft).astype(np.uint8)
     rgba = painting.convert("RGBA")
     rgba.putalpha(Image.fromarray(alpha))
-    out = io.BytesIO()
-    rgba.save(out, format="PNG", optimize=True)
-    return out.getvalue()
+    return encode(rgba, "PNG", optimize=True)
 
 
 async def segment(client, image_url: str, phrase: str, meter: Meter,

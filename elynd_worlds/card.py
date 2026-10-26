@@ -14,6 +14,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+from .meta import encode
+
 SIZE = (1080, 1920)
 FONTS = Path(__file__).parent / "fonts"
 LATIN_EXTRA = set("“”‘’…–—·•")
@@ -77,6 +79,4 @@ def make_card(painting_png: bytes, line: str = "", *, title: str = "",
     if tagline and drawable(tagline):
         draw.text((98, SIZE[1] - 104), tagline, font=font("Regular", 24), fill=(255, 255, 255, 170))
 
-    out = io.BytesIO()
-    card.convert("RGB").save(out, format="JPEG", quality=90, optimize=True)
-    return out.getvalue()
+    return encode(card.convert("RGB"), "JPEG", quality=90, optimize=True)

@@ -59,7 +59,7 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
   and subjects painted too low are lifted above the player's controls with a small zoom.
 * Reduce-motion is respected: the world then only fades.
 
-## Privacy
+## Privacy and safety
 
 * In ELYND, only the written meditation goes to Meta, with its technique, language and length: no name, no
   email, no mood, no account id.
@@ -68,6 +68,9 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
   pseudonymous listener id (a keyed hash Meta cannot reverse) so that any abuse enforcement targets one
   listener, not the whole app.
 * No picture contains people, faces or text; the critic checks every painting.
+* Every picture a listener sees or shares is marked as made by AI in its metadata (the IPTC digital source
+  type `trainedAlgorithmicMedia` that Muse Image puts on its paintings). The plate, the layers and the share
+  card keep the mark (EU AI Act, Art. 50).
 
 ## Cost
 

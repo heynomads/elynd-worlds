@@ -26,7 +26,7 @@ import numpy as np
 from PIL import Image, ImageFilter
 
 from .cutter import Layer, near, sam_image_url, segment, to_canvas
-from .meta import Meter
+from .meta import Meter, encode
 from .settings import DEFAULT, Settings
 
 
@@ -113,9 +113,7 @@ def fill(painting: Image.Image, mask01: np.ndarray, grow_px: int = 12,
 
 
 def to_png(image: Image.Image) -> bytes:
-    out = io.BytesIO()
-    image.save(out, format="PNG", optimize=True)
-    return out.getvalue()
+    return encode(image, "PNG", optimize=True)
 
 
 async def is_clean(client, plate_png: bytes, layers: list[Layer], meter: Meter,

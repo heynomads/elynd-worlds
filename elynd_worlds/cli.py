@@ -23,7 +23,7 @@ from pathlib import Path
 from . import timeline
 from .art_director import Meditation
 from .director import make_world
-from .meta import Meter, connect
+from .meta import Meter, connect, encode
 
 
 def read_key(path: str | None) -> str | None:
@@ -135,7 +135,8 @@ def _sheet(args: argparse.Namespace) -> int:
     sheet = Image.new("RGB", (cols * (w + 10), ((len(tiles) + cols - 1) // cols) * (h + 10)), (6, 6, 8))
     for i, tile in enumerate(tiles):
         sheet.paste(tile, ((i % cols) * (w + 10), (i // cols) * (h + 10)))
-    sheet.save(args.output, quality=88)
+    output = Path(args.output)
+    output.write_bytes(encode(sheet, "PNG" if output.suffix.lower() == ".png" else "JPEG", quality=88))
     print(args.output)
     return 0
 

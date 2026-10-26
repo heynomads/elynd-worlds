@@ -9,7 +9,8 @@ client. This module adds three things around it:
 * `_ResponsesOverHTTP`: SAM 3.1 is served through the Responses API, which
   OpenAI SDKs older than 1.66 do not have. The same streaming request is then
   sent with httpx, so the package also runs inside apps that pin an older SDK.
-* Small helpers for images (data URLs, decoding, Muse Image's built-in tools).
+* Small helpers for images (data URLs, decoding, Muse Image's built-in tools,
+  and the machine-readable "made by AI" mark every picture keeps).
 """
 from __future__ import annotations
 
@@ -24,7 +25,7 @@ from typing import Any, AsyncIterator
 
 import httpx
 from openai import AsyncOpenAI
-from PIL import Image
+from PIL import Image, PngImagePlugin
 
 from .settings import API_BASE, Prices
 
@@ -48,6 +49,39 @@ def privacy_fields() -> dict[str, Any]:
     if listener.get():
         fields["safety_identifier"] = listener.get()
     return fields
+
+
+# Muse Image marks each picture it returns as made by AI: IPTC's digital source
+# type "trainedAlgorithmicMedia", in XMP. Every picture made from one (plate,
+# layers, share card) carries the same mark, so cutting and compositing never
+# remove it (EU AI Act, Art. 50(2): AI-generated images are marked in a
+# machine-readable way).
+AI_MADE_XMP: bytes = (
+    '<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>'
+    '<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'
+    '<rdf:Description rdf:about="" xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" '
+    'Iptc4xmpExt:DigitalSourceType="http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"/>'
+    '</rdf:RDF></x:xmpmeta><?xpacket end="w"?>'
+).encode()
+
+
+def encode(image: Image.Image, format: str, **options: Any) -> bytes:
+    """`image` as PNG, JPEG or WebP bytes, marked as made by AI (`AI_MADE_XMP`)."""
+    if format.upper() == "PNG":
+        # Pillow's PNG writer ignores `xmp=`; XMP in PNG is an iTXt chunk.
+        info = PngImagePlugin.PngInfo()
+        info.add_itxt("XML:com.adobe.xmp", AI_MADE_XMP.decode())
+        options["pnginfo"] = info
+    else:
+        options["xmp"] = AI_MADE_XMP
+    out = io.BytesIO()
+    image.save(out, format=format, **options)
+    return out.getvalue()
+
+
+def is_marked(picture: bytes) -> bool:
+    """Whether a PNG, JPEG or WebP carries the "made by AI" mark."""
+    return b"digitalsourcetype/trainedAlgorithmicMedia" in picture
 
 
 class MetaAPIError(RuntimeError):
