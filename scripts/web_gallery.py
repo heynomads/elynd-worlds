@@ -3,11 +3,14 @@
     python scripts/web_gallery.py out/<time>/<name> [out/<time>/<name> ...]
 
 For each world folder (as `elynd-worlds make` saves it): the plate, the layers
-and the painting as WebP at phone size (each keeps the "made by AI" mark), and
-one entry in web/worlds/index.json with what the page shows: the manifest, the
+and the painting as WebP at phone size (each keeps the "made by AI" mark), the
+region map as lossless WebP, and one entry in web/worlds/index.json with what
+the page shows: the manifest (with what moves in nature), the
 example meditation it was made from (its first lines), the art director's design,
 the critic's verdict, the agent's steps, the cost and the time. Only worlds made
-from the example meditations in examples/: never a listener's.
+from the example meditations in examples/: never a listener's. The phone's
+shader (flutter/elynd_worlds_scene/shaders/living.frag) is copied to
+web/living.frag, so the page draws the living painting with the very same code.
 """
 from __future__ import annotations
 
@@ -24,6 +27,7 @@ from elynd_worlds.world import focus_of_scene
 
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web" / "worlds"
+SHADER = ROOT / "flutter" / "elynd_worlds_scene" / "shaders" / "living.frag"
 WIDTH = 720
 
 
@@ -35,6 +39,11 @@ def webp(png: Path, out: Path, *, quality: int) -> None:
     if image.mode == "RGBA":
         options["alpha_quality"] = 90
     out.write_bytes(encode(image, "WEBP", **options))
+
+
+def exact_webp(png: Path, out: Path) -> None:
+    """The region map as it is: lossless, every value kept (alpha is 1 - stream)."""
+    out.write_bytes(encode(Image.open(png).convert("RGBA"), "WEBP", lossless=True, exact=True))
 
 
 def focus_of(manifest: dict, scene: dict) -> list[float]:
@@ -76,7 +85,11 @@ def build(folder: Path) -> dict:
     for i, layer in enumerate(manifest.get("layers") or []):
         webp(folder / layer["file"], out / f"layer_{i}.webp", quality=85)
         layers.append({k: layer[k] for k in ("name", "depth", "motion", "attached", "anchor", "box")}
-                      | {"file": f"layer_{i}.webp"})
+                      | {"glows": bool(layer.get("glows")), "file": f"layer_{i}.webp"})
+    living = {k: v for k, v in (manifest.get("living") or {}).items() if k != "coverage"}
+    if living.get("regions"):
+        exact_webp(folder / living["regions"], out / "regions.webp")
+        living["regions"] = "regions.webp"
     header, opening = example_of(name)
     width, height = manifest["size"]
     return {
@@ -89,9 +102,10 @@ def build(folder: Path) -> dict:
         "painting": "painting.webp",
         "plate": "plate.webp" if plate else None,
         "layers": layers,
+        "living": living or None,
         "meditation": {"technique": header.get("technique", ""), "language": header.get("language", ""),
                        "minutes": int(header.get("minutes", 10)), "opening": opening},
-        "design": {k: scene[k] for k in ("place", "time_of_day", "light", "air", "subjects")},
+        "design": {k: scene.get(k) for k in ("place", "time_of_day", "light", "air", "subjects", "nature", "particles")},
         "verdict": {k: verdict[k] for k in ("score", "reason", "subjects_seen")},
         "steps": manifest["trace"],
         "cost_usd": manifest["cost_usd"],
@@ -105,6 +119,7 @@ def main(argv: list[str]) -> int:
         print(__doc__, file=sys.stderr)
         return 2
     WEB.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(SHADER, WEB.parent / "living.frag")
     worlds = [build(folder) for folder in folders]
     (WEB / "index.json").write_text(json.dumps({"schema": "elynd.gallery/1", "worlds": worlds},
                                                ensure_ascii=False, indent=1) + "\n")

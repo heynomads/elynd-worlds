@@ -72,13 +72,13 @@
   <div class="brand">ELYND WORLDS</div>
   <h1>Every meditation gets its own painted world.</h1>
   <p class="lead"><a href="https://elynd.app">ELYND</a> writes and voices a new guided meditation for each listener. ELYND Worlds
-    turns each meditation into a calm place you can see: an AI agent designs it, paints it, checks it and cuts it
-    into layers that move gently with the session. These are worlds the agent made for the example meditations in this
-    repository.</p>
+    turns each meditation into a calm place you can see: an AI agent designs it, paints it, checks it, cuts out what
+    moves and finds the water, the sky and the grass, so the painting lives as such a place would. These are worlds the
+    agent made for the example meditations in this repository.</p>
   <ul class="models" aria-label="Meta models used">
     <li>Muse Spark · designs, checks, revises</li>
     <li>Muse Image · paints and repaints</li>
-    <li>SAM 3.1 · cuts the layers, checks the plate</li>
+    <li>SAM 3.1 · cuts the layers, finds the water, sky and grass, checks the plate</li>
   </ul>
   <div class="actions">
     <button class="play" type="button" aria-pressed="false">▶ Play as a meditation</button>
@@ -92,13 +92,15 @@
 
   <section class="how">
     <h2>What you are seeing</h2>
-    <p>Each world moves only as such things move: stones and posts stay still, a boat rises and falls a
-      little on the water, a butterfly drifts, branches sway in a light wind, and the whole picture drifts like a
-      very slow camera, near things a little more than the background. <b>Play as a meditation</b> runs a
-      ten-minute session sped up: the whole
+    <p>Each world lives as such a place would: the water ripples and its reflections wobble, now and then
+      the sun glints on it; the clouds drift; the grass waves in the wind; a stream flows; a lantern
+      flickers; leaves, snow, pollen or fireflies drift through the air. The objects move as such things move:
+      a boat sinks a little on the swell and rolls, a butterfly floats and folds its wings, branches sway,
+      stones and posts stay still. <b>Play as a meditation</b> runs a ten-minute session sped up: the whole
       world while the listener arrives, a glow while their eyes are closed, more of it in a long silence, all
-      of it at the end. A sleep world stays dim and ends dark. The phone draws the same timeline: the Python,
-      Dart and JavaScript versions are tested against each other frame by frame.</p>
+      of it at the end. A sleep world stays dim and ends dark. This page draws it all with the phone's own
+      shader (WebGL 2), and the same timeline: the Python, Dart and JavaScript versions are tested against each
+      other frame by frame.</p>
   </section>
 </main>
 
@@ -127,8 +129,10 @@
     critique: ["Muse Spark", "looked at the painting"],
     cut: ["SAM 3.1", "cut the subjects into layers"],
     "remove subjects": ["Muse Image", "painted the scene without them"],
+    regions: ["SAM 3.1", "found what moves in nature"],
     plate: ["SAM 3.1", "checked the clean plate"],
     revise: ["Muse Spark", "revised its design from the critic's note"],
+    replate: ["", "plate rebuilt offline with the current rule"],
   };
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
@@ -140,9 +144,12 @@
       if (base === "design") note = esc(world.design.place);
       else if (base === "critique") note = `<span class="score">${world.verdict.score}/10</span> “${esc(world.verdict.reason)}”`;
       else if (base === "cut") note = world.layers.map((l) => `${esc(l.name)} (${esc(l.motion)})`).join(", ") || "nothing it could cut cleanly";
+      else if (base === "regions") note = esc(step.note);
+      else if (base === "replate") note = esc(step.note);
       else if (base === "plate") note = step.note === "muse_image"
-        ? "kept Muse Image's repaint, only under each subject"
-        : step.note === "filled" ? "SAM still saw a subject in the repaint, so the plate was filled in locally" : esc(step.note);
+        ? "kept Muse Image's repaint, only under each moving subject"
+        : step.note === "filled" ? "SAM still saw a subject in the repaint, so the plate was filled in locally"
+        : step.note === "painting" ? "nothing moves away, so the plate is the painting" : esc(step.note);
       return `<li><span class="who">${who}</span> ${what} <span class="sec">· ${step.seconds.toFixed(1)} s</span>${note ? `<br>${note}` : ""}</li>`;
     }).join("");
   }
