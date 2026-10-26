@@ -61,6 +61,9 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
 
 ## Privacy and safety
 
+* Opt-in. Nothing reaches Meta until a listener turns Painted worlds on, on a screen that says plainly
+  what is sent to whom (a one-time card on the home screen, or the switch in Profile, which also turns it
+  off again). The server records that consent before it paints anything.
 * In ELYND, only the written meditation goes to Meta, with its technique, language and length: no name, no
   email, no mood, no account id.
 * Standard mode only. The package refuses `-contributor` models, which may train on what they receive.
