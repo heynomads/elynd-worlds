@@ -113,6 +113,9 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
     if isinstance(regions, BaseException):
         log.info("finding what moves failed, only the subjects move: %s", regions)
         regions = nature.Regions(trees="trees" in (scene.get("nature") or []))
+    # A still subject never ripples or drifts with the water, grass or sky around it.
+    regions = nature.without(regions, [layer.mask for layer in layers
+                                       if not plate.moves(layer) and layer.mask is not None])
     plate_png, source = await step("plate", plate.make_plate(client, painting, edit, layers, meter, settings),
                                    lambda result: result[1])
     if plate_png is None:

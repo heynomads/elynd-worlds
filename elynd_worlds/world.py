@@ -8,7 +8,8 @@ Manifest schema "elynd.world/1" (world.json next to the pictures):
       "size": [1152, 2048],
       "focus": [0.42, 0.55],               # where the subjects are: phones crop around it
       "painting": "painting.png",          # the full painting (shown first)
-      "plate": "plate.png" | null,         # the painting without its subjects
+      "plate": "plate.png" | null,         # the painting without its moving subjects
+      "edge_px": 2,                        # layers are opaque this far past their outlines
       "layers": [                          # nearest first
         {"file": "layer_0.png", "name": "smooth stone", "depth": "near",
          "motion": "still", "attached": "ground", "glows": false,
@@ -16,7 +17,8 @@ Manifest schema "elynd.world/1" (world.json next to the pictures):
          "box": [0.18, 0.79, 0.44, 0.88]}
       ],
       "living": {                          # what moves in nature (regions.py)
-        "regions": "regions.png" | null,   # RGBA: water, sky, grass, stream (half size, soft)
+        "regions": "regions.png" | null,   # RGBA: water, sky, grass, 1 - stream (half size, soft;
+                                           # still subjects taken out)
         "water": true, "sky": true, "grass": false, "stream": false, "trees": false,
         "horizon": 0.52,                   # where the water starts
         "lights": [{"x": 0.5, "y": 0.6, "size": 0.08}],   # glowing subjects flicker here
@@ -32,7 +34,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .cutter import Layer
+from .cutter import EDGE_PX, Layer
 from .meta import Meter, png_size
 from .regions import Regions
 
@@ -109,6 +111,7 @@ class World:
             "focus": list(self.focus()),
             "painting": "painting.png",
             "plate": "plate.png" if self.moving else None,
+            "edge_px": EDGE_PX,  # the layers are opaque this far past their subjects' outlines
             "layers": [
                 {"file": f"layer_{i}.png", "name": layer.name, "depth": layer.depth, "motion": layer.motion,
                  "attached": layer.attached, "glows": layer.name in glowing, "anchor": list(layer.anchor()),
