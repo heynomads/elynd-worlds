@@ -122,6 +122,22 @@ const WorldMotion = {
     return still;
   },
 
+  /** How alive a world is `seconds` after it appeared: it comes alive over 3 s (scene.dart WorldScene.wake). */
+  wake: (seconds) => {
+    // Flutter's Curves.easeInOut: the cubic Bézier (0.42, 0) (0.58, 1), solved for x by bisection.
+    const x = Math.min(Math.max(seconds / 3, 0), 1);
+    const bezier = (t, p1, p2) => 3 * (1 - t) * (1 - t) * t * p1 + 3 * (1 - t) * t * t * p2 + t * t * t;
+    let lo = 0, hi = 1, t = x;
+    for (let i = 0; i < 30; i++) {
+      t = (lo + hi) / 2;
+      if (bezier(t, 0.42, 0.58) < x) lo = t; else hi = t;
+    }
+    return bezier(t, 0, 1);
+  },
+
+  /** A pose `k` of the way from still to full (motion.dart LayerPose.scaled). */
+  scaled: (pose, k) => ({ dx: pose.dx * k, dy: pose.dy * k, rotation: pose.rotation * k, wings: 1 - (1 - pose.wings) * k }),
+
   /** A lantern's flicker (the same as the light it throws in living.frag). */
   flicker: (t) => Math.sin(2 * Math.PI * 1.7 * t) * 0.5 + Math.sin(2 * Math.PI * 2.9 * t + 1.1) * 0.3
     + Math.sin(2 * Math.PI * 5.3 * t + 2.3) * 0.2,
@@ -339,7 +355,7 @@ void main() {
   }
 
   /** One card: width × height device pixels, the painting at `rect` (device pixels). Returns the canvas. */
-  function draw(view, width, height, rect, clock, still) {
+  function draw(view, width, height, rect, clock, still, wake) {
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
       canvas.height = height;
@@ -358,7 +374,7 @@ void main() {
     gl.uniform2f(u.uSize, rect.width, rect.height);
     gl.uniform2f(u.uOrigin, rect.left, rect.top);
     gl.uniform1f(u.uTime, still ? 0 : clock % 3600);
-    gl.uniform1f(u.uMotion, still ? 0 : 1);
+    gl.uniform1f(u.uMotion, still ? 0 : wake);
     gl.uniform4f(u.uOn, on(living.water), on(living.sky), on(living.grass), on(living.stream));
     gl.uniform4f(u.uScene, living.trees ? 1 : 0, living.horizon ?? -1, 0, 0);
     gl.uniform4f(u.uLight, light ? light.x : 0, light ? light.y : 0, light ? light.size : 0, light ? 1 : 0);
@@ -382,11 +398,11 @@ void main() {
     for (let i = view.layers.length - 1; i >= 0; i--) {
       const spec = view.world.layers[i];
       const pose = still ? { dx: 0, dy: 0, rotation: 0, wings: 1 }
-        : WorldMotion.layer({ motion: spec.motion, attached: spec.attached, clock, index: i });
+        : WorldMotion.scaled(WorldMotion.layer({ motion: spec.motion, attached: spec.attached, clock, index: i }), wake);
       gl.uniform2f(l.uAnchor, rect.left + spec.anchor[0] * rect.width, rect.top + spec.anchor[1] * rect.height);
       gl.uniform2f(l.uMove, pose.dx * rect.height, pose.dy * rect.height);
       gl.uniform3f(l.uTurn, Math.cos(pose.rotation), Math.sin(pose.rotation), pose.wings);
-      gl.uniform1f(l.uBright, spec.glows && !still ? 1 + 0.12 * WorldMotion.flicker(clock) : 1);
+      gl.uniform1f(l.uBright, spec.glows && !still ? 1 + 0.12 * wake * WorldMotion.flicker(clock) : 1);
       gl.bindTexture(gl.TEXTURE_2D, texture(view.layers[i], { premultiply: true }));
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
@@ -426,6 +442,7 @@ class WorldView {
         this.background = background;
         this.layers = layers;
         this.regions = map;
+        this.bornAt = null; // set on the first frame drawn: it comes alive from there
         this.ready = true;
       })
       .catch(() => canvas.classList.add("failed"));
@@ -451,16 +468,18 @@ class WorldView {
     const t = session ? session.t : clock % 600;
     ctx.globalAlpha = session ? WorldTimeline.at(timeline.visibility, t) : 1;
     const rect = coverRect(pw, ph, this.world.aspect, this.world.focus);
+    if (this.bornAt === null) this.bornAt = clock;
+    const wake = still ? 0 : WorldMotion.wake(clock - this.bornAt);
 
     if (LivingGL.ready) {
-      ctx.drawImage(LivingGL.draw(this, pw, ph, rect, clock, still), 0, 0);
+      ctx.drawImage(LivingGL.draw(this, pw, ph, rect, clock, still, wake), 0, 0);
     } else {
       // Without WebGL 2: the pictures and their motion, no living painting.
       ctx.drawImage(this.background, rect.left, rect.top, rect.width, rect.height);
       for (let i = this.layers.length - 1; i >= 0; i--) {
         const spec = this.world.layers[i];
         const pose = still ? { dx: 0, dy: 0, rotation: 0, wings: 1 }
-          : WorldMotion.layer({ motion: spec.motion, attached: spec.attached, clock, index: i });
+          : WorldMotion.scaled(WorldMotion.layer({ motion: spec.motion, attached: spec.attached, clock, index: i }), wake);
         const ax = rect.left + spec.anchor[0] * rect.width, ay = rect.top + spec.anchor[1] * rect.height;
         ctx.save();
         ctx.translate(ax + pose.dx * rect.height, ay + pose.dy * rect.height);
@@ -475,6 +494,7 @@ class WorldView {
     if (particles && particles !== "none" && !still) {
       // In the phone's units (logical pixels), so they drift as there.
       ctx.save();
+      ctx.globalAlpha *= wake;
       ctx.scale(dpr, dpr);
       ctx.translate(rect.left / dpr, rect.top / dpr);
       drawParticles(ctx, particles, clock, rect.width / dpr, rect.height / dpr);
