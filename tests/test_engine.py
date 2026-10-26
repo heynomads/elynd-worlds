@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from elynd_worlds import Meditation, Meter, Settings, art_director, critic, cutter, plate, timeline
+from elynd_worlds import Meditation, Meter, Settings, art_director, critic, cutter, painter, plate, timeline
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
@@ -171,16 +171,51 @@ async def test_plate_plus_layers_at_rest_is_the_painting():
     assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 3
 
 
-async def test_a_subject_left_on_the_plate_means_a_local_fill():
-    client = FakeClient(sam_on_plate={"smooth stone": [STONE_BOX]})
+async def test_a_moving_subject_left_on_the_plate_means_a_local_fill():
+    client = FakeClient(sam_on_plate={"pine branches": [BRANCH_BOX]})
     scene = art_director.check(json.loads(json.dumps(SCENE)))
     layers = await cutter.cut(client, PAINTING, scene, Meter())
     _, source = await plate.make_plate(client, PAINTING, EDIT, layers, Meter())
     assert source == "filled"
-    # The same kind of object elsewhere in the scene is fine.
-    client = FakeClient(sam_on_plate={"smooth stone": [(90, 60, 20, 20)]})
+    # The same kind of object elsewhere in the scene is fine, and so is a still
+    # subject: it stays in the plate on purpose.
+    client = FakeClient(sam_on_plate={"pine branches": [(80, 120, 30, 16)], "smooth stone": [STONE_BOX]})
     layers = await cutter.cut(client, PAINTING, scene, Meter())
     assert (await plate.make_plate(client, PAINTING, EDIT, layers, Meter()))[1] == "muse_image"
+
+
+async def test_a_still_subject_stays_in_the_plate_as_painted():
+    client = FakeClient()
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    layers = await cutter.cut(client, PAINTING, scene, Meter())
+    still = [layer for layer in layers if layer.motion == "still"]
+    assert still and len(still) < len(layers)  # the stone stays, the branch sways
+    plate_png, _ = await plate.make_plate(client, PAINTING, EDIT, layers, Meter())
+    stone = still[0].mask.astype(bool)
+    assert (rgb(plate_png)[stone] == rgb(PAINTING)[stone]).all()
+    # Nothing moves: the plate is the painting, and nothing is checked or repainted for it.
+    calls = len(client.sam_requests)
+    plate_png, source = await plate.make_plate(client, PAINTING, EDIT, still, Meter())
+    assert source == "painting" and (rgb(plate_png) == rgb(PAINTING)).all()
+    assert len(client.sam_requests) == calls
+
+
+async def test_the_local_fill_stays_where_the_layer_is_opaque_so_at_rest_it_never_shows():
+    client = FakeClient(fail_edit=True)
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    layers = await cutter.cut(client, PAINTING, scene, Meter())
+    plate_png, source = await plate.make_plate(client, PAINTING, None, layers, Meter())
+    assert source == "filled"
+    branch = next(layer for layer in layers if layer.motion != "still")
+    near = cutter.grown(branch.mask, cutter.EDGE_PX + 2).astype(bool)
+    assert (rgb(plate_png)[~near] == rgb(PAINTING)[~near]).all()  # beyond the layer's edge: the painting itself
+    assert (rgb(plate_png)[branch.mask.astype(bool)] != rgb(PAINTING)[branch.mask.astype(bool)]).any()
+    alpha = np.asarray(Image.open(io.BytesIO(branch.png)).getchannel("A"))
+    assert (alpha[cutter.grown(branch.mask).astype(bool)] == 255).all()  # the layer carries its soft edge
+    composite = Image.open(io.BytesIO(plate_png)).convert("RGBA")
+    for layer in layers:
+        composite.alpha_composite(Image.open(io.BytesIO(layer.png)))
+    assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 3
 
 
 def test_fill_leaves_no_empty_pixels_even_for_a_large_subject():
@@ -251,6 +286,26 @@ async def test_without_layers_the_world_is_a_still_painting():
 async def test_a_failed_repaint_falls_back_to_the_local_fill():
     world = await make_world(FakeClient(fail_edit=True), MEDITATION)
     assert world.moving and world.plate_source == "filled"
+
+
+async def test_only_still_subjects_no_repaint_and_a_still_world_unless_one_glows():
+    still = json.loads(json.dumps(SCENE))
+    for subject in still["subjects"]:
+        subject["motion"] = "still"
+    client = FakeClient(scenes=[still])
+    world = await make_world(client, MEDITATION)
+    assert "edit" not in client.calls and world.plate_source == "painting"
+    assert not world.moving and world.manifest()["layers"] == []
+    glowing = json.loads(json.dumps(still))
+    glowing["subjects"][0]["glows"] = True  # a lantern: it flickers, so the world moves
+    world = await make_world(FakeClient(scenes=[glowing]), MEDITATION)
+    assert world.moving and [layer["glows"] for layer in world.manifest()["layers"]][:1] == [True]
+
+
+def test_the_repaint_names_only_the_moving_subjects():
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    prompt = painter.plate_prompt(scene)
+    assert "pine branch" in prompt and "stone" not in prompt.lower() and "behind it" in prompt
 
 
 async def test_the_world_is_saved_with_its_manifest(tmp_path):

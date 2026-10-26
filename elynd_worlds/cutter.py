@@ -148,13 +148,27 @@ def box_of(mask01: np.ndarray) -> tuple[float, float, float, float]:
     return (round(xs.min() / w, 4), round(ys.min() / h, 4), round((xs.max() + 1) / w, 4), round((ys.max() + 1) / h, 4))
 
 
-def cutout(painting: Image.Image, mask01: np.ndarray, feather_px: float = 2.0) -> bytes:
-    """RGBA: the painting inside the mask, a soft edge just outside it, transparent beyond.
+# A layer is opaque this far past the subject's outline: it carries the
+# subject's own soft edge (a dark rim fading into the water) with it when it
+# moves, and the plate is repainted exactly where the layer is opaque.
+EDGE_PX = 2
 
-    Alpha is 1 everywhere inside the mask, so plate + layers at rest is exactly
-    the painting (the plate keeps the painting outside the mask, see plate.py).
+
+def grown(mask01: np.ndarray, px: int = EDGE_PX) -> np.ndarray:
+    """The mask grown by `px` pixels on every side."""
+    if px <= 0:
+        return mask01.astype(np.uint8)
+    region = Image.fromarray(mask01.astype(np.uint8) * 255).filter(ImageFilter.MaxFilter(px * 2 + 1))
+    return (np.asarray(region) > 127).astype(np.uint8)
+
+
+def cutout(painting: Image.Image, mask01: np.ndarray, feather_px: float = 2.0) -> bytes:
+    """RGBA: the painting inside the mask grown by EDGE_PX, a soft edge just outside, transparent beyond.
+
+    Alpha is 1 everywhere inside the grown mask, so plate + layers at rest is
+    exactly the painting (the plate changes only there, see plate.py).
     """
-    hard = Image.fromarray(mask01.astype(np.uint8) * 255)
+    hard = Image.fromarray(grown(mask01) * 255)
     soft = np.asarray(hard.filter(ImageFilter.GaussianBlur(feather_px)))
     alpha = np.maximum(np.asarray(hard), soft).astype(np.uint8)
     rgba = painting.convert("RGBA")

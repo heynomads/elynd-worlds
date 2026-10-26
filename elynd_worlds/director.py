@@ -38,6 +38,10 @@ class NoWorld(RuntimeError):
     """No painting passed the critic within the allowed attempts."""
 
 
+async def _nothing() -> None:
+    return None
+
+
 async def make_world(client, meditation: Meditation, *, settings: Settings = DEFAULT, meter: Meter | None = None,
                      on_painting: OnPainting | None = None, user: str | None = None) -> World:
     """Run the agent for one meditation. `on_painting(painting, scene, verdict)` fires as soon as a
@@ -71,8 +75,10 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
                                               lambda v: f"score {v['score']}: {v['reason']}"))
         cutting = asyncio.ensure_future(step(f"cut {attempt}", cutter.cut(client, painting, scene, meter, settings),
                                              lambda ls: ", ".join(layer.wording for layer in ls) or "no layers"))
+        # Only a moving subject needs what lies behind it painted (plate.py); with none, no repaint.
         removing = asyncio.ensure_future(step(f"remove subjects {attempt}",
-                                              painter.paint_without_subjects(client, scene, painting, meter, settings)))
+                                              painter.paint_without_subjects(client, scene, painting, meter, settings))
+                                         if painter.moving_subjects(scene) else _nothing())
         finding = asyncio.ensure_future(step(f"regions {attempt}",
                                              nature.find_regions(client, painting, scene, meter, settings),
                                              lambda r: ", ".join(k for k, v in r.present.items() if v) or "none"))

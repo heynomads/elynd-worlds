@@ -27,10 +27,16 @@ def painting_prompt(scene: dict[str, Any]) -> str:
             f"in the middle of the picture, the bottom third calm and simple. {STYLE}")
 
 
+def moving_subjects(scene: dict[str, Any]) -> list[dict[str, Any]]:
+    """The designed subjects that move (a still one stays in the plate as painted)."""
+    return [s for s in scene["subjects"] if s.get("motion", "still") != "still"]
+
+
 def plate_prompt(scene: dict[str, Any]) -> str:
-    names = ", ".join(s["name"] for s in scene["subjects"])
+    subjects = moving_subjects(scene) or scene["subjects"]
+    names = ", ".join(s["name"] for s in subjects)
     return (f"Remove the {names} from this painting completely and paint what would be behind "
-            f"{'it' if len(scene['subjects']) == 1 else 'them'} instead, continuing the surroundings "
+            f"{'it' if len(subjects) == 1 else 'them'} instead, continuing the surroundings "
             "naturally. Change nothing else: same place, light, palette, brushwork and framing. "
             "No new objects, no people, no text.")
 

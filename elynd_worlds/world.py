@@ -85,14 +85,21 @@ class World:
         return focus_of_scene(self.scene)
 
     @property
+    def glowing(self) -> set[str]:
+        """The names of the designed subjects that glow by themselves (a lantern, a candle)."""
+        return {(sub.get("name") or "").lower() for sub in self.scene.get("subjects") or [] if sub.get("glows")}
+
+    @property
     def moving(self) -> bool:
-        """True if the world has a clean plate and at least one layer to move."""
-        return bool(self.plate and self.layers)
+        """True if the world has a plate and a layer the phone moves, or one that glows (it flickers).
+        Only still subjects: the world is the still painting (its water, sky and grass still move)."""
+        glowing = self.glowing
+        return bool(self.plate) and any(layer.motion != "still" or layer.name in glowing for layer in self.layers)
 
     def manifest(self) -> dict[str, Any]:
         width, height = png_size(self.painting)
         layers = self.layers if self.moving else []
-        glowing = {(sub.get("name") or "").lower() for sub in self.scene.get("subjects") or [] if sub.get("glows")}
+        glowing = self.glowing
         return {
             "schema": SCHEMA,
             "title": self.scene["title"],
