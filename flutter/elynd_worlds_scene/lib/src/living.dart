@@ -74,6 +74,7 @@ class LivingBackground extends StatefulWidget {
     required this.living,
     required this.clockSeconds,
     this.still = false,
+    this.motion = 1,
   });
 
   final ImageProvider plate;
@@ -82,6 +83,9 @@ class LivingBackground extends StatefulWidget {
 
   /// Reduce motion: the painting as painted.
   final bool still;
+
+  /// How much it moves: 0 the painting as painted, 1 fully alive.
+  final double motion;
 
   /// The shader, loaded once per app run. Null when it cannot load.
   static Future<ui.FragmentProgram?> get program =>
@@ -208,7 +212,7 @@ class _LivingBackgroundState extends State<LivingBackground> {
         mapped: regions != null,
         // Wrapped to an hour: the shader's sines stay exact on any GPU.
         time: widget.clockSeconds % 3600,
-        motion: widget.still ? 0 : 1,
+        motion: widget.still ? 0 : widget.motion.clamp(0.0, 1.0),
       ),
       size: Size.infinite,
     );

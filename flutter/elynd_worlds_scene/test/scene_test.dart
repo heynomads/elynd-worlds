@@ -569,6 +569,53 @@ void main() {
       },
     );
 
+    testWidgets('a world that has just appeared comes alive gently', (
+      tester,
+    ) async {
+      expect(
+        (WorldScene.wake(0), WorldScene.wake(WorldScene.wakeSeconds)),
+        (0.0, 1.0),
+      );
+      for (var t = 0.0; t < WorldScene.wakeSeconds; t += 0.25) {
+        expect(
+          WorldScene.wake(t + 0.25),
+          greaterThanOrEqualTo(WorldScene.wake(t)),
+        );
+      }
+      await tester.pumpWidget(
+        host(
+          WorldScene(
+            background: MemoryImage(_png),
+            aspect: 9 / 16,
+            layers: [
+              WorldLayer(
+                image: MemoryImage(_png),
+                motion: 'float',
+                attached: 'ground',
+              ),
+            ],
+            timeline: const WorldTimeline(breath: [1, 1], visibility: [1, 1]),
+            positionSeconds: () => 0,
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 16));
+      // At first the boat sits exactly where it is painted (the still painting
+      // it replaces), then it rides the swell.
+      final first = transforms(tester).last;
+      expect(first.getTranslation().y.abs(), lessThan(0.01));
+      expect(first.storage[1].abs(), lessThan(1e-4));
+      var moved = 0.0;
+      for (var i = 0; i < 120; i++) {
+        await tester.pump(const Duration(milliseconds: 50));
+        moved = math.max(
+          moved,
+          transforms(tester).last.getTranslation().y.abs(),
+        );
+      }
+      expect(moved, greaterThan(844 * WorldMotion.bob * 0.4));
+    });
+
     testWidgets('reduce motion: nothing moves at all', (tester) async {
       await tester.pumpWidget(
         host(

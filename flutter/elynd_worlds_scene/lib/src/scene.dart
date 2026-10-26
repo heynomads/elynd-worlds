@@ -43,7 +43,8 @@ class WorldLayer {
 /// move in nature move (the water ripples, the clouds drift, the grass waves,
 /// a stream flows, the crowns sway, a lantern flickers: `living.frag`), and
 /// leaves, snow, pollen or fireflies drift through the air. Each layer moves
-/// as its object would ([WorldMotion]); nothing pulses. Each frame reads the
+/// as its object would ([WorldMotion]); nothing pulses. A world that has just
+/// appeared comes alive over [wakeSeconds]. Each frame reads the
 /// session's position from `positionSeconds` (a callback, so the host never
 /// notifies anything while it builds) for the fading: the whole world while
 /// the listener arrives, a glow while their eyes are closed. Respects the
@@ -109,6 +110,14 @@ class WorldScene extends StatefulWidget {
     return Rect.fromLTWH(left, top, width, height);
   }
 
+  /// A world that has just appeared comes alive over this many seconds, from
+  /// the painting as painted to its full motion: it never starts mid-swell.
+  static const wakeSeconds = 3.0;
+
+  /// How alive the world is `clockSeconds` after it appeared (0 to 1, eased).
+  static double wake(double clockSeconds) =>
+      Curves.easeInOut.transform((clockSeconds / wakeSeconds).clamp(0.0, 1.0));
+
   /// A lantern's flicker (the same as the light it throws in `living.frag`).
   static double flicker(double t) =>
       math.sin(2 * math.pi * 1.7 * t) * 0.5 +
@@ -159,6 +168,7 @@ class _WorldSceneState extends State<WorldScene>
   Widget build(BuildContext context) {
     final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final clock = still ? 0.0 : _clock.inMicroseconds / 1e6;
+    final wake = still ? 0.0 : WorldScene.wake(clock);
     final visibility = widget.followVisibility
         ? widget.timeline.visibilityAt(_seconds).clamp(0.0, 1.0)
         : 1.0;
@@ -177,6 +187,7 @@ class _WorldSceneState extends State<WorldScene>
                     living: living,
                     clockSeconds: clock,
                     still: still,
+                    motion: wake,
                   )
                 : Image(
                     image: widget.background,
@@ -191,16 +202,19 @@ class _WorldSceneState extends State<WorldScene>
           ) // farthest first, nearest on top
             Positioned.fromRect(
               rect: rect,
-              child: _layer(widget.layers[i], i, still, clock, h),
+              child: _layer(widget.layers[i], i, still, clock, wake, h),
             ),
           if (living != null && living.particles != 'none' && !still)
             Positioned.fromRect(
               rect: rect,
               child: IgnorePointer(
-                child: CustomPaint(
-                  painter: WorldParticles(
-                    kind: living.particles,
-                    clockSeconds: clock,
+                child: Opacity(
+                  opacity: wake,
+                  child: CustomPaint(
+                    painter: WorldParticles(
+                      kind: living.particles,
+                      clockSeconds: clock,
+                    ),
                   ),
                 ),
               ),
@@ -221,6 +235,7 @@ class _WorldSceneState extends State<WorldScene>
     int index,
     bool still,
     double clock,
+    double wake,
     double height,
   ) {
     final pose = still
@@ -230,7 +245,7 @@ class _WorldSceneState extends State<WorldScene>
             attached: layer.attached,
             clockSeconds: clock,
             index: index,
-          );
+          ).scaled(wake);
     final matrix = Matrix4.identity()
       ..translateByDouble(pose.dx * height, pose.dy * height, 0, 1)
       ..rotateZ(pose.rotation)
@@ -241,7 +256,7 @@ class _WorldSceneState extends State<WorldScene>
       gaplessPlayback: true,
     );
     if (layer.glows && !still) {
-      final f = 1 + 0.12 * WorldScene.flicker(clock);
+      final f = 1 + 0.12 * wake * WorldScene.flicker(clock);
       image = ColorFiltered(
         colorFilter: ColorFilter.matrix(<double>[
           f,

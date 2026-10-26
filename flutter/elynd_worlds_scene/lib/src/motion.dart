@@ -26,6 +26,14 @@ class LayerPose {
   final double wings;
 
   static const still = LayerPose();
+
+  /// This pose `k` of the way from still (0) to full (1).
+  LayerPose scaled(double k) => LayerPose(
+    rotation: rotation * k,
+    dx: dx * k,
+    dy: dy * k,
+    wings: 1 - (1 - wings) * k,
+  );
 }
 
 /// How a world's objects move: as such things move in nature, clearly enough to
