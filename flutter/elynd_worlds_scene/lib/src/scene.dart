@@ -1,6 +1,9 @@
+import 'dart:math' as math;
+
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
+import 'living.dart';
 import 'motion.dart';
 import 'timeline.dart';
 
@@ -13,6 +16,7 @@ class WorldLayer {
     this.depth = 'mid',
     this.motion = 'still',
     this.attached = 'ground',
+    this.glows = false,
     this.anchor = (x: 0.5, y: 1.0),
   });
 
@@ -24,22 +28,26 @@ class WorldLayer {
   /// A floating boat bobs; a floating butterfly loops.
   final String attached;
 
+  /// A light that glows by itself (a lantern, a candle): it flickers.
+  final bool glows;
+
   /// The pivot of the layer's motion, as fractions of the painting.
   final ({double x, double y}) anchor;
 }
 
-/// A painted world that comes to life, gently, with a meditation.
+/// A painted world that lives, the way nature does, with a meditation.
 ///
 /// Draws `background` (the plate: the painting without its subjects, or the
 /// full painting for a still world) and the layers on top, all covering the
-/// widget like `BoxFit.cover`. Everything drifts like a very slow camera, near
-/// layers a little more than the plate behind them, and each layer moves only
-/// as its object would ([WorldMotion]); nothing grows or shrinks. Each frame
-/// reads the session's position from `positionSeconds` (a callback, so the
-/// host never notifies anything while it builds) for the fading: the whole
-/// world while the listener arrives, a glow while their eyes are closed.
-/// Respects the platform's reduce-motion setting: the world then stays still
-/// and only fades.
+/// widget like `BoxFit.cover`. With [living], the parts of the painting that
+/// move in nature move (the water ripples, the clouds drift, the grass waves,
+/// a stream flows, the crowns sway, a lantern flickers: `living.frag`), and
+/// leaves, snow, pollen or fireflies drift through the air. Each layer moves
+/// as its object would ([WorldMotion]); nothing pulses. Each frame reads the
+/// session's position from `positionSeconds` (a callback, so the host never
+/// notifies anything while it builds) for the fading: the whole world while
+/// the listener arrives, a glow while their eyes are closed. Respects the
+/// platform's reduce-motion setting: the world then stays still and only fades.
 class WorldScene extends StatefulWidget {
   const WorldScene({
     super.key,
@@ -48,6 +56,7 @@ class WorldScene extends StatefulWidget {
     required this.timeline,
     required this.positionSeconds,
     this.layers = const [],
+    this.living,
     this.followVisibility = true,
     this.focus = (x: 0.5, y: 0.5),
   });
@@ -57,6 +66,9 @@ class WorldScene extends StatefulWidget {
   /// Width / height of the painting.
   final double aspect;
   final List<WorldLayer> layers;
+
+  /// What moves in nature; null: only the layers move.
+  final WorldLiving? living;
   final WorldTimeline timeline;
   final double Function() positionSeconds;
 
@@ -71,26 +83,44 @@ class WorldScene extends StatefulWidget {
   /// sits as near the middle as the edges allow. A focus lower than `highest`
   /// (subjects painted low, behind a player's words and controls) is lifted to
   /// it by zooming in a little, at most `maxZoom`.
-  static Rect cover(Size box, double aspect, ({double x, double y}) focus,
-      {double highest = 0.62, double maxZoom = 1.25}) {
-    var width = box.width / box.height > aspect ? box.width : box.height * aspect;
+  static Rect cover(
+    Size box,
+    double aspect,
+    ({double x, double y}) focus, {
+    double highest = 0.62,
+    double maxZoom = 1.25,
+  }) {
+    var width = box.width / box.height > aspect
+        ? box.width
+        : box.height * aspect;
     var height = width / aspect;
     if (focus.y > highest && focus.y < 1) {
-      final zoom = (box.height * (1 - highest) / (height * (1 - focus.y))).clamp(1.0, maxZoom);
+      final zoom = (box.height * (1 - highest) / (height * (1 - focus.y)))
+          .clamp(1.0, maxZoom);
       width *= zoom;
       height *= zoom;
     }
     final targetY = box.height * (focus.y > highest ? highest : focus.y);
-    final left = (box.width / 2 - focus.x * width).clamp(box.width - width, 0.0);
+    final left = (box.width / 2 - focus.x * width).clamp(
+      box.width - width,
+      0.0,
+    );
     final top = (targetY - focus.y * height).clamp(box.height - height, 0.0);
     return Rect.fromLTWH(left, top, width, height);
   }
+
+  /// A lantern's flicker (the same as the light it throws in `living.frag`).
+  static double flicker(double t) =>
+      math.sin(2 * math.pi * 1.7 * t) * 0.5 +
+      math.sin(2 * math.pi * 2.9 * t + 1.1) * 0.3 +
+      math.sin(2 * math.pi * 5.3 * t + 2.3) * 0.2;
 
   @override
   State<WorldScene> createState() => _WorldSceneState();
 }
 
-class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateMixin {
+class _WorldSceneState extends State<WorldScene>
+    with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
   Duration _clock = Duration.zero;
   double _position = 0;
@@ -125,50 +155,123 @@ class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateM
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
     final clock = still ? 0.0 : _clock.inMicroseconds / 1e6;
-    final camera = still ? (dx: 0.0, dy: 0.0) : WorldMotion.camera(clock);
-    final visibility = widget.followVisibility ? widget.timeline.visibilityAt(_seconds).clamp(0.0, 1.0) : 1.0;
+    final visibility = widget.followVisibility
+        ? widget.timeline.visibilityAt(_seconds).clamp(0.0, 1.0)
+        : 1.0;
+    final living = widget.living;
 
-    return LayoutBuilder(builder: (context, box) {
-      final rect = WorldScene.cover(box.biggest, widget.aspect, widget.focus);
-      final h = rect.height;
-      final children = <Widget>[
-        Positioned.fromRect(
-          rect: rect.shift(Offset(camera.dx * h, camera.dy * h)),
-          child: Image(image: widget.background, fit: BoxFit.fill, gaplessPlayback: true),
-        ),
-        for (var i = widget.layers.length - 1; i >= 0; i--) // farthest first, nearest on top
-          Positioned.fromRect(rect: rect, child: _layer(widget.layers[i], i, still, clock, camera, h)),
-      ];
-      return ClipRect(
-        child: Opacity(
-          opacity: visibility,
-          // A constant margin for the drift, never a zoom in and out.
-          child: Transform.scale(
-            scale: WorldMotion.cameraHeadroom,
+    return LayoutBuilder(
+      builder: (context, box) {
+        final rect = WorldScene.cover(box.biggest, widget.aspect, widget.focus);
+        final h = rect.height;
+        final children = <Widget>[
+          Positioned.fromRect(
+            rect: rect,
+            child: living != null && living.shaded
+                ? LivingBackground(
+                    plate: widget.background,
+                    living: living,
+                    clockSeconds: clock,
+                    still: still,
+                  )
+                : Image(
+                    image: widget.background,
+                    fit: BoxFit.fill,
+                    gaplessPlayback: true,
+                  ),
+          ),
+          for (
+            var i = widget.layers.length - 1;
+            i >= 0;
+            i--
+          ) // farthest first, nearest on top
+            Positioned.fromRect(
+              rect: rect,
+              child: _layer(widget.layers[i], i, still, clock, h),
+            ),
+          if (living != null && living.particles != 'none' && !still)
+            Positioned.fromRect(
+              rect: rect,
+              child: IgnorePointer(
+                child: CustomPaint(
+                  painter: WorldParticles(
+                    kind: living.particles,
+                    clockSeconds: clock,
+                  ),
+                ),
+              ),
+            ),
+        ];
+        return ClipRect(
+          child: Opacity(
+            opacity: visibility,
             child: Stack(clipBehavior: Clip.none, children: children),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
-  Widget _layer(WorldLayer layer, int index, bool still, double clock, ({double dx, double dy}) camera, double height) {
+  Widget _layer(
+    WorldLayer layer,
+    int index,
+    bool still,
+    double clock,
+    double height,
+  ) {
     final pose = still
         ? LayerPose.still
-        : WorldMotion.layer(motion: layer.motion, attached: layer.attached, clockSeconds: clock, index: index);
-    final depth = WorldMotion.parallax(layer.depth);
+        : WorldMotion.layer(
+            motion: layer.motion,
+            attached: layer.attached,
+            clockSeconds: clock,
+            index: index,
+          );
     final matrix = Matrix4.identity()
-      ..translateByDouble((camera.dx * depth + pose.dx) * height, (camera.dy * depth + pose.dy) * height, 0, 1)
-      ..rotateZ(pose.rotation);
+      ..translateByDouble(pose.dx * height, pose.dy * height, 0, 1)
+      ..rotateZ(pose.rotation)
+      ..scaleByDouble(pose.wings, 1, 1, 1);
+    Widget image = Image(
+      image: layer.image,
+      fit: BoxFit.fill,
+      gaplessPlayback: true,
+    );
+    if (layer.glows && !still) {
+      final f = 1 + 0.12 * WorldScene.flicker(clock);
+      image = ColorFiltered(
+        colorFilter: ColorFilter.matrix(<double>[
+          f,
+          0,
+          0,
+          0,
+          0,
+          0,
+          f,
+          0,
+          0,
+          0,
+          0,
+          0,
+          f,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+        ]),
+        child: image,
+      );
+    }
     return Transform(
       alignment: Alignment(layer.anchor.x * 2 - 1, layer.anchor.y * 2 - 1),
       transform: matrix,
-      child: Image(image: layer.image, fit: BoxFit.fill, gaplessPlayback: true),
+      child: image,
     );
   }
 }

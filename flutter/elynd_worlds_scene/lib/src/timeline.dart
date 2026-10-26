@@ -44,7 +44,8 @@ class WorldTimeline {
   const WorldTimeline({required this.breath, required this.visibility});
 
   /// A still, fully visible world.
-  factory WorldTimeline.still() => const WorldTimeline(breath: [0.5], visibility: [1.0]);
+  factory WorldTimeline.still() =>
+      const WorldTimeline(breath: [0.5], visibility: [1.0]);
 
   factory WorldTimeline.build({
     required double durationSeconds,
@@ -58,7 +59,11 @@ class WorldTimeline {
     for (var second = 0; second <= durationSeconds.ceil(); second++) {
       final t = second.toDouble();
       breath.add(_round3(_breathAt(t, silences, sorted).clamp(0.0, 1.0)));
-      visibility.add(_round3(_visibilityAt(t, durationSeconds, silences, sleep).clamp(0.0, 1.0)));
+      visibility.add(
+        _round3(
+          _visibilityAt(t, durationSeconds, silences, sleep).clamp(0.0, 1.0),
+        ),
+      );
     }
     return WorldTimeline(breath: breath, visibility: visibility);
   }
@@ -84,10 +89,18 @@ class WorldTimeline {
     return null;
   }
 
-  static double _breathAt(double t, List<WorldSilence> silences, List<WorldCue> cues) {
+  static double _breathAt(
+    double t,
+    List<WorldSilence> silences,
+    List<WorldCue> cues,
+  ) {
     for (final cue in cues) {
-      if (cue.inhale && cue.at <= t && t < cue.at + inhaleSeconds) return (t - cue.at) / inhaleSeconds;
-      if (!cue.inhale && cue.at <= t && t < cue.at + exhaleSeconds) return 1.0 - (t - cue.at) / exhaleSeconds;
+      if (cue.inhale && cue.at <= t && t < cue.at + inhaleSeconds) {
+        return (t - cue.at) / inhaleSeconds;
+      }
+      if (!cue.inhale && cue.at <= t && t < cue.at + exhaleSeconds) {
+        return 1.0 - (t - cue.at) / exhaleSeconds;
+      }
     }
     final quiet = _silenceAt(silences, t) != null;
     final period = quiet ? resonantPeriod : speechPeriod;
@@ -95,7 +108,12 @@ class WorldTimeline {
     return 0.5 + 0.5 * depth * math.sin(2 * math.pi * t / period - math.pi / 2);
   }
 
-  static double _visibilityAt(double t, double duration, List<WorldSilence> silences, bool sleep) {
+  static double _visibilityAt(
+    double t,
+    double duration,
+    List<WorldSilence> silences,
+    bool sleep,
+  ) {
     double v;
     if (t < arriveSeconds) {
       v = 1.0;
@@ -106,14 +124,19 @@ class WorldTimeline {
     }
     final silence = _silenceAt(silences, t);
     if (silence != null && silence.end - silence.start >= longSilence) {
-      final ramp = math.min(math.min(t - silence.start, silence.end - t), 8.0) / 8.0;
+      final ramp =
+          math.min(math.min(t - silence.start, silence.end - t), 8.0) / 8.0;
       v = math.max(v, glow + 0.5 * ramp);
     }
     final left = duration - t;
-    if (left < returnSeconds) v = math.max(v, 1.0 - (1.0 - glow) * left / returnSeconds);
+    if (left < returnSeconds) {
+      v = math.max(v, 1.0 - (1.0 - glow) * left / returnSeconds);
+    }
     if (sleep && t >= arriveSeconds) {
       v = math.min(v, sleepGlow);
-      if (left < returnSeconds) v = sleepGlow * math.max(left, 0.0) / returnSeconds;
+      if (left < returnSeconds) {
+        v = sleepGlow * math.max(left, 0.0) / returnSeconds;
+      }
     }
     return v;
   }

@@ -2,11 +2,16 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 
-/// Where one layer sits at one moment, on top of the camera's drift. Pure, so
-/// it can be tested and reasoned about without a widget.
+/// Where one layer sits at one moment. Pure, so it can be tested and reasoned
+/// about without a widget.
 @immutable
 class LayerPose {
-  const LayerPose({this.rotation = 0, this.dx = 0, this.dy = 0});
+  const LayerPose({
+    this.rotation = 0,
+    this.dx = 0,
+    this.dy = 0,
+    this.wings = 1,
+  });
 
   /// Radians about the layer's anchor.
   final double rotation;
@@ -15,76 +20,83 @@ class LayerPose {
   final double dx;
   final double dy;
 
+  /// A fluttering creature's wings, as a share of their open width (1 = open):
+  /// they fold now and then, sideways about the body. Nothing else ever
+  /// changes size.
+  final double wings;
+
   static const still = LayerPose();
 }
 
-/// How a world moves: slowly, and only as such things move in nature.
+/// How a world's objects move: as such things move in nature, clearly enough to
+/// see: a boat that grew and shrank with each breath moved like a heartbeat,
+/// and a world that barely moved looked like a static picture.
 ///
-/// Nothing ever grows or shrinks (a boat and a stone that grew and shrank
-/// with each breath moved like a heartbeat). Still things stay still. A boat on the water rises and
-/// falls a little and rolls a little. Something in the air (a butterfly, a
-/// leaf) makes a slow, small loop. Plants and branches sway in a light wind,
-/// about where they grow from. Mist and clouds drift sideways.
-///
-/// The whole world drifts like a very slow camera, near layers a little more
-/// than the background: depth, which is what the cut-out layers and the clean
-/// plate behind them are for.
+/// A boat on the water rides the ripples: it rises and falls and rolls a
+/// little. Something in the air floats on a slow loop. A butterfly or a moth
+/// also folds its wings now and then. Plants and branches sway in gusts of
+/// wind. Mist drifts. Stones, posts, cabins and lanterns stay still (a lantern
+/// flickers instead, see `living.frag`). The water, the sky, the grass and the
+/// trees around them move in the shader. The values follow the reference
+/// renderer (the first prototype), as fractions of the
+/// painting's height.
 class WorldMotion {
-  /// The painting covers the screen with this much to spare, for the drift.
-  static const cameraHeadroom = 1.03;
+  /// A boat on the water: rises and falls (two swells) and rolls.
+  static const bob = 0.006;
+  static const bobRoll = 1.2 * math.pi / 180;
 
-  /// The camera's drift, as a fraction of the painting's height: one slow
-  /// sideways sweep every 47 s and a smaller up-and-down one every 61 s.
-  static const cameraDrift = 0.008;
+  /// Something in the air: a slow loop this wide and this high.
+  static const hoverX = 0.010;
+  static const hoverY = 0.007;
 
-  /// Near layers drift this much more than the background, mid ones less.
-  static double parallax(String depth) => depth == 'near' ? 1.6 : 1.25;
+  /// A butterfly folds its wings to this share of their width, for a moment.
+  static const wingsFolded = 0.45;
+  static const wingCycle = 4.2;
+  static const wingFold = 0.55;
 
-  /// A boat on the water: rises and falls (fraction of the height) and rolls.
-  static const bob = 0.0022;
-  static const bobRoll = 0.4 * math.pi / 180;
+  /// A plant or a branch in gusts of wind, at most this far either way.
+  static const sway = 2.0 * math.pi / 180;
 
-  /// Something in the air: a slow loop this wide (fraction of the height).
-  static const hover = 0.003;
+  /// Mist or a cloud: this far either way.
+  static const drift = 0.010;
 
-  /// A plant or a branch in a light wind, at most this far either way.
-  static const sway = 0.7 * math.pi / 180;
-
-  /// Mist or a cloud: this far either way (fraction of the height).
-  static const drift = 0.006;
-
-  /// The camera's offset at `clockSeconds`, as fractions of the painting's height.
-  static ({double dx, double dy}) camera(double clockSeconds) => (
-        dx: cameraDrift * math.sin(2 * math.pi * clockSeconds / 47),
-        dy: cameraDrift * 0.5 * math.sin(2 * math.pi * clockSeconds / 61 + 1.3),
-      );
-
-  /// A layer's own motion; the scene adds the camera's drift. `attached` is
-  /// how the object rests ("ground" — on land or water, "edge", "air").
-  /// `index` staggers the layers so they never move in step.
+  /// A layer's motion at `clockSeconds`. `attached` is how the object rests
+  /// ("ground" — on land or water, "edge", "air"); `index` staggers the layers
+  /// so they never move in step.
   static LayerPose layer({
     required String motion,
     String attached = 'ground',
     required double clockSeconds,
     int index = 0,
   }) {
+    final t = clockSeconds;
     final phase = index * 1.7;
     double wave(double period, [double offset = 0]) =>
-        math.sin(2 * math.pi * clockSeconds / period + phase + offset);
+        math.sin(2 * math.pi * t / period + phase + offset);
     switch (motion) {
       case 'float' when attached == 'ground':
-        // Two slow swells, so it never rises and falls like a metronome.
         return LayerPose(
-          dy: -bob * (0.75 * wave(8.7) + 0.25 * wave(4.9, 0.6)),
-          rotation: bobRoll * wave(10.9, 1.1),
+          dy: -bob * (0.7 * wave(4.3) + 0.3 * math.sin(2 * math.pi * t / 2.7)),
+          rotation: bobRoll * wave(5.1, 0.8),
         );
       case 'float':
-        return LayerPose(dx: hover * wave(13.7), dy: hover * 0.8 * wave(9.1, 0.4));
+        return LayerPose(dx: hoverX * wave(7.9), dy: hoverY * wave(5.3));
+      case 'flutter':
+        final cycle = (t + phase) % wingCycle;
+        final fold = cycle < wingFold
+            ? math.pow(math.sin(math.pi * cycle / wingFold), 2).toDouble()
+            : 0.0;
+        return LayerPose(
+          dx: hoverX * wave(7.9),
+          dy: hoverY * wave(5.3),
+          wings: 1 - (1 - wingsFolded) * fold,
+        );
       case 'sway':
-        // A light wind: a slow sway with a smaller, quicker one on top.
-        return LayerPose(rotation: sway * (0.65 * wave(6.8) + 0.35 * wave(3.7, 1.9)));
+        return LayerPose(
+          rotation: sway * (0.65 * wave(4.6) + 0.35 * wave(1.9)),
+        );
       case 'drift':
-        return LayerPose(dx: drift * wave(37));
+        return LayerPose(dx: drift * wave(14));
       default:
         return LayerPose.still;
     }

@@ -1,5 +1,5 @@
 name: elynd_worlds_scene
-description: "ELYND Worlds on the phone: a painted meditation world whose cut-out layers breathe with the session."
+description: "ELYND Worlds on the phone: a painted meditation world that lives as nature does."
 version: 0.1.0
 publish_to: none
 
@@ -15,3 +15,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+
+flutter:
+  shaders:
+    - shaders/living.frag
