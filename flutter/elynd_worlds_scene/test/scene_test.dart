@@ -302,14 +302,8 @@ void main() {
             clockSeconds: t,
           );
           expect((boat.dx, boat.wings), (0.0, 1.0));
-          // Lower than painted, never higher: no light seam under the hull.
-          expect(
-            boat.dy,
-            inInclusiveRange(
-              WorldMotion.bob * WorldMotion.bobLeast - 1e-12,
-              WorldMotion.bob + 1e-12,
-            ),
-          );
+          // Lower than painted, never higher.
+          expect(boat.dy, inInclusiveRange(-1e-12, WorldMotion.bob + 1e-12));
           expect(boat.rotation.abs(), lessThanOrEqualTo(WorldMotion.bobRoll));
           expect((leaf.rotation, leaf.wings), (0.0, 1.0));
           expect(leaf.dx.abs(), lessThanOrEqualTo(WorldMotion.hoverX));

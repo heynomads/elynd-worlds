@@ -256,9 +256,12 @@ class _LivingPainter extends CustomPainter {
     for (var i = 0; i < values.length; i++) {
       shader.setFloat(i, values[i]);
     }
+    // Smooth sampling, as the Image widget draws the plate (medium): the
+    // sampler's default (none, nearest) would show the painting's pixels as
+    // blocks on a phone, where it is scaled up, and make moving water shimmer.
     shader
-      ..setImageSampler(0, plate)
-      ..setImageSampler(1, regions);
+      ..setImageSampler(0, plate, filterQuality: ui.FilterQuality.medium)
+      ..setImageSampler(1, regions, filterQuality: ui.FilterQuality.low);
     canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
   }
 

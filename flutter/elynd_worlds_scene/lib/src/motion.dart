@@ -33,9 +33,9 @@ class LayerPose {
 /// and a world that barely moved looked like a static picture.
 ///
 /// A boat on the water rides the ripples: it sinks a little and rises back to
-/// where it is painted, and rolls a little. Never higher than painted: the
-/// picture under it is the water where the boat was cut out, lighter than its
-/// reflection, and a lifted hull would float above a light seam. Something in the air floats on a slow loop. A butterfly or a moth
+/// where it is painted, and rolls a little. Never higher than painted, so
+/// whatever the cut left on the painting around it (an oar, the end of a rope)
+/// meets it again at the top of every swell. Something in the air floats on a slow loop. A butterfly or a moth
 /// also folds its wings now and then. Plants and branches sway in gusts of
 /// wind. Mist drifts. Stones, posts, cabins and lanterns stay still (a lantern
 /// flickers instead, see `living.frag`). The water, the sky, the grass and the
@@ -43,11 +43,8 @@ class LayerPose {
 /// renderer (the first prototype), as fractions of the
 /// painting's height.
 class WorldMotion {
-  /// A boat on the water: sinks this far at most (two swells), and always at
-  /// least [bobLeast] of it, so its roll lifts neither end of a boat up to
-  /// about half the painting wide.
+  /// A boat on the water: sinks this far at most (two swells), and rolls.
   static const bob = 0.006;
-  static const bobLeast = 0.3;
   static const bobRoll = 0.8 * math.pi / 180;
 
   /// Something in the air: a slow loop this wide and this high.
@@ -82,7 +79,7 @@ class WorldMotion {
       case 'float' when attached == 'ground':
         final swell = 0.7 * wave(4.3) + 0.3 * math.sin(2 * math.pi * t / 2.7);
         return LayerPose(
-          dy: bob * (bobLeast + (1 - bobLeast) * (0.5 + 0.5 * swell)),
+          dy: bob * (0.5 + 0.5 * swell),
           rotation: bobRoll * wave(5.1, 0.8),
         );
       case 'float':
