@@ -1,0 +1,683 @@
+{
+ "schema": "elynd.gallery/1",
+ "worlds": [
+  {
+   "id": "anxious_harbour",
+   "title": "Quiet Sunset Harbour",
+   "sleep": false,
+   "aspect": 0.5625,
+   "focus": [
+    0.4536,
+    0.5883
+   ],
+   "palette": [
+    "#F9C49E",
+    "#E89AA2",
+    "#7EA8B8",
+    "#46586A"
+   ],
+   "painting": "painting.webp",
+   "plate": "plate.webp",
+   "layers": [
+    {
+     "name": "wooden rowboat",
+     "depth": "near",
+     "motion": "float",
+     "attached": "ground",
+     "anchor": [
+      0.5304,
+      0.6235
+     ],
+     "box": [
+      0.3359,
+      0.5737,
+      0.7248,
+      0.6235
+     ],
+     "file": "layer_0.webp"
+    },
+    {
+     "name": "wooden post",
+     "depth": "mid",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.2058,
+      0.6191
+     ],
+     "box": [
+      0.1823,
+      0.4912,
+      0.2292,
+      0.6191
+     ],
+     "file": "layer_1.webp"
+    }
+   ],
+   "meditation": {
+    "technique": "breath_awareness",
+    "language": "en",
+    "minutes": 5,
+    "opening": "Right now, you are safe. Let's slow everything down together. Breathe in for four... hold gently... and breathe out for six. Picture a quiet harbour at sunset. A small wooden rowboat is tied to an old post, rocking gently on the water.…"
+   },
+   "design": {
+    "place": "A quiet harbour at sunset with still water and a soft pink sky.",
+    "time_of_day": "golden hour",
+    "light": "Soft low golden sunset light spreading horizontally across the water",
+    "air": "Still warm evening air with light haze over calm water",
+    "subjects": [
+     {
+      "attached": "ground",
+      "depth": "mid",
+      "motion": "still",
+      "name": "wooden post",
+      "where": "left"
+     },
+     {
+      "attached": "ground",
+      "depth": "near",
+      "motion": "float",
+      "name": "wooden rowboat",
+      "where": "centre"
+     }
+    ]
+   },
+   "verdict": {
+    "score": 10,
+    "reason": "The still water, soft pink sunset sky, and solitary boat create a deeply calm harbour mood ideal for meditation.",
+    "subjects_seen": [
+     "wooden post",
+     "wooden rowboat"
+    ]
+   },
+   "steps": [
+    {
+     "step": "design",
+     "seconds": 6.51,
+     "note": "Quiet Sunset Harbour; subjects: wooden post, wooden rowboat"
+    },
+    {
+     "step": "paint 1",
+     "seconds": 14.11,
+     "note": ""
+    },
+    {
+     "step": "critique 1",
+     "seconds": 3.98,
+     "note": "score 10: The still water, soft pink sunset sky, and solitary boat create a deeply calm harbour mood ideal for meditation."
+    },
+    {
+     "step": "cut 1",
+     "seconds": 11.22,
+     "note": "wooden rowboat, wooden post"
+    },
+    {
+     "step": "remove subjects 1",
+     "seconds": 29.77,
+     "note": ""
+    },
+    {
+     "step": "plate",
+     "seconds": 24.67,
+     "note": "filled"
+    }
+   ],
+   "cost_usd": 0.05111,
+   "seconds": 75.15
+  },
+  {
+   "id": "bodyscan_meadow",
+   "title": "Summer Meadow Rest",
+   "sleep": false,
+   "aspect": 0.5625,
+   "focus": [
+    0.4909,
+    0.5811
+   ],
+   "palette": [
+    "#A9CFE8",
+    "#DCE8C0",
+    "#8AB07A",
+    "#F7ECC8"
+   ],
+   "painting": "painting.webp",
+   "plate": "plate.webp",
+   "layers": [
+    {
+     "name": "white butterfly",
+     "depth": "near",
+     "motion": "float",
+     "attached": "air",
+     "anchor": [
+      0.4909,
+      0.5811
+     ],
+     "box": [
+      0.4115,
+      0.542,
+      0.5703,
+      0.6201
+     ],
+     "file": "layer_0.webp"
+    }
+   ],
+   "meditation": {
+    "technique": "body_scan",
+    "language": "en",
+    "minutes": 10,
+    "opening": "Bring your attention to your feet. Notice their weight, their warmth. Now imagine you are lying in a summer meadow at midday, the grass soft beneath you, a wooden fence at the far edge of the field. Let your attention move up through your…"
+   },
+   "design": {
+    "place": "A soft summer meadow at midday with a wooden fence on the distant horizon.",
+    "time_of_day": "midday",
+    "light": "Soft high midday sunlight, even and warm across the field",
+    "air": "Warm still air with a light summer haze, quiet and spacious",
+    "subjects": [
+     {
+      "attached": "air",
+      "depth": "near",
+      "motion": "float",
+      "name": "white butterfly",
+      "where": "centre"
+     }
+    ]
+   },
+   "verdict": {
+    "score": 10,
+    "reason": "The soft midday meadow with distant fence and centered white butterfly perfectly conveys warm still calm ideal for meditation.",
+    "subjects_seen": [
+     "white butterfly"
+    ]
+   },
+   "steps": [
+    {
+     "step": "design",
+     "seconds": 8.92,
+     "note": "Summer Meadow Rest; subjects: white butterfly"
+    },
+    {
+     "step": "paint 1",
+     "seconds": 26.04,
+     "note": ""
+    },
+    {
+     "step": "critique 1",
+     "seconds": 7.51,
+     "note": "score 10: The soft midday meadow with distant fence and centered white butterfly perfectly conveys warm still calm ideal for meditation."
+    },
+    {
+     "step": "cut 1",
+     "seconds": 15.44,
+     "note": "white butterfly"
+    },
+    {
+     "step": "remove subjects 1",
+     "seconds": 40.28,
+     "note": ""
+    },
+    {
+     "step": "plate",
+     "seconds": 13.87,
+     "note": "filled"
+    }
+   ],
+   "cost_usd": 0.04599,
+   "seconds": 89.2
+  },
+  {
+   "id": "german_forest",
+   "title": "Golden Autumn Forest",
+   "sleep": false,
+   "aspect": 0.5625,
+   "focus": [
+    0.7461,
+    0.8589
+   ],
+   "palette": [
+    "#E9C67B",
+    "#A67A48",
+    "#7A8A5E",
+    "#F6ECD5",
+    "#B94A35"
+   ],
+   "painting": "painting.webp",
+   "plate": "plate.webp",
+   "layers": [
+    {
+     "name": "mossy boulder",
+     "depth": "near",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.7461,
+      0.9326
+     ],
+     "box": [
+      0.5174,
+      0.7852,
+      0.9748,
+      0.9326
+     ],
+     "file": "layer_0.webp"
+    }
+   ],
+   "meditation": {
+    "technique": "visualization",
+    "language": "de",
+    "minutes": 10,
+    "opening": "Lass deinen Atem ruhig werden. Atme ein... und wieder aus. Stell dir vor, du gehst durch einen stillen Buchenwald im Herbst. Das Licht fällt golden durch die Blätter. Am Wegrand liegt ein moosbedeckter Felsen, und darauf ruht ein einzelnes…"
+   },
+   "design": {
+    "place": "A quiet beech forest in autumn with a narrow stream winding through fallen leaves.",
+    "time_of_day": "golden hour",
+    "light": "Soft golden sunlight filtering down through the autumn canopy",
+    "air": "Warm still air with soft golden haze and gently drifting leaves",
+    "subjects": [
+     {
+      "attached": "ground",
+      "depth": "near",
+      "motion": "still",
+      "name": "mossy boulder",
+      "where": "lower right"
+     },
+     {
+      "attached": "edge",
+      "depth": "near",
+      "motion": "sway",
+      "name": "beech branch",
+      "where": "left edge"
+     }
+    ]
+   },
+   "verdict": {
+    "score": 9,
+    "reason": "The image shows a quiet golden-hour beech forest with winding stream, soft light, and haze that feels deeply calm and meditative.",
+    "subjects_seen": [
+     "mossy boulder",
+     "beech branch"
+    ]
+   },
+   "steps": [
+    {
+     "step": "design",
+     "seconds": 13.17,
+     "note": "Golden Autumn Forest; subjects: mossy boulder, beech branch"
+    },
+    {
+     "step": "paint 1",
+     "seconds": 17.84,
+     "note": ""
+    },
+    {
+     "step": "critique 1",
+     "seconds": 7.72,
+     "note": "score 9: The image shows a quiet golden-hour beech forest with winding stream, soft light, and haze that feels deeply calm and meditative."
+    },
+    {
+     "step": "cut 1",
+     "seconds": 20.96,
+     "note": "mossy boulder"
+    },
+    {
+     "step": "remove subjects 1",
+     "seconds": 30.42,
+     "note": ""
+    },
+    {
+     "step": "plate",
+     "seconds": 8.39,
+     "note": "muse_image"
+    }
+   ],
+   "cost_usd": 0.05641,
+   "seconds": 69.92
+  },
+  {
+   "id": "lake_visualization",
+   "title": "Still Pine Lake",
+   "sleep": false,
+   "aspect": 0.5625,
+   "focus": [
+    0.8195,
+    0.5823
+   ],
+   "palette": [
+    "#C7D8DC",
+    "#4E6455",
+    "#EDDCC0",
+    "#7FA0A8"
+   ],
+   "painting": "painting.webp",
+   "plate": "plate.webp",
+   "layers": [
+    {
+     "name": "smooth stone",
+     "depth": "near",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.8194,
+      0.6035
+     ],
+     "box": [
+      0.7465,
+      0.561,
+      0.8924,
+      0.6035
+     ],
+     "file": "layer_0.webp"
+    }
+   ],
+   "meditation": {
+    "technique": "visualization",
+    "language": "en",
+    "minutes": 10,
+    "opening": "Let your shoulders drop as you settle in. Breathe in slowly through your nose... and let it go. Imagine you are walking down a narrow path through tall pines, early in the morning. The air is cool and smells of resin. The path opens onto a…"
+   },
+   "design": {
+    "place": "A small still lake surrounded by tall pines on a cool early morning.",
+    "time_of_day": "dawn",
+    "light": "Soft first dawn light from the side, gently warming the mist and shore",
+    "air": "Cool crisp air with thin mist hovering just above perfectly still water",
+    "subjects": [
+     {
+      "attached": "ground",
+      "depth": "near",
+      "motion": "still",
+      "name": "smooth stone",
+      "where": "right"
+     }
+    ]
+   },
+   "verdict": {
+    "score": 9,
+    "reason": "A still misty pine lake at soft dawn perfectly conveys cool calm stillness for meditation.",
+    "subjects_seen": [
+     "smooth stone"
+    ]
+   },
+   "steps": [
+    {
+     "step": "design",
+     "seconds": 8.22,
+     "note": "Still Pine Lake; subjects: smooth stone"
+    },
+    {
+     "step": "paint 1",
+     "seconds": 24.36,
+     "note": ""
+    },
+    {
+     "step": "critique 1",
+     "seconds": 8.44,
+     "note": "score 9: A still misty pine lake at soft dawn perfectly conveys cool calm stillness for meditation."
+    },
+    {
+     "step": "cut 1",
+     "seconds": 13.22,
+     "note": "smooth stones"
+    },
+    {
+     "step": "remove subjects 1",
+     "seconds": 38.07,
+     "note": ""
+    },
+    {
+     "step": "plate",
+     "seconds": 7.63,
+     "note": "muse_image"
+    }
+   ],
+   "cost_usd": 0.04523,
+   "seconds": 78.38
+  },
+  {
+   "id": "sleep_cabin",
+   "title": "Quiet Cabin Night",
+   "sleep": true,
+   "aspect": 0.5625,
+   "focus": [
+    0.2037,
+    0.5514
+   ],
+   "palette": [
+    "#1C2438",
+    "#3B4A68",
+    "#4A3A2E",
+    "#D9A86C"
+   ],
+   "painting": "painting.webp",
+   "plate": "plate.webp",
+   "layers": [
+    {
+     "name": "candle lantern",
+     "depth": "near",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.454,
+      0.9141
+     ],
+     "box": [
+      0.3889,
+      0.7715,
+      0.5191,
+      0.9141
+     ],
+     "file": "layer_0.webp"
+    },
+    {
+     "name": "pine branch",
+     "depth": "near",
+     "motion": "sway",
+     "attached": "edge",
+     "anchor": [
+      0.0,
+      0.5296
+     ],
+     "box": [
+      0.0,
+      0.1953,
+      0.3698,
+      0.8638
+     ],
+     "file": "layer_1.webp"
+    }
+   ],
+   "meditation": {
+    "technique": "sleep_journey",
+    "language": "en",
+    "minutes": 20,
+    "opening": "It is late now, and the day is done. Let your body grow heavy against the bed. Picture a small wooden cabin in the hills. Outside the window, the last blue light is fading behind the ridge. On the windowsill, a single candle lantern glows…"
+   },
+   "design": {
+    "place": "A small wooden cabin interior looking out to quiet hills at night.",
+    "time_of_day": "night",
+    "light": "Faint fading blue twilight from the window with soft steady gold glow from the lantern",
+    "air": "Still quiet night air with faint soft haze and deep calm",
+    "subjects": [
+     {
+      "attached": "ground",
+      "depth": "near",
+      "motion": "still",
+      "name": "candle lantern",
+      "where": "lower centre"
+     },
+     {
+      "attached": "edge",
+      "depth": "near",
+      "motion": "sway",
+      "name": "pine branch",
+      "where": "left edge"
+     }
+    ]
+   },
+   "verdict": {
+    "score": 9,
+    "reason": "The wooden cabin, glowing lantern, pine branch, and blue night hills match the design and feel deeply calm for sleep.",
+    "subjects_seen": [
+     "candle lantern",
+     "pine branch"
+    ]
+   },
+   "steps": [
+    {
+     "step": "design",
+     "seconds": 11.5,
+     "note": "Quiet Cabin Night; subjects: candle lantern, pine branch"
+    },
+    {
+     "step": "paint 1",
+     "seconds": 17.29,
+     "note": ""
+    },
+    {
+     "step": "cut 1",
+     "seconds": 9.43,
+     "note": "candle lantern, pine branches"
+    },
+    {
+     "step": "critique 1",
+     "seconds": 9.48,
+     "note": "score 9: The wooden cabin, glowing lantern, pine branch, and blue night hills match the design and feel deeply calm for sleep."
+    },
+    {
+     "step": "remove subjects 1",
+     "seconds": 16.06,
+     "note": ""
+    },
+    {
+     "step": "plate",
+     "seconds": 14.37,
+     "note": "muse_image"
+    }
+   ],
+   "cost_usd": 0.05397,
+   "seconds": 59.33
+  },
+  {
+   "id": "spanish_beach",
+   "title": "Quiet Sunset Beach",
+   "sleep": false,
+   "aspect": 0.5625,
+   "focus": [
+    0.6563,
+    0.6286
+   ],
+   "palette": [
+    "#F6C89F",
+    "#E8A87C",
+    "#7FB5B0",
+    "#4A6B8A"
+   ],
+   "painting": "painting.webp",
+   "plate": "plate.webp",
+   "layers": [
+    {
+     "name": "white seashell",
+     "depth": "near",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.1792,
+      0.6733
+     ],
+     "box": [
+      0.112,
+      0.6289,
+      0.2465,
+      0.6733
+     ],
+     "file": "layer_0.webp"
+    },
+    {
+     "name": "wooden rowboat",
+     "depth": "mid",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.7074,
+      0.6899
+     ],
+     "box": [
+      0.4887,
+      0.5625,
+      0.9262,
+      0.6899
+     ],
+     "file": "layer_1.webp"
+    }
+   ],
+   "meditation": {
+    "technique": "visualization",
+    "language": "es",
+    "minutes": 10,
+    "opening": "Respira hondo y deja que tu cuerpo se relaje. Imagina una playa tranquila al atardecer. La arena es tibia bajo tus pies y las olas llegan despacio. Junto a ti hay una concha grande y blanca, brillando con la última luz del sol. Más allá,…"
+   },
+   "design": {
+    "place": "A tranquil sandy beach at sunset with slow gentle waves.",
+    "time_of_day": "golden hour",
+    "light": "Soft low golden sunlight from the side with a gentle warm glow",
+    "air": "Warm still air with light sea haze over calm water",
+    "subjects": [
+     {
+      "attached": "ground",
+      "depth": "near",
+      "motion": "still",
+      "name": "white seashell",
+      "where": "left"
+     },
+     {
+      "attached": "ground",
+      "depth": "mid",
+      "motion": "still",
+      "name": "wooden rowboat",
+      "where": "right"
+     }
+    ]
+   },
+   "verdict": {
+    "score": 9,
+    "reason": "The soft golden light, hazy calm water and sandy shore perfectly convey a tranquil sunset beach ideal for meditation.",
+    "subjects_seen": [
+     "white seashell",
+     "wooden rowboat"
+    ]
+   },
+   "steps": [
+    {
+     "step": "design",
+     "seconds": 6.65,
+     "note": "Quiet Sunset Beach; subjects: white seashell, wooden rowboat"
+    },
+    {
+     "step": "paint 1",
+     "seconds": 11.28,
+     "note": ""
+    },
+    {
+     "step": "critique 1",
+     "seconds": 2.89,
+     "note": "score 9: The soft golden light, hazy calm water and sandy shore perfectly convey a tranquil sunset beach ideal for meditation."
+    },
+    {
+     "step": "cut 1",
+     "seconds": 11.15,
+     "note": "white seashell, wooden rowboat"
+    },
+    {
+     "step": "remove subjects 1",
+     "seconds": 27.82,
+     "note": ""
+    },
+    {
+     "step": "plate",
+     "seconds": 20.14,
+     "note": "filled"
+    }
+   ],
+   "cost_usd": 0.05043,
+   "seconds": 65.98
+  }
+ ]
+}

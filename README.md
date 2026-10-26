@@ -54,7 +54,8 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
   the whole world breathes like a slow camera.
 * **Eyes closed.** A per-second timeline follows the session: the whole world while the listener arrives
   (45 s), a glow while their eyes are closed, more of it in long silences, all of it at the end. Sleep worlds
-  stay dim and end dark. The Python and Dart timelines are tested frame for frame against each other.
+  stay dim and end dark. The phone's (Dart) and the browser's (JavaScript) timelines are tested frame by frame
+  against the Python one.
 * **Phones crop.** Each world has a focus point (where its subjects are); the painting is cropped around it,
   and subjects painted too low are lifted above the player's controls with a small zoom.
 * Reduce-motion is respected: the world then only fades.
@@ -80,6 +81,18 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
 Every step reports its usage to a meter priced with Meta's published rates. A world costs about **$0.05**:
 two Muse Spark calls, two Muse Image pictures and a handful of SAM images. The command line refuses to run
 past a budget, and the ELYND backend stops making worlds at a total and a daily cap.
+
+## See it in a browser
+
+`web/` is a gallery of worlds the agent made for the example meditations: they breathe as they do in a
+meditation's silences, **Play as a meditation** runs a session sped up (arriving, eyes closed, a long silence, the
+end), and each world shows how the agent made it: the design, the critic's score, the layers, the time and the
+cost. Serve the repository and open `/web/`:
+
+```bash
+python -m http.server 8000          # then http://localhost:8000/web/  (web/parity.html: the timeline check)
+.venv/bin/python scripts/web_gallery.py out/<time>/<name> ...   # rebuild web/worlds/ from saved runs
+```
 
 ## Run it
 
@@ -114,6 +127,7 @@ elynd_worlds/          the engine (Python)
   card.py              the share card
   meta.py              the client, privacy fields, cost meter
 flutter/elynd_worlds_scene/   the scene on the phone (Dart)
+web/                   the scene in a browser (JavaScript) and the gallery
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
 ```

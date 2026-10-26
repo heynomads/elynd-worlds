@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ELYND Worlds</title>
+<meta name="description" content="Every meditation gets its own painted world: designed, painted, checked and brought to life by Meta's models.">
+<style>
+  :root {
+    --bg: #152c2e;
+    --bg-2: #1e3a3d;
+    --surface: #254547;
+    --line: rgba(255, 255, 255, 0.10);
+    --text: #ffffff;
+    --text-2: #a3d8e0;
+    --muted: #94cad0;
+    --accent: #5bbfb5;
+    --gold: #e8d2a2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); }
+  body {
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -200px, var(--bg-2), var(--bg));
+    min-height: 100vh;
+  }
+  a { color: var(--accent); }
+  header, main, footer { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+  header { padding-top: 48px; padding-bottom: 24px; }
+  .brand { letter-spacing: 0.32em; font-size: 12px; color: var(--accent); font-weight: 600; }
+  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; margin: 10px 0 12px; font-weight: 650; }
+  .lead { color: var(--text-2); max-width: 720px; font-size: 17px; margin: 0 0 18px; }
+  .models { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; }
+  .models li { border: 1px solid var(--line); background: rgba(255,255,255,0.05); border-radius: 999px;
+    padding: 5px 12px; font-size: 13px; color: var(--text-2); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  button.play, a.button { font: inherit; font-weight: 600; font-size: 14px; border-radius: 999px; padding: 10px 18px;
+    cursor: pointer; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
+  button.play { background: var(--accent); color: #0f2426; border: none; }
+  button.play[aria-pressed="true"] { background: var(--gold); }
+  a.button { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,0.04); }
+  .session { min-height: 22px; margin-top: 14px; color: var(--muted); font-size: 14px; }
+  .session b { color: var(--text); font-weight: 600; }
+  .bar { height: 3px; background: var(--line); border-radius: 2px; margin-top: 8px; max-width: 520px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--gold); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; padding: 18px 0 40px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+  .card canvas { display: block; width: 100%; aspect-ratio: 9 / 16; background: #0f2426; }
+  .card canvas.failed { opacity: 0.3; }
+  .body { padding: 16px 18px 18px; }
+  .card h2 { font-size: 18px; margin: 0 0 4px; font-weight: 620; }
+  .meta { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+  blockquote { margin: 0 0 12px; color: var(--text-2); font-style: italic; font-size: 14px; border-left: 2px solid var(--line);
+    padding-left: 10px; }
+  details { border-top: 1px solid var(--line); padding-top: 10px; }
+  summary { cursor: pointer; color: var(--text); font-weight: 600; font-size: 14px; }
+  ol.steps { margin: 10px 0 6px; padding-left: 20px; font-size: 13.5px; color: var(--text-2); }
+  ol.steps li { margin: 6px 0; }
+  ol.steps .who { color: var(--text); font-weight: 600; }
+  ol.steps .sec { color: var(--muted); }
+  .total { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+  .score { color: var(--gold); font-weight: 600; }
+  section.how { border-top: 1px solid var(--line); padding: 28px 0 8px; }
+  section.how h2 { font-size: 22px; margin: 0 0 10px; }
+  section.how p { color: var(--text-2); max-width: 820px; }
+  footer { color: var(--muted); font-size: 13px; padding-top: 16px; padding-bottom: 48px; border-top: 1px solid var(--line); }
+  @media (max-width: 420px) { header { padding-top: 32px; } .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">ELYND WORLDS</div>
+  <h1>Every meditation gets its own painted world.</h1>
+  <p class="lead"><a href="https://elynd.app">ELYND</a> writes and voices a new guided meditation for each listener. ELYND Worlds
+    turns each meditation into a calm place you can see: an AI agent designs it, paints it, checks it and cuts it
+    into layers that breathe with the session. These are worlds the agent made for the example meditations in this
+    repository.</p>
+  <ul class="models" aria-label="Meta models used">
+    <li>Muse Spark · designs, checks, revises</li>
+    <li>Muse Image · paints and repaints</li>
+    <li>SAM 3.1 · cuts the layers, checks the plate</li>
+  </ul>
+  <div class="actions">
+    <button class="play" type="button" aria-pressed="false">▶ Play as a meditation</button>
+    <a class="button" href="https://github.com/heynomads/elynd-worlds">Code on GitHub</a>
+  </div>
+  <div class="session" aria-live="polite"></div>
+</header>
+
+<main>
+  <div class="grid" id="worlds"></div>
+
+  <section class="how">
+    <h2>What you are seeing</h2>
+    <p>At rest, each world breathes as it does in the long silences of a meditation, about five and a half
+      breaths a minute: the subjects grow a little from where they rest, the boat floats, the whole picture
+      breathes like a slow camera. <b>Play as a meditation</b> runs a ten-minute session sped up: the whole
+      world while the listener arrives, a glow while their eyes are closed, more of it in a long silence, all
+      of it at the end. A sleep world stays dim and ends dark. The phone draws the same timeline: the Python,
+      Dart and JavaScript versions are tested against each other frame by frame.</p>
+  </section>
+</main>
+
+<footer>
+  Made during the Meta Global AI Developer Hackathon. The meditations here are examples written for this repository;
+  the worlds made for ELYND's listeners stay private to them. Every picture is marked as made by AI in its metadata.
+  © 2026 Comads OÜ.
+</footer>
+
+<script src="world.js"></script>
+<script>
+"use strict";
+(async () => {
+  const BASE = "worlds";
+  const grid = document.getElementById("worlds");
+  const playButton = document.querySelector("button.play");
+  const sessionLine = document.querySelector(".session");
+  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const TECHNIQUE = { breath_awareness: "Breath awareness", body_scan: "Body scan", visualization: "Visualization",
+    sleep: "Sleep", grounding: "Grounding", loving_kindness: "Kindness" };
+  const LANGUAGE = { en: "English", de: "German", es: "Spanish", fr: "French" };
+  const STEP = {
+    design: ["Muse Spark", "designed the world"],
+    paint: ["Muse Image", "painted it"],
+    critique: ["Muse Spark", "looked at the painting"],
+    cut: ["SAM 3.1", "cut the subjects into layers"],
+    "remove subjects": ["Muse Image", "painted the scene without them"],
+    plate: ["SAM 3.1", "checked the clean plate"],
+    revise: ["Muse Spark", "revised its design from the critic's note"],
+  };
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  function steps(world) {
+    return world.steps.map((step) => {
+      const base = step.step.replace(/ \d+$/, "");
+      const [who, what] = STEP[base] || ["", step.step];
+      let note = "";
+      if (base === "design") note = esc(world.design.place);
+      else if (base === "critique") note = `<span class="score">${world.verdict.score}/10</span> “${esc(world.verdict.reason)}”`;
+      else if (base === "cut") note = world.layers.map((l) => `${esc(l.name)} (${esc(l.motion)})`).join(", ") || "nothing it could cut cleanly";
+      else if (base === "plate") note = step.note === "muse_image"
+        ? "kept Muse Image's repaint, only under each subject"
+        : step.note === "filled" ? "SAM still saw a subject in the repaint, so the plate was filled in locally" : esc(step.note);
+      return `<li><span class="who">${who}</span> ${what} <span class="sec">· ${step.seconds.toFixed(1)} s</span>${note ? `<br>${note}` : ""}</li>`;
+    }).join("");
+  }
+
+  const { worlds } = await (await fetch(`${BASE}/index.json`)).json();
+  const views = worlds.map((world) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const m = world.meditation;
+    card.innerHTML = `
+      <canvas role="img" aria-label="${esc(world.title)}: ${esc(world.design.place)}"></canvas>
+      <div class="body">
+        <h2>${esc(world.title)}</h2>
+        <p class="meta">${esc(TECHNIQUE[m.technique] || m.technique)} · ${esc(LANGUAGE[m.language] || m.language)} · ${m.minutes} min${world.sleep ? " · sleep" : ""}</p>
+        <blockquote>${esc(m.opening)}</blockquote>
+        <details>
+          <summary>How the agent made it</summary>
+          <ol class="steps">${steps(world)}</ol>
+          <p class="total">Cost $${world.cost_usd.toFixed(3)} at Meta's prices · moving after ${Math.round(world.seconds)} s</p>
+        </details>
+      </div>`;
+    grid.appendChild(card);
+    const view = new WorldView(card.querySelector("canvas"), world, BASE);
+    view.visible = true;
+    return view;
+  });
+
+  const seen = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const view = views.find((v) => v.canvas === entry.target);
+      if (view) view.visible = entry.isIntersecting;
+    }
+  });
+  views.forEach((v) => seen.observe(v.canvas));
+
+  // A ten-minute session, sped up: silences of 60, 70 and 40 s; the voice
+  // says "breathe in" at 0:20 and "breathe out" at 0:24.
+  const SPEED = 12, DURATION = 600;
+  const SILENCES = [[150, 210], [330, 400], [480, 520]];
+  const CUES = [{ at: 20, inhale: true }, { at: 24, inhale: false }];
+  const timelines = {
+    awake: WorldTimeline.build(DURATION, SILENCES, CUES, false),
+    sleep: WorldTimeline.build(DURATION, SILENCES, CUES, true),
+  };
+  let playing = null;
+
+  function phase(t) {
+    const left = DURATION - t;
+    const mmss = `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
+    let what = "eyes closed: the world becomes a glow";
+    if (t < WorldTimeline.ARRIVE) what = "arriving: the whole world";
+    else if (SILENCES.some(([s, e]) => s <= t && t < e && e - s >= 30)) what = "a long silence: the world returns";
+    else if (left < 30) what = "the end: the world comes back";
+    return `<b>${mmss}</b> of 10:00 — ${what}`;
+  }
+
+  playButton.addEventListener("click", () => {
+    if (playing) {
+      playing = null;
+      playButton.setAttribute("aria-pressed", "false");
+      playButton.textContent = "▶ Play as a meditation";
+      sessionLine.textContent = "";
+      return;
+    }
+    playing = { start: performance.now() };
+    playButton.setAttribute("aria-pressed", "true");
+    playButton.textContent = "■ Stop";
+  });
+
+  function frame(now) {
+    const clock = now / 1000;
+    let session = null;
+    if (playing) {
+      const t = ((now - playing.start) / 1000) * SPEED;
+      if (t > DURATION) {
+        playButton.click();
+      } else {
+        session = t;
+        sessionLine.innerHTML = `${phase(t)}<div class="bar"><i style="width:${(100 * t) / DURATION}%"></i></div>`;
+      }
+    }
+    for (const view of views) {
+      if (!view.visible) continue;
+      view.draw(clock, session === null ? null
+        : { timeline: view.world.sleep ? timelines.sleep : timelines.awake, t: session }, still);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
