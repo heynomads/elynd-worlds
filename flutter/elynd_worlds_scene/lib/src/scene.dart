@@ -48,7 +48,8 @@ class WorldLayer {
 /// session's position from `positionSeconds` (a callback, so the host never
 /// notifies anything while it builds) for the fading: the whole world while
 /// the listener arrives, a glow while their eyes are closed. Respects the
-/// platform's reduce-motion setting: the world then stays still and only fades.
+/// platform's reduce-motion setting (Android's and iOS's): the world then stays
+/// still and only fades.
 class WorldScene extends StatefulWidget {
   const WorldScene({
     super.key,
@@ -166,7 +167,14 @@ class _WorldSceneState extends State<WorldScene>
 
   @override
   Widget build(BuildContext context) {
-    final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    // Reduce motion: Android's "remove animations" arrives as disableAnimations;
+    // iOS's Reduce Motion only as the platform's reduceMotion feature.
+    final still =
+        (MediaQuery.maybeDisableAnimationsOf(context) ?? false) ||
+        (View.maybeOf(
+              context,
+            )?.platformDispatcher.accessibilityFeatures.reduceMotion ??
+            false);
     final clock = still ? 0.0 : _clock.inMicroseconds / 1e6;
     final wake = still ? 0.0 : WorldScene.wake(clock);
     final visibility = widget.followVisibility

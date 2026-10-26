@@ -616,6 +616,40 @@ void main() {
       expect(moved, greaterThan(844 * WorldMotion.bob * 0.4));
     });
 
+    testWidgets("an iPhone's Reduce Motion keeps the world still too", (
+      tester,
+    ) async {
+      // iOS reports it only as the platform's reduceMotion, never as disableAnimations.
+      tester.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(reduceMotion: true);
+      addTearDown(
+        tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
+      );
+      await tester.pumpWidget(
+        host(
+          WorldScene(
+            background: MemoryImage(_png),
+            aspect: 9 / 16,
+            layers: [
+              WorldLayer(
+                image: MemoryImage(_png),
+                motion: 'float',
+                attached: 'ground',
+              ),
+            ],
+            timeline: const WorldTimeline(breath: [1, 1], visibility: [1, 1]),
+            positionSeconds: () => 0,
+          ),
+        ),
+      );
+      for (var i = 0; i < 40; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+        final layer = transforms(tester).last;
+        expect(layer.getTranslation().y, 0);
+        expect(layer.storage[1], closeTo(0, 1e-12));
+      }
+    });
+
     testWidgets('reduce motion: nothing moves at all', (tester) async {
       await tester.pumpWidget(
         host(
