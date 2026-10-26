@@ -149,7 +149,7 @@
     {
      "step": "replate",
      "seconds": 0.0,
-     "note": "filled where the moving layers are opaque"
+     "note": "muse_image: repainted again (26 Oct 23:05, $0.0125) with the current engine (the prompt names only the moving subjects; tone matched by the median shift); SAM 3.1 found no boat where it was (23:19, $0.0025)"
     }
    ],
    "cost_usd": 0.05831,
@@ -276,12 +276,7 @@
     {
      "step": "replate",
      "seconds": 0.0,
-     "note": "filled where the moving layers are opaque"
-    },
-    {
-     "step": "replate",
-     "seconds": 0.0,
-     "note": "muse_image: repainted again (26 Oct 23:05, $0.0125) with the current engine, whose prompt names only the moving subjects; SAM 3.1 found it clean"
+     "note": "muse_image: repainted again (26 Oct 23:05, $0.0125) with the current engine (the prompt names only the moving subjects; tone matched by the median shift); SAM 3.1 found it clean"
     }
    ],
    "cost_usd": 0.05023,
