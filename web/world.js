@@ -236,7 +236,7 @@ function drawParticles(ctx, kind, clock, width, height) {
 // its anchor as Flutter's Transform moves it. One context draws every card;
 // each card copies the result onto its own canvas.
 const LivingGL = (() => {
-  let gl = null, canvas = null, failed = false, background = null, layer = null, empty = null;
+  let gl = null, canvas = null, background = null, layer = null, empty = null, starting = null;
   const textures = new WeakMap();
 
   const QUAD_VERTEX = `#version 300 es
@@ -310,9 +310,13 @@ void main() {
     return { p, at };
   }
 
-  /** Starts once: true when WebGL 2 and the shader are ready. */
-  async function start(shaderUrl) {
-    if (gl || failed) return !failed;
+  /** Starts once (every caller waits for the same start): true when WebGL 2 and the shader are ready. */
+  function start(shaderUrl) {
+    starting = starting || begin(shaderUrl);
+    return starting;
+  }
+
+  async function begin(shaderUrl) {
     try {
       canvas = document.createElement("canvas");
       gl = canvas.getContext("webgl2", { alpha: true, premultipliedAlpha: true, antialias: false });
@@ -330,8 +334,7 @@ void main() {
       return true;
     } catch (error) {
       console.warn("ELYND Worlds: the living painting needs WebGL 2; showing the still pictures", error);
-      failed = true;
-      gl = null;
+      gl = background = layer = null;
       return false;
     }
   }
@@ -373,7 +376,7 @@ void main() {
     gl.uniform1f(u.uCanvasH, height);
     gl.uniform2f(u.uSize, rect.width, rect.height);
     gl.uniform2f(u.uOrigin, rect.left, rect.top);
-    gl.uniform1f(u.uTime, still ? 0 : clock % 3600);
+    gl.uniform1f(u.uTime, still ? 0 : clock % (4 * 3600)); // as the phone: exact sines, a wrap never seen
     gl.uniform1f(u.uMotion, still ? 0 : wake);
     gl.uniform4f(u.uOn, on(living.water), on(living.sky), on(living.grass), on(living.stream));
     gl.uniform4f(u.uScene, living.trees ? 1 : 0, living.horizon ?? -1, 0, 0);
@@ -409,7 +412,8 @@ void main() {
     return canvas;
   }
 
-  return { start, draw, get ready() { return Boolean(gl); } };
+  // Ready only once both programs are built (a card can finish loading before the shader does).
+  return { start, draw, get ready() { return Boolean(gl && background && layer); } };
 })();
 
 /** One world drawn on one canvas. */

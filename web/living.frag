@@ -11,7 +11,8 @@
 //   sky     the clouds drifting slowly to one side and back, less towards the
 //           painting's left and right edges (no paint is ever needed beyond them);
 //           only sky drifts into the sky, never a treetop or a hill beside it
-//   stream  water flowing towards the viewer (two-phase flow), only stream into stream
+//   stream  water flowing towards the viewer (two-phase flow, each part on its own
+//           phase so it never pulses), only stream into stream
 //   light   a lantern's flame flickering, and the light it throws
 // The reference is the first prototype renderer (tuned 540 px wide); every
 // distance here is in that reference's pixels times k = width / 540.
@@ -47,6 +48,15 @@ float hash(vec2 p) {
   vec3 p3 = fract(vec3(p.xyx) * 0.1031);
   p3 += dot(p3, p3.yzx + 33.33);
   return fract((p3.x + p3.y) * p3.z);
+}
+
+// Smooth noise in [0, 1): between the hashed corners of a grid, eased.
+float noise(vec2 q) {
+  vec2 i = floor(q);
+  vec2 f = fract(q);
+  f = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+             mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
 }
 
 // Sunlight sparkling on the water: in some cells of a grid (q in reference
@@ -111,7 +121,10 @@ void main() {
   float stream = 1.0 - reg.a;
   if (uOn.w > 0.5 && stream > 0.001) {
     float period = 1.6;
-    float p1 = fract(t / period);
+    // Each part of the stream runs on its own phase (smooth noise): the two
+    // samples' crossfade never blurs and sharpens the whole stream at once,
+    // which read as a pulse.
+    float p1 = fract(t / period + noise(px / (48.0 * k)));
     float p2 = fract(p1 + 0.5);
     vec2 v = vec2(-4.0, 20.0) * k * m;
     float rx = 1.2 * k * m * sin(TAU * px.y / (14.0 * k) - TAU * t / 0.9);
