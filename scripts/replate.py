@@ -7,7 +7,8 @@ Since 27 Oct 2026:
 - a layer is opaque two pixels past its subject's outline (cutter.EDGE_PX);
 - a still subject stays in the plate as painted, and the plate changes only where a moving layer is
   opaque (plate.py);
-- still subjects are taken out of the region map (regions.without).
+- still subjects are taken out of the region map (regions.without);
+- a boat's outline is closed over its oars (cutter.closed).
 
 Worlds saved before that are rebuilt from what they saved: the painting, the layers (a subject's
 outline is where its old layer is fully opaque), the old plate and region map. A plate Muse Image
@@ -49,8 +50,12 @@ def replate(folder: Path) -> str:
         return f"skipped: missing {', '.join(missing)}"
 
     painting = Image.open(folder / "painting.png").convert("RGB")
-    outlines = [(np.asarray(Image.open(folder / layer["file"]).getchannel("A")) == 255).astype(np.uint8)
-                for layer in layers]
+    outlines = []
+    for layer in layers:
+        outline = (np.asarray(Image.open(folder / layer["file"]).getchannel("A")) == 255).astype(np.uint8)
+        if cutter.rides_the_water(layer):  # its oars ride with it (cutter.closed)
+            outline = cutter.solid(cutter.closed(outline))
+        outlines.append(outline)
     moving = [outline for layer, outline in zip(layers, outlines) if layer["motion"] != "still"]
     still = [outline for layer, outline in zip(layers, outlines) if layer["motion"] == "still"]
     writes: dict[str, bytes] = {}

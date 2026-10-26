@@ -146,6 +146,19 @@ async def test_a_mask_covering_most_of_the_picture_is_not_a_subject():
     assert await cutter.cut(client, PAINTING, art_director.check(json.loads(json.dumps(SCENE))), Meter()) == []
 
 
+def test_an_oar_lying_in_a_boat_rides_with_it():
+    # SAM leaves the oar out: a 10 px gap from the boat's side into it. Closed for a boat, so the oar
+    # moves with it and the repaint behind never shows through; never for things in the air.
+    boat = np.zeros((120, 160), np.uint8)
+    boat[30:70, 40:120] = 1
+    boat[30:60, 75:85] = 0
+    shut = cutter.solid(cutter.closed(boat))
+    assert shut[30:60, 75:85].all() and (shut >= boat).all() and shut.sum() == 40 * 80
+    assert cutter.rides_the_water({"motion": "float", "attached": "ground"})
+    assert not cutter.rides_the_water({"motion": "float", "attached": "air"})
+    assert not cutter.rides_the_water({"motion": "sway", "attached": "edge"})
+
+
 # ─── plate ──────────────────────────────────────────────────────────────
 
 def test_confine_keeps_the_painting_outside_the_subjects():

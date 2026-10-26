@@ -130,6 +130,35 @@ def near(records: list[SegmentationMaskRecord], share: float) -> list[Segmentati
     return [r for r in records if biggest and area(r) >= share * biggest]
 
 
+# A boat's oars, which SAM leaves out of the boat, are gaps up to about this wide where they cross
+# its side: closed before the holes are filled, so they ride with the boat (and the repaint behind
+# it never shows through them).
+CLOSE_PX = 12
+
+
+def _count(mask01: np.ndarray, r: int) -> np.ndarray:
+    """How many set pixels lie in the (2r+1)^2 square around each pixel (outside the picture: none)."""
+    h, w = mask01.shape
+    k = 2 * r + 1
+    s = np.pad(mask01.astype(np.int32), ((k, 0), (k, 0))).cumsum(0).cumsum(1)
+    s = np.pad(s, ((0, r), (0, r)), mode="edge")
+    return s[k + r:k + r + h, k + r:k + r + w] - s[r:r + h, k + r:k + r + w] - s[k + r:k + r + h, r:r + w] + s[r:r + h, r:r + w]
+
+
+def closed(mask01: np.ndarray, px: int = CLOSE_PX) -> np.ndarray:
+    """The mask with gaps narrower than about 2*px closed (grown, then shrunk back); never smaller."""
+    if px <= 0:
+        return mask01.astype(np.uint8)
+    grown_ = (_count(mask01, px) > 0).astype(np.uint8)
+    shrunk = _count(grown_, px) == (2 * px + 1) ** 2
+    return (mask01.astype(bool) | shrunk).astype(np.uint8)
+
+
+def rides_the_water(subject: dict[str, Any]) -> bool:
+    """A boat and the like: floating on the water. What lies in it moves with it."""
+    return subject.get("motion") == "float" and subject.get("attached", "ground") == "ground"
+
+
 def solid(mask01: np.ndarray) -> np.ndarray:
     """The mask with every hole it encloses filled."""
     h, w = mask01.shape
@@ -246,6 +275,8 @@ async def cut(client, painting: bytes, scene: dict[str, Any], meter: Meter,
         mask = np.zeros((height, width), dtype=np.uint8)
         for record in records:
             mask |= to_canvas(record, width, height)
+        if rides_the_water(subject):
+            mask = closed(mask)
         mask = solid(mask)
         mask[taken] = 0  # two subjects never claim the same pixel
         coverage = float(mask.mean())
