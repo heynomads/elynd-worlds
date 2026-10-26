@@ -331,6 +331,7 @@ async def test_sam_finds_the_water_and_the_sky_and_the_map_carries_them():
     (light,) = living["lights"]
     assert light["x"] == pytest.approx((20 + 25) / 120, abs=0.02) and light["size"] == pytest.approx(50 / 120, abs=0.02)
     assert any(s.name == "regions 1" for s in world.trace)
+    assert [layer["glows"] for layer in world.manifest()["layers"]] == [True, False]
 
 
 async def test_a_scrap_of_water_does_not_ripple_and_a_failed_search_keeps_the_world():

@@ -11,7 +11,7 @@ Manifest schema "elynd.world/1" (world.json next to the pictures):
       "plate": "plate.png" | null,         # the painting without its subjects
       "layers": [                          # nearest first
         {"file": "layer_0.png", "name": "smooth stone", "depth": "near",
-         "motion": "still", "attached": "ground",
+         "motion": "still", "attached": "ground", "glows": false,
          "anchor": [0.31, 0.88],           # pivot of its motion, fractions of the painting
          "box": [0.18, 0.79, 0.44, 0.88]}
       ],
@@ -92,6 +92,7 @@ class World:
     def manifest(self) -> dict[str, Any]:
         width, height = png_size(self.painting)
         layers = self.layers if self.moving else []
+        glowing = {(sub.get("name") or "").lower() for sub in self.scene.get("subjects") or [] if sub.get("glows")}
         return {
             "schema": SCHEMA,
             "title": self.scene["title"],
@@ -103,7 +104,8 @@ class World:
             "plate": "plate.png" if self.moving else None,
             "layers": [
                 {"file": f"layer_{i}.png", "name": layer.name, "depth": layer.depth, "motion": layer.motion,
-                 "attached": layer.attached, "anchor": list(layer.anchor()), "box": list(layer.box)}
+                 "attached": layer.attached, "glows": layer.name in glowing, "anchor": list(layer.anchor()),
+                 "box": list(layer.box)}
                 for i, layer in enumerate(layers)
             ],
             "living": {
