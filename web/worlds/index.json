@@ -830,7 +830,7 @@
     {
      "step": "replate",
      "seconds": 0.0,
-     "note": "filled where the moving layers are opaque"
+     "note": "muse_image: repainted again (27 Oct 00:02, $0.0125) with the current engine (the prompt names only the moving subjects; tone matched by the median shift); SAM 3.1 found it clean"
     }
    ],
    "cost_usd": 0.05762,
