@@ -1,0 +1,301 @@
+"""The engine, step by step, against the fake Meta Model API (tests/fakes.py)."""
+from __future__ import annotations
+
+import asyncio
+import io
+import json
+
+import httpx
+import numpy as np
+import pytest
+from PIL import Image
+
+from elynd_worlds import Meditation, Meter, Settings, art_director, critic, cutter, plate, timeline
+from elynd_worlds.card import make_card
+from elynd_worlds.director import NoWorld, make_world, make_world_or_none
+from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, preview_jpeg
+from elynd_worlds.settings import Prices
+
+from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, STONE_BOX, W, FakeClient, png
+
+MEDITATION = Meditation(script="Breathe in. Picture a quiet lake at dawn. Feel the cool stone under your hand.",
+                        technique="visualization", mood="stressed", minutes=10)
+
+
+def rgb(data: bytes) -> np.ndarray:
+    return np.asarray(Image.open(io.BytesIO(data)).convert("RGB"), dtype=np.int16)
+
+
+# ─── settings and cost ──────────────────────────────────────────────────
+
+def test_contributor_models_are_refused():
+    with pytest.raises(ValueError, match="contributor"):
+        Settings(director_model="muse-spark-1.3-contributor")
+
+
+def test_meter_prices_every_kind_of_use():
+    meter = Meter(Prices())
+    meter.spark({"prompt_tokens": 2_000_000, "completion_tokens": 1_000_000,
+                 "prompt_tokens_details": {"cached_tokens": 1_000_000}}, "design")
+    meter.image("paint", 3)
+    meter.sam("segment", 400)
+    meter.voice(3600.9)
+    # 1M input x 1.25 + 1M cached x 0.15 + 1M output x 4.25 + 3 x 0.01 + 400 x 0.0025 + 1 h x 0.18
+    assert meter.usd == pytest.approx(1.25 + 0.15 + 4.25 + 0.03 + 1.0 + 0.18)
+    assert meter.as_dict()["calls"] == {"design": 1, "paint": 1, "segment": 1, "transcribe": 1}
+
+
+# ─── art director ───────────────────────────────────────────────────────
+
+def test_scene_check_cleans_and_refuses():
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    assert scene["palette"] == ["#AABBCC", "#112233", "#445566"]
+    assert [s["name"] for s in scene["subjects"]] == ["smooth stone", "pine branch"]
+    for broken, message in (({"palette": ["#fff"]}, "palette"), ({"subjects": []}, "1-3 subjects"),
+                            ({"prompt": "too short"}, "too short"),
+                            ({"subjects": [SCENE["subjects"][0], SCENE["subjects"][0]]}, "twice")):
+        with pytest.raises(art_director.SceneError, match=message):
+            art_director.check({**json.loads(json.dumps(SCENE)), **broken})
+
+
+async def test_design_and_revise_go_to_muse_spark_with_strict_json():
+    client, meter = FakeClient(), Meter()
+    scene = await art_director.design(client, MEDITATION, meter)
+    assert scene["title"] == "Still Morning Lake"
+    first = client.requests[0]
+    assert first["model"] == "muse-spark-1.3"
+    assert first["response_format"]["json_schema"]["strict"] is True
+    assert "quiet lake at dawn" in first["messages"][1]["content"]
+    await art_director.revise(client, scene, FAIL, meter)
+    revise = client.requests[1]["messages"][1]["content"]
+    assert "Remove any figure" in revise and "under your hand" not in revise  # the meditation is not resent
+    assert meter.calls == {"design": 1, "revise": 1}
+
+
+# ─── critic ─────────────────────────────────────────────────────────────
+
+def test_a_painting_passes_only_if_safe_calm_on_brief_and_good():
+    assert critic.passes(PASS)
+    for change in ({"people_or_faces": True}, {"text_or_symbols": True}, {"calm": False},
+                   {"belongs": False}, {"score": 6}):
+        assert not critic.passes({**PASS, **change})
+
+
+async def test_the_critic_sees_a_small_jpeg_and_scores_are_clamped():
+    client = FakeClient(verdicts=[{**PASS, "score": 14}])
+    verdict = await critic.critique(client, PAINTING, art_director.check(json.loads(json.dumps(SCENE))), Meter())
+    assert verdict["score"] == 10
+    image_part = client.requests[0]["messages"][1]["content"][1]["image_url"]["url"]
+    assert image_part.startswith("data:image/jpeg;base64,")
+    assert Image.open(io.BytesIO(preview_jpeg(png(1200, 2000), 576))).size == (576, 960)
+
+
+# ─── cutter (SAM 3.1) ───────────────────────────────────────────────────
+
+@pytest.mark.parametrize("name, first, fallback", [
+    ("smooth stone", ["smooth stone", "smooth stones"], "stone"),
+    ("pine branch", ["pine branch", "pine branches"], "branch"),
+    ("lantern", ["lantern", "lanterns"], None),
+    ("maple leaves", ["maple leaves", "maple leaf"], "leaves"),
+    ("glass", ["glass", "glasses"], None),
+    ("butterfly", ["butterfly", "butterflies"], None),
+])
+def test_wordings(name, first, fallback):
+    assert cutter.wordings(name) == (first, fallback)
+
+
+def test_masks_land_where_sam_says_and_holes_are_filled():
+    ring = np.zeros((20, 20), dtype=np.uint8)
+    ring[5:15, 5:15] = 1
+    ring[8:12, 8:12] = 0  # the tea in the cup
+    assert cutter.solid(ring)[10, 10] == 1 and cutter.solid(ring)[2, 2] == 0
+    assert cutter.box_of(np.pad(np.ones((10, 20), np.uint8), ((90, 100), (40, 40)))) == (0.4, 0.45, 0.6, 0.5)
+
+
+def test_anchor_follows_how_the_subject_is_attached():
+    def layer(attached, box):
+        return cutter.Layer("x", "near", attached, "still", "x", b"", box, 0.1, 0.9)
+    assert layer("ground", (0.2, 0.7, 0.4, 0.9)).anchor() == (0.3, 0.9)
+    assert layer("edge", (0.0, 0.1, 0.3, 0.2)).anchor() == (0.0, 0.15)    # grows in from the left
+    assert layer("edge", (0.6, 0.0, 0.9, 0.2)).anchor() == (0.75, 0.0)    # hangs from the top
+    assert layer("air", (0.4, 0.4, 0.6, 0.6)).anchor() == (0.5, 0.5)
+
+
+async def test_cut_finds_each_subject_by_name_or_plural_and_keeps_near_ones():
+    client = FakeClient(sam={"smooth stone": [STONE_BOX, (100, 10, 6, 4)], "pine branches": [BRANCH_BOX]})
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    layers = await cutter.cut(client, PAINTING, scene, Meter())
+    assert [(l.name, l.wording, l.depth) for l in layers] == [("smooth stone", "smooth stone", "near"),
+                                                             ("pine branch", "pine branches", "mid")]
+    stone = layers[0]
+    assert stone.mask[160, 30] == 1 and stone.mask[12, 102] == 0  # the far, small stone is not moved
+    assert stone.box == pytest.approx((20 / W, 150 / H, 70 / W, 180 / H), abs=1e-3)
+    alpha = np.asarray(Image.open(io.BytesIO(stone.png)).getchannel("A"))
+    assert alpha[160, 30] == 255 and alpha[100, 100] == 0
+
+
+async def test_cut_falls_back_to_the_head_noun_and_skips_what_is_not_found():
+    client = FakeClient(sam={"stone": [STONE_BOX]})
+    layers = await cutter.cut(client, PAINTING, art_director.check(json.loads(json.dumps(SCENE))), Meter())
+    assert [l.wording for l in layers] == ["stone"]
+    assert "sam:branch" in client.calls  # tried, nothing found: no branch layer
+
+
+async def test_a_mask_covering_most_of_the_picture_is_not_a_subject():
+    client = FakeClient(sam={"smooth stone": [(0, 0, W, H)]})
+    assert await cutter.cut(client, PAINTING, art_director.check(json.loads(json.dumps(SCENE))), Meter()) == []
+
+
+# ─── plate ──────────────────────────────────────────────────────────────
+
+def test_confine_keeps_the_painting_outside_the_subjects():
+    painting, edit = Image.open(io.BytesIO(PAINTING)), Image.open(io.BytesIO(EDIT))
+    mask = np.zeros((H, W), dtype=np.uint8)
+    x, y, w, h = STONE_BOX
+    mask[y:y + h, x:x + w] = 1
+    out = np.asarray(plate.confine(painting, edit, mask), dtype=np.int16)
+    assert (out[: y - 3] == rgb(PAINTING)[: y - 3]).all()            # untouched outside
+    assert (out[y + 5:y + h - 5, x + 5:x + w - 5] == rgb(EDIT)[y + 5:y + h - 5, x + 5:x + w - 5]).all()
+
+
+async def test_plate_plus_layers_at_rest_is_the_painting():
+    client = FakeClient()
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    layers = await cutter.cut(client, PAINTING, scene, Meter())
+    plate_png, source = await plate.make_plate(client, PAINTING, EDIT, layers, Meter())
+    assert source == "muse_image"
+    composite = Image.open(io.BytesIO(plate_png)).convert("RGBA")
+    for layer in layers:
+        composite.alpha_composite(Image.open(io.BytesIO(layer.png)))
+    # Equal but for the one-pixel soft seam at the outlines (confine), at most 3 levels of 255.
+    assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 3
+
+
+async def test_a_subject_left_on_the_plate_means_a_local_fill():
+    client = FakeClient(sam_on_plate={"smooth stone": [STONE_BOX]})
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    layers = await cutter.cut(client, PAINTING, scene, Meter())
+    _, source = await plate.make_plate(client, PAINTING, EDIT, layers, Meter())
+    assert source == "filled"
+    # The same kind of object elsewhere in the scene is fine.
+    client = FakeClient(sam_on_plate={"smooth stone": [(90, 60, 20, 20)]})
+    layers = await cutter.cut(client, PAINTING, scene, Meter())
+    assert (await plate.make_plate(client, PAINTING, EDIT, layers, Meter()))[1] == "muse_image"
+
+
+def test_fill_leaves_no_empty_pixels_even_for_a_large_subject():
+    painting = Image.new("RGB", (300, 400), (90, 140, 60))
+    mask = np.zeros((400, 300), dtype=np.uint8)
+    mask[50:350, 40:260] = 1  # far wider than the first blur passes reach
+    out = np.asarray(plate.fill(painting, mask), dtype=np.int16)
+    assert np.abs(out - np.array([90, 140, 60])).max() <= 3
+
+
+def test_tone_match_moves_the_edit_towards_the_surroundings():
+    painting = Image.new("RGB", (100, 100), (40, 60, 80))
+    edit = Image.new("RGB", (100, 100), (140, 160, 180))
+    mask = np.zeros((100, 100), dtype=np.uint8)
+    mask[40:60, 40:60] = 1
+    out = np.asarray(plate.tone_match(edit, painting, mask), dtype=np.int16)
+    assert tuple(out[50, 50]) == (40, 60, 80)
+
+
+# ─── the agent ──────────────────────────────────────────────────────────
+
+async def test_a_world_is_shown_still_first_then_moves():
+    client, shown = FakeClient(), []
+
+    async def on_painting(painting, scene, verdict):
+        shown.append((painting == PAINTING, verdict["score"], "plate" in [s for s in client.calls if s == "plate"]))
+
+    world = await make_world(client, MEDITATION, on_painting=on_painting)
+    assert shown == [(True, 9, False)]
+    assert world.moving and world.plate_source == "muse_image" and world.paintings == 1
+    assert [s.name for s in world.trace][:1] == ["design"]
+    assert {"critique 1", "cut 1", "remove subjects 1", "plate"} <= {s.name for s in world.trace}
+    # design + critique (Spark), 1 painting + 1 edit (Image), SAM for the subjects and the plate check
+    assert world.meter.images == 2 and world.meter.sam_images >= 4
+    assert world.manifest()["layers"][0]["anchor"] == list(world.layers[0].anchor())
+
+
+async def test_a_rejected_painting_is_revised_and_painted_again():
+    client = FakeClient(verdicts=[FAIL, PASS])
+    world = await make_world(client, MEDITATION)
+    assert world.paintings == 2
+    assert client.calls.count("paint") == 2 and client.calls.count("scene") == 2  # design + revise
+    names = [s.name for s in world.trace]
+    assert "revise 1" in names and "critique 2" in names
+    assert any(s.note.startswith("cancelled") for s in world.trace if s.name.endswith(" 1"))
+
+
+async def test_two_rejections_mean_no_world():
+    with pytest.raises(NoWorld):
+        await make_world(FakeClient(verdicts=[FAIL]), MEDITATION)
+    assert await make_world_or_none(FakeClient(verdicts=[FAIL]), MEDITATION) is None
+
+
+async def test_without_layers_the_world_is_a_still_painting():
+    world = await make_world(FakeClient(sam={}), MEDITATION)
+    assert not world.moving and world.plate is None
+    manifest = world.manifest()
+    assert manifest["plate"] is None and manifest["layers"] == []
+    world = await make_world(FakeClient(fail_sam=True), MEDITATION)
+    assert not world.moving
+
+
+async def test_a_failed_repaint_falls_back_to_the_local_fill():
+    world = await make_world(FakeClient(fail_edit=True), MEDITATION)
+    assert world.moving and world.plate_source == "filled"
+
+
+async def test_the_world_is_saved_with_its_manifest(tmp_path):
+    world = await make_world(FakeClient(), MEDITATION)
+    folder = world.save(tmp_path / "w")
+    manifest = json.loads((folder / "world.json").read_text())
+    assert manifest["schema"] == "elynd.world/1" and manifest["size"] == [W, H]
+    assert {p.name for p in folder.iterdir()} >= {"painting.png", "plate.png", "layer_0.png", "layer_1.png",
+                                                    "world.json", "scene.json", "verdict.json", "cost.json"}
+    assert manifest["cost_usd"] == world.meter.usd > 0
+
+
+# ─── timeline ───────────────────────────────────────────────────────────
+
+def test_the_world_fades_as_eyes_close_and_returns():
+    tl = {f["t"]: f for f in timeline.build(600, [timeline.Silence(200, 260)])["frames"]}
+    assert tl[10]["visibility"] == 1.0 and tl[120]["visibility"] == 0.25
+    assert tl[230]["visibility"] == 0.75        # a long silence brings it back
+    assert tl[600]["visibility"] == 1.0
+    sleep = {f["t"]: f for f in timeline.build(600, sleep=True)["frames"]}
+    assert sleep[300]["visibility"] == 0.15 and sleep[600]["visibility"] == 0.0
+
+
+def test_a_spoken_cue_leads_the_breath():
+    cues = [timeline.Cue(100, "inhale"), timeline.Cue(104, "exhale")]
+    frames = {f["t"]: f["breath"] for f in timeline.build(200, cues=cues)["frames"]}
+    assert frames[100] == 0.0 and frames[102] == 0.5 and frames[104] == 1.0 and frames[107] == 0.5
+
+
+# ─── share card ─────────────────────────────────────────────────────────
+
+def test_the_card_is_a_story_sized_jpeg_and_skips_lines_it_cannot_draw():
+    card = make_card(PAINTING, "Still water holds the whole sky.", title="Still Morning Lake")
+    image = Image.open(io.BytesIO(card))
+    assert image.format == "JPEG" and image.size == (1080, 1920)
+    assert make_card(PAINTING, "静かな湖", title="湖") != card  # no error, no tofu boxes
+
+
+# ─── older OpenAI SDKs ──────────────────────────────────────────────────
+
+async def test_responses_over_http_streams_events_and_reports_errors():
+    def answer(request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content)
+        assert body["stream"] is True and request.headers["authorization"] == "Bearer k"
+        if body["model"] == "bad":
+            return httpx.Response(402, text='{"error": "billing_not_configured"}')
+        return httpx.Response(200, text='data: {"type": "a"}\n\ndata: {"type": "b"}\n\ndata: [DONE]\n\n')
+
+    responses = _ResponsesOverHTTP("k", transport=httpx.MockTransport(answer))
+    events = [e async for e in await responses.create(model="sam-3.1", input=[])]
+    assert events == [{"type": "a"}, {"type": "b"}]
+    with pytest.raises(MetaAPIError, match="402"):
+        [e async for e in await responses.create(model="bad", input=[])]
