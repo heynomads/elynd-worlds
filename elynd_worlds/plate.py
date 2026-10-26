@@ -48,30 +48,42 @@ def fit(png: bytes, size: tuple[int, int]) -> Image.Image:
 
 
 def tone_match(edit: Image.Image, painting: Image.Image, mask01: np.ndarray, ring_px: int = 24) -> Image.Image:
-    """Map the edit's colours under one subject onto the painting's colours around it."""
+    """Shift the edit's colours under one subject by how far the edit drifted from the painting around it.
+
+    The shift is the median, per channel, of painting minus edit over a ring around the subject:
+    where the repaint rightly differs there (it also took away the subject's reflection or shadow),
+    those pixels are outliers and do not count. (Matching the ring's mean and contrast instead once
+    turned a clean repaint of water into a pale boat-shaped patch, which SAM then took for the boat.)
+    """
     region = Image.fromarray(mask01.astype(np.uint8) * 255)
     ring = (np.asarray(region.filter(ImageFilter.MaxFilter(ring_px * 2 + 1))) > 127) & (mask01 == 0)
     if ring.sum() < 50:
         return edit
     e = np.asarray(edit.convert("RGB"), dtype=np.float32)
     p = np.asarray(painting.convert("RGB"), dtype=np.float32)
+    shift = np.median(p[ring] - e[ring], axis=0)
     out = e.copy()
     inside = mask01.astype(bool)
-    for c in range(3):
-        e_ring, p_ring = e[..., c][ring], p[..., c][ring]
-        gain = float(np.clip((p_ring.std() + 1e-3) / (e_ring.std() + 1e-3), 0.6, 1.6))
-        out[..., c][inside] = (e[..., c][inside] - e_ring.mean()) * gain + p_ring.mean()
-    return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
+    out[inside] = e[inside] + shift
+    return Image.fromarray(np.clip(np.rint(out), 0, 255).astype(np.uint8))
 
 
 def confine(painting: Image.Image, edit: Image.Image, mask01: np.ndarray, soft_px: float = 1.0) -> Image.Image:
-    """The edit inside the subjects' exact outline (one pixel soft), the painting everywhere else."""
-    region = Image.fromarray(mask01.astype(np.uint8) * 255)
-    weight = np.asarray(region.filter(ImageFilter.GaussianBlur(soft_px)), dtype=np.float32) / 255.0
-    weight = np.maximum(weight, mask01.astype(np.float32))[..., None]
+    """The edit inside the mask (its edge one pixel soft, on the inside), the painting everywhere else.
+
+    The soft edge lies inside the mask, where the layer is opaque: at rest no trace of the edit
+    shows, not even a seam."""
+    weight = _inside(mask01, soft_px)
     out = (np.asarray(edit.convert("RGB"), dtype=np.float32) * weight
            + np.asarray(painting.convert("RGB"), dtype=np.float32) * (1.0 - weight))
     return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
+
+
+def _inside(mask01: np.ndarray, soft_px: float = 1.0) -> np.ndarray:
+    """A weight for blending into the mask: 1 well inside, soft at its edge, 0 everywhere outside."""
+    region = Image.fromarray(mask01.astype(np.uint8) * 255)
+    weight = np.asarray(region.filter(ImageFilter.GaussianBlur(soft_px)), dtype=np.float32) / 255.0
+    return (weight * mask01.astype(np.float32))[..., None]
 
 
 def _box(a: np.ndarray, r: int, axis: int) -> np.ndarray:
@@ -103,7 +115,7 @@ def fill(painting: Image.Image, mask01: np.ndarray, grow_px: int = 12, keep_px: 
     a later, wider pass instead of staying dark. The fill is computed from
     pixels at least `grow_px` away (the subject's soft edge in the painting
     never bleeds into it) but kept only inside the mask grown by `keep_px`
-    (one pixel soft): beyond that the painting stays as painted.
+    (one pixel soft, on the inside): beyond that the painting stays as painted.
     """
     hole = np.asarray(Image.fromarray(mask01.astype(np.uint8) * 255).filter(
         ImageFilter.MaxFilter(grow_px * 2 + 1))) > 127
@@ -117,11 +129,11 @@ def fill(painting: Image.Image, mask01: np.ndarray, grow_px: int = 12, keep_px: 
         reach = (known < 1) & (weight > 0.1)
         rgb[reach] = values[reach]
         known[reach] = 1.0
-    region = Image.fromarray(mask01.astype(np.uint8) * 255)
+    keep = mask01
     if keep_px > 0:
-        region = region.filter(ImageFilter.MaxFilter(keep_px * 2 + 1))
-    weight = np.asarray(region.filter(ImageFilter.GaussianBlur(1.0)), dtype=np.float32) / 255.0
-    weight = np.maximum(weight, mask01.astype(np.float32))[..., None]
+        keep = (np.asarray(Image.fromarray(mask01.astype(np.uint8) * 255).filter(
+            ImageFilter.MaxFilter(keep_px * 2 + 1))) > 127).astype(np.uint8)
+    weight = _inside(keep)
     out = rgb * weight + np.asarray(painting.convert("RGB"), dtype=np.float32) * (1.0 - weight)
     return Image.fromarray(np.clip(np.rint(out), 0, 255).astype(np.uint8))
 

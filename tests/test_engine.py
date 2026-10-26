@@ -167,8 +167,8 @@ async def test_plate_plus_layers_at_rest_is_the_painting():
     composite = Image.open(io.BytesIO(plate_png)).convert("RGBA")
     for layer in layers:
         composite.alpha_composite(Image.open(io.BytesIO(layer.png)))
-    # Equal but for the one-pixel soft seam at the outlines (confine), at most 3 levels of 255.
-    assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 3
+    # Equal: the repaint's soft edge lies where the layer is opaque (rounding aside).
+    assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 1
 
 
 async def test_a_moving_subject_left_on_the_plate_means_a_local_fill():
@@ -215,7 +215,7 @@ async def test_the_local_fill_stays_where_the_layer_is_opaque_so_at_rest_it_neve
     composite = Image.open(io.BytesIO(plate_png)).convert("RGBA")
     for layer in layers:
         composite.alpha_composite(Image.open(io.BytesIO(layer.png)))
-    assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 3
+    assert np.abs(np.asarray(composite.convert("RGB"), dtype=np.int16) - rgb(PAINTING)).max() <= 1
 
 
 def test_fill_leaves_no_empty_pixels_even_for_a_large_subject():
@@ -233,6 +233,18 @@ def test_tone_match_moves_the_edit_towards_the_surroundings():
     mask[40:60, 40:60] = 1
     out = np.asarray(plate.tone_match(edit, painting, mask), dtype=np.int16)
     assert tuple(out[50, 50]) == (40, 60, 80)
+
+
+def test_tone_match_ignores_what_the_repaint_rightly_took_away():
+    # Water at 200; the painting has the boat's dark reflection just below it, which the
+    # repaint (rightly) took away with the boat. The repaint of the water must stay as it is.
+    painting = np.full((100, 100, 3), 200, dtype=np.uint8)
+    painting[60:75, 35:65] = 40
+    edit = Image.new("RGB", (100, 100), (200, 200, 200))
+    mask = np.zeros((100, 100), dtype=np.uint8)
+    mask[40:60, 40:60] = 1
+    out = np.asarray(plate.tone_match(edit, Image.fromarray(painting), mask), dtype=np.int16)
+    assert np.abs(out[40:60, 40:60] - 200).max() <= 1
 
 
 # ─── the agent ──────────────────────────────────────────────────────────
