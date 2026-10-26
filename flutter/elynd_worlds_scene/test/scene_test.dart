@@ -81,6 +81,17 @@ void main() {
       expect(WorldScene.cover(const Size(1000, 500), 9 / 16, (x: 0.5, y: 0.3)).top, lessThanOrEqualTo(0));
     });
 
+    test('subjects painted low are lifted above the controls by a small zoom, at most 25%', () {
+      const phone = Size(390, 844);
+      final low = WorldScene.cover(phone, 9 / 16, (x: 0.5, y: 0.68));
+      expect(low.height / 844, closeTo(1.1875, 1e-3)); // just enough: (1 - 0.62) / (1 - 0.68)
+      expect(low.top + 0.68 * low.height, closeTo(0.62 * 844, 1e-6)); // the focus at 62% of the screen
+      expect(low.bottom, greaterThanOrEqualTo(844)); // never an empty strip
+      final veryLow = WorldScene.cover(phone, 9 / 16, (x: 0.5, y: 0.85));
+      expect(veryLow.height / 844, closeTo(1.25, 1e-9)); // capped
+      expect(WorldScene.cover(phone, 9 / 16, (x: 0.5, y: 0.5)).height, closeTo(844, 1e-9)); // no zoom
+    });
+
     test('the manifest carries the focus', () {
       final m = WorldManifest.fromJson({'schema': 'elynd.world/1', 'focus': [0.7, 0.45], 'layers': []})!;
       expect(m.focus, (x: 0.7, y: 0.45));

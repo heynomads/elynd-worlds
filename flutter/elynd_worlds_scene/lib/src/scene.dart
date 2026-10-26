@@ -59,12 +59,21 @@ class WorldScene extends StatefulWidget {
   final ({double x, double y}) focus;
 
   /// The painting's rect covering `box`, its overflow placed so that `focus`
-  /// sits as near the middle as the edges allow.
-  static Rect cover(Size box, double aspect, ({double x, double y}) focus) {
-    final width = box.width / box.height > aspect ? box.width : box.height * aspect;
-    final height = width / aspect;
+  /// sits as near the middle as the edges allow. A focus lower than `highest`
+  /// (subjects painted low, behind a player's words and controls) is lifted to
+  /// it by zooming in a little, at most `maxZoom`.
+  static Rect cover(Size box, double aspect, ({double x, double y}) focus,
+      {double highest = 0.62, double maxZoom = 1.25}) {
+    var width = box.width / box.height > aspect ? box.width : box.height * aspect;
+    var height = width / aspect;
+    if (focus.y > highest && focus.y < 1) {
+      final zoom = (box.height * (1 - highest) / (height * (1 - focus.y))).clamp(1.0, maxZoom);
+      width *= zoom;
+      height *= zoom;
+    }
+    final targetY = box.height * (focus.y > highest ? highest : focus.y);
     final left = (box.width / 2 - focus.x * width).clamp(box.width - width, 0.0);
-    final top = (box.height / 2 - focus.y * height).clamp(box.height - height, 0.0);
+    final top = (targetY - focus.y * height).clamp(box.height - height, 0.0);
     return Rect.fromLTWH(left, top, width, height);
   }
 
