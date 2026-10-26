@@ -3,9 +3,11 @@
 SAM takes a picture and a short noun phrase and returns the mask of every
 match. Three things make that reliable on paintings:
 
-* Wording. SAM is literal: on the first test painting "pine branch" matched
-  nothing and "pine branches" matched two. Each subject is asked by its name and
-  its plural at once; if both miss, by its head noun alone ("stone").
+* Wording. SAM is literal: a subject can match as "smooth stones" but not as
+  "smooth stone". Each subject is asked by its name and its plural at once; if
+  both miss, by its head noun alone ("stone"). Branches are the exception that
+  no wording rescues (on the lake test, "pine branch", "pine branches", "tree
+  branch" and "branch" all found nothing), so the art director avoids them.
 * Distance. A harbour painted with one rowboat in front often holds three more
   far away. Only the near instances move: those whose area is at least
   `Settings.near_share` of the largest one's.

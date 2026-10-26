@@ -70,11 +70,12 @@ Rules:
 4. Nothing unsettling: no storms, threatening darkness, falling, deep water seen from below,
    enclosed spaces, ruins, decay.
 5. subjects: 1-3 foreground objects that will be cut out of the painting and move gently with the
-   listener's breath. Each must be ONE solid object with a clear outline ("smooth stone",
-   "wooden rowboat", "paper lantern", "pine branch"), never a texture, mass or substance (grass,
-   waves, water, mist, clouds, sand, a field of flowers, a forest). Name each with a singular noun
-   phrase of 1-3 words. Keep them apart from each other, fully in view (a branch may enter from a
-   side), and clearly separated from what is behind them.
+   listener's breath. Each must be ONE solid, free-standing object with a clear outline ("smooth
+   stone", "wooden rowboat", "paper lantern", "seashell", "ceramic teacup", "white butterfly"), never
+   a texture, mass or substance (grass, waves, water, mist, clouds, sand, a field of flowers, a
+   forest). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
+   noun phrase of 1-3 words. Keep them apart from each other, fully in view, and clearly separated
+   from what is behind them.
    attached: "ground" if it rests on the ground or on water, "edge" if it grows into the picture from
    an edge (a branch), "air" if it floats or hangs free.
 6. prompt: one paragraph of 60-120 words for the image model, in English: the place, the light, the
