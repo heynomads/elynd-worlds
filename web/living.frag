@@ -9,8 +9,9 @@
 //   grass   waves of wind rolling through it, the light catching the bent grass
 //   trees   a light wind in the crowns, strongest at the top, never the sky
 //   sky     the clouds drifting slowly to one side and back, less towards the
-//           painting's left and right edges (no paint is ever needed beyond them)
-//   stream  water flowing towards the viewer (two-phase flow)
+//           painting's left and right edges (no paint is ever needed beyond them);
+//           only sky drifts into the sky, never a treetop or a hill beside it
+//   stream  water flowing towards the viewer (two-phase flow), only stream into stream
 //   light   a lantern's flame flickering, and the light it throws
 // The reference is the first prototype renderer (tuned 540 px wide); every
 // distance here is in that reference's pixels times k = width / 540.
@@ -34,6 +35,10 @@ const float TAU = 6.28318530718;
 
 vec3 plate(vec2 px) {
   return texture(uPlate, clamp(px / uSize, vec2(0.0005), vec2(0.9995))).rgb;
+}
+
+vec4 regionAt(vec2 px) {
+  return texture(uRegions, clamp(px / uSize, vec2(0.0005), vec2(0.9995)));
 }
 
 // A number in [0, 1) for each cell of a grid, the same on every device (a hash
@@ -62,7 +67,7 @@ float glitter(vec2 q, float p, float t) {
 void main() {
   vec2 px = FlutterFragCoord().xy - uOrigin;
   vec2 uv = px / uSize;
-  vec4 reg = texture(uRegions, clamp(uv, vec2(0.0005), vec2(0.9995)));
+  vec4 reg = regionAt(px);
   float k = uSize.x / 540.0;
   float t = uTime;
   float m = uMotion;
@@ -98,7 +103,10 @@ void main() {
   if (uOn.y > 0.5 && reg.g > 0.001) {
     // Fading out to the left and right edges: it never reaches past them.
     float drift = 40.0 * k * m * sin(TAU * t / 90.0) * sin(3.14159265 * clamp(uv.x, 0.0, 1.0));
-    col = mix(col, plate(vec2(px.x - drift, px.y)), reg.g);
+    vec2 from = vec2(px.x - drift, px.y);
+    // Only sky drifts into the sky: where it would bring in a treetop, the sky stays as painted.
+    float sky = smoothstep(0.5, 0.95, regionAt(from).g);
+    col = mix(col, plate(from), reg.g * sky);
   }
   float stream = 1.0 - reg.a;
   if (uOn.w > 0.5 && stream > 0.001) {
@@ -107,8 +115,11 @@ void main() {
     float p2 = fract(p1 + 0.5);
     vec2 v = vec2(-4.0, 20.0) * k * m;
     float rx = 1.2 * k * m * sin(TAU * px.y / (14.0 * k) - TAU * t / 0.9);
-    vec3 s1 = plate(vec2(px.x + rx, px.y) - v * p1 * period);
-    vec3 s2 = plate(vec2(px.x + rx, px.y) - v * p2 * period);
+    vec2 a1 = vec2(px.x + rx, px.y) - v * p1 * period;
+    vec2 a2 = vec2(px.x + rx, px.y) - v * p2 * period;
+    // Only the stream flows into the stream: a bank or a stone upstream stays where it is.
+    vec3 s1 = mix(col, plate(a1), smoothstep(0.5, 0.95, 1.0 - regionAt(a1).a));
+    vec3 s2 = mix(col, plate(a2), smoothstep(0.5, 0.95, 1.0 - regionAt(a2).a));
     float w1 = 1.0 - abs(2.0 * p1 - 1.0);
     col = mix(col, s1 * w1 + s2 * (1.0 - w1), stream);
   }

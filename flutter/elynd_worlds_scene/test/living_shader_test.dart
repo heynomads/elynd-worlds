@@ -34,6 +34,45 @@ Future<Uint8List> _plate() async {
   ))!.buffer.asUint8List();
 }
 
+/// A pale sky with a dark treetop in it (x 40..50, y 20..50), and its region map
+/// (half size, as the engine writes it): sky over the top third, but not the treetop.
+Future<(Uint8List, Uint8List)> _treetop() async {
+  Future<Uint8List> png(int w, int h, void Function(Canvas) paint) async {
+    final recorder = ui.PictureRecorder();
+    paint(Canvas(recorder));
+    final image = await recorder.endRecording().toImage(w, h);
+    return (await image.toByteData(
+      format: ui.ImageByteFormat.png,
+    ))!.buffer.asUint8List();
+  }
+
+  final painting = await png(_w, _h, (canvas) {
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, _w.toDouble(), _h.toDouble()),
+      Paint()..color = const Color(0xFFC8C8C8),
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(40, 20, 10, 30),
+      Paint()..color = const Color(0xFF141414),
+    );
+  });
+  final map = await png(_w ~/ 2, _h ~/ 2, (canvas) {
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, _w / 2, _h / 2),
+      Paint()..color = const Color(0xFF000000),
+    );
+    canvas.drawRect(
+      Rect.fromLTWH(0, 0, _w / 2, _h / 6),
+      Paint()..color = const Color(0xFF00FF00),
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(20, 10, 5, 15),
+      Paint()..color = const Color(0xFF000000),
+    );
+  });
+  return (painting, map);
+}
+
 void main() {
   late MemoryImage plate, regions;
 
@@ -191,6 +230,26 @@ void main() {
       );
     },
   );
+
+  testWidgets('only sky drifts into the sky: a treetop beside it never comes along', (
+    tester,
+  ) async {
+    final (painting, map) = (await tester.runAsync(_treetop))!;
+    final scene = LivingBackground(
+      plate: MemoryImage(painting),
+      living: WorldLiving(regions: MemoryImage(map), sky: true),
+      clockSeconds: 22.5, // the drift at its widest
+    );
+    final shot = await shoot(tester, scene);
+    expect(drawing(), findsOneWidget);
+    var dark = 0;
+    for (var y = 25; y < 45; y++) {
+      for (var x = 52; x < 56; x++) {
+        if (shot[(y * _w + x) * 4] < 150) dark++;
+      }
+    }
+    expect(dark, 0, reason: 'no ghost of the treetop in the sky beside it');
+  });
 
   testWidgets(
     'a stream flows, and the lake and the sky in the same map still move',

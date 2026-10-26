@@ -324,11 +324,10 @@ class WorldParticles extends CustomPainter {
     double start,
     double s,
   ) {
-    final cycle =
-        size.height * 0.85 / (26 + 16 * s) +
-        2; // seconds to fall through the picture
-    final age = (clockSeconds + start) % cycle;
-    final y = -20 + age * (26 + 16 * s) * size.height / 960;
+    // From just above the picture until just past its bottom, then again.
+    final speed = (26 + 16 * s) * size.height / 960;
+    final age = (clockSeconds + start) % ((size.height + 40) / speed);
+    final y = -20 + age * speed;
     final x =
         x0 * size.width + 18 * size.width / 540 * math.sin(age * 1.3 + start);
     final colors = palette.isNotEmpty
