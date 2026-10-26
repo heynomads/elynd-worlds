@@ -32,8 +32,8 @@ SUBJECT_SCHEMA: dict[str, Any] = {
         "attached": {"type": "string", "enum": ["ground", "edge", "air"],
                      "description": "ground: rests on ground or water; edge: grows in from a picture edge; air: floats"},
         "motion": {"type": "string", "enum": ["sway", "drift", "float", "still"]},
-        "where": {"type": "string", "enum": ["lower left", "lower centre", "lower right",
-                                             "left edge", "right edge", "upper left", "upper right"]},
+        "where": {"type": "string", "enum": ["left", "centre", "right"],
+                  "description": "Across the picture; every subject sits in its middle band (35-60% down)"},
     },
     "required": ["name", "depth", "attached", "motion", "where"],
 }
@@ -63,8 +63,10 @@ them as they arrive, fades while their eyes are closed, and returns at the end.
 Rules:
 1. Belong to this meditation. Use the place, the images and the journey it describes. If it describes
    none, choose a natural place that fits its technique and mood.
-2. Calm, spacious and beautiful; painterly but believable; soft light. Portrait (9:16) composition
-   with open, quiet space in the upper half.
+2. Calm, spacious and beautiful; painterly but believable; soft light. Portrait (9:16) composition.
+   The phone shows its title over the top 15% of the picture and its words and controls over the
+   bottom 35%, under a soft shade: keep both calm and simple (open sky; still water, soft ground or
+   sand), and put everything that matters in the middle band, 35-60% down the picture.
 3. Never: people, faces, hands, bodies, animals looking at the viewer, text, letters, numbers, logos,
    symbols, flags, religious icons, weapons.
 4. Nothing unsettling: no storms, threatening darkness, falling, deep water seen from below,
@@ -74,12 +76,14 @@ Rules:
    stone", "wooden rowboat", "paper lantern", "seashell", "ceramic teacup", "white butterfly"), never
    a texture, mass or substance (grass, waves, water, mist, clouds, sand, a field of flowers, a
    forest). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
-   noun phrase of 1-3 words. Keep them apart from each other, fully in view, and clearly separated
-   from what is behind them.
+   noun phrase of 1-3 words. Keep them apart from each other, fully in view, clearly separated from
+   what is behind them, inside the middle band (35-60% down the picture), never at the bottom, and
+   within the middle 70% of the width (phones crop the sides).
    attached: "ground" if it rests on the ground or on water, "edge" if it grows into the picture from
    an edge (a branch), "air" if it floats or hangs free.
 6. prompt: one paragraph of 60-120 words for the image model, in English: the place, the light, the
-   palette, the air, and every subject by exactly its name and with its position.
+   palette, the air, and every subject by exactly its name and with its position in the middle of the
+   picture. Say that the bottom of the picture is calm and simple.
 7. Never copy the listener's words, names, people or personal details into any field. Scenery only.
 8. A meditation for falling asleep gets a dark, warm, quiet world (night or late dusk, low contrast)
    and sleep = true.

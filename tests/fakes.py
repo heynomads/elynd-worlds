@@ -28,8 +28,8 @@ SCENE = {
     "light": "soft, low from the left",
     "air": "thin mist over still water",
     "subjects": [
-        {"name": "Smooth Stone", "depth": "near", "attached": "ground", "motion": "still", "where": "lower left"},
-        {"name": "pine branch", "depth": "mid", "attached": "edge", "motion": "sway", "where": "upper left"},
+        {"name": "Smooth Stone", "depth": "near", "attached": "ground", "motion": "still", "where": "left"},
+        {"name": "pine branch", "depth": "mid", "attached": "edge", "motion": "sway", "where": "left"},
     ],
     "prompt": ("A calm lake at dawn, mist over still water, a smooth stone on the shore in the lower left, "
                "a pine branch entering from the upper left edge, soft pastel light, painterly."),

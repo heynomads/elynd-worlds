@@ -68,6 +68,26 @@ void main() {
     });
   });
 
+  group('focus', () {
+    test('a phone crops a painting around its subjects, never past its edges', () {
+      const phone = Size(390, 844);
+      final centred = WorldScene.cover(phone, 9 / 16, (x: 0.5, y: 0.5));
+      expect(centred.height, closeTo(844, 1e-9));
+      expect(centred.center.dx, closeTo(195, 1e-9));
+      final right = WorldScene.cover(phone, 9 / 16, (x: 0.8, y: 0.5));
+      expect(right.right, closeTo(390, 1e-9)); // as far as the edge allows
+      final nearRight = WorldScene.cover(phone, 9 / 16, (x: 0.55, y: 0.5));
+      expect(0.55 * nearRight.width + nearRight.left, closeTo(195, 1e-6)); // the focus in the middle
+      expect(WorldScene.cover(const Size(1000, 500), 9 / 16, (x: 0.5, y: 0.3)).top, lessThanOrEqualTo(0));
+    });
+
+    test('the manifest carries the focus', () {
+      final m = WorldManifest.fromJson({'schema': 'elynd.world/1', 'focus': [0.7, 0.45], 'layers': []})!;
+      expect(m.focus, (x: 0.7, y: 0.45));
+      expect(WorldManifest.fromJson({'schema': 'elynd.world/1'})!.focus, (x: 0.5, y: 0.5));
+    });
+  });
+
   group('motion', () {
     test('breathing only ever grows a layer about its anchor (never uncovers the plate)', () {
       for (var b = 0.0; b <= 1.0; b += 0.25) {

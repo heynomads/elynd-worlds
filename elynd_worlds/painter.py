@@ -20,7 +20,8 @@ STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious 
 def painting_prompt(scene: dict[str, Any]) -> str:
     palette = ", ".join(scene.get("palette") or [])
     return (f"{scene['prompt'].strip()} Time of day: {scene['time_of_day']}. Light: {scene['light']}. "
-            f"Air: {scene['air']}. Palette: {palette}. Portrait 9:16 for a phone screen. {STYLE}")
+            f"Air: {scene['air']}. Palette: {palette}. Portrait 9:16 for a phone screen; the main subjects "
+            f"in the middle of the picture, the bottom third calm and simple. {STYLE}")
 
 
 def plate_prompt(scene: dict[str, Any]) -> str:

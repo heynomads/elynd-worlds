@@ -40,6 +40,7 @@ class WorldScene extends StatefulWidget {
     required this.positionSeconds,
     this.layers = const [],
     this.followVisibility = true,
+    this.focus = (x: 0.5, y: 0.5),
   });
 
   final ImageProvider background;
@@ -52,6 +53,20 @@ class WorldScene extends StatefulWidget {
 
   /// Fade with the timeline's visibility (eyes closed → a glow).
   final bool followVisibility;
+
+  /// Where the subjects are (fractions of the painting). A screen narrower or
+  /// shorter than the painting crops around this point, not around the middle.
+  final ({double x, double y}) focus;
+
+  /// The painting's rect covering `box`, its overflow placed so that `focus`
+  /// sits as near the middle as the edges allow.
+  static Rect cover(Size box, double aspect, ({double x, double y}) focus) {
+    final width = box.width / box.height > aspect ? box.width : box.height * aspect;
+    final height = width / aspect;
+    final left = (box.width / 2 - focus.x * width).clamp(box.width - width, 0.0);
+    final top = (box.height / 2 - focus.y * height).clamp(box.height - height, 0.0);
+    return Rect.fromLTWH(left, top, width, height);
+  }
 
   @override
   State<WorldScene> createState() => _WorldSceneState();
@@ -92,11 +107,6 @@ class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  static Rect _cover(Size box, double aspect) {
-    final width = box.width / box.height > aspect ? box.width : box.height * aspect;
-    final height = width / aspect;
-    return Rect.fromCenter(center: box.center(Offset.zero), width: width, height: height);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +117,7 @@ class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateM
     final visibility = widget.followVisibility ? widget.timeline.visibilityAt(t).clamp(0.0, 1.0) : 1.0;
 
     return LayoutBuilder(builder: (context, box) {
-      final rect = _cover(box.biggest, widget.aspect);
+      final rect = WorldScene.cover(box.biggest, widget.aspect, widget.focus);
       final children = <Widget>[
         Positioned.fromRect(rect: rect, child: Image(image: widget.background, fit: BoxFit.fill, gaplessPlayback: true)),
         for (var i = widget.layers.length - 1; i >= 0; i--) // farthest first, nearest on top

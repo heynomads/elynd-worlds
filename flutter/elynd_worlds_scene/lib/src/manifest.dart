@@ -49,6 +49,7 @@ class WorldManifest {
     required this.painting,
     required this.plate,
     required this.layers,
+    this.focus = (x: 0.5, y: 0.5),
   });
 
   static WorldManifest? fromJson(Object? json) {
@@ -66,8 +67,14 @@ class WorldManifest {
       layers: [
         for (final l in (json['layers'] is List ? json['layers'] as List : const [])) ?LayerSpec.fromJson(l),
       ],
+      focus: point(json['focus']) ?? (x: 0.5, y: 0.5),
     );
   }
+
+  /// A [x, y] pair of fractions, or null.
+  static ({double x, double y})? point(Object? json) => json is List && json.length == 2 && json.every((v) => v is num)
+      ? (x: (json[0] as num).toDouble().clamp(0.0, 1.0), y: (json[1] as num).toDouble().clamp(0.0, 1.0))
+      : null;
 
   final String title;
   final bool sleep;
@@ -77,6 +84,9 @@ class WorldManifest {
   final String painting;
   final String? plate;
   final List<LayerSpec> layers;
+
+  /// Where the subjects are: screens crop around it.
+  final ({double x, double y}) focus;
 
   /// True if the world can move: a plate and at least one layer.
   bool get moving => plate != null && layers.isNotEmpty;

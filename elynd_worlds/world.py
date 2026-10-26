@@ -6,6 +6,7 @@ Manifest schema "elynd.world/1" (world.json next to the pictures):
       "schema": "elynd.world/1",
       "title": "Still Morning Lake", "sleep": false, "palette": ["#..."],
       "size": [1152, 2048],
+      "focus": [0.42, 0.55],               # where the subjects are: phones crop around it
       "painting": "painting.png",          # the full painting (shown first)
       "plate": "plate.png" | null,         # the painting without its subjects
       "layers": [                          # nearest first
@@ -30,6 +31,15 @@ from .meta import Meter, png_size
 SCHEMA = "elynd.world/1"
 
 
+WHERE_X = {"left": 0.33, "centre": 0.5, "right": 0.67}
+
+
+def focus_of_scene(scene: dict[str, Any]) -> tuple[float, float]:
+    """The focus before any layer is cut: the mean of the subjects' designed places."""
+    xs = [WHERE_X.get(s.get("where", ""), 0.5) for s in scene.get("subjects") or []]
+    return (round(sum(xs) / len(xs), 4) if xs else 0.5, 0.5)
+
+
 @dataclass
 class Step:
     """One step of the agent's run, for the trace."""
@@ -52,6 +62,18 @@ class World:
     meter: Meter = field(default_factory=Meter)
     seconds: float = 0.0
 
+    def focus(self) -> tuple[float, float]:
+        """Where the subjects are (fractions of the painting), so a screen narrower than the
+        painting crops around them instead of around the middle. From the cut layers when there
+        are any (weighted by size), else from where the art director placed the subjects."""
+        if self.layers:
+            weights = [max(layer.coverage, 1e-4) for layer in self.layers]
+            total = sum(weights)
+            x = sum(w * (layer.box[0] + layer.box[2]) / 2 for w, layer in zip(weights, self.layers)) / total
+            y = sum(w * (layer.box[1] + layer.box[3]) / 2 for w, layer in zip(weights, self.layers)) / total
+            return (round(x, 4), round(y, 4))
+        return focus_of_scene(self.scene)
+
     @property
     def moving(self) -> bool:
         """True if the world has a clean plate and at least one layer to move."""
@@ -66,6 +88,7 @@ class World:
             "sleep": bool(self.scene.get("sleep")),
             "palette": list(self.scene.get("palette") or []),
             "size": [width, height],
+            "focus": list(self.focus()),
             "painting": "painting.png",
             "plate": "plate.png" if self.moving else None,
             "layers": [

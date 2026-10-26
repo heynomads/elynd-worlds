@@ -258,6 +258,17 @@ async def test_the_world_is_saved_with_its_manifest(tmp_path):
     assert manifest["cost_usd"] == world.meter.usd > 0
 
 
+def test_the_focus_follows_the_cut_subjects_or_the_design():
+    from elynd_worlds.world import World, focus_of_scene
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    assert focus_of_scene(scene) == (0.33, 0.5)  # both subjects designed "left"
+    stone = cutter.Layer("stone", "near", "ground", "still", "stone", b"", (0.6, 0.5, 0.8, 0.6), 0.03, 0.9)
+    leaf = cutter.Layer("leaf", "mid", "air", "float", "leaf", b"", (0.0, 0.0, 0.2, 0.2), 0.01, 0.9)
+    world = World(scene=scene, painting=PAINTING, verdict=PASS, layers=[stone, leaf], plate=EDIT)
+    assert world.focus() == (0.55, 0.4375)  # weighted by size: (0.7*3 + 0.1*1)/4, (0.55*3 + 0.1*1)/4
+    assert world.manifest()["focus"] == [0.55, 0.4375]
+
+
 # ─── timeline ───────────────────────────────────────────────────────────
 
 def test_the_world_fades_as_eyes_close_and_returns():
