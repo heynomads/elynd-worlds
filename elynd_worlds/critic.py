@@ -12,7 +12,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .meta import Meter, data_url, preview_jpeg
+from .meta import Meter, data_url, preview_jpeg, privacy_fields
 from .settings import DEFAULT, Settings
 
 VERDICT_SCHEMA: dict[str, Any] = {
@@ -67,6 +67,7 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
         ],
         response_format={"type": "json_schema",
                          "json_schema": {"name": "verdict", "schema": VERDICT_SCHEMA, "strict": True}},
+        extra_body=privacy_fields(),
         timeout=settings.critic_timeout,
     )
     meter.spark(getattr(response, "usage", None), "critique")

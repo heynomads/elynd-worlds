@@ -269,6 +269,17 @@ def test_the_focus_follows_the_cut_subjects_or_the_design():
     assert world.manifest()["focus"] == [0.55, 0.4375]
 
 
+async def test_every_request_keeps_no_copy_and_names_the_listener_anonymously():
+    client = FakeClient()
+    await make_world(client, MEDITATION, user="listener-7f3a")
+    chats = [r for r in client.requests if "messages" in r]
+    images = [r for r in client.requests if "prompt" in r and "messages" not in r]
+    assert chats and all(r["extra_body"] == {"store": False, "safety_identifier": "listener-7f3a"} for r in chats)
+    assert any(r.get("user") == "listener-7f3a" for r in images)
+    assert client.sam_requests and all(r["store"] is False and r["safety_identifier"] == "listener-7f3a"
+                                       for r in client.sam_requests)
+
+
 # ─── timeline ───────────────────────────────────────────────────────────
 
 def test_the_world_fades_as_eyes_close_and_returns():

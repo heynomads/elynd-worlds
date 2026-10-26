@@ -82,6 +82,7 @@ class FakeClient:
                  fail_edit=False, fail_sam=False):
         self.calls: list[str] = []
         self.requests: list[dict] = []
+        self.sam_requests: list[dict] = []
         self._scenes = [json.loads(json.dumps(s)) for s in (scenes or [SCENE])]
         self._verdicts = list(verdicts or [PASS])
         self._sam = sam if sam is not None else {"smooth stone": [STONE_BOX], "pine branches": [BRANCH_BOX]}
@@ -118,6 +119,7 @@ class FakeClient:
         return SimpleNamespace(data=[SimpleNamespace(b64_json=base64.b64encode(self._edit).decode())])
 
     async def _responses(self, **kwargs):
+        self.sam_requests.append(kwargs)
         content = kwargs["input"][0]["content"]
         phrase = next(c["text"] for c in content if c["type"] == "input_text")
         url = next(c["image_url"] for c in content if c["type"] == "input_image")

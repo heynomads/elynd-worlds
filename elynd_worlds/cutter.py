@@ -30,7 +30,7 @@ from meta_sam_parser import SegmentationMaskRecord, decode_mask_to_raster, image
     parse_responses_stream
 from PIL import Image, ImageDraw, ImageFilter
 
-from .meta import Meter, data_url
+from .meta import Meter, data_url, privacy_fields
 from .settings import DEFAULT, Settings
 
 IRREGULAR_PLURALS = {
@@ -176,6 +176,7 @@ async def segment(client, image_url: str, phrase: str, meter: Meter,
         metadata={"include_confidence": "true"},
         stream=True,
         timeout=settings.cut_timeout,
+        **privacy_fields(),
     )
     meter.sam("segment")
     parsed = parse_responses_stream(stream, image_segmentation_format())

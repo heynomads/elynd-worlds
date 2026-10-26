@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .meta import NO_IMAGE_TOOLS, Meter, first_image
+from .meta import NO_IMAGE_TOOLS, Meter, first_image, listener
 from .settings import DEFAULT, Settings
 
 STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
@@ -35,7 +35,8 @@ def plate_prompt(scene: dict[str, Any]) -> str:
 async def paint(client, scene: dict[str, Any], meter: Meter, settings: Settings = DEFAULT,
                 user: str | None = None) -> bytes:
     """The painting of one scene, as PNG bytes."""
-    extra: dict[str, Any] = {"user": user} if user else {}
+    who = user or listener.get()
+    extra: dict[str, Any] = {"user": who} if who else {}
     response = await client.images.generate(
         model=settings.painter_model,
         prompt=painting_prompt(scene),

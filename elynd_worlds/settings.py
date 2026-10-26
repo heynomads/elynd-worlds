@@ -44,7 +44,7 @@ class Settings:
     # and it covers a sensible share of the picture (a "subject" covering most
     # of the picture is the background, and moving it would move the world).
     min_confidence: float = 0.35
-    min_layer_share: float = 0.002
+    min_layer_share: float = 0.0008  # a lantern 1/20 of the width is about 0.15%
     max_layer_share: float = 0.6
     # Of several matches for one subject, only the near ones move: an instance
     # whose area is at least this share of the largest one's.

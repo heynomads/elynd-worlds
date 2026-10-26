@@ -24,7 +24,7 @@ from typing import Any, Awaitable, Callable
 
 from . import art_director, critic, cutter, painter, plate
 from .art_director import Meditation
-from .meta import Meter
+from .meta import Meter, listener as listener_id
 from .settings import DEFAULT, Settings
 from .world import Step, World
 
@@ -44,6 +44,8 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
     meter = meter or Meter(settings.prices)
     trace: list[Step] = []
     started = time.monotonic()
+    if user:
+        listener_id.set(user)  # every request of this world carries it (meta.privacy_fields)
 
     async def step(name: str, work: Awaitable, note: Callable[[Any], str] = lambda _: "") -> Any:
         t0 = time.monotonic()
@@ -63,7 +65,7 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
     verdict: dict[str, Any] = {}
     painting = b""
     for attempt in range(1, settings.paintings + 1):
-        painting = await step(f"paint {attempt}", painter.paint(client, scene, meter, settings, user))
+        painting = await step(f"paint {attempt}", painter.paint(client, scene, meter, settings))
         checking = asyncio.ensure_future(step(f"critique {attempt}", critic.critique(client, painting, scene, meter, settings),
                                               lambda v: f"score {v['score']}: {v['reason']}"))
         cutting = asyncio.ensure_future(step(f"cut {attempt}", cutter.cut(client, painting, scene, meter, settings),

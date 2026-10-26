@@ -18,6 +18,7 @@ import io
 import json
 import os
 from collections import Counter
+from contextvars import ContextVar
 from dataclasses import dataclass, field
 from typing import Any, AsyncIterator
 
@@ -33,6 +34,20 @@ from .settings import API_BASE, Prices
 NO_IMAGE_TOOLS: dict[str, Any] = {
     "tool_enablement": {"enable_image_search": False, "enable_web_search": False, "enable_shell": False}
 }
+
+
+# The listener behind the current world, as a stable anonymous id (never a name
+# or an email). Meta asks for one so that any enforcement targets that one
+# listener instead of the whole app. Set by the director for each world.
+listener: ContextVar[str | None] = ContextVar("listener", default=None)
+
+
+def privacy_fields() -> dict[str, Any]:
+    """Sent with every Muse Spark and SAM request: keep no copy (store=false), plus the listener's id."""
+    fields: dict[str, Any] = {"store": False}
+    if listener.get():
+        fields["safety_identifier"] = listener.get()
+    return fields
 
 
 class MetaAPIError(RuntimeError):

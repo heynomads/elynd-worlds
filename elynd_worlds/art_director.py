@@ -20,7 +20,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from .meta import Meter
+from .meta import Meter, privacy_fields
 from .settings import DEFAULT, Settings
 
 SUBJECT_SCHEMA: dict[str, Any] = {
@@ -76,7 +76,8 @@ Rules:
    stone", "wooden rowboat", "paper lantern", "seashell", "ceramic teacup", "white butterfly"), never
    a texture, mass or substance (grass, waves, water, mist, clouds, sand, a field of flowers, a
    forest). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
-   noun phrase of 1-3 words. Keep them apart from each other, fully in view, clearly separated from
+   noun phrase of 1-3 words. Make each large enough to notice on a phone (at least a tenth of the
+   picture's width). Keep them apart from each other, fully in view, clearly separated from
    what is behind them, inside the middle band (35-60% down the picture), never at the bottom, and
    within the middle 70% of the width (phones crop the sides).
    attached: "ground" if it rests on the ground or on water, "edge" if it grows into the picture from
@@ -158,6 +159,7 @@ async def design(client, meditation: Meditation, meter: Meter, settings: Setting
             {"role": "user", "content": meditation.as_message()},
         ],
         response_format=_response_format(),
+        extra_body=privacy_fields(),
         timeout=settings.design_timeout,
     )
     meter.spark(getattr(response, "usage", None), "design")
@@ -179,6 +181,7 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
             )},
         ],
         response_format=_response_format(),
+        extra_body=privacy_fields(),
         timeout=settings.design_timeout,
     )
     meter.spark(getattr(response, "usage", None), "revise")
