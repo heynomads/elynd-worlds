@@ -84,29 +84,39 @@ const WorldTimeline = (() => {
   return { build, at, ARRIVE, GLOW };
 })();
 
+// How a world moves: slowly, and only as such things move in nature (as
+// flutter/elynd_worlds_scene/lib/src/motion.dart). Nothing grows or shrinks:
+// still things stay still, a boat on the water bobs and rolls a little,
+// something in the air loops slowly, plants sway in a light wind, mist drifts.
+// The whole world drifts like a very slow camera, near layers a little more
+// than the background (depth).
 const WorldMotion = {
-  breathScale: 0.03,
-  cameraScale: 0.008,
-  cameraHeadroom: 1.02,
-  swayRadians: (0.6 * Math.PI) / 180,
-  drift: 0.003,
-  float: 0.004,
-  parallax: 0.002,
-  depthWeight: (depth) => (depth === "near" ? 1 : 0.6),
+  cameraHeadroom: 1.03,
+  cameraDrift: 0.008,
+  bob: 0.0022,
+  bobRoll: (0.4 * Math.PI) / 180,
+  hover: 0.003,
+  sway: (0.7 * Math.PI) / 180,
+  drift: 0.006,
+  parallax: (depth) => (depth === "near" ? 1.6 : 1.25),
 
-  layer({ depth, motion, breath, clock, index }) {
-    const w = this.depthWeight(depth);
-    const phase = index * 1.7;
-    const scale = 1 + this.breathScale * w * breath;
-    const rotation = motion === "sway" ? this.swayRadians * w * Math.sin((2 * Math.PI * clock) / 9 + phase) : 0;
-    const drifting = motion === "drift" ? this.drift * w * Math.sin((2 * Math.PI * clock) / 16 + phase) : 0;
-    const floating = motion === "float" ? this.float * Math.sin((2 * Math.PI * clock) / 7 + phase) : 0;
-    const parallaxDx = this.parallax * w * Math.sin((2 * Math.PI * clock) / 23);
-    return { scale, rotation, dx: drifting + parallaxDx, dy: -floating };
+  camera(clock) {
+    return {
+      dx: this.cameraDrift * Math.sin((2 * Math.PI * clock) / 47),
+      dy: this.cameraDrift * 0.5 * Math.sin((2 * Math.PI * clock) / 61 + 1.3),
+    };
   },
 
-  camera(breath) {
-    return this.cameraHeadroom + this.cameraScale * breath;
+  layer({ motion, attached = "ground", clock, index }) {
+    const phase = index * 1.7;
+    const wave = (period, offset = 0) => Math.sin((2 * Math.PI * clock) / period + phase + offset);
+    if (motion === "float" && attached === "ground") {
+      return { dx: 0, dy: -this.bob * (0.75 * wave(8.7) + 0.25 * wave(4.9, 0.6)), rotation: this.bobRoll * wave(10.9, 1.1) };
+    }
+    if (motion === "float") return { dx: this.hover * wave(13.7), dy: this.hover * 0.8 * wave(9.1, 0.4), rotation: 0 };
+    if (motion === "sway") return { dx: 0, dy: 0, rotation: this.sway * (0.65 * wave(6.8) + 0.35 * wave(3.7, 1.9)) };
+    if (motion === "drift") return { dx: this.drift * wave(37), dy: 0, rotation: 0 };
+    return { dx: 0, dy: 0, rotation: 0 };
   },
 };
 
@@ -146,7 +156,7 @@ class WorldView {
         this.ready = true;
       })
       .catch(() => canvas.classList.add("failed"));
-    // At rest: breathing as in a silence of the meditation, fully shown.
+    // At rest: fully shown, as while the listener arrives.
     this.idle = WorldTimeline.build(600, [[0, 600]], [], false);
   }
 
@@ -166,29 +176,28 @@ class WorldView {
 
     const timeline = session ? session.timeline : this.idle;
     const t = session ? session.t : clock % 600;
-    const breath = still ? 0 : WorldTimeline.at(timeline.breath, t);
     const visibility = session ? WorldTimeline.at(timeline.visibility, t) : 1;
     const rect = coverRect(w, h, this.world.aspect, this.world.focus);
+    const camera = still ? { dx: 0, dy: 0 } : WorldMotion.camera(clock);
 
     ctx.save();
     ctx.globalAlpha = visibility;
-    const camera = still ? WorldMotion.cameraHeadroom : WorldMotion.camera(breath);
     ctx.translate(w / 2, h / 2);
-    ctx.scale(camera, camera);
+    ctx.scale(WorldMotion.cameraHeadroom, WorldMotion.cameraHeadroom);
     ctx.translate(-w / 2, -h / 2);
-    ctx.drawImage(this.background, rect.left, rect.top, rect.width, rect.height);
+    ctx.drawImage(this.background, rect.left + camera.dx * rect.height, rect.top + camera.dy * rect.height,
+      rect.width, rect.height);
     // Farthest first, nearest on top (layers are listed nearest first).
     for (let i = this.layers.length - 1; i >= 0; i--) {
       const spec = this.world.layers[i];
-      const pose = WorldMotion.layer({
-        depth: spec.depth, motion: spec.motion, breath, clock: still ? 0 : clock, index: i,
-      });
+      const pose = still ? { dx: 0, dy: 0, rotation: 0 }
+        : WorldMotion.layer({ motion: spec.motion, attached: spec.attached, clock, index: i });
+      const depth = WorldMotion.parallax(spec.depth);
       const ax = rect.left + spec.anchor[0] * rect.width;
       const ay = rect.top + spec.anchor[1] * rect.height;
       ctx.save();
-      ctx.translate(ax + pose.dx * rect.height, ay + pose.dy * rect.height);
+      ctx.translate(ax + (camera.dx * depth + pose.dx) * rect.height, ay + (camera.dy * depth + pose.dy) * rect.height);
       ctx.rotate(pose.rotation);
-      ctx.scale(pose.scale, pose.scale);
       ctx.translate(-ax, -ay);
       ctx.drawImage(this.layers[i], rect.left, rect.top, rect.width, rect.height);
       ctx.restore();

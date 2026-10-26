@@ -12,6 +12,7 @@ class WorldLayer {
     required this.image,
     this.depth = 'mid',
     this.motion = 'still',
+    this.attached = 'ground',
     this.anchor = (x: 0.5, y: 1.0),
   });
 
@@ -19,18 +20,26 @@ class WorldLayer {
   final String depth;
   final String motion;
 
+  /// How the object rests: "ground" (on land or on water), "edge" or "air".
+  /// A floating boat bobs; a floating butterfly loops.
+  final String attached;
+
   /// The pivot of the layer's motion, as fractions of the painting.
   final ({double x, double y}) anchor;
 }
 
-/// A painted world that breathes with a meditation.
+/// A painted world that comes to life, gently, with a meditation.
 ///
 /// Draws `background` (the plate: the painting without its subjects, or the
 /// full painting for a still world) and the layers on top, all covering the
-/// widget like `BoxFit.cover`. Each frame reads the session's position from
-/// `positionSeconds` (a callback, so the host never notifies anything while it
-/// builds) and poses every layer about its own anchor. Respects the platform's
-/// reduce-motion setting: the world then stays still and only fades.
+/// widget like `BoxFit.cover`. Everything drifts like a very slow camera, near
+/// layers a little more than the plate behind them, and each layer moves only
+/// as its object would ([WorldMotion]); nothing grows or shrinks. Each frame
+/// reads the session's position from `positionSeconds` (a callback, so the
+/// host never notifies anything while it builds) for the fading: the whole
+/// world while the listener arrives, a glow while their eyes are closed.
+/// Respects the platform's reduce-motion setting: the world then stays still
+/// and only fades.
 class WorldScene extends StatefulWidget {
   const WorldScene({
     super.key,
@@ -104,7 +113,7 @@ class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateM
   }
 
   /// Session seconds now: the last position plus the time since it changed,
-  /// at most one second ahead (a paused session must not keep breathing on).
+  /// at most one second ahead (a paused session must not keep fading on).
   double get _seconds {
     final since = (_clock - _positionChangedAt).inMicroseconds / 1e6;
     return _position + since.clamp(0.0, 1.0);
@@ -120,23 +129,27 @@ class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
-    final t = _seconds;
-    final breath = still ? 0.0 : widget.timeline.breathAt(t);
     final clock = still ? 0.0 : _clock.inMicroseconds / 1e6;
-    final visibility = widget.followVisibility ? widget.timeline.visibilityAt(t).clamp(0.0, 1.0) : 1.0;
+    final camera = still ? (dx: 0.0, dy: 0.0) : WorldMotion.camera(clock);
+    final visibility = widget.followVisibility ? widget.timeline.visibilityAt(_seconds).clamp(0.0, 1.0) : 1.0;
 
     return LayoutBuilder(builder: (context, box) {
       final rect = WorldScene.cover(box.biggest, widget.aspect, widget.focus);
+      final h = rect.height;
       final children = <Widget>[
-        Positioned.fromRect(rect: rect, child: Image(image: widget.background, fit: BoxFit.fill, gaplessPlayback: true)),
+        Positioned.fromRect(
+          rect: rect.shift(Offset(camera.dx * h, camera.dy * h)),
+          child: Image(image: widget.background, fit: BoxFit.fill, gaplessPlayback: true),
+        ),
         for (var i = widget.layers.length - 1; i >= 0; i--) // farthest first, nearest on top
-          Positioned.fromRect(rect: rect, child: _layer(widget.layers[i], i, breath, clock, rect.height)),
+          Positioned.fromRect(rect: rect, child: _layer(widget.layers[i], i, still, clock, camera, h)),
       ];
       return ClipRect(
         child: Opacity(
           opacity: visibility,
+          // A constant margin for the drift, never a zoom in and out.
           child: Transform.scale(
-            scale: still ? WorldMotion.cameraHeadroom : WorldMotion.camera(breath),
+            scale: WorldMotion.cameraHeadroom,
             child: Stack(clipBehavior: Clip.none, children: children),
           ),
         ),
@@ -144,12 +157,14 @@ class _WorldSceneState extends State<WorldScene> with SingleTickerProviderStateM
     });
   }
 
-  Widget _layer(WorldLayer layer, int index, double breath, double clock, double height) {
-    final pose = WorldMotion.layer(depth: layer.depth, motion: layer.motion, breath: breath, clockSeconds: clock, index: index);
+  Widget _layer(WorldLayer layer, int index, bool still, double clock, ({double dx, double dy}) camera, double height) {
+    final pose = still
+        ? LayerPose.still
+        : WorldMotion.layer(motion: layer.motion, attached: layer.attached, clockSeconds: clock, index: index);
+    final depth = WorldMotion.parallax(layer.depth);
     final matrix = Matrix4.identity()
-      ..translateByDouble(pose.dx * height, pose.dy * height, 0, 1)
-      ..rotateZ(pose.rotation)
-      ..scaleByDouble(pose.scale, pose.scale, 1, 1);
+      ..translateByDouble((camera.dx * depth + pose.dx) * height, (camera.dy * depth + pose.dy) * height, 0, 1)
+      ..rotateZ(pose.rotation);
     return Transform(
       alignment: Alignment(layer.anchor.x * 2 - 1, layer.anchor.y * 2 - 1),
       transform: matrix,

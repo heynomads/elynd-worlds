@@ -27,7 +27,7 @@ void main() {
     MemoryImage load(String name) => MemoryImage(File('$_world/$name').readAsBytesSync());
     final background = load(manifest.moving ? manifest.plate! : manifest.painting);
     final layers = manifest.moving
-        ? [for (final l in manifest.layers) WorldLayer(image: load(l.source), depth: l.depth, motion: l.motion, anchor: l.anchor)]
+        ? [for (final l in manifest.layers) WorldLayer(image: load(l.source), depth: l.depth, motion: l.motion, attached: l.attached, anchor: l.anchor)]
         : <WorldLayer>[];
 
     tester.view.physicalSize = const Size(780, 1688);
@@ -35,7 +35,7 @@ void main() {
     addTearDown(tester.view.reset);
     final shot = GlobalKey();
     var elapsed = Duration.zero;
-    // SILENT: as during a long silence of the voice, where the breathing is deepest.
+    // SILENT: as during a long silence of the voice.
     final timeline = WorldTimeline.build(
         durationSeconds: 600, sleep: manifest.sleep, silences: _silent ? const [WorldSilence(0, 600)] : const []);
     await tester.pumpWidget(RepaintBoundary(

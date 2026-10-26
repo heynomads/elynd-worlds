@@ -9,6 +9,7 @@ class LayerSpec {
     required this.depth,
     required this.motion,
     required this.anchor,
+    this.attached = 'ground',
     this.name = '',
   });
 
@@ -24,6 +25,7 @@ class LayerSpec {
       source: source,
       depth: json['depth'] == 'near' ? 'near' : 'mid',
       motion: const {'sway', 'drift', 'float', 'still'}.contains(json['motion']) ? json['motion'] as String : 'still',
+      attached: const {'ground', 'edge', 'air'}.contains(json['attached']) ? json['attached'] as String : 'ground',
       anchor: anchor,
       name: json['name'] is String ? json['name'] as String : '',
     );
@@ -33,6 +35,9 @@ class LayerSpec {
   final String source;
   final String depth;
   final String motion;
+
+  /// How the object rests: "ground" (on land or water), "edge" or "air".
+  final String attached;
 
   /// Where the layer's motion pivots, as fractions of the painting (0..1).
   final ({double x, double y}) anchor;

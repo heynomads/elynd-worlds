@@ -5,7 +5,7 @@
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
 built during the Meta Global AI Developer Hackathon (Startup track, *Build for Your World*), gives each of those
 meditations a place you can see: a calm painting made from the meditation itself, whose foreground objects are
-cut out and breathe with the session. It greets you as you arrive, fades while your eyes are closed, returns in
+cut out and move gently with the session. It greets you as you arrive, fades while your eyes are closed, returns in
 long silences and at the end, and stays with you afterwards as a card you can share.
 
 > **What existed before, what is new.** ELYND, the meditation app (writing, voices, player), existed before
@@ -48,10 +48,10 @@ script is written; 21–43 s in our runs), and the moving world follows (about 7
 
 `flutter/elynd_worlds_scene` draws a world in a Flutter app:
 
-* **Breathing, not animation.** Each layer grows a little from where it is attached: its base if it rests on
-  the ground, the edge it grows from, or its centre if it floats. Growing from the base always covers the
-  object's own outline, so the plate behind it never shows. Floating things drift, swaying things sway, and
-  the whole world breathes like a slow camera.
+* **Calm, natural motion.** Things move only as they would: stones and posts stay still, a boat rises and falls a
+  little on the water and rolls a little, something in the air makes a slow loop, plants sway in a light wind about
+  where they grow, mist drifts. Nothing ever grows or shrinks. The whole world drifts like a very slow camera, near
+  layers a little more than the clean plate behind them: depth, which is what the cut-out layers are for.
 * **Eyes closed.** A per-second timeline follows the session: the whole world while the listener arrives
   (45 s), a glow while their eyes are closed, more of it in long silences, all of it at the end. Sleep worlds
   stay dim and end dark. The phone's (Dart) and the browser's (JavaScript) timelines are tested frame by frame
@@ -84,8 +84,8 @@ past a budget, and the ELYND backend stops making worlds at a total and a daily 
 
 ## See it in a browser
 
-`web/` is a gallery of worlds the agent made for the example meditations: they breathe as they do in a
-meditation's silences, **Play as a meditation** runs a session sped up (arriving, eyes closed, a long silence, the
+`web/` is a gallery of worlds the agent made for the example meditations: they move as they do on the phone,
+**Play as a meditation** runs a session sped up (arriving, eyes closed, a long silence, the
 end), and each world shows how the agent made it: the design, the critic's score, the layers, the time and the
 cost. Serve the repository and open `/web/`:
 
@@ -123,7 +123,7 @@ elynd_worlds/          the engine (Python)
   cutter.py            SAM 3.1 cuts the layers
   plate.py             the clean plate behind them
   director.py          the agent loop
-  timeline.py          breathing and visibility over the session
+  timeline.py          how much of the world shows over the session
   card.py              the share card
   meta.py              the client, privacy fields, cost meter
 flutter/elynd_worlds_scene/   the scene on the phone (Dart)

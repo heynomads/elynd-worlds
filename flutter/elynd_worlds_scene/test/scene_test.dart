@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -100,23 +101,69 @@ void main() {
   });
 
   group('motion', () {
-    test('breathing only ever grows a layer about its anchor (never uncovers the plate)', () {
-      for (var b = 0.0; b <= 1.0; b += 0.25) {
-        final pose = WorldMotion.layer(depth: 'near', motion: 'still', breath: b, clockSeconds: b * 7);
-        expect(pose.scale, greaterThanOrEqualTo(1.0));
-        expect(pose.rotation, 0);
+    // A boat that grew and shrank with each breath moved like a heartbeat. So: nothing grows or
+    // shrinks, still things stay still, and each object moves only as such a thing moves, slowly.
+    const kinds = [('float', 'ground'), ('float', 'air'), ('sway', 'edge'), ('drift', 'air'), ('still', 'ground')];
+
+    test('still things stay still, always', () {
+      for (var t = 0.0; t < 120; t += 0.7) {
+        final pose = WorldMotion.layer(motion: 'still', clockSeconds: t, index: 1);
+        expect((pose.dx, pose.dy, pose.rotation), (0.0, 0.0, 0.0));
       }
-      expect(WorldMotion.layer(depth: 'near', motion: 'still', breath: 1, clockSeconds: 0).scale,
-          greaterThan(WorldMotion.layer(depth: 'mid', motion: 'still', breath: 1, clockSeconds: 0).scale));
     });
 
-    test('sway rotates, float lifts, still does neither; all stay small', () {
-      final sway = WorldMotion.layer(depth: 'near', motion: 'sway', breath: 0.5, clockSeconds: 2.25);
-      final float = WorldMotion.layer(depth: 'near', motion: 'float', breath: 0.5, clockSeconds: 1.75);
-      expect(sway.rotation.abs(), greaterThan(0));
-      expect(sway.rotation.abs(), lessThanOrEqualTo(WorldMotion.swayRadians));
-      expect(float.dy.abs(), greaterThan(0));
-      expect(float.dy.abs(), lessThanOrEqualTo(WorldMotion.float));
+    test('a boat on the water rises, falls and rolls a little; a butterfly loops; a branch sways', () {
+      var bob = 0.0, roll = 0.0, loop = 0.0, sway = 0.0;
+      for (var t = 0.0; t < 120; t += 0.25) {
+        final boat = WorldMotion.layer(motion: 'float', attached: 'ground', clockSeconds: t);
+        final butterfly = WorldMotion.layer(motion: 'float', attached: 'air', clockSeconds: t);
+        final branch = WorldMotion.layer(motion: 'sway', attached: 'edge', clockSeconds: t);
+        expect(boat.dx, 0);
+        expect(boat.dy.abs(), lessThanOrEqualTo(WorldMotion.bob));
+        expect(boat.rotation.abs(), lessThanOrEqualTo(WorldMotion.bobRoll));
+        expect(butterfly.rotation, 0);
+        expect(butterfly.dx.abs(), lessThanOrEqualTo(WorldMotion.hover));
+        expect(butterfly.dy.abs(), lessThanOrEqualTo(WorldMotion.hover));
+        expect((branch.dx, branch.dy), (0.0, 0.0));
+        expect(branch.rotation.abs(), lessThanOrEqualTo(WorldMotion.sway));
+        bob = math.max(bob, boat.dy.abs());
+        roll = math.max(roll, boat.rotation.abs());
+        loop = math.max(loop, butterfly.dx.abs());
+        sway = math.max(sway, branch.rotation.abs());
+      }
+      // ...and they do move: a world is alive, just calm.
+      expect(bob, greaterThan(WorldMotion.bob * 0.5));
+      expect(roll, greaterThan(WorldMotion.bobRoll * 0.5));
+      expect(loop, greaterThan(WorldMotion.hover * 0.5));
+      expect(sway, greaterThan(WorldMotion.sway * 0.5));
+    });
+
+    test('slowly: from one frame to the next nothing moves more than a hair', () {
+      for (var t = 0.0; t < 120; t += 0.37) {
+        for (final (motion, attached) in kinds) {
+          final a = WorldMotion.layer(motion: motion, attached: attached, clockSeconds: t, index: 2);
+          final b = WorldMotion.layer(motion: motion, attached: attached, clockSeconds: t + 1 / 60, index: 2);
+          // 0.00006 of the painting's height is about 0.05 pt on a phone.
+          expect((a.dx - b.dx).abs(), lessThan(0.00006), reason: '$motion/$attached dx at $t');
+          expect((a.dy - b.dy).abs(), lessThan(0.00006), reason: '$motion/$attached dy at $t');
+          expect((a.rotation - b.rotation).abs(), lessThan(0.0003), reason: '$motion/$attached at $t');
+        }
+        final c = WorldMotion.camera(t), d = WorldMotion.camera(t + 1 / 60);
+        expect((c.dx - d.dx).abs(), lessThan(0.00006));
+        expect((c.dy - d.dy).abs(), lessThan(0.00006));
+      }
+    });
+
+    test('the camera drifts a little, slowly, and near layers drift a little more (depth)', () {
+      for (var t = 0.0; t < 200; t += 1.3) {
+        final c = WorldMotion.camera(t);
+        expect(c.dx.abs(), lessThanOrEqualTo(WorldMotion.cameraDrift));
+        expect(c.dy.abs(), lessThanOrEqualTo(WorldMotion.cameraDrift));
+      }
+      expect(WorldMotion.parallax('near'), greaterThan(WorldMotion.parallax('mid')));
+      expect(WorldMotion.parallax('mid'), greaterThan(1));
+      // The margin covers the furthest drift of a near layer, so no edge ever shows.
+      expect((WorldMotion.cameraHeadroom - 1) / 2, greaterThan(WorldMotion.cameraDrift * WorldMotion.parallax('near')));
     });
   });
 
@@ -156,7 +203,31 @@ void main() {
       expect(tester.widget<Opacity>(find.byType(Opacity)).opacity, closeTo(1.0, 0.01));
     });
 
-    testWidgets('reduce motion: no layer moves', (tester) async {
+    List<Matrix4> transforms(WidgetTester tester) =>
+        [for (final t in tester.widgetList<Transform>(find.byType(Transform))) t.transform];
+
+    testWidgets('nothing ever grows or shrinks: a constant margin, layers only move and turn', (tester) async {
+      await tester.pumpWidget(host(WorldScene(
+        background: MemoryImage(_png),
+        aspect: 9 / 16,
+        layers: [
+          WorldLayer(image: MemoryImage(_png), depth: 'near', motion: 'float', attached: 'ground'),
+          WorldLayer(image: MemoryImage(_png), motion: 'sway', attached: 'edge', anchor: (x: 0.0, y: 0.5)),
+        ],
+        timeline: const WorldTimeline(breath: [0, 1, 0, 1], visibility: [1, 1, 1, 1]),
+        positionSeconds: () => 0,
+      )));
+      for (var i = 0; i < 12; i++) {
+        await tester.pump(const Duration(milliseconds: 700));
+        final [margin, ...layers] = transforms(tester);
+        expect(margin.getMaxScaleOnAxis(), closeTo(WorldMotion.cameraHeadroom, 1e-9));
+        for (final m in layers) {
+          expect(m.getMaxScaleOnAxis(), closeTo(1.0, 1e-9));
+        }
+      }
+    });
+
+    testWidgets('reduce motion: nothing moves at all', (tester) async {
       await tester.pumpWidget(host(WorldScene(
         background: MemoryImage(_png),
         aspect: 9 / 16,
@@ -165,8 +236,17 @@ void main() {
         positionSeconds: () => 0,
       ), reduceMotion: true));
       await tester.pump(const Duration(seconds: 2));
-      final transform = tester.widgetList<Transform>(find.byType(Transform)).last.transform;
-      expect(transform.getMaxScaleOnAxis(), closeTo(1.0, 1e-9));
+      final layer = transforms(tester).last;
+      expect(layer.getTranslation().x, 0);
+      expect(layer.getTranslation().y, 0);
+      expect(layer.getMaxScaleOnAxis(), closeTo(1.0, 1e-9));
+      expect(layer.storage[1], closeTo(0, 1e-12)); // no rotation
+      // The plate's box holds an Image, a layer's a Transform (the test images'
+      // error placeholders add boxes of their own).
+      final boxes = tester.widgetList<Positioned>(find.byType(Positioned));
+      final plate = boxes.firstWhere((p) => p.child is Image);
+      final layerBox = boxes.firstWhere((p) => p.child is Transform);
+      expect((plate.left, plate.top), (layerBox.left, layerBox.top)); // the camera stays put
     });
   });
 }
