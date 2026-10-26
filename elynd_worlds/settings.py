@@ -49,6 +49,9 @@ class Settings:
     # Of several matches for one subject, only the near ones move: an instance
     # whose area is at least this share of the largest one's.
     near_share: float = 0.4
+    # A region (water, sky, grass, stream) moves only if it covers at least this
+    # share of the painting: a stray scrap of "water" would ripple on its own.
+    min_region_share: float = 0.01
 
     # Seconds. The meditation never waits for any of them.
     design_timeout: float = 25

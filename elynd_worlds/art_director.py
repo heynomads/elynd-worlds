@@ -4,10 +4,13 @@ The design ("scene") is strict JSON. Two parts of it drive everything after:
 
 * `prompt`: what Muse Image paints.
 * `subjects`: the 1-3 foreground objects that SAM 3.1 will cut out of the
-  painting so the app can move them with the listener's breath. The director is
-  told to make them solid, clearly outlined objects, because only those cut out
-  cleanly. It also says how each one is attached (resting on the ground, growing
-  in from an edge, or floating), which tells the app where to anchor its motion.
+  painting so the app can move them as such things move. The director is told to
+  make them solid, clearly outlined objects, because only those cut out cleanly.
+  It also says how each one is attached (resting on the ground, growing in from
+  an edge, or floating), how it moves, and whether it glows (a lantern flickers).
+* `nature` and `particles`: the parts of the place that move in nature (water,
+  sky, grass, a stream, tree crowns), which SAM 3.1 then finds in the painting
+  (regions.py), and what floats in the air (leaves, snow, pollen, fireflies).
 
 The listener's own words never reach the image model: the director turns the
 meditation into scenery, and only scenery goes on. When the critic rejects a
@@ -23,6 +26,11 @@ from typing import Any
 from .meta import Meter, privacy_fields
 from .settings import DEFAULT, Settings
 
+# The parts of a place that move in nature, as the app animates them: open water
+# ripples, the sky drifts, grass waves in the wind, a stream flows, tree crowns sway.
+NATURE = ["water", "sky", "grass", "stream", "trees"]
+PARTICLES = ["none", "leaves", "snow", "pollen", "fireflies"]
+
 SUBJECT_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
@@ -31,11 +39,15 @@ SUBJECT_SCHEMA: dict[str, Any] = {
         "depth": {"type": "string", "enum": ["near", "mid"]},
         "attached": {"type": "string", "enum": ["ground", "edge", "air"],
                      "description": "ground: rests on ground or water; edge: grows in from a picture edge; air: floats"},
-        "motion": {"type": "string", "enum": ["sway", "drift", "float", "still"]},
+        "motion": {"type": "string", "enum": ["sway", "drift", "float", "flutter", "still"],
+                   "description": "sway: a branch or flower in the wind; drift: mist, a cloud; float: a boat on water, "
+                                  "a leaf in the air; flutter: a butterfly or moth (folds its wings now and then); "
+                                  "still: stone, post, shell, cabin, lantern"},
+        "glows": {"type": "boolean", "description": "A light that glows by itself: lantern, candle, campfire"},
         "where": {"type": "string", "enum": ["left", "centre", "right"],
                   "description": "Across the picture; every subject sits in its middle band (35-60% down)"},
     },
-    "required": ["name", "depth", "attached", "motion", "where"],
+    "required": ["name", "depth", "attached", "motion", "glows", "where"],
 }
 
 SCENE_SCHEMA: dict[str, Any] = {
@@ -49,10 +61,14 @@ SCENE_SCHEMA: dict[str, Any] = {
         "light": {"type": "string", "description": "Quality and direction of the light"},
         "air": {"type": "string", "description": "Atmosphere: haze, mist, still water, warm dust..."},
         "subjects": {"type": "array", "items": SUBJECT_SCHEMA, "description": "1-3 foreground objects"},
+        "nature": {"type": "array", "items": {"type": "string", "enum": NATURE},
+                   "description": "The parts of the place that move in nature and are clearly visible"},
+        "particles": {"type": "string", "enum": PARTICLES, "description": "What floats through the air, if anything"},
         "prompt": {"type": "string", "description": "The painting, for the image model: English, 60-120 words"},
         "sleep": {"type": "boolean", "description": "A dark, quiet world for falling asleep"},
     },
-    "required": ["title", "place", "time_of_day", "palette", "light", "air", "subjects", "prompt", "sleep"],
+    "required": ["title", "place", "time_of_day", "palette", "light", "air", "subjects", "nature", "particles",
+                 "prompt", "sleep"],
 }
 
 DIRECTOR_INSTRUCTIONS = """You are the art director of ELYND, a meditation app.
@@ -71,8 +87,9 @@ Rules:
    symbols, flags, religious icons, weapons.
 4. Nothing unsettling: no storms, threatening darkness, falling, deep water seen from below,
    enclosed spaces, ruins, decay.
-5. subjects: 1-3 foreground objects that will be cut out of the painting and move gently with the
-   listener's breath. Each must be ONE solid, free-standing object with a clear outline ("smooth
+5. subjects: 1-3 foreground objects that will be cut out of the painting and move gently, the way
+   such things move (a boat rides the ripples, a butterfly flutters, a lantern flickers, a stone
+   stays still). Each must be ONE solid, free-standing object with a clear outline ("smooth
    stone", "wooden rowboat", "paper lantern", "seashell", "ceramic teacup", "white butterfly"), never
    a texture, mass or substance (grass, waves, water, mist, clouds, sand, a field of flowers, a
    forest). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
@@ -81,13 +98,20 @@ Rules:
    what is behind them, inside the middle band (35-60% down the picture), never at the bottom, and
    within the middle 70% of the width (phones crop the sides).
    attached: "ground" if it rests on the ground or on water, "edge" if it grows into the picture from
-   an edge (a branch), "air" if it floats or hangs free.
+   an edge (a branch), "air" if it floats or hangs free. motion: how it moves in nature (a boat on
+   water floats, a butterfly flutters, a stone or a lantern is still). glows: true only for a light
+   that glows by itself (a lantern, a candle, a campfire).
 6. prompt: one paragraph of 60-120 words for the image model, in English: the place, the light, the
    palette, the air, and every subject by exactly its name and with its position in the middle of the
    picture. Say that the bottom of the picture is calm and simple.
 7. Never copy the listener's words, names, people or personal details into any field. Scenery only.
 8. A meditation for falling asleep gets a dark, warm, quiet world (night or late dusk, low contrast)
    and sleep = true.
+9. nature: the parts of the place that move in nature and are clearly visible in the painting:
+   "water" (a lake or the sea), "sky", "grass" (a meadow), "stream" (a brook or a river),
+   "trees" (leafy crowns). Choose places with some of them: a world comes alive through them.
+   particles: what drifts through the air, if it suits the place and the season: "leaves" (autumn),
+   "snow" (winter), "pollen" (a summer meadow), "fireflies" (a warm summer night), else "none".
 Return only the JSON object."""
 
 REVISE_INSTRUCTIONS = """You are the art director of ELYND, revising your own design.
@@ -143,7 +167,11 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
         raise SceneError("the painting prompt is too short")
     if not (scene.get("title") or "").strip():
         raise SceneError("the scene has no title")
-    return {**scene, "palette": palette[:5]}
+    for subject in subjects:
+        subject["glows"] = subject.get("glows") is True
+    nature = [n for n in dict.fromkeys(scene.get("nature") or []) if n in NATURE]
+    particles = scene.get("particles") if scene.get("particles") in PARTICLES else "none"
+    return {**scene, "palette": palette[:5], "nature": nature, "particles": particles}
 
 
 def _response_format() -> dict[str, Any]:

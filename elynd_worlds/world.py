@@ -15,6 +15,13 @@ Manifest schema "elynd.world/1" (world.json next to the pictures):
          "anchor": [0.31, 0.88],           # pivot of its motion, fractions of the painting
          "box": [0.18, 0.79, 0.44, 0.88]}
       ],
+      "living": {                          # what moves in nature (regions.py)
+        "regions": "regions.png" | null,   # RGBA: water, sky, grass, stream (half size, soft)
+        "water": true, "sky": true, "grass": false, "stream": false, "trees": false,
+        "horizon": 0.52,                   # where the water starts
+        "lights": [{"x": 0.5, "y": 0.6, "size": 0.08}],   # glowing subjects flicker here
+        "particles": "none"                # leaves | snow | pollen | fireflies | none
+      },
       "cost_usd": 0.0432, "seconds": 41.2, "trace": [...]
     }
 """
@@ -27,6 +34,7 @@ from typing import Any
 
 from .cutter import Layer
 from .meta import Meter, png_size
+from .regions import Regions
 
 SCHEMA = "elynd.world/1"
 
@@ -61,6 +69,8 @@ class World:
     trace: list[Step] = field(default_factory=list)
     meter: Meter = field(default_factory=Meter)
     seconds: float = 0.0
+    regions: Regions = field(default_factory=Regions)
+    lights: list[dict[str, float]] = field(default_factory=list)
 
     def focus(self) -> tuple[float, float]:
         """Where the subjects are (fractions of the painting), so a screen narrower than the
@@ -96,6 +106,12 @@ class World:
                  "attached": layer.attached, "anchor": list(layer.anchor()), "box": list(layer.box)}
                 for i, layer in enumerate(layers)
             ],
+            "living": {
+                "regions": "regions.png" if self.regions.png else None,
+                **self.regions.manifest(),
+                "lights": list(self.lights) if self.moving else [],
+                "particles": self.scene.get("particles") or "none",
+            },
             "cost_usd": self.meter.usd,
             "seconds": round(self.seconds, 2),
             "trace": [{"step": s.name, "seconds": round(s.seconds, 2), "note": s.note} for s in self.trace],
@@ -110,6 +126,8 @@ class World:
             (folder / "plate.png").write_bytes(self.plate)
             for i, layer in enumerate(self.layers):
                 (folder / f"layer_{i}.png").write_bytes(layer.png)
+        if self.regions.png:
+            (folder / "regions.png").write_bytes(self.regions.png)
         manifest = {**self.manifest(), **(extra or {})}
         (folder / "world.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
         (folder / "scene.json").write_text(json.dumps(self.scene, indent=2, ensure_ascii=False))

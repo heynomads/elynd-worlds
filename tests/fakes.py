@@ -19,6 +19,8 @@ W, H = 120, 200
 BACKGROUND = (70, 110, 150)
 STONE_BOX = (20, 150, 50, 30)     # x, y, w, h
 BRANCH_BOX = (0, 20, 40, 16)
+WATER_BOX = (0, 110, 120, 90)     # what moves in nature (regions.py)
+SKY_BOX = (0, 0, 120, 70)
 
 SCENE = {
     "title": "Still Morning Lake",
@@ -85,7 +87,8 @@ class FakeClient:
         self.sam_requests: list[dict] = []
         self._scenes = [json.loads(json.dumps(s)) for s in (scenes or [SCENE])]
         self._verdicts = list(verdicts or [PASS])
-        self._sam = sam if sam is not None else {"smooth stone": [STONE_BOX], "pine branches": [BRANCH_BOX]}
+        self._sam = sam if sam is not None else {"smooth stone": [STONE_BOX], "pine branches": [BRANCH_BOX],
+                                                  "water": [WATER_BOX], "sky": [SKY_BOX]}
         self._sam_on_plate = sam_on_plate or {}
         self._painting, self._edit = painting, edit
         self._painting_url = sam_image_url(painting)

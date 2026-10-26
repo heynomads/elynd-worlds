@@ -16,7 +16,7 @@ from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
 from elynd_worlds.settings import Prices
 
-from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, STONE_BOX, W, FakeClient, png
+from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, FakeClient, png
 
 MEDITATION = Meditation(script="Breathe in. Picture a quiet lake at dawn. Feel the cool stone under your hand.",
                         technique="visualization", mood="stressed", minutes=10)
@@ -294,6 +294,58 @@ async def test_every_picture_a_listener_sees_is_marked_as_made_by_ai():
     for picture in pictures:  # real XMP that image tools read, not just bytes
         info = Image.open(io.BytesIO(picture)).info
         assert b"trainedAlgorithmicMedia" in str(info.get("xmp") or info.get("XML:com.adobe.xmp")).encode()
+
+
+# ─── what moves in nature ───────────────────────────────────────────────
+
+LIVING = {**SCENE, "nature": ["water", "sky", "trees", "lava"], "particles": "fireflies",
+          "subjects": [{**SCENE["subjects"][0], "glows": True}, SCENE["subjects"][1]]}
+
+
+def test_the_design_names_what_moves_and_unknown_values_go():
+    scene = art_director.check(json.loads(json.dumps(LIVING)))
+    assert scene["nature"] == ["water", "sky", "trees"] and scene["particles"] == "fireflies"
+    assert [s["glows"] for s in scene["subjects"]] == [True, False]
+    old = art_director.check(json.loads(json.dumps(SCENE)))   # a design from before: nothing moves in nature
+    assert old["nature"] == [] and old["particles"] == "none"
+
+
+async def test_sam_finds_the_water_and_the_sky_and_the_map_carries_them():
+    client = FakeClient(scenes=[LIVING])
+    world = await make_world(client, MEDITATION)
+    assert {"sam:water", "sam:sky"} <= set(client.calls) and "sam:trees" not in client.calls
+    regions = world.regions
+    assert regions.present == {"water": True, "sky": True} and regions.trees
+    assert regions.horizon == pytest.approx(110 / 200, abs=0.02)
+    rgba = np.asarray(Image.open(io.BytesIO(regions.png)))
+    assert rgba.shape == (100, 60, 4)                                   # half the painting's size
+    water, sky, grass, stream = (rgba[..., i] for i in range(4))
+    assert water[90, 30] == 255 and water[10, 30] == 0                   # red: the water, at the bottom
+    assert sky[10, 30] == 255 and sky[90, 30] == 0                       # green: the sky, at the top
+    assert grass.max() == 0 and stream.max() == 0
+    living = world.manifest()["living"]
+    assert (living["regions"], living["water"], living["sky"], living["grass"], living["trees"]) == \
+           ("regions.png", True, True, False, True)
+    assert living["particles"] == "fireflies"
+    # The stone glows: it flickers where SAM cut it out, a little above the middle of its box.
+    (light,) = living["lights"]
+    assert light["x"] == pytest.approx((20 + 25) / 120, abs=0.02) and light["size"] == pytest.approx(50 / 120, abs=0.02)
+    assert any(s.name == "regions 1" for s in world.trace)
+
+
+async def test_a_scrap_of_water_does_not_ripple_and_a_failed_search_keeps_the_world():
+    client = FakeClient(scenes=[LIVING], sam={"smooth stone": [STONE_BOX], "pine branches": [BRANCH_BOX],
+                                              "water": [(0, 190, 4, 4)], "sky": [SKY_BOX]})
+    world = await make_world(client, MEDITATION)
+    assert world.regions.present == {"sky": True} and world.regions.horizon is None
+    assert world.moving   # the subjects still move
+
+
+async def test_the_region_map_is_saved_with_the_world(tmp_path):
+    world = await make_world(FakeClient(scenes=[LIVING]), MEDITATION)
+    folder = world.save(tmp_path / "w")
+    assert (folder / "regions.png").exists()
+    assert json.loads((folder / "world.json").read_text())["living"]["regions"] == "regions.png"
 
 
 # ─── timeline ───────────────────────────────────────────────────────────

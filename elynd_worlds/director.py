@@ -3,7 +3,8 @@
     design (Muse Spark)
       └─ paint (Muse Image)
            ├─ critique (Muse Spark, vision) ──┐
-           ├─ cut layers (SAM 3.1)            ├─ run at the same time
+           ├─ cut layers (SAM 3.1)            │
+           ├─ find what moves (SAM 3.1)       ├─ run at the same time
            └─ paint without subjects (Image) ─┘
          rejected → the art director revises its design from the critic's note
                     → paint again (at most `Settings.paintings` paintings)
@@ -11,8 +12,8 @@
                     then the clean plate is made and checked (SAM 3.1),
                     and the world can move.
 
-The three steps after a painting only need the painting, and the critic
-passes most of them, so they run together; a rejection cancels the other two.
+The four steps after a painting only need the painting, and the critic
+passes most of them, so they run together; a rejection cancels the other three.
 Every step reports its cost to the world's `Meter` and its time to the trace.
 """
 from __future__ import annotations
@@ -22,7 +23,7 @@ import logging
 import time
 from typing import Any, Awaitable, Callable
 
-from . import art_director, critic, cutter, painter, plate
+from . import art_director, critic, cutter, painter, plate, regions as nature
 from .art_director import Meditation
 from .meta import Meter, listener as listener_id
 from .settings import DEFAULT, Settings
@@ -72,11 +73,14 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
                                              lambda ls: ", ".join(layer.wording for layer in ls) or "no layers"))
         removing = asyncio.ensure_future(step(f"remove subjects {attempt}",
                                               painter.paint_without_subjects(client, scene, painting, meter, settings)))
+        finding = asyncio.ensure_future(step(f"regions {attempt}",
+                                             nature.find_regions(client, painting, scene, meter, settings),
+                                             lambda r: ", ".join(k for k, v in r.present.items() if v) or "none"))
         try:
             verdict = await checking
         except BaseException:
-            cutting.cancel()
-            removing.cancel()
+            for task in (cutting, removing, finding):
+                task.cancel()
             raise
         if critic.passes(verdict, settings):
             if on_painting is not None:
@@ -84,11 +88,11 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
                     await on_painting(painting, scene, verdict)
                 except Exception as error:  # noqa: BLE001 - showing early is a bonus, never a failure
                     log.info("on_painting failed: %s", error)
-            layers, edit = await asyncio.gather(cutting, removing, return_exceptions=True)
+            layers, edit, regions = await asyncio.gather(cutting, removing, finding, return_exceptions=True)
             break
-        cutting.cancel()
-        removing.cancel()
-        await asyncio.gather(cutting, removing, return_exceptions=True)
+        for task in (cutting, removing, finding):
+            task.cancel()
+        await asyncio.gather(cutting, removing, finding, return_exceptions=True)
         if attempt == settings.paintings:
             raise NoWorld(f"no painting passed the critic: {verdict.get('reason')}")
         scene = await step(f"revise {attempt}", art_director.revise(client, scene, verdict, meter, settings),
@@ -100,13 +104,17 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
     if isinstance(edit, BaseException):
         log.info("the repaint without subjects failed, the plate is filled locally: %s", edit)
         edit = None
+    if isinstance(regions, BaseException):
+        log.info("finding what moves failed, only the subjects move: %s", regions)
+        regions = nature.Regions(trees="trees" in (scene.get("nature") or []))
     plate_png, source = await step("plate", plate.make_plate(client, painting, edit, layers, meter, settings),
                                    lambda result: result[1])
     if plate_png is None:
         layers = []
     return World(scene=scene, painting=painting, verdict=verdict, layers=layers, plate=plate_png,
                  plate_source=source, paintings=attempt, trace=trace, meter=meter,
-                 seconds=time.monotonic() - started)
+                 seconds=time.monotonic() - started, regions=regions,
+                 lights=nature.lights_from(layers, scene))
 
 
 async def make_world_or_none(client, meditation: Meditation, *, settings: Settings = DEFAULT,
