@@ -231,25 +231,54 @@ void main() {
     },
   );
 
-  testWidgets('only sky drifts into the sky: a treetop beside it never comes along', (
-    tester,
-  ) async {
-    final (painting, map) = (await tester.runAsync(_treetop))!;
-    final scene = LivingBackground(
-      plate: MemoryImage(painting),
-      living: WorldLiving(regions: MemoryImage(map), sky: true),
-      clockSeconds: 22.5, // the drift at its widest
-    );
-    final shot = await shoot(tester, scene);
-    expect(drawing(), findsOneWidget);
-    var dark = 0;
-    for (var y = 25; y < 45; y++) {
-      for (var x = 52; x < 56; x++) {
-        if (shot[(y * _w + x) * 4] < 150) dark++;
+  testWidgets(
+    'without a region map the crowns still sway, over a map with nothing in it',
+    (tester) async {
+      Widget crowns(double t) => LivingBackground(
+        plate: plate,
+        living: const WorldLiving(trees: true),
+        clockSeconds: t,
+      );
+      final a = await shoot(tester, crowns(2.0));
+      expect(
+        drawing(),
+        findsOneWidget,
+        reason: 'the shader draws, with no map',
+      );
+      final b = await shoot(tester, crowns(3.3));
+      expect(
+        differing(a, b, _w, 0, (_h * 0.3).floor()),
+        greaterThan(0),
+        reason: 'the crowns sway',
+      );
+      // The same empty map as the browser's: no water, sky, grass or stream.
+      final empty = await tester.runAsync(
+        () => LivingBackground.noRegions.toByteData(),
+      );
+      expect(empty!.buffer.asUint8List(), [0, 0, 0, 255]);
+    },
+  );
+
+  testWidgets(
+    'only sky drifts into the sky: a treetop beside it never comes along',
+    (tester) async {
+      final (painting, map) = (await tester.runAsync(_treetop))!;
+      final scene = LivingBackground(
+        plate: MemoryImage(painting),
+        living: WorldLiving(regions: MemoryImage(map), sky: true),
+        clockSeconds: 22.5, // the drift at its widest
+      );
+      final shot = await shoot(tester, scene);
+      expect(drawing(), findsOneWidget);
+      var dark = 0;
+      for (var y = 25; y < 45; y++) {
+        for (var x = 52; x < 56; x++) {
+          if (shot[(y * _w + x) * 4] < 150) dark++;
+        }
       }
-    }
-    expect(dark, 0, reason: 'no ghost of the treetop in the sky beside it');
-  });
+      expect(dark, 0, reason: 'no ghost of the treetop in the sky beside it');
+    },
+  );
 
   testWidgets(
     'a stream flows, and the lake and the sky in the same map still move',

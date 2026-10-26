@@ -97,6 +97,24 @@ class LivingBackground extends StatefulWidget {
   /// The asset key of the shader (declared under flutter: shaders: in the pubspec).
   static const shaderAsset = 'shaders/living.frag';
 
+  /// The shader's clock wraps every four hours: its sines stay exact on any
+  /// GPU, and no scene lasts that long, so the wrap's jump is never seen.
+  static const wrapSeconds = 4 * 3600.0;
+
+  /// A region map with nothing in it (no water, sky, grass or stream), for a
+  /// world without one: its crowns and lights still move, as in a browser.
+  static final ui.Image noRegions = () {
+    final recorder = ui.PictureRecorder();
+    Canvas(recorder).drawRect(
+      const Rect.fromLTWH(0, 0, 1, 1),
+      Paint()..color = const Color(0xFF000000),
+    );
+    final picture = recorder.endRecording();
+    final image = picture.toImageSync(1, 1);
+    picture.dispose();
+    return image;
+  }();
+
   @visibleForTesting
   static void debugReset() => _program = null;
 
@@ -106,8 +124,10 @@ class LivingBackground extends StatefulWidget {
 
 class _LivingBackgroundState extends State<LivingBackground> {
   ui.FragmentProgram? _program;
-  ui.Image? _plate;
-  ui.Image? _regions;
+  ui.FragmentShader? _shader;
+  // The pictures as their streams hand them over: ours to dispose.
+  ImageInfo? _plate;
+  ImageInfo? _regions;
   ImageStream? _plateStream;
   ImageStream? _regionsStream;
   ImageStreamListener? _plateListener;
@@ -138,14 +158,12 @@ class _LivingBackgroundState extends State<LivingBackground> {
 
   void _resolve() {
     final config = createLocalImageConfiguration(context);
-    _plateStream = _listen(
-      widget.plate,
-      config,
-      _plateStream,
-      _plateListener,
-      (image) => _plate = image,
-      (l) => _plateListener = l,
-    );
+    _plateStream = _listen(widget.plate, config, _plateStream, _plateListener, (
+      info,
+    ) {
+      _plate?.dispose();
+      _plate = info;
+    }, (l) => _plateListener = l);
     final regions = widget.living.regions;
     if (regions != null) {
       _regionsStream = _listen(
@@ -153,7 +171,10 @@ class _LivingBackgroundState extends State<LivingBackground> {
         config,
         _regionsStream,
         _regionsListener,
-        (image) => _regions = image,
+        (info) {
+          _regions?.dispose();
+          _regions = info;
+        },
         (l) => _regionsListener = l,
       );
     }
@@ -164,14 +185,18 @@ class _LivingBackgroundState extends State<LivingBackground> {
     ImageConfiguration config,
     ImageStream? old,
     ImageStreamListener? oldListener,
-    void Function(ui.Image) keep,
+    void Function(ImageInfo) keep,
     void Function(ImageStreamListener) remember,
   ) {
     final stream = provider.resolve(config);
     if (old?.key == stream.key && oldListener != null) return old!;
     if (old != null && oldListener != null) old.removeListener(oldListener);
     final listener = ImageStreamListener((info, _) {
-      if (mounted) setState(() => keep(info.image));
+      if (mounted) {
+        setState(() => keep(info));
+      } else {
+        info.dispose();
+      }
     });
     remember(listener);
     stream.addListener(listener);
@@ -184,14 +209,17 @@ class _LivingBackgroundState extends State<LivingBackground> {
     if (_regionsListener != null) {
       _regionsStream?.removeListener(_regionsListener!);
     }
+    _plate?.dispose();
+    _regions?.dispose();
+    _shader?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final program = _program, plate = _plate;
+    final program = _program, plate = _plate?.image;
     final living = widget.living;
-    final regions = living.mapped ? _regions : null;
+    final regions = living.mapped ? _regions?.image : null;
     final ready =
         program != null && plate != null && (!living.mapped || regions != null);
     if (!ready) {
@@ -203,15 +231,13 @@ class _LivingBackgroundState extends State<LivingBackground> {
     }
     return CustomPaint(
       painter: _LivingPainter(
-        program: program,
+        // One shader for the life of this widget, its values set each frame.
+        shader: _shader ??= program.fragmentShader(),
         plate: plate,
-        regions:
-            regions ??
-            plate, // unmapped: a placeholder the shader never reads (all regions off)
+        regions: regions ?? LivingBackground.noRegions,
         living: living,
         mapped: regions != null,
-        // Wrapped to an hour: the shader's sines stay exact on any GPU.
-        time: widget.clockSeconds % 3600,
+        time: widget.clockSeconds % LivingBackground.wrapSeconds,
         motion: widget.still ? 0 : widget.motion.clamp(0.0, 1.0),
       ),
       size: Size.infinite,
@@ -221,7 +247,7 @@ class _LivingBackgroundState extends State<LivingBackground> {
 
 class _LivingPainter extends CustomPainter {
   _LivingPainter({
-    required this.program,
+    required this.shader,
     required this.plate,
     required this.regions,
     required this.living,
@@ -230,7 +256,7 @@ class _LivingPainter extends CustomPainter {
     required this.motion,
   });
 
-  final ui.FragmentProgram program;
+  final ui.FragmentShader shader;
   final ui.Image plate;
   final ui.Image regions;
   final WorldLiving living;
@@ -240,7 +266,6 @@ class _LivingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final shader = program.fragmentShader();
     final light = living.lights.isEmpty ? null : living.lights.first;
     double on(bool v) => v && mapped ? 1 : 0;
     final values = <double>[
