@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+out/
+*.egg-info/
+.env
+*.key
+.DS_Store
+flutter/**/.dart_tool/
+flutter/**/build/
+flutter/**/.flutter-plugins*
+flutter/**/pubspec.lock
