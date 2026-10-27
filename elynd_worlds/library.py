@@ -19,6 +19,7 @@ chooses only among the dark, quiet worlds, any other only among the rest.
 from __future__ import annotations
 
 import json
+import zlib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -138,6 +139,20 @@ async def pick(client, meditation: Meditation, entries: list[Entry], meter: Mete
     meter.spark(getattr(response, "usage", None), "pick")
     answer = json.loads(response.choices[0].message.content)
     return choose(answer.get("choices") or [], candidates, recent, own_world=answer.get("own_world") is True)
+
+
+def fallback(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = ()) -> Pick | None:
+    """A library world chosen without Muse Spark, for when it cannot answer: one of the right kind (a sleep
+    world for a sleep meditation), not one seen lately when there is another. It fits nobody in
+    particular (fit 0), so a world is still painted for the meditation when that is possible."""
+    sleep = is_sleep(meditation)
+    candidates = [e for e in entries if e.sleep == sleep]
+    if not candidates:
+        return None
+    seen = set(recent)
+    fresh = [e for e in candidates if e.id not in seen] or candidates
+    # The same meditation always gets the same one: stable across a retry, varied across meditations.
+    return Pick(fresh[zlib.crc32(meditation.script.encode()) % len(fresh)], 0)
 
 
 def needs_own_world(chosen: Pick | None, settings: Settings = DEFAULT) -> bool:

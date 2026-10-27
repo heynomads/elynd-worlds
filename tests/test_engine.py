@@ -721,3 +721,14 @@ async def test_when_no_muse_spark_model_is_found_the_world_fails_as_any_failure_
     with pytest.raises(ValueError, match="contributor"):
         Settings(spark_fallback_model="muse-spark-1.2-contributor")
 
+
+def test_without_muse_spark_a_library_world_of_the_right_kind_is_still_chosen():
+    sleepy = Meditation(script="Let your body grow heavy.", technique="sleep_journey")
+    chosen = library.fallback(sleepy, LIBRARY)
+    assert chosen.entry.sleep and chosen.fit == 0 and library.needs_own_world(chosen)
+    assert library.fallback(sleepy, LIBRARY) == chosen  # stable for the same meditation
+    awake = library.fallback(MEDITATION, LIBRARY, recent=["beach-dawn", "forestlake-mist"])
+    assert awake.entry.id == "wildflowers-golden"  # the only one not seen lately
+    assert library.fallback(MEDITATION, LIBRARY[:2], recent=["beach-dawn", "forestlake-mist"]) is not None
+    assert library.fallback(sleepy, LIBRARY[:3]) is None  # no sleep world at all
+
