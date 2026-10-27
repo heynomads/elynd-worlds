@@ -8,6 +8,7 @@ import dataclasses
 import io
 import json
 import time
+from pathlib import Path
 
 import httpx
 import numpy as np
@@ -850,6 +851,29 @@ def test_without_a_place_the_world_fits_how_the_listener_feels():
         "pine": 1, "lake": 1, "bench": 1, "beach": 1}
     # No feeling known: as before (by time and weather, then the meditation's own pick).
     assert library.local(breathing, tagged).entry.id in {e.id for e in tagged if not e.sleep}
+
+
+def test_a_place_named_in_german_spanish_or_french_is_read_in_that_language():
+    # ELYND speaks four languages; a German forest meditation must not open on a lake for want of a word.
+    german = Meditation(script="Stell dir vor, du gehst durch einen stillen Buchenwald. Ein Bergsee glitzert.",
+                        language="de")
+    assert library._named(german.script, "de") == {"forest": 1, "lake": 1}
+    assert library.local(german, LIBRARY).entry.id == "forestlake-mist" and library.local(german, LIBRARY).place
+    spanish = Meditation(script="Imagina una playa tranquila. Las olas llegan despacio a la orilla.", language="es")
+    assert library.local(spanish, LIBRARY).entry.id == "beach-dawn"
+    french = Meditation(script="Imagine un lac calme dans la forêt, à l'aube.", language="fr")
+    assert library._named(french.script, "fr") == {"lake": 1, "forest": 1, "dawn": 1}
+    for name, path in (("german_forest", "de"), ("spanish_beach", "es")):   # the engine's own examples
+        script = (Path(__file__).parents[1] / "examples" / f"{name}.txt").read_text().split("\n", 1)[1]
+        assert library._named(script, path).keys() & library.PLACES
+    # Read in its own language only ("see" is a lake in German, a verb in English), and never a word that means
+    # something else too: Kiefer is also the jaw, Einfluss is no river, anregen no rain, morgen is tomorrow.
+    assert not library._named("Just see how the breath moves, and let it go.", "en")
+    assert library._named("Sieh den See.", "de") == {"lake": 1}
+    body = ("Entspanne deinen Kiefer. Spüre den Einfluss deines Atems, lass alles weg. Das kann dich anregen. "
+            "Morgen ist ein neuer Tag. Ein Blumenmeer.")
+    assert not library._named(body, "de")
+    assert not library._named("Mañana será otro día. Que haya paz.", "es") and not library._named("J'ai été là.", "fr")
 
 
 async def test_muse_spark_tags_each_library_world_with_the_feelings_it_suits():

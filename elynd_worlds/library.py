@@ -184,6 +184,102 @@ SYNONYMS = {"ocean": "sea", "seaside": "sea", "sand": "beach", "sandy": "beach",
             "snowy": "snow", "snowfall": "snow", "snowflakes": "snow", "winter": "snow", "flowers": "garden"}
 NAMED = PLACES | DETAILS | TIMES
 
+# The same names in the app's other languages, by what they name. Read only in a meditation of that language:
+# "see" is a lake in German and a verb in English. Left out on purpose where a word means something else too:
+# Kiefer (pine, and the jaw of a body scan), morgen (tomorrow), Weg (away), Fluss in Einfluss (influence),
+# Regen in anregen (to stimulate), mañana (tomorrow), haya (a beech, and "there may be"), fuente (a source),
+# été (summer, and "been"), serre (a greenhouse, and "squeezes").
+FOREIGN_NAMES = {
+    "de": {
+        "beach": "strand strände strandes", "sea": "meer meeres mittelmeer ozean ostsee nordsee", "shore": "ufer",
+        "coast": "küste küsten", "cliff": "klippe klippen", "bay": "bucht", "lagoon": "lagune",
+        "harbour": "hafen", "island": "insel inseln", "lake": "see seen sees", "pond": "teich teiche weiher",
+        "lilies": "seerose seerosen", "river": "fluss flusses flüsse flusslauf", "stream": "bach baches bäche",
+        "waterfall": "wasserfall wasserfälle", "marsh": "moor sumpf", "reeds": "schilf",
+        "forest": "wald waldes wälder", "pine": "kiefern pinie pinien tanne tannen", "beech": "buche",
+        "birch": "birke birken", "oak": "eiche eichen", "bamboo": "bambus", "grove": "hain",
+        "orchard": "obstgarten obstwiese", "garden": "garten gärten", "meadow": "wiese wiesen",
+        "field": "feld felder", "hills": "hügel", "valley": "tal täler", "mountain": "berg berge gebirge",
+        "peak": "gipfel", "summit": "bergspitze", "ridge": "grat bergrücken", "alpine": "alm alpen",
+        "glacier": "gletscher", "dunes": "düne dünen", "desert": "wüste", "canyon": "schlucht",
+        "cabin": "hütte hütten", "cottage": "häuschen", "barn": "scheune", "village": "dorf dörfer",
+        "city": "stadt", "rooftop": "dachterrasse", "temple": "tempel", "courtyard": "innenhof",
+        "greenhouse": "gewächshaus", "treehouse": "baumhaus", "wheat": "weizen weizenfeld kornfeld",
+        "lavender": "lavendel lavendelfeld", "tulips": "tulpen", "heather": "heide heidekraut",
+        "vineyard": "weinberg weinberge", "cherry": "kirschbaum kirschbäume kirschblüte kirschblüten",
+        "rice": "reisfeld reisfelder reisterrassen", "pier": "steg", "bench": "bank", "bridge": "brücke",
+        "path": "pfad wanderweg waldweg feldweg", "window": "fenster", "room": "zimmer",
+        "fire": "feuer kamin lagerfeuer", "lantern": "laterne laternen", "fountain": "brunnen",
+        "porch": "veranda", "hammock": "hängematte", "dawn": "sonnenaufgang morgendämmerung morgenröte",
+        "morning": "morgens morgenlicht morgensonne vormittag", "midday": "mittag mittags mittagssonne",
+        "golden": "sonnenuntergang abendsonne", "dusk": "abend abends abendlicht dämmerung",
+        "night": "nacht nachts", "stars": "sterne sternen sternenhimmel sternenlicht", "moon": "mond mondlicht vollmond",
+        "mist": "nebel neblig", "rain": "regen regentropfen", "snow": "schnee verschneit winter",
+        "autumn": "herbst", "spring": "frühling", "summer": "sommer", "blossom": "blüte blüten",
+        "aurora": "polarlicht polarlichter nordlicht nordlichter",
+    },
+    "es": {
+        "beach": "playa playas arena", "sea": "mar océano olas", "shore": "orilla orillas", "coast": "costa",
+        "cliff": "acantilado acantilados", "bay": "bahía", "lagoon": "laguna", "harbour": "puerto",
+        "island": "isla islas", "lake": "lago lagos", "pond": "estanque", "lilies": "nenúfares",
+        "river": "río ríos", "stream": "arroyo riachuelo", "waterfall": "cascada cascadas catarata",
+        "fjord": "fiordo", "marsh": "pantano marisma", "reeds": "juncos", "forest": "bosque bosques selva",
+        "pine": "pino pinos pinar", "beech": "hayedo", "birch": "abedul abedules", "oak": "roble robles",
+        "redwoods": "secuoyas", "bamboo": "bambú", "grove": "arboleda", "orchard": "huerto huerta",
+        "garden": "jardín jardines flores", "meadow": "prado prados pradera", "field": "campo campos",
+        "hills": "colina colinas", "valley": "valle valles", "mountain": "montaña montañas monte",
+        "peak": "pico picos", "summit": "cima cumbre", "ridge": "cresta", "glacier": "glaciar",
+        "dunes": "dunas", "desert": "desierto", "canyon": "cañón", "cabin": "cabaña", "cottage": "casita",
+        "barn": "granero", "village": "pueblo aldea", "city": "ciudad", "rooftop": "azotea",
+        "temple": "templo", "courtyard": "patio", "greenhouse": "invernadero", "park": "parque",
+        "wheat": "trigo trigal", "lavender": "lavanda", "tulips": "tulipanes", "heather": "brezo",
+        "vineyard": "viñedo viñedos", "cherry": "cerezo cerezos", "rice": "arrozal arrozales", "pier": "muelle",
+        "bench": "banco", "bridge": "puente", "path": "sendero senda camino", "window": "ventana",
+        "room": "habitación", "fire": "fuego hoguera chimenea", "lantern": "farol farolillo linterna",
+        "porch": "porche", "hammock": "hamaca", "dawn": "amanecer alba aurora", "midday": "mediodía",
+        "golden": "atardecer", "dusk": "anochecer crepúsculo", "night": "noche", "stars": "estrellas estrellado",
+        "moon": "luna", "mist": "niebla bruma neblina", "rain": "lluvia", "snow": "nieve nevado invierno",
+        "autumn": "otoño", "spring": "primavera", "summer": "verano", "aurora": "boreal",
+    },
+    "fr": {
+        "beach": "plage plages sable", "sea": "mer océan vagues", "shore": "rivage rive", "coast": "côte",
+        "cliff": "falaise falaises", "bay": "baie", "lagoon": "lagune", "harbour": "port",
+        "island": "île îles", "lake": "lac lacs", "pond": "étang mare", "lilies": "nénuphars",
+        "river": "rivière fleuve", "stream": "ruisseau", "waterfall": "cascade", "marsh": "marais",
+        "reeds": "roseaux", "forest": "forêt forêts bois", "pine": "pin pins", "beech": "hêtre hêtres hêtraie",
+        "birch": "bouleau bouleaux", "oak": "chêne chênes", "redwoods": "séquoias", "bamboo": "bambou bambous",
+        "grove": "bosquet", "orchard": "verger", "garden": "jardin jardins fleurs",
+        "meadow": "prairie pré prés", "field": "champ champs", "hills": "colline collines", "valley": "vallée",
+        "mountain": "montagne montagnes", "peak": "pic", "summit": "sommet", "ridge": "crête",
+        "desert": "désert", "cabin": "cabane", "cottage": "chaumière", "barn": "grange", "city": "ville",
+        "courtyard": "cour", "park": "parc", "wheat": "blé", "lavender": "lavande",
+        "tulips": "tulipes", "heather": "bruyère", "vineyard": "vigne vignes vignoble",
+        "cherry": "cerisier cerisiers", "rice": "rizière rizières", "pier": "ponton jetée", "bench": "banc",
+        "bridge": "pont", "path": "sentier chemin", "window": "fenêtre", "room": "chambre pièce",
+        "fire": "feu cheminée", "lantern": "lanterne", "fountain": "fontaine", "porch": "véranda",
+        "hammock": "hamac", "dawn": "aube aurore", "morning": "matin matinée", "midday": "midi",
+        "dusk": "soir soirée crépuscule", "night": "nuit", "stars": "étoiles étoilé", "moon": "lune",
+        "mist": "brume brouillard", "rain": "pluie", "snow": "neige enneigé hiver", "autumn": "automne",
+        "spring": "printemps", "aurora": "boréale",
+    },
+}
+FOREIGN = {language: {word: name for name, words in names.items() for word in words.split()}
+           for language, names in FOREIGN_NAMES.items()}
+# German joins words: a compound names what its last part names ("Buchenwald": forest, "Bergsee": lake). Only
+# endings that end no other common word (not Meer: a Blumenmeer is flowers); longest first, so a "Weinberg"
+# stays a vineyard.
+GERMAN_ENDINGS = sorted(
+    {"wasserfall": "waterfall", "weinberg": "vineyard", "obstgarten": "orchard", "wald": "forest", "wälder": "forest",
+     "see": "lake", "seen": "lake", "strand": "beach", "küste": "coast", "ufer": "shore",
+     "bucht": "bay", "insel": "island", "teich": "pond", "bach": "stream", "garten": "garden",
+     "wiese": "meadow", "wiesen": "meadow", "hütte": "cabin", "dorf": "village", "berg": "mountain",
+     "berge": "mountain", "gipfel": "peak", "gletscher": "glacier", "dünen": "dunes", "tempel": "temple",
+     "brücke": "bridge", "pfad": "path", "bank": "bench", "zimmer": "room", "laterne": "lantern",
+     "schnee": "snow", "nebel": "mist", "mond": "moon", "sterne": "stars", "nacht": "night"}.items(),
+    key=lambda pair: -len(pair[0]))
+assert all(name in NAMED for names in FOREIGN_NAMES.values() for name in names), "a foreign word names nothing"
+assert all(name in NAMED for _, name in GERMAN_ENDINGS), "a German ending names nothing"
+
 
 def _plain(word: str) -> str:
     """The word as NAMED lists it: a plural without its s or es ("pines": pine, "beaches": beach), never
@@ -195,9 +291,24 @@ def _plain(word: str) -> str:
     return word
 
 
-def _named(text: str) -> Counter:
-    """How often a text names each place, detail, time and weather."""
-    words = (_plain(SYNONYMS.get(w, w)) for w in re.findall(r"[a-z]+", text.lower()))
+def _name(word: str, language: str) -> str:
+    """What one word names (a NAMED word), in English or in the meditation's own language, else the word."""
+    foreign = FOREIGN.get(language)
+    if foreign:
+        if word in foreign:
+            return foreign[word]
+        if language == "de" and len(word) > 5:
+            for ending, name in GERMAN_ENDINGS:
+                if word.endswith(ending) and len(word) - len(ending) >= 3:
+                    return name
+    return _plain(SYNONYMS.get(word, word))
+
+
+def _named(text: str, language: str = "en") -> Counter:
+    """How often a text names each place, detail, time and weather, in English or in its own language
+    (`language`: the meditation's, en, de, es or fr)."""
+    language = (language or "en")[:2].lower()
+    words = (_name(w, language) for w in re.findall(r"[^\W\d_]+", text.lower()))
     return Counter(w for w in words if w in NAMED)
 
 
@@ -215,7 +326,7 @@ def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = 
     candidates = [e for e in entries if e.sleep == sleep] or list(entries)
     if not candidates:
         return None
-    said = _named(" ".join(meditation.script.split()[:DEFAULT.pick_words]))
+    said = _named(" ".join(meditation.script.split()[:DEFAULT.pick_words]), meditation.language)
     moods = [m for m in moods if m in MOODS]
     names_place = any(w in PLACES for w in said)
 
