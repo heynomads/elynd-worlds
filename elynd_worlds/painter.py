@@ -17,7 +17,8 @@ from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listene
 from .settings import DEFAULT, Settings
 
 STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
-         "no people, no faces, no hands, no text, no letters, no logos, no symbols.")
+         "any animal or person at rest and painted naturally, a person small or seen from behind, "
+         "no face up close; no text, no letters, no logos, no symbols.")
 
 
 def painting_prompt(scene: dict[str, Any]) -> str:
@@ -38,7 +39,7 @@ def plate_prompt(scene: dict[str, Any]) -> str:
     return (f"Remove the {names} from this painting completely and paint what would be behind "
             f"{'it' if len(subjects) == 1 else 'them'} instead, continuing the surroundings "
             "naturally. Change nothing else: same place, light, palette, brushwork and framing. "
-            "No new objects, no people, no text.")
+            "No new objects, no people or animals, no text.")
 
 
 def _for_the_listener(user: str | None = None) -> dict[str, Any]:

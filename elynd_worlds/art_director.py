@@ -42,7 +42,7 @@ SUBJECT_SCHEMA: dict[str, Any] = {
         "motion": {"type": "string", "enum": ["sway", "drift", "float", "flutter", "still"],
                    "description": "sway: a branch or flower in the wind; drift: mist, a cloud; float: a boat on water, "
                                   "a leaf in the air; flutter: a butterfly or moth (folds its wings now and then); "
-                                  "still: stone, post, shell, cabin, lantern"},
+                                  "still: stone, post, shell, cabin, lantern, a resting animal or person"},
         "glows": {"type": "boolean", "description": "A light that glows by itself: lantern, candle, campfire"},
         "where": {"type": "string", "enum": ["left", "centre", "right"],
                   "description": "Across the picture; every subject sits in its middle band (35-60% down)"},
@@ -83,8 +83,13 @@ Rules:
    The phone shows its title over the top 15% of the picture and its words and controls over the
    bottom 35%, under a soft shade: keep both calm and simple (open sky; still water, soft ground or
    sand), and put everything that matters in the middle band, 35-60% down the picture.
-3. Never: people, faces, hands, bodies, animals looking at the viewer, text, letters, numbers, logos,
-   symbols, flags, religious icons, weapons.
+3. Animals and people belong in a world when the meditation brings them (a dog on its beach, a monkey
+   asleep on its blanket, swans on the lake, someone sitting on a bench): always at rest (lying,
+   sitting, standing, looking out, asleep, floating on water), never running, jumping or walking,
+   since they cannot move like that on the phone; an animal never looks at the viewer; a person is
+   small, at a distance or seen from behind, never a face up close. Paint what the meditation says of
+   them (a golden retriever, a small monkey, a grey-haired woman), never a name.
+   Never: text, letters, numbers, logos, symbols, flags, religious icons, weapons.
 4. Nothing unsettling: no storms, threatening darkness, falling, deep water seen from below,
    enclosed spaces, ruins, decay.
 5. subjects: 1-3 foreground objects that will be cut out of the painting and move gently, the way
@@ -92,19 +97,21 @@ Rules:
    stays still). Each must be ONE solid, free-standing object with a clear outline ("smooth
    stone", "wooden rowboat", "paper lantern", "seashell", "ceramic teacup", "white butterfly"), never
    a texture, mass or substance (grass, waves, water, mist, clouds, sand, a field of flowers, a
-   forest). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
+   forest). An animal or a person is one subject too ("sleeping dog", "small monkey", "white swan"). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
    noun phrase of 1-3 words. Make each large enough to notice on a phone (at least a tenth of the
    picture's width). Keep them apart from each other, fully in view, clearly separated from
    what is behind them, inside the middle band (35-60% down the picture), never at the bottom, and
    within the middle 70% of the width (phones crop the sides).
    attached: "ground" if it rests on the ground or on water, "edge" if it grows into the picture from
    an edge (a branch), "air" if it floats or hangs free. motion: how it moves in nature (a boat on
-   water floats, a butterfly flutters, a stone or a lantern is still). glows: true only for a light
+   water floats, a butterfly flutters, a stone, a lantern, a resting animal or person is still: it
+   stays as painted while the world moves around it; a swan or a duck on the water floats). glows: true only for a light
    that glows by itself (a lantern, a candle, a campfire).
 6. prompt: one paragraph of 60-120 words for the image model, in English: the place, the light, the
    palette, the air, and every subject by exactly its name and with its position in the middle of the
    picture. Say that the bottom of the picture is calm and simple.
-7. Never copy the listener's words, names, people or personal details into any field. Scenery only.
+7. Never copy the listener's words or anyone's name into any field: describe the place, its things,
+   animals and people in your own words.
 8. A meditation for falling asleep gets a dark, warm, quiet world (night or late dusk, low contrast)
    and sleep = true.
 9. nature: the parts of the place that move in nature and are clearly visible in the painting:

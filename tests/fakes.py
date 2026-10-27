@@ -41,9 +41,9 @@ SCENE = {
                "a pine branch entering from the upper left edge, soft pastel light, painterly."),
     "sleep": False,
 }
-PASS = {"belongs": True, "calm": True, "people_or_faces": False, "text_or_symbols": False,
+PASS = {"belongs": True, "calm": True, "figures_wrong": False, "text_or_symbols": False,
         "subjects_seen": ["smooth stone", "pine branch"], "score": 9, "reason": "Calm and on brief.", "fix": ""}
-FAIL = {**PASS, "people_or_faces": True, "score": 4, "reason": "A figure stands on the shore.",
+FAIL = {**PASS, "figures_wrong": True, "score": 4, "reason": "The dog on the shore has five legs.",
         "fix": "Remove any figure; keep the shore empty."}
 
 

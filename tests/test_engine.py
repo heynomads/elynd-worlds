@@ -106,7 +106,7 @@ async def test_design_and_revise_go_to_muse_spark_with_strict_json():
 
 def test_a_painting_passes_only_if_safe_calm_on_brief_and_good():
     assert critic.passes(PASS)
-    for change in ({"people_or_faces": True}, {"text_or_symbols": True}, {"calm": False},
+    for change in ({"figures_wrong": True}, {"text_or_symbols": True}, {"calm": False},
                    {"belongs": False}, {"score": 6}):
         assert not critic.passes({**PASS, **change})
 
@@ -163,7 +163,7 @@ async def test_a_slow_open_model_is_not_waited_for():
 
 @pytest.mark.parametrize("given, reason", [
     ({**PASS, "reason": " "}, "No fault found; score 9 of 10."),
-    ({**FAIL, "reason": ""}, "The painting shows a person or a face."),
+    ({**FAIL, "reason": ""}, "The painting shows a person or an animal drawn wrong, or a face up close."),
     ({**PASS, "calm": False, "belongs": False, "reason": ""},
      "The painting is not calm, does not show the designed place and mood."),
 ])
@@ -547,6 +547,18 @@ def test_only_worlds_that_look_alive_stay_in_the_library():
     assert dead(*world(nature=())) == "nothing moves"
 
 
+def test_animals_and_people_may_be_in_a_world_at_rest_and_painted_naturally():
+    # Animals and people belong in a world when the meditation brings them.
+    prompt = painter.painting_prompt(art_director.check(json.loads(json.dumps(SCENE))))
+    assert "no people" not in prompt and "no face up close" in prompt and "no text" in prompt
+    assert "figures_wrong" in critic.VERDICT_SCHEMA["required"]
+    assert "people_or_faces" not in critic.VERDICT_SCHEMA["properties"]
+    assert critic.passes(PASS) and not critic.passes({**PASS, "figures_wrong": True})
+    assert "drawn wrong" in critic.reason_from_checks({**PASS, "figures_wrong": True})
+    # Never new figures in the plate: only what was cut out is painted over.
+    assert "no people or animals" in painter.plate_prompt(SCENE)
+
+
 def test_a_field_is_asked_for_by_its_plants():
     def plants(place):
         return regions_module.plants({"title": "", "place": place})
@@ -745,7 +757,7 @@ def test_pick_shows_the_choice_for_each_meditation(tmp_path, monkeypatch, capsys
     assert cli.main(["pick", str(script), "--library", str(tmp_path / "library"), "--key-file", str(key),
                      "--ledger", str(ledger)]) == 0
     line = json.loads(capsys.readouterr().out.splitlines()[0])
-    assert line == {"name": "monkey", "library": "forestlake-mist", "fit": 7, "own_world": True,
+    assert line == {"name": "monkey", "library": "forestlake-mist", "fit": 7, "own_world": True, "place": True,
                     "paint_its_own": True, "seconds": line["seconds"]}
     assert float(list(csv.DictReader(ledger.open()))[0]["usd"]) > 0  # what it cost is in the ledger
 
