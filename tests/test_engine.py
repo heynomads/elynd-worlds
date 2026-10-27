@@ -13,8 +13,8 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from elynd_worlds import (Meditation, Meter, Settings, art_director, cli, critic, cutter, library, painter, plate,
-                          timeline)
+from elynd_worlds import (Meditation, Meter, Settings, art_director, cli, critic, cutter, library, life, painter,
+                          plate, timeline)
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
@@ -733,4 +733,39 @@ def test_without_muse_spark_a_library_world_of_the_right_kind_is_still_chosen():
     assert awake.entry.id == "wildflowers-golden"  # the only one not seen lately
     assert library.fallback(MEDITATION, LIBRARY[:2], recent=["beach-dawn", "forestlake-mist"]) is not None
     assert library.fallback(sleepy, LIBRARY[:3]) is None  # no sleep world at all
+
+
+# ─── life: birds, stars, fish, cloud shadows, rain and petals ───────────
+
+LAKE = {"title": "Misty Lake", "place": "A still lake among pines", "time_of_day": "dawn", "air": "soft mist"}
+OPEN_WATER = {"water": True, "sky": True, "grass": False}
+
+
+def test_what_lives_in_a_world_follows_its_design():
+    assert life.life(LAKE, OPEN_WATER) == {"birds": "flock", "night": False, "fish": True, "shadows": False,
+                                           "particles": "none"}
+    sea = life.life({**LAKE, "place": "A quiet harbour by the sea"}, OPEN_WATER)
+    assert sea["birds"] == "gulls" and not sea["fish"]
+    assert life.life({**LAKE, "time_of_day": "night"}, OPEN_WATER) == {
+        "birds": "none", "night": True, "fish": False, "shadows": False, "particles": "none"}
+    assert life.life({**LAKE, "sleep": True}, OPEN_WATER)["birds"] == "none"
+    rain = life.life({**LAKE, "air": "a soft, steady rain"}, OPEN_WATER)
+    assert rain["particles"] == "rain" and rain["birds"] == "none" and not rain["fish"]
+    assert life.life({**LAKE, "place": "A lush rainforest with ferns"}, OPEN_WATER)["particles"] == "none"
+    meadow = {"water": False, "sky": True, "grass": True}
+    blossom = {"title": "Cherry Orchard", "place": "Cherry trees in blossom", "time_of_day": "midday",
+               "particles": "none"}
+    assert life.life(blossom, meadow) == {"birds": "flock", "night": False, "fish": False, "shadows": True,
+                                          "particles": "petals"}
+    assert life.life({**blossom, "particles": "pollen"}, meadow)["particles"] == "pollen"  # the design's choice stays
+    assert life.life(LAKE, {"water": True, "sky": False})["birds"] == "none"  # no open sky, no birds
+    assert not life.life({**LAKE, "place": "A frozen lake in winter"}, OPEN_WATER)["fish"]
+    assert not life.life({**LAKE, "place": "A tiny island in a still lake"}, OPEN_WATER)["birds"] == "gulls"
+
+
+async def test_the_manifest_carries_what_lives_in_the_world():
+    world = await make_world(FakeClient(), MEDITATION)
+    living = world.manifest()["living"]
+    assert {"birds", "night", "fish", "shadows", "particles"} <= set(living)
+    assert living["birds"] == ("flock" if world.regions.present.get("sky") else "none")
 

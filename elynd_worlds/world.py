@@ -22,7 +22,11 @@ Manifest schema "elynd.world/1" (world.json next to the pictures):
         "water": true, "sky": true, "grass": false, "stream": false, "trees": false,
         "horizon": 0.52,                   # where the water starts
         "lights": [{"x": 0.5, "y": 0.6, "size": 0.08}],   # glowing subjects flicker here
-        "particles": "none"                # leaves | snow | pollen | fireflies | none
+        "particles": "none",               # leaves | snow | pollen | fireflies | rain | petals | none
+        "birds": "gulls",                  # gulls | flock | none: crossing the open sky now and then
+        "night": false,                    # stars twinkle, now and then a shooting star
+        "fish": false,                     # rings of a fish rising on calm fresh water
+        "shadows": false                   # cloud shadows sliding over the grass
       },
       "cost_usd": 0.0432, "seconds": 41.2, "trace": [...]
     }
@@ -36,6 +40,7 @@ from typing import Any
 
 from .cutter import EDGE_PX, Layer
 from .meta import Meter, png_size
+from .life import life, seed
 from .regions import Regions
 
 SCHEMA = "elynd.world/1"
@@ -122,7 +127,9 @@ class World:
                 "regions": "regions.png" if self.regions.png else None,
                 **self.regions.manifest(),
                 "lights": list(self.lights) if self.moving else [],
-                "particles": self.scene.get("particles") or "none",
+                # birds, night, fish, shadows, and particles (rain or petals where they belong): life.py
+                **life(self.scene, self.regions.present),
+                "seed": seed(self.scene),
             },
             "cost_usd": self.meter.usd,
             "seconds": round(self.seconds, 2),
