@@ -3,6 +3,7 @@
 //   flutter test test/render_preview_test.dart \
 //     --dart-define=WORLD_DIR=/abs/out/<run>/<world> --dart-define=FRAMES_DIR=/abs/frames \
 //     [--dart-define=SECONDS=8] [--dart-define=START=5] [--dart-define=CLOCK=0] [--dart-define=SILENT=true]
+//     [--dart-define=RATIO=2] (pixels per point: 1.4 gives 546 x 1182, the review videos' width, about twice as fast)
 //   ffmpeg -framerate 30 -i /abs/frames/%04d.png -pix_fmt yuv420p preview.mp4
 //
 // Skipped unless WORLD_DIR and FRAMES_DIR are given.
@@ -22,6 +23,7 @@ const _start = int.fromEnvironment('START', defaultValue: 5);
 // The world's own clock at the first frame, to start when a flock passes or a fish rises.
 const _clock = int.fromEnvironment('CLOCK');
 const _silent = bool.fromEnvironment('SILENT');
+final _ratio = double.tryParse(const String.fromEnvironment('RATIO')) ?? 2;
 
 void main() {
   testWidgets('render a world to frames', (tester) async {
@@ -108,7 +110,7 @@ void main() {
       await tester.runAsync(() async {
         final boundary =
             shot.currentContext!.findRenderObject()! as RenderRepaintBoundary;
-        final image = await boundary.toImage(pixelRatio: 2);
+        final image = await boundary.toImage(pixelRatio: _ratio);
         final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
         image.dispose();
         await File(
