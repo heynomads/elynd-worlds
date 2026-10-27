@@ -157,15 +157,17 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
     subjects = scene.get("subjects") or []
     if not 1 <= len(subjects) <= 3:
         raise SceneError("a scene needs 1-3 subjects")
-    names = set()
+    names, kept = set(), []
     for subject in subjects:
         name = " ".join((subject.get("name") or "").split()).lower()
         if not name or len(name.split()) > 4:
             raise SceneError(f"subject is not a short noun phrase: {subject.get('name')!r}")
         if name in names:
-            raise SceneError(f"subject named twice: {name!r}")
+            continue  # "two wooden chairs" designed as two subjects: one layer holds both (cutter.find)
         names.add(name)
         subject["name"] = name
+        kept.append(subject)
+    subjects = kept
     if len((scene.get("prompt") or "").split()) < 20:
         raise SceneError("the painting prompt is too short")
     if not (scene.get("title") or "").strip():
@@ -174,7 +176,7 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
         subject["glows"] = subject.get("glows") is True
     nature = [n for n in dict.fromkeys(scene.get("nature") or []) if n in NATURE]
     particles = scene.get("particles") if scene.get("particles") in PARTICLES else "none"
-    return {**scene, "palette": palette[:5], "nature": nature, "particles": particles}
+    return {**scene, "palette": palette[:5], "subjects": subjects, "nature": nature, "particles": particles}
 
 
 def _response_format() -> dict[str, Any]:

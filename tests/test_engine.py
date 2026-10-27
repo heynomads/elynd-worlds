@@ -78,9 +78,10 @@ def test_scene_check_cleans_and_refuses():
     assert [s["name"] for s in scene["subjects"]] == ["smooth stone", "pine branch"]
     assert art_director.check({**json.loads(json.dumps(SCENE)), "palette": ["#fff"]})["palette"] == list(
         art_director.DEFAULT_PALETTE)  # a design without a usable palette still paints, with a calm default one
+    twice = art_director.check({**json.loads(json.dumps(SCENE)), "subjects": [SCENE["subjects"][0], SCENE["subjects"][0]]})
+    assert [x["name"] for x in twice["subjects"]] == ["smooth stone"]  # two of a kind: one subject, one layer
     for broken, message in (({"subjects": []}, "1-3 subjects"),
-                            ({"prompt": "too short"}, "too short"),
-                            ({"subjects": [SCENE["subjects"][0], SCENE["subjects"][0]]}, "twice")):
+                            ({"prompt": "too short"}, "too short")):
         with pytest.raises(art_director.SceneError, match=message):
             art_director.check({**json.loads(json.dumps(SCENE)), **broken})
 
