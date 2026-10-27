@@ -65,7 +65,12 @@
     "trees": false,
     "horizon": 0.4741,
     "lights": [],
-    "particles": "none"
+    "particles": "none",
+    "birds": "gulls",
+    "night": false,
+    "fish": false,
+    "shadows": false,
+    "seed": 0.9448
    },
    "meditation": {
     "technique": "breath_awareness",
@@ -201,7 +206,12 @@
     "trees": false,
     "horizon": null,
     "lights": [],
-    "particles": "pollen"
+    "particles": "pollen",
+    "birds": "flock",
+    "night": false,
+    "fish": false,
+    "shadows": true,
+    "seed": 0.005
    },
    "meditation": {
     "technique": "body_scan",
@@ -347,7 +357,12 @@
     "trees": true,
     "horizon": null,
     "lights": [],
-    "particles": "leaves"
+    "particles": "leaves",
+    "birds": "none",
+    "night": false,
+    "fish": false,
+    "shadows": false,
+    "seed": 0.3801
    },
    "meditation": {
     "technique": "visualization",
@@ -464,7 +479,12 @@
     "trees": true,
     "horizon": 0.5684,
     "lights": [],
-    "particles": "none"
+    "particles": "none",
+    "birds": "flock",
+    "night": false,
+    "fish": true,
+    "shadows": false,
+    "seed": 0.8445
    },
    "meditation": {
     "technique": "visualization",
@@ -599,7 +619,12 @@
       "size": 0.1424
      }
     ],
-    "particles": "none"
+    "particles": "none",
+    "birds": "none",
+    "night": true,
+    "fish": false,
+    "shadows": false,
+    "seed": 0.8064
    },
    "meditation": {
     "technique": "sleep_journey",
@@ -746,7 +771,12 @@
     "trees": false,
     "horizon": 0.4805,
     "lights": [],
-    "particles": "none"
+    "particles": "none",
+    "birds": "gulls",
+    "night": false,
+    "fish": false,
+    "shadows": false,
+    "seed": 0.7633
    },
    "meditation": {
     "technique": "visualization",
