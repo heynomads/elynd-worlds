@@ -49,7 +49,11 @@ class WorldLayer {
 /// notifies anything while it builds) for the fading: the whole world while
 /// the listener arrives, a glow while their eyes are closed. Respects the
 /// platform's reduce-motion setting (Android's and iOS's): the world then stays
-/// still and only fades.
+/// still and only fades. Redrawn at most [framesPerSecond] times a second, and
+/// [glowFramesPerSecond] while it is only a glow: its motion is slow, and a
+/// phone's display would otherwise have it redrawn 60 or 120 times a second
+/// for the whole meditation, at a cost in battery. A locked screen draws
+/// nothing at all.
 class WorldScene extends StatefulWidget {
   const WorldScene({
     super.key,
@@ -120,6 +124,15 @@ class WorldScene extends StatefulWidget {
   /// the painting as painted to its full motion: it never starts mid-swell.
   static const wakeSeconds = 3.0;
 
+  /// How often the world is redrawn: like a video while it is seen, half that
+  /// while it is only a glow (eyes closed).
+  static const framesPerSecond = 30;
+  static const glowFramesPerSecond = 15;
+
+  /// Redraws so far (tests count them).
+  @visibleForTesting
+  static int debugRedraws = 0;
+
   /// How alive the world is `clockSeconds` after it appeared (0 to 1, eased).
   static double wake(double clockSeconds) =>
       Curves.easeInOut.transform((clockSeconds / wakeSeconds).clamp(0.0, 1.0));
@@ -154,6 +167,17 @@ class _WorldSceneState extends State<WorldScene>
       _position = position;
       _positionChangedAt = elapsed;
     }
+    // The next frame is due a frame's time after the last one drawn, less a
+    // little for the display's own jitter (at 60 Hz every second vsync is 33.3
+    // ms away, at 120 Hz every fourth).
+    final glow =
+        widget.followVisibility && widget.timeline.visibilityAt(_seconds) < 0.5;
+    final fps = glow
+        ? WorldScene.glowFramesPerSecond
+        : WorldScene.framesPerSecond;
+    final due = Duration(microseconds: (900000 / fps).round());
+    if (elapsed - _clock < due && _clock != Duration.zero) return;
+    WorldScene.debugRedraws++;
     setState(() => _clock = elapsed);
   }
 

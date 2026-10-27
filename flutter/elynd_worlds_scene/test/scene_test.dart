@@ -486,6 +486,54 @@ void main() {
       },
     );
 
+    testWidgets(
+      'redrawn like a video: 30 times a second, 15 while only a glow, whatever the display',
+      (tester) async {
+        // The phone's battery: never redrawn faster than the motion needs.
+        Future<int> redraws(List<double> visibility, Duration vsync) async {
+          await tester.pumpWidget(
+            host(
+              WorldScene(
+                key: UniqueKey(),
+                background: MemoryImage(_png),
+                aspect: 9 / 16,
+                timeline: WorldTimeline(
+                  breath: const [0, 0, 0, 0],
+                  visibility: visibility,
+                ),
+                positionSeconds: () => 0,
+              ),
+            ),
+          );
+          await tester.pump(const Duration(milliseconds: 100));
+          final before = WorldScene.debugRedraws;
+          for (
+            var t = Duration.zero;
+            t < const Duration(seconds: 1);
+            t += vsync
+          ) {
+            await tester.pump(vsync);
+          }
+          return WorldScene.debugRedraws - before;
+        }
+
+        const hz120 = Duration(microseconds: 8333),
+            hz60 = Duration(microseconds: 16667);
+        expect(
+          await redraws(const [1, 1, 1, 1], hz120),
+          inInclusiveRange(29, 31),
+        );
+        expect(
+          await redraws(const [1, 1, 1, 1], hz60),
+          inInclusiveRange(29, 31),
+        );
+        expect(
+          await redraws(const [0.25, 0.25, 0.25, 0.25], hz120),
+          inInclusiveRange(14, 16),
+        );
+      },
+    );
+
     testWidgets('a paused session stops breathing ahead after one second', (
       tester,
     ) async {
