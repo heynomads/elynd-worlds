@@ -79,6 +79,8 @@ class Settings:
     # meditation (where its place is set).
     pick_reasoning: str | None = "low"
     pick_words: int = 1500
+    # A library world that fits less than this (0-10) is not the session's world: one is painted for it.
+    library_min_fit: int = 5
     cut_timeout: float = 20
     world_timeout: float = 120
 

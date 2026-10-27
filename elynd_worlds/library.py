@@ -1,13 +1,17 @@
 """The library: worlds painted ahead of time, and Muse Spark choosing one for a meditation.
 
-A world made for a meditation takes about a minute, and listeners close their
-eyes early. So a session opens on a library world: one of the worlds the agent
-painted in advance, from short themes across the places guided meditations
-visit most (scripts/library_briefs.py), each checked by the critic like any
-other. Muse Spark reads the meditation, the same text the art director reads
-and nothing more, and names the three library worlds that belong to it best;
-the first one the listener has not seen lately is shown. The world made for the
-meditation takes over when it is ready.
+A world made for a meditation takes about a minute and costs about six cents,
+and most meditations visit places a library can hold. So a session first gets a
+library world: one of the worlds the agent painted in advance, from short themes
+across the places guided meditations visit most (scripts/library_briefs.py),
+each checked by the critic like any other. Muse Spark reads the meditation, the
+same text the art director reads and nothing more, names the three library
+worlds that belong to it best, and says whether the meditation is built around
+something no library world shows (a particular animal or object that matters to
+the listener, a particular person's place, an unusual setting). The first choice
+the listener has not seen lately is shown at once. When it fits, it is the
+session's world; when the meditation needs its own (`needs_own_world`), a world
+is painted for it and takes over when ready.
 
 Sleep is decided before Muse Spark is asked: a meditation for falling asleep
 chooses only among the dark, quiet worlds, any other only among the rest.
@@ -58,13 +62,16 @@ def entries_in(folders: Iterable[str | Path]) -> list[Entry]:
 @dataclass(frozen=True)
 class Pick:
     entry: Entry
-    fit: int     # 0-10: how well it belongs to the meditation (9-10: the same place and light)
+    fit: int                 # 0-10: how well it belongs to the meditation (9-10: the same place and light)
+    own_world: bool = False  # the meditation is built around something no library world shows
 
 
 PICK_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
     "properties": {
+        "own_world": {"type": "boolean",
+                      "description": "The meditation is built around something no library world shows"},
         "choices": {
             "type": "array",
             "description": "The three worlds that belong to the meditation best, best first",
@@ -79,7 +86,7 @@ PICK_SCHEMA: dict[str, Any] = {
             },
         },
     },
-    "required": ["choices"],
+    "required": ["own_world", "choices"],
 }
 
 PICK_INSTRUCTIONS = """You choose the painted world that fills a listener's phone screen while their
@@ -90,6 +97,11 @@ that belong to the meditation best, best first:
 2. If it describes no place, worlds whose light and mood suit its technique and feeling: soft and
    gentle for sadness, bright and fresh for energy or focus, warm for gratitude.
 fit (0-10): 9-10 the same place and light; 6-8 the same kind of place; 3-5 only the mood fits.
+own_world: true only if the meditation is built around something specific that none of these worlds
+shows: a particular animal or object that matters to the listener, a particular person's place (a
+grandmother's kitchen, their old street), or an unusual setting (a city rooftop, a train, a temple).
+false if it describes no place, or a common place that one of these worlds shows well (a beach, a
+river, a forest, a garden, a cabin...), even if it describes it in loving detail.
 Use the ids exactly as listed. Return only the JSON object.
 
 The library (id | title | place | time of day):
@@ -124,19 +136,25 @@ async def pick(client, meditation: Meditation, entries: list[Entry], meter: Mete
         timeout=settings.pick_timeout,
     )
     meter.spark(getattr(response, "usage", None), "pick")
-    choices = json.loads(response.choices[0].message.content).get("choices") or []
-    return choose(choices, candidates, recent)
+    answer = json.loads(response.choices[0].message.content)
+    return choose(answer.get("choices") or [], candidates, recent, own_world=answer.get("own_world") is True)
+
+
+def needs_own_world(chosen: Pick | None, settings: Settings = DEFAULT) -> bool:
+    """Whether the meditation should get a world painted for it: no library world, none that fits, or
+    one built around something no library world shows."""
+    return chosen is None or chosen.own_world or chosen.fit < settings.library_min_fit
 
 
 def choose(choices: list[dict[str, Any]], candidates: list[Entry], recent: Iterable[str] = (),
-           near: int = 2) -> Pick | None:
+           near: int = 2, own_world: bool = False) -> Pick | None:
     """The first choice the listener has not seen lately and that fits within `near` of the best."""
     by_id = {e.id: e for e in candidates}
     valid = []
     for choice in choices:
         entry = by_id.get(str(choice.get("id", "")).strip())
         if entry is not None and entry.id not in {p.entry.id for p in valid}:
-            valid.append(Pick(entry, max(0, min(10, int(choice.get("fit") or 0)))))
+            valid.append(Pick(entry, max(0, min(10, int(choice.get("fit") or 0))), own_world))
     if not valid:
         return None
     seen = set(recent)

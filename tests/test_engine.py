@@ -593,16 +593,19 @@ LIBRARY = [library.Entry("beach-dawn", "Quiet Dawn Beach", "A sandy beach at daw
 
 
 async def test_muse_spark_chooses_the_library_world_from_the_meditation():
-    client = FakeClient(picks=[{"choices": [{"id": "forestlake-mist", "fit": 9}, {"id": "beach-dawn", "fit": 4}]}])
+    client = FakeClient(picks=[{"own_world": False,
+                                "choices": [{"id": "forestlake-mist", "fit": 9}, {"id": "beach-dawn", "fit": 4}]}])
     meter = Meter()
     chosen = await library.pick(client, MEDITATION, LIBRARY, meter)
-    assert chosen == library.Pick(LIBRARY[1], 9)
+    assert chosen == library.Pick(LIBRARY[1], 9, own_world=False)
+    assert not library.needs_own_world(chosen)  # it fits: the library world is the session's world
     request = client.requests[0]
     system, user = (m["content"] for m in request["messages"])
     assert "forestlake-mist | Misty Pine Lake" in system and "beach-night" not in system  # no sleep worlds
     assert "quiet lake at dawn" in user and "quiet lake at dawn" not in system  # the library first, then this
     assert request["model"] == "muse-spark-1.3" and request["reasoning_effort"] == "low"
     assert request["response_format"]["json_schema"]["strict"] is True
+    assert "own_world" in request["response_format"]["json_schema"]["schema"]["required"]
     assert request["extra_body"] == {"store": False}
     assert meter.calls == {"pick": 1}
 
@@ -615,6 +618,17 @@ async def test_a_sleep_meditation_chooses_only_among_the_sleep_worlds():
     system = client.requests[0]["messages"][0]["content"]
     assert "cabin-night" in system and "beach-dawn" not in system
     assert await library.pick(FakeClient(), sleepy, LIBRARY[:3], Meter()) is None  # no sleep world at all
+
+
+async def test_a_meditation_built_around_something_no_library_world_shows_gets_its_own():
+    monkey = FakeClient(picks=[{"own_world": True, "choices": [{"id": "wildflowers-golden", "fit": 4}]}])
+    chosen = await library.pick(monkey, MEDITATION, LIBRARY, Meter())
+    assert chosen.own_world and library.needs_own_world(chosen)
+    # Nothing that fits well enough, or no library world at all: its own world too.
+    assert library.needs_own_world(library.Pick(LIBRARY[0], 4))
+    assert not library.needs_own_world(library.Pick(LIBRARY[0], 5))
+    assert library.needs_own_world(None)
+    assert library.needs_own_world(library.Pick(LIBRARY[0], 9), Settings(library_min_fit=10))
 
 
 def test_a_world_seen_lately_gives_way_to_the_next_if_it_fits_nearly_as_well():
@@ -646,4 +660,22 @@ async def test_the_library_is_read_from_saved_worlds(tmp_path):
     (tmp_path / "unfinished" / "scene.json").write_text(json.dumps(SCENE))  # no world.json: not in the library
     assert library.entries_in([tmp_path]) == [
         library.Entry("forestlake-mist", "Still Morning Lake", SCENE["place"], "dawn", sleep=False)]
+
+
+def test_pick_shows_the_choice_for_each_meditation(tmp_path, monkeypatch, capsys):
+    client = FakeClient(picks=[{"own_world": True, "choices": [{"id": "forestlake-mist", "fit": 7}]}])
+    monkeypatch.setattr(cli, "connect", lambda key: client)
+    world = asyncio.run(make_world(FakeClient(), MEDITATION))
+    world.save(tmp_path / "library" / "forestlake-mist")
+    script = tmp_path / "monkey.txt"
+    script.write_text("# technique=visualization\nPicture your little monkey, resting after a long day.")
+    key = tmp_path / "key"
+    key.write_text("test-key")
+    ledger = tmp_path / "spend.csv"
+    assert cli.main(["pick", str(script), "--library", str(tmp_path / "library"), "--key-file", str(key),
+                     "--ledger", str(ledger)]) == 0
+    line = json.loads(capsys.readouterr().out.splitlines()[0])
+    assert line == {"name": "monkey", "library": "forestlake-mist", "fit": 7, "own_world": True,
+                    "paint_its_own": True, "seconds": line["seconds"]}
+    assert float(list(csv.DictReader(ledger.open()))[0]["usd"]) > 0  # what it cost is in the ledger
 

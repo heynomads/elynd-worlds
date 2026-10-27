@@ -49,6 +49,23 @@ same time; a rejection cancels the others. The still painting is shown as soon a
 after the script is written in our runs; the slower ones were made six at a time), and the living world follows
 (59–104 s).
 
+## A world from the first second: the library
+
+A world made for a meditation takes about a minute, and listeners close their eyes early. So a session opens on
+a **library world**: one of 120 worlds the same agent painted in advance from short themes (30 places guided
+meditations visit most, each at four times of day, seasons or weathers; 18 of them dark worlds for falling
+asleep; `scripts/library_briefs.py`), each checked by the critic like any other. While the session's own world
+is being painted, Muse Spark reads the meditation (the same text the art director reads, at most its first
+1,500 words) and names the three library worlds that fit best; the first one the listener has not seen lately
+is shown (`library.py`, low reasoning effort: 2–7 s, about half a cent). A sleep meditation chooses only among
+the sleep worlds. The phone shows the library world at once, moving, and the session's own world takes its
+place in one slow cross-fade when it is complete; if it fails, the library world stays.
+
+```bash
+.venv/bin/python scripts/library_briefs.py                       # library/briefs/*.txt
+.venv/bin/elynd-worlds make library/briefs/*.txt --out library/worlds --parallel 4
+```
+
 ## On the phone
 
 `flutter/elynd_worlds_scene` draws a world in a Flutter app:
@@ -132,6 +149,7 @@ elynd_worlds/          the engine (Python)
   art_director.py      Muse Spark designs and revises
   painter.py           Muse Image paints and repaints without the subjects
   critic.py            Muse Spark Open (or Muse Spark) judges each painting
+  library.py           Muse Spark chooses the library world a session opens on
   cutter.py            SAM 3.1 cuts the layers
   regions.py           SAM 3.1 finds the water, sky, grass and a stream
   plate.py             the clean plate behind the moving layers
@@ -141,7 +159,9 @@ elynd_worlds/          the engine (Python)
   meta.py              the clients, privacy fields, cost meter
 flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living painting's shader)
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
-scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline
+scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline;
+                       library_briefs.py writes the library's themes
+library/briefs/        the 120 themes (the library's pictures are kept out of git)
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
 ```

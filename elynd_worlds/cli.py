@@ -3,6 +3,7 @@
     elynd-worlds make examples/lake.txt --technique visualization --mood stressed
     elynd-worlds make examples/*.txt --parallel 4            # a quality batch
     elynd-worlds sheet out/batch-*/                          # one contact sheet
+    elynd-worlds pick examples/*.txt --library library/worlds  # which library world, or its own?
     elynd-worlds timeline --duration 600 --silence 120:180   # the breathing timeline
 
 `make` refuses to start when the spend ledger (a CSV of every run's cost) is
@@ -17,14 +18,16 @@ from __future__ import annotations
 import argparse
 import asyncio
 import csv
+import dataclasses
 import json
+import logging
 import os
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import timeline
+from . import library, timeline
 from .art_director import Meditation
 from .director import make_world
 from .meta import Meter, connect, connect_open, encode
@@ -91,6 +94,9 @@ async def _make(args: argparse.Namespace) -> int:
               f"over the ${args.budget:.2f} budget", file=sys.stderr)
         return 2
     client = connect(read_key(args.key_file))
+    # Several worlds share one process here, so steps wait on each other more than on a server: the open
+    # critic gets longer before Muse Spark takes over.
+    settings = dataclasses.replace(DEFAULT, open_critic_timeout=args.open_timeout)
     open_client, why = open_critic(args)
     print(f"critic: {'Muse Spark Open' if open_client else 'Muse Spark'} ({why})", file=sys.stderr)
     out = Path(args.out) / time.strftime("%Y%m%d-%H%M%S")
@@ -101,7 +107,8 @@ async def _make(args: argparse.Namespace) -> int:
             meter = Meter()
             started = time.monotonic()
             try:
-                world = await make_world(client, meditation_for(path, args), meter=meter, open_client=open_client)
+                world = await make_world(client, meditation_for(path, args), settings=settings, meter=meter,
+                                         open_client=open_client)
             except Exception as error:  # noqa: BLE001 - report and keep the batch going
                 return {"name": path.stem, "ok": False, "error": f"{type(error).__name__}: {error}"[:300],
                         "usd": meter.usd, "meta_usd": meter.meta_usd, "open_usd": meter.open_usd}
@@ -126,6 +133,28 @@ async def _make(args: argparse.Namespace) -> int:
         print(json.dumps(r, ensure_ascii=False))
     print(f"{sum(r['ok'] for r in results)}/{len(results)} worlds, ${total:.4f} Meta + ${open_total:.4f} open model "
           f"this run, ${already + total:.4f} in the Meta ledger -> {out}")
+    return 0
+
+
+async def _pick(args: argparse.Namespace) -> int:
+    ledger = Path(args.ledger).expanduser()
+    if spent(ledger) + 0.01 * len(args.scripts) > args.budget:
+        print(f"refusing: the ledger is at its ${args.budget:.2f} budget", file=sys.stderr)
+        return 2
+    entries = library.entries_in(args.library)
+    if not entries:
+        print(f"no library worlds under {args.library}", file=sys.stderr)
+        return 1
+    client, meter = connect(read_key(args.key_file)), Meter()
+    for path in args.scripts:
+        started = time.monotonic()
+        chosen = await library.pick(client, meditation_for(Path(path), args), entries, meter)
+        print(json.dumps({"name": Path(path).stem, "library": chosen.entry.id if chosen else None,
+                          "fit": chosen.fit if chosen else None, "own_world": chosen.own_world if chosen else None,
+                          "paint_its_own": library.needs_own_world(chosen),
+                          "seconds": round(time.monotonic() - started, 1)}))
+    record(ledger, "pick", meter.usd, f"{len(args.scripts)} library choices from {len(entries)} worlds")
+    print(f"{len(args.scripts)} choices among {len(entries)} library worlds, ${meter.usd:.4f}")
     return 0
 
 
@@ -194,6 +223,19 @@ def main(argv: list[str] | None = None) -> int:
                       help="Muse Spark Open (Baseten) as the critic; without a key, Muse Spark judges")
     make.add_argument("--open-ledger", default=os.environ.get("ELYND_WORLDS_OPEN_LEDGER", "out/open_spend.csv"))
     make.add_argument("--open-budget", type=float, default=DEFAULT.open_budget_usd)
+    make.add_argument("--open-timeout", type=float, default=45.0,
+                      help="seconds the open critic gets before Muse Spark judges (a batch shares one process)")
+
+    pick = sub.add_parser("pick", help="the library world each meditation gets, or whether it needs its own")
+    pick.add_argument("scripts", nargs="+")
+    pick.add_argument("--library", nargs="+", required=True, help="folders of saved library worlds")
+    pick.add_argument("--technique", default="")
+    pick.add_argument("--mood", default="")
+    pick.add_argument("--language", default="en")
+    pick.add_argument("--minutes", type=int, default=10)
+    pick.add_argument("--key-file", default=os.environ.get("MODEL_API_KEY_FILE"))
+    pick.add_argument("--ledger", default=os.environ.get("ELYND_WORLDS_LEDGER", "out/spend.csv"))
+    pick.add_argument("--budget", type=float, default=float(os.environ.get("ELYND_WORLDS_BUDGET", "25")))
 
     sheet = sub.add_parser("sheet", help="one contact sheet of saved worlds")
     sheet.add_argument("folders", nargs="+")
@@ -206,8 +248,12 @@ def main(argv: list[str] | None = None) -> int:
     tl.add_argument("--sleep", action="store_true")
 
     args = parser.parse_args(argv)
+    logging.basicConfig(format="%(asctime)s %(name)s %(message)s", level=logging.WARNING)
+    logging.getLogger("elynd_worlds").setLevel(logging.INFO)  # e.g. why Muse Spark judged instead
     if args.command == "make":
         return asyncio.run(_make(args))
+    if args.command == "pick":
+        return asyncio.run(_pick(args))
     if args.command == "sheet":
         return _sheet(args)
     return _timeline(args)
