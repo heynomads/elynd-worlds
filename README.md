@@ -51,19 +51,25 @@ after the script is written in our runs; the slower ones were made six at a time
 
 ## A world from the first second: the library
 
-A world made for a meditation takes about a minute, and listeners close their eyes early. So a session opens on
-a **library world**: one of 120 worlds the same agent painted in advance from short themes (30 places guided
-meditations visit most, each at four times of day, seasons or weathers; 18 of them dark worlds for falling
-asleep; `scripts/library_briefs.py`), each checked by the critic like any other. While the session's own world
-is being painted, Muse Spark reads the meditation (the same text the art director reads, at most its first
-1,500 words) and names the three library worlds that fit best; the first one the listener has not seen lately
-is shown (`library.py`, low reasoning effort: 2–7 s, about half a cent). A sleep meditation chooses only among
-the sleep worlds. The phone shows the library world at once, moving, and the session's own world takes its
-place in one slow cross-fade when it is complete; if it fails, the library world stays.
+A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
+places a library can hold. So the same agent painted a **library of 500 worlds** in advance: 90 places guided
+meditations visit most, each at several times of day, seasons or weathers, 75 of them dark worlds for falling
+asleep (`scripts/library_briefs.py`), each checked by the critic like any other (`library/catalog.json` lists
+them). For each meditation Muse Spark reads the text (the same text the art director reads, at most its first
+1,500 words), names the three library worlds that fit best and says whether the meditation is built around
+something no library world shows: a particular animal or object that matters to the listener, a particular
+person's place, an unusual setting (`library.py`, low reasoning effort: 2–7 s, under a cent). A sleep meditation
+chooses only among the sleep worlds; the listener's recent worlds give way to the next best.
+
+* **It fits:** the library world is the session's world, on screen within seconds. Nothing is painted.
+* **It is very personal:** the library world shows at once, a world is painted for the meditation, and it takes
+  its place in one slow cross-fade when complete; if painting fails, the library world stays.
+* **Muse Spark cannot answer:** a library world of the right kind is chosen without it.
 
 ```bash
-.venv/bin/python scripts/library_briefs.py                       # library/briefs/*.txt
+.venv/bin/python scripts/library_briefs.py                     # library/briefs/*.txt (500 themes)
 .venv/bin/elynd-worlds make library/briefs/*.txt --out library/worlds --parallel 4
+.venv/bin/elynd-worlds pick my_meditation.txt --library library/worlds   # what a meditation would get
 ```
 
 ## On the phone
