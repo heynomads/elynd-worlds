@@ -120,6 +120,7 @@ asks for and nothing else: keep the place, the palette and the subjects unless t
 the problem. All rules of the original brief still apply. Return the complete design as JSON."""
 
 HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
+DEFAULT_PALETTE = ("#2E4A52", "#9DB7B0", "#E8D9C0")
 
 
 @dataclass(frozen=True)
@@ -150,7 +151,9 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
     """Checks the schema cannot express; returns the scene with a clean palette."""
     palette = [c for c in scene.get("palette") or [] if isinstance(c, str) and HEX.match(c)]
     if len(palette) < 2:
-        raise SceneError("the palette needs at least two #RRGGBB colours")
+        # Only tints in the app come from it: a calm default, rather than losing a good design (27 Oct: 2 of
+        # 55 library designs had one).
+        palette = list(DEFAULT_PALETTE)
     subjects = scene.get("subjects") or []
     if not 1 <= len(subjects) <= 3:
         raise SceneError("a scene needs 1-3 subjects")
