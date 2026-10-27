@@ -11,3 +11,7 @@ flutter/**/.dart_tool/
 flutter/**/build/
 flutter/**/.flutter-plugins*
 flutter/**/pubspec.lock
+
+# Library worlds (pictures): built locally, stored on the server; the briefs and catalog stay in git
+library/pilot/
+library/worlds/

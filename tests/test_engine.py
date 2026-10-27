@@ -13,7 +13,8 @@ import numpy as np
 import pytest
 from PIL import Image
 
-from elynd_worlds import Meditation, Meter, Settings, art_director, cli, critic, cutter, painter, plate, timeline
+from elynd_worlds import (Meditation, Meter, Settings, art_director, cli, critic, cutter, library, painter, plate,
+                          timeline)
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
@@ -115,7 +116,7 @@ async def test_the_open_model_judges_and_never_sees_the_listener_or_the_meditati
     world = await make_world(meta, MEDITATION, user="listener-7f3a", open_client=open_model)
     assert open_model.calls == ["verdict"] and "verdict" not in meta.calls
     request = open_model.requests[0]
-    assert request["model"] == "meta-models/muse-spark-open-1026"
+    assert request["model"] == "meta-models/muse-spark-open-1026" and request["reasoning_effort"] == "low"
     sent = json.dumps(request)
     assert "extra_body" not in request and "listener-7f3a" not in sent
     assert "Breathe in" not in sent and "under your hand" not in sent  # only the scenery design and the painting
@@ -136,6 +137,7 @@ async def test_when_the_open_model_fails_muse_spark_judges(broken, billed):
     verdict = await critic.critique(meta, PAINTING, CHECKED, meter, open_client=broken)
     assert verdict["judge"] == "muse-spark-1.3" and meta.calls == ["verdict"]
     assert meta.requests[0]["extra_body"]["store"] is False
+    assert "reasoning_effort" not in meta.requests[0]  # Muse Spark, the fallback, thinks as long as it likes
     assert meter.calls["critique@open"] == billed and meter.calls["critique"] == 1  # what was answered is paid
 
 
@@ -579,4 +581,69 @@ def test_make_writes_each_bill_to_its_own_ledger(tmp_path, monkeypatch):
     assert float(meta_row["usd"]) == pytest.approx(report["meta_usd"], abs=1e-5)
     assert float(open_row["usd"]) == pytest.approx(report["open_usd"], abs=1e-5) and report["open_usd"] > 0
     assert report["usd"] == pytest.approx(report["meta_usd"] + report["open_usd"])
+
+
+# ─── library ────────────────────────────────────────────────────────────
+
+LIBRARY = [library.Entry("beach-dawn", "Quiet Dawn Beach", "A sandy beach at dawn.", "dawn"),
+           library.Entry("forestlake-mist", "Misty Pine Lake", "A still lake among pines.", "dawn"),
+           library.Entry("wildflowers-golden", "Golden Meadow", "A meadow of wildflowers.", "golden hour"),
+           library.Entry("beach-night", "Moonlit Beach", "A beach under the moon.", "night", sleep=True),
+           library.Entry("cabin-night", "Cabin Night", "A cabin by a forest at night.", "night", sleep=True)]
+
+
+async def test_muse_spark_chooses_the_library_world_from_the_meditation():
+    client = FakeClient(picks=[{"choices": [{"id": "forestlake-mist", "fit": 9}, {"id": "beach-dawn", "fit": 4}]}])
+    meter = Meter()
+    chosen = await library.pick(client, MEDITATION, LIBRARY, meter)
+    assert chosen == library.Pick(LIBRARY[1], 9)
+    request = client.requests[0]
+    system, user = (m["content"] for m in request["messages"])
+    assert "forestlake-mist | Misty Pine Lake" in system and "beach-night" not in system  # no sleep worlds
+    assert "quiet lake at dawn" in user and "quiet lake at dawn" not in system  # the library first, then this
+    assert request["model"] == "muse-spark-1.3" and request["reasoning_effort"] == "low"
+    assert request["response_format"]["json_schema"]["strict"] is True
+    assert request["extra_body"] == {"store": False}
+    assert meter.calls == {"pick": 1}
+
+
+async def test_a_sleep_meditation_chooses_only_among_the_sleep_worlds():
+    client = FakeClient(picks=[{"choices": [{"id": "beach-dawn", "fit": 10}, {"id": "cabin-night", "fit": 7}]}])
+    sleepy = Meditation(script="Let your body grow heavy.", technique="sleep_journey")
+    chosen = await library.pick(client, sleepy, LIBRARY, Meter())
+    assert chosen.entry.id == "cabin-night"  # a world not offered is never taken
+    system = client.requests[0]["messages"][0]["content"]
+    assert "cabin-night" in system and "beach-dawn" not in system
+    assert await library.pick(FakeClient(), sleepy, LIBRARY[:3], Meter()) is None  # no sleep world at all
+
+
+def test_a_world_seen_lately_gives_way_to_the_next_if_it_fits_nearly_as_well():
+    choices = [{"id": "beach-dawn", "fit": 9}, {"id": "forestlake-mist", "fit": 8}, {"id": "wildflowers-golden", "fit": 4}]
+    assert library.choose(choices, LIBRARY).entry.id == "beach-dawn"
+    assert library.choose(choices, LIBRARY, recent=["beach-dawn"]).entry.id == "forestlake-mist"
+    # Nothing unseen fits nearly as well: the best is shown again.
+    assert library.choose(choices, LIBRARY, recent=["beach-dawn", "forestlake-mist"]).entry.id == "beach-dawn"
+    # Unknown ids and repeats are ignored, fits are clamped, and no usable choice means no library world.
+    odd = [{"id": "no-such-world", "fit": 10}, {"id": " beach-dawn ", "fit": 14}, {"id": "beach-dawn", "fit": 3}]
+    assert library.choose(odd, LIBRARY) == library.Pick(LIBRARY[0], 10)
+    assert library.choose([{"id": "elsewhere", "fit": 9}], LIBRARY) is None
+
+
+async def test_only_the_start_of_a_long_meditation_is_sent():
+    client = FakeClient(picks=[{"choices": [{"id": "beach-dawn", "fit": 8}]}])
+    long = Meditation(script="Picture a quiet beach at dawn. " + "Breathe slowly. " * 2000, technique="visualization")
+    await library.pick(client, long, LIBRARY, Meter(), Settings(pick_words=50))
+    user = client.requests[0]["messages"][1]["content"]
+    assert "quiet beach at dawn" in user and user.endswith("...") and len(user.split()) < 80
+    await library.pick(client, long, LIBRARY, Meter(), Settings(pick_reasoning=None))
+    assert "reasoning_effort" not in client.requests[1]
+
+
+async def test_the_library_is_read_from_saved_worlds(tmp_path):
+    world = await make_world(FakeClient(), MEDITATION)
+    world.save(tmp_path / "batch-1" / "forestlake-mist")
+    (tmp_path / "unfinished").mkdir()
+    (tmp_path / "unfinished" / "scene.json").write_text(json.dumps(SCENE))  # no world.json: not in the library
+    assert library.entries_in([tmp_path]) == [
+        library.Entry("forestlake-mist", "Still Morning Lake", SCENE["place"], "dawn", sleep=False)]
 

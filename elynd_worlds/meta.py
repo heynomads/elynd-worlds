@@ -239,6 +239,12 @@ def connect(api_key: str | None = None, *, base_url: str = API_BASE, timeout: fl
     return client
 
 
+def reasoning(effort: str | None) -> dict[str, Any]:
+    """How long Muse Spark (or Muse Spark Open) thinks before it answers: minimal, low, medium, high or xhigh.
+    None leaves it to the model. Reasoning is billed as output tokens."""
+    return {"reasoning_effort": effort} if effort else {}
+
+
 def connect_open(api_key: str | None = None, *, base_url: str = OPEN_API_BASE, timeout: float = 60.0) -> AsyncOpenAI:
     """An async client for Muse Spark Open (served by Baseten). The key defaults to $OPEN_MODEL_API_KEY.
 

@@ -35,9 +35,14 @@ class Settings:
     # train on what they receive; a listener's meditation must never be used so.
     director_model: str = "muse-spark-1.3"
     critic_model: str = "muse-spark-1.3"
+    # Chooses the library world a session opens on (library.py).
+    library_model: str = "muse-spark-1.3"
     # The critic runs on Muse Spark Open when the deployment passes an open-model client
     # (critic.py); `critic_model` above takes over whenever it fails.
     open_critic_model: str = "meta-models/muse-spark-open-1026"
+    # Little reasoning: 4-6 s a painting instead of 12-18 s, at half the cost, with the same
+    # verdicts on our test pictures (all four that must fail still fail). None: the model decides.
+    open_critic_reasoning: str | None = "low"
     painter_model: str = "muse-image-1.0"
     cutter_model: str = "sam-3.1"
     voice_model: str = "muse-voice-transcribe-1.0"
@@ -68,6 +73,12 @@ class Settings:
     paint_timeout: float = 45
     critic_timeout: float = 20
     open_critic_timeout: float = 18  # then Muse Spark judges instead
+    pick_timeout: float = 12
+
+    # Choosing a library world is a short task: little reasoning, and only the start of a long
+    # meditation (where its place is set).
+    pick_reasoning: str | None = "low"
+    pick_words: int = 1500
     cut_timeout: float = 20
     world_timeout: float = 120
 

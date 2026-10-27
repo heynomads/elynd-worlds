@@ -20,7 +20,7 @@ import json
 import logging
 from typing import Any
 
-from .meta import Meter, data_url, preview_jpeg, privacy_fields
+from .meta import Meter, data_url, preview_jpeg, privacy_fields, reasoning
 from .settings import DEFAULT, Settings
 
 log = logging.getLogger("elynd_worlds")
@@ -84,7 +84,8 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
         try:
             # No privacy fields: they are Meta's, and the listener's id never goes to the open model's host.
             response = await asyncio.wait_for(open_client.chat.completions.create(
-                model=settings.open_critic_model, timeout=settings.open_critic_timeout, **request),
+                model=settings.open_critic_model, timeout=settings.open_critic_timeout,
+                **reasoning(settings.open_critic_reasoning), **request),
                 settings.open_critic_timeout)
             meter.spark_open(getattr(response, "usage", None), "critique")
             return _verdict(response, settings.open_critic_model)
