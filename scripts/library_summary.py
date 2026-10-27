@@ -16,7 +16,8 @@ def main(folder: str = "library/catalog") -> int:
         verdict = json.loads((theme / "verdict.json").read_text()) if (theme / "verdict.json").exists() else {}
         rows.append({
             "id": theme.name, "title": world["title"], "place": scene["place"], "time_of_day": scene["time_of_day"],
-            "sleep": bool(world.get("sleep")), "subjects": [s["name"] for s in scene["subjects"]],
+            "sleep": bool(world.get("sleep")), "moods": world.get("moods") or [],
+            "subjects": [s["name"] for s in scene["subjects"]],
             "moving": [layer["name"] for layer in world.get("layers") or []],
             "nature": [k for k in ("water", "sky", "grass", "stream", "trees") if (world.get("living") or {}).get(k)],
             "particles": (world.get("living") or {}).get("particles", "none"),

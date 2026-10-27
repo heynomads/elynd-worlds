@@ -5,6 +5,11 @@
   "place": "A quiet mountain summit rising above a vast sea of soft clouds at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "confidence_strength",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -26,6 +31,11 @@
   "place": "A quiet mountain summit resting above a vast sea of soft clouds in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "weathered rock"
@@ -47,6 +57,11 @@
   "place": "A quiet mountain summit resting above a vast sea of soft clouds at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -68,6 +83,11 @@
   "place": "An alpine meadow in a quiet mountain valley at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "pale boulder"
@@ -91,6 +111,11 @@
   "place": "A green alpine meadow with small wildflowers lies in a mountain valley beneath high peaks.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "stone cairn"
@@ -113,6 +138,11 @@
   "place": "A green alpine meadow with small flowers rests in a mountain valley beneath high peaks.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "straw hat"
@@ -135,6 +165,11 @@
   "place": "An alpine meadow in a mountain valley below high peaks on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "rounded boulder",
    "smooth stone"
@@ -157,6 +192,11 @@
   "place": "An alpine meadow in a quiet mountain valley under a starry sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "rounded boulder",
    "smooth stone"
@@ -179,6 +219,11 @@
   "place": "A small alpine village with wooden chalets in a green valley below high peaks at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden chalet",
    "paper lantern"
@@ -204,6 +249,11 @@
   "place": "A small alpine village with wooden chalets in a green valley below high peaks.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden chalet",
    "hay bale"
@@ -226,6 +276,11 @@
   "place": "A small alpine village with wooden chalets in a green valley below snowy peaks.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden chalet",
    "hay bale"
@@ -248,6 +303,11 @@
   "place": "A small alpine village with wooden chalets in a green valley below high peaks at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden chalet",
    "small chalet"
@@ -270,6 +330,11 @@
   "place": "A small alpine village in a green valley below high snowy peaks.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden chalet",
    "small cabin"
@@ -292,6 +357,11 @@
   "place": "An old apple orchard in autumn with rows of trees in long soft grass.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "woven basket",
    "wooden crate"
@@ -315,6 +385,11 @@
   "place": "An old orchard with rows of apple trees in long soft grass under fading twilight.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "woven basket",
    "fallen apple"
@@ -337,6 +412,11 @@
   "place": "An old apple orchard with rows of apple trees in long soft grass at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket",
    "wooden crate"
@@ -359,6 +439,11 @@
   "place": "An old apple orchard with rows of trees in long soft grass on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket",
    "red apple"
@@ -382,6 +467,11 @@
   "place": "An old apple orchard with rows of trees in long soft grass on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "woven basket"
   ],
@@ -403,6 +493,11 @@
   "place": "A spacious autumn forest clearing glowing in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -424,6 +519,11 @@
   "place": "A quiet autumn forest with glowing red and gold leaves in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "mossy stone",
    "round stone"
@@ -446,6 +546,11 @@
   "place": "An autumn forest clearing on a clear morning with glowing red, orange and golden trees.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "mossy boulder"
@@ -468,6 +573,11 @@
   "place": "A quiet autumn forest in gentle grey rain with glowing red and golden leaves.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "release_let_go"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -490,6 +600,11 @@
   "place": "A quiet bamboo grove with a narrow path glowing in low golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "paper lantern"
@@ -516,6 +631,11 @@
   "place": "A quiet bamboo grove with a narrow sandy path winding between tall green stems.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "round stone"
@@ -539,6 +659,11 @@
   "place": "A quiet bamboo grove with tall green stems and a narrow path on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "round stone"
@@ -561,6 +686,11 @@
   "place": "A quiet bamboo grove with a narrow path in gentle grey rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "smooth stone",
    "stone lantern"
@@ -583,6 +713,11 @@
   "place": "A red barn at the edge of wide golden fields beside a quiet country lane.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "red barn",
    "round hay bale"
@@ -605,6 +740,10 @@
   "place": "A red barn rests at the edge of wide fields beside a quiet country lane at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "red barn",
    "wooden fence"
@@ -626,6 +765,11 @@
   "place": "A single red barn at the edge of wide uninterrupted snow-covered fields beside a quiet country lane with a wooden fence.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "red barn"
   ],
@@ -647,6 +791,11 @@
   "place": "A sheltered bay at dusk where green hills meet calm water.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "small sailboat",
    "distant sailboat"
@@ -671,6 +820,11 @@
   "place": "A sheltered bay with calm water held by soft green hills in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "white sailboat",
    "small sailboat"
@@ -695,6 +849,11 @@
   "place": "A sheltered bay with still water and soft green hills in morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "white sailboat",
    "small sailboat"
@@ -719,6 +878,11 @@
   "place": "A quiet sandy beach at dawn where small waves fold onto the sand.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "confidence_strength"
+  ],
   "subjects": [
    "seashell",
    "smooth stone"
@@ -741,6 +905,11 @@
   "place": "A quiet sandy beach at golden hour with gentle waves meeting the shore.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "release_let_go"
+  ],
   "subjects": [
    "seashell",
    "smooth stone"
@@ -763,6 +932,11 @@
   "place": "A quiet sandy beach with small waves under a bright high sun.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "release_let_go",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -785,6 +959,11 @@
   "place": "A quiet sandy beach at night where small waves meet the shore under moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "seashell"
@@ -807,6 +986,11 @@
   "place": "A soft path winds through tall old beech trees in golden autumn.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "mossy boulder"
@@ -828,6 +1012,11 @@
   "place": "A bright birch forest clearing with white trunks in soft morning light.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -853,6 +1042,11 @@
   "place": "A quiet black sand beach with gentle surf and dark cliffs under a fading dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -875,6 +1069,11 @@
   "place": "A black sand beach with soft white surf beneath dark basalt cliffs.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "confidence_strength",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -897,6 +1096,11 @@
   "place": "A black sand beach with soft white surf beneath dark basalt cliffs on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "release_let_go"
+  ],
   "subjects": [
    "smooth basalt stone",
    "pale seashell"
@@ -919,6 +1123,10 @@
   "place": "A black sand beach with soft white surf on a misty morning, backed by dark basalt cliffs.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -941,6 +1149,11 @@
   "place": "A black sand beach with soft white surf and calm sea beneath dark basalt cliffs on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -963,6 +1176,11 @@
   "place": "A cherry blossom orchard with blossom-filled trees over soft green grass at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden bench",
    "paper lantern"
@@ -989,6 +1207,10 @@
   "place": "A quiet cherry orchard in full blossom over soft green grass in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "woven basket"
@@ -1012,6 +1234,11 @@
   "place": "A cherry orchard in full blossom over soft green grass on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket",
    "smooth stone"
@@ -1035,6 +1262,11 @@
   "place": "A cherry orchard in full blossom over soft green grass on a clear spring morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "woven basket",
    "white butterfly"
@@ -1061,6 +1293,11 @@
   "place": "A cherry orchard in full blossom under a silver moon at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "stone lantern"
@@ -1087,6 +1324,11 @@
   "place": "A spring beech wood carpeted with a soft blue haze of bluebells under fresh young leaves.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "pale stone"
@@ -1109,6 +1351,11 @@
   "place": "A small wooden cabin at the quiet edge of a forest at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden cabin"
   ],
@@ -1131,6 +1378,11 @@
   "place": "A small wooden cabin at the edge of a forest on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden cabin"
   ],
@@ -1153,6 +1405,11 @@
   "place": "A small wooden cabin glows warmly at the edge of a dark forest under moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden cabin"
   ],
@@ -1175,6 +1432,11 @@
   "place": "A small wooden cabin resting at the edge of a quiet forest in falling snow at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden cabin"
   ],
@@ -1196,6 +1458,11 @@
   "place": "An old canal lined with stone houses under a dusky sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden rowboat",
    "mooring post"
@@ -1221,6 +1488,11 @@
   "place": "A quiet old canal between stone houses at golden hour with moored boats on still water.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "small wooden boat"
@@ -1245,6 +1517,11 @@
   "place": "A quiet old canal between stone houses on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "small skiff"
@@ -1268,6 +1545,11 @@
   "place": "A quiet old canal lined with stone houses on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden boat",
    "wooden skiff"
@@ -1292,6 +1574,11 @@
   "place": "A quiet old canal between stone houses at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "wooden skiff"
@@ -1316,6 +1603,11 @@
   "place": "An old stone canal in winter with still water and snow-covered banks between houses.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "small wooden boat"
@@ -1341,6 +1633,11 @@
   "place": "A calm northern lake with pine-covered islands and an autumn shore.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -1365,6 +1662,11 @@
   "place": "A calm northern lake at dawn with pine-covered islands and a quiet shore.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -1389,6 +1691,11 @@
   "place": "A calm northern lake at golden hour with pine-covered islands and a quiet shore.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -1413,6 +1720,10 @@
   "place": "A quiet northern lake with pine-covered islands in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -1437,6 +1748,11 @@
   "place": "A calm northern lake with pine islands on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -1461,6 +1777,10 @@
   "place": "A calm northern lake at night with pine-covered islands and a quiet shore.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -1485,6 +1805,11 @@
   "place": "A wide red-rock canyon with layered cliffs under a warm starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat rock"
@@ -1506,6 +1831,11 @@
   "place": "A slow river lined with soft pink cherry trees at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -1531,6 +1861,11 @@
   "place": "A slow river lined with blooming cherry trees in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -1557,6 +1892,11 @@
   "place": "A slow river lined with cherry trees in soft pink bloom on a misty spring morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -1583,6 +1923,11 @@
   "place": "A slow river lined with blooming cherry trees on a clear spring morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -1608,6 +1953,11 @@
   "place": "A slow river lined with cherry trees under silver moonlight at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -1631,6 +1981,11 @@
   "place": "A slow river lined with blooming cherry trees in soft spring light.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -1656,6 +2011,11 @@
   "place": "A grassy clearing in the middle of a dark forest on a warm summer night.",
   "time_of_day": "night",
   "sleep": false,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "mossy stone",
    "smooth stone"
@@ -1679,6 +2039,11 @@
   "place": "A sunny grassy clearing in the middle of a forest.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -1702,6 +2067,11 @@
   "place": "A sunny grassy clearing encircled by tall forest trees.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -1728,6 +2098,11 @@
   "place": "A sunny clearing in the middle of a quiet forest on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "fallen log"
@@ -1751,6 +2126,11 @@
   "place": "A sunny snow-dusted clearing ringed by tall forest trees.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "fallen log"
@@ -1774,6 +2154,11 @@
   "place": "A soft grassy clearing ringed by dark forest trees beneath a vast starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "fallen log"
@@ -1797,6 +2182,11 @@
   "place": "A grassy cliff above a calm sea at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "rounded rock",
    "flat rock"
@@ -1820,6 +2210,11 @@
   "place": "A grassy cliff above a calm sea in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -1843,6 +2238,10 @@
   "place": "A quiet grassy headland above a still sea veiled in morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "weathered rock"
@@ -1865,6 +2264,11 @@
   "place": "A grassy cliff above a calm sea on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "flat rock"
@@ -1888,6 +2292,10 @@
   "place": "A grassy cliff above a calm sea at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "rounded boulder",
    "flat rock"
@@ -1911,6 +2319,10 @@
   "place": "A cottage flower garden with a gravel path lined by roses, foxgloves and lavender at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "terracotta pot",
    "stone bench"
@@ -1933,6 +2345,10 @@
   "place": "A cottage flower garden with roses, foxgloves and lavender along a gravel path on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -1958,6 +2374,11 @@
   "place": "A sunny cottage garden where blooming flower borders line a gravel path under a clear sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "clay flowerpot",
    "stone bench"
@@ -1981,6 +2402,10 @@
   "place": "A quiet cottage flower garden with blooming borders along a winding gravel path in soft rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench",
    "clay flowerpot"
@@ -2004,6 +2429,10 @@
   "place": "Green rolling fields divided by old low stone walls with lonely trees under a dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "weathered boulder",
    "stone gatepost"
@@ -2027,6 +2456,11 @@
   "place": "Gently rolling green fields crossed by old stone walls beneath a wide golden sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "round hay bale",
    "mossy boulder"
@@ -2050,6 +2484,10 @@
   "place": "Gently rolling green fields divided by old stone walls under a hushed misty morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "mossy boulder",
    "old gate"
@@ -2072,6 +2510,11 @@
   "place": "Gently rolling green fields divided by old stone walls under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "mossy boulder",
    "stone gatepost"
@@ -2095,6 +2538,11 @@
   "place": "Rolling green fields divided by low old stone walls under gentle grey rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "release_let_go",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "stone gatepost",
    "mossy boulder"
@@ -2117,6 +2565,11 @@
   "place": "Gently rolling winter fields covered in fresh snow and divided by old low stone walls with lonely trees.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth boulder",
    "wooden gate"
@@ -2139,6 +2592,11 @@
   "place": "A quiet courtyard with orange trees around a tiled fountain at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "tiled fountain"
   ],
@@ -2160,6 +2618,11 @@
   "place": "A sunlit walled courtyard with orange trees gathered around a trickling tiled fountain.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "tiled fountain"
   ],
@@ -2181,6 +2644,11 @@
   "place": "A sunny courtyard with a tiled fountain surrounded by orange trees on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "tiled fountain",
    "stone bench"
@@ -2203,6 +2671,11 @@
   "place": "A quiet tiled courtyard with a trickling fountain and orange trees under silver moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "tiled fountain"
   ],
@@ -2224,6 +2697,11 @@
   "place": "A sunny walled courtyard with a tiled fountain and blossoming orange trees in spring.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "tiled fountain",
    "clay pot"
@@ -2246,6 +2724,11 @@
   "place": "Wide smooth desert dunes curve softly away under a clear lilac to deep blue dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -2267,6 +2750,11 @@
   "place": "Wide desert dunes curve softly under a clear starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale rock"
@@ -2288,6 +2776,10 @@
   "place": "Grassy sea dunes slope gently to a quiet shore at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -2310,6 +2802,10 @@
   "place": "Grassy sand dunes with sandy paths leading to a calm sea in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "seashell"
@@ -2333,6 +2829,10 @@
   "place": "Grassy sand dunes with a sandy path winding to a calm sea on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "pale seashell",
    "smooth stone"
@@ -2356,6 +2856,10 @@
   "place": "Grassy sand dunes with sandy paths leading to a calm sea on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "curved driftwood"
@@ -2379,6 +2883,10 @@
   "place": "Tall grassy dunes slope along soft sandy paths down to a calm moonlit sea.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -2402,6 +2910,10 @@
   "place": "Grassy sand dunes slope down to a calm sea under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -2425,6 +2937,10 @@
   "place": "A quiet fjord between steep green mountains at dusk with glassy water and a small red cabin on the shore.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "red cabin",
    "wooden rowboat"
@@ -2451,6 +2967,10 @@
   "place": "A quiet fjord between steep green mountains with glassy water and a small shore.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "red cabin",
    "wooden rowboat"
@@ -2477,6 +2997,10 @@
   "place": "A quiet fjord between steep green mountains with glassy water and a small red cabin by the shore.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "red cabin"
   ],
@@ -2499,6 +3023,11 @@
   "place": "A quiet fjord between steep green mountains with a small red cabin by the still glassy shore.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "red cabin"
   ],
@@ -2521,6 +3050,11 @@
   "place": "A quiet fjord between steep snow-covered green mountains in winter.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "red cabin"
   ],
@@ -2543,6 +3077,10 @@
   "place": "A quiet fjord between steep green mountains under a starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "red cabin"
   ],
@@ -2565,6 +3103,10 @@
   "place": "A quiet lake in a pine forest at dusk with perfectly still water.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -2591,6 +3133,10 @@
   "place": "A quiet lake in a pine forest on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden canoe"
   ],
@@ -2615,6 +3161,11 @@
   "place": "A quiet lake in a pine forest on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -2641,6 +3192,10 @@
   "place": "A still lake in a dark pine forest at night under silver moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -2667,6 +3222,10 @@
   "place": "A snow-covered lake ringed by dark evergreens under a pale winter sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -2691,6 +3250,11 @@
   "place": "A still frozen lake encircled by snowy pines under slowly rippling northern lights.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "snowy boulder"
@@ -2713,6 +3277,11 @@
   "place": "A smooth frozen lake surrounded by snowy pines at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "snowy boulder"
@@ -2735,6 +3304,10 @@
   "place": "A smooth frozen lake surrounded by snowy pines under a silver moonlit night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -2756,6 +3329,11 @@
   "place": "A smooth frozen lake surrounded by snowy pines under a pale winter sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "snowy boulder",
    "smooth stone"
@@ -2778,6 +3356,10 @@
   "place": "A smooth frozen lake surrounded by snowy pines in softly falling snow.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "snowy boulder",
    "smooth stone"
@@ -2800,6 +3382,11 @@
   "place": "A smooth frozen lake ringed by snowy pines under a vast starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "paper lantern"
@@ -2825,6 +3412,11 @@
   "place": "A still turquoise lake lies beneath white ice fields under a lilac dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "pale ice floe",
    "small ice floe"
@@ -2850,6 +3442,11 @@
   "place": "A turquoise glacier lake rests below white ice fields in golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "small iceberg",
    "pale ice floe"
@@ -2874,6 +3471,11 @@
   "place": "A turquoise glacier lake below white ice fields on a warm, bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "pale ice floe",
    "small ice floe"
@@ -2898,6 +3500,10 @@
   "place": "A turquoise glacier lake rests still below white ice fields on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "pale ice floe",
    "small ice chunk"
@@ -2922,6 +3528,11 @@
   "place": "A turquoise glacier lake below white ice fields on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "small iceberg",
    "flat ice piece"
@@ -2946,6 +3557,11 @@
   "place": "A turquoise glacier lake below white ice fields under a starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "rounded ice floe",
    "pale ice shard"
@@ -2970,6 +3586,11 @@
   "place": "A calm lake among soft green hills at dusk with reeds near the quiet shore.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -2996,6 +3617,10 @@
   "place": "A calm lake among soft green hills on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -3022,6 +3647,10 @@
   "place": "A calm lake among soft green hills at night under silver moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -3048,6 +3677,11 @@
   "place": "A calm lake among soft green hills in gentle rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -3074,6 +3708,11 @@
   "place": "A hammock between two trees on the shore of a calm lake at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "restore_sleep"
+  ],
   "subjects": [
    "linen hammock"
   ],
@@ -3098,6 +3737,10 @@
   "place": "A calm lake shore at golden hour with two trees holding a hammock.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "canvas hammock"
   ],
@@ -3120,6 +3763,11 @@
   "place": "A hammock between two trees on the grassy shore of a calm lake on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "empty hammock"
   ],
@@ -3143,6 +3791,11 @@
   "place": "A hammock hangs between two trees on soft grass beside a calm lake on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "empty hammock"
   ],
@@ -3168,6 +3821,10 @@
   "place": "A still grove by a calm lake at night with a hammock between two trees.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "empty hammock"
   ],
@@ -3190,6 +3847,11 @@
   "place": "A hammock hangs between two leafy trees beside a calm lake in high summer.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden rowboat",
    "white butterfly"
@@ -3217,6 +3879,11 @@
   "place": "A small sheltered harbour at dawn with glassy water, an old stone pier and soft distant shores.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden rowboat",
    "wooden skiff"
@@ -3241,6 +3908,11 @@
   "place": "A small sheltered harbour with still water and a stone pier in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "wooden fishing boat"
@@ -3265,6 +3937,10 @@
   "place": "A small sheltered harbour on a misty morning with glassy water and an old stone pier.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "wooden sailboat"
@@ -3290,6 +3966,11 @@
   "place": "A small sheltered harbour with glassy water and an old stone pier on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "wooden buoy"
@@ -3315,6 +3996,10 @@
   "place": "A small sheltered harbour at night where wooden boats rest on glassy water behind a stone pier.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden boat",
    "small skiff"
@@ -3339,6 +4024,11 @@
   "place": "A wide autumn heath of purple heather with winding paths crossing soft rolling hills under a vast sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "rounded boulder",
    "small boulder"
@@ -3361,6 +4051,11 @@
   "place": "A wide heath of purple heather rolling over soft hills under a vast dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "weathered rock"
@@ -3383,6 +4078,11 @@
   "place": "A wide heath of purple heather with winding paths between soft rolling hills under a vast sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "weathered post"
@@ -3405,6 +4105,10 @@
   "place": "A rolling heath of purple heather under a wide misty sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "stone cairn"
@@ -3427,6 +4131,10 @@
   "place": "A soft heath of purple heather with winding paths between low hills under a wide moonlit sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -3447,6 +4155,10 @@
   "place": "A wide heath of purple heather with winding paths between soft hills under a vast clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "rounded boulder",
    "weathered post"
@@ -3469,6 +4181,10 @@
   "place": "A quiet loch in the Scottish highlands at dusk, ringed by purple heather slopes.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -3492,6 +4208,10 @@
   "place": "Purple heather slopes surround a still highland loch at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -3517,6 +4237,10 @@
   "place": "A quiet loch in the Scottish highlands surrounded by purple heather slopes in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -3543,6 +4267,10 @@
   "place": "Purple heather slopes fall gently to a quiet still loch under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -3568,6 +4296,11 @@
   "place": "Purple heather slopes surround a still highland loch in soft rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -3593,6 +4326,10 @@
   "place": "Purple heather slopes fall to a still loch under a starry night sky in the Scottish highlands.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -3618,6 +4355,10 @@
   "place": "Soft rolling green hills rise and fall gently to the horizon in cool dawn light.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "hay bale"
   ],
@@ -3639,6 +4380,10 @@
   "place": "Soft rolling green hills stretch gently to the horizon in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "round hay bale"
@@ -3661,6 +4406,10 @@
   "place": "Soft rolling green hills stretch gently to the horizon under a bright warm sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -3683,6 +4432,10 @@
   "place": "Soft rolling green hills fading gently into morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -3705,6 +4458,11 @@
   "place": "Soft rolling green hills stretching to the horizon under a vast starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -3727,6 +4485,11 @@
   "place": "A steaming hot spring nestled among smooth rocks at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "restore_sleep"
+  ],
   "subjects": [
    "rounded boulder",
    "stone lantern"
@@ -3752,6 +4515,10 @@
   "place": "A steaming hot spring among smooth rocks on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -3775,6 +4542,11 @@
   "place": "A steaming hot spring among smooth rocks on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -3797,6 +4569,10 @@
   "place": "A quiet hot spring nestled among rounded rocks at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat rock"
@@ -3819,6 +4595,11 @@
   "place": "A steaming hot spring among smooth rocks surrounded by fresh snow in winter.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth boulder",
    "smooth stone"
@@ -3841,6 +4622,11 @@
   "place": "A steaming hot spring among smooth rocks while soft snow falls.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -3863,6 +4649,11 @@
   "place": "A wooden jetty reaches into a calm, clear lake at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden jetty"
   ],
@@ -3884,6 +4675,11 @@
   "place": "A wooden jetty reaches over a calm clear lake at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden jetty"
   ],
@@ -3905,6 +4701,11 @@
   "place": "A weathered wooden jetty stretches over a calm clear lake in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -3929,6 +4730,11 @@
   "place": "A wooden jetty reaches into a calm clear lake on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden jetty"
   ],
@@ -3950,6 +4756,10 @@
   "place": "A weathered wooden jetty stretches over a still lake in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden jetty"
   ],
@@ -3972,6 +4782,10 @@
   "place": "A wooden jetty reaches into a calm lake under silver moonlight at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "paper lantern"
@@ -3997,6 +4811,11 @@
   "place": "A neat vegetable garden with a small wooden shed under a dusky sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "clay pot",
    "watering can"
@@ -4020,6 +4839,11 @@
   "place": "A sunlit vegetable garden with neat rows of herbs and a small wooden shed.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "clay pot",
    "wooden crate"
@@ -4042,6 +4866,11 @@
   "place": "A sunny vegetable garden with neat rows of herbs and a wooden shed under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "focus_clarity"
+  ],
   "subjects": [
    "watering can",
    "clay pot"
@@ -4064,6 +4893,11 @@
   "place": "A neat vegetable garden with a small shed in gentle grey rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden shed",
    "clay pot"
@@ -4085,6 +4919,11 @@
   "place": "A sunny vegetable garden with neat green rows and a wooden shed in summer.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "clay pot",
    "watering can"
@@ -4107,6 +4946,11 @@
   "place": "A warm tropical lagoon at dawn with still turquoise water between white sand and palm trees.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "confidence_strength"
+  ],
   "subjects": [
    "white seashell",
    "wooden canoe"
@@ -4133,6 +4977,11 @@
   "place": "A still turquoise lagoon lies between white sand and palm trees in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden canoe",
    "smooth stone"
@@ -4159,6 +5008,10 @@
   "place": "A still turquoise lagoon edged by white sand and palm trees under bright sun.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden canoe",
    "large seashell"
@@ -4185,6 +5038,10 @@
   "place": "A warm tropical lagoon at night between white sand and palm trees.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "wooden canoe"
@@ -4211,6 +5068,10 @@
   "place": "A warm tropical lagoon at night with still turquoise water between white sand and dark palm trees under a starry sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "seashell"
@@ -4237,6 +5098,11 @@
   "place": "A tiny island with a single tree rests in a glass-still lake under a soft dawn sky.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "energy_motivation"
+  ],
   "subjects": [
    "tiny island"
   ],
@@ -4259,6 +5125,10 @@
   "place": "A tiny island with a single tree rests in the center of a perfectly still lake at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4283,6 +5153,10 @@
   "place": "A tiny island with a lone tree resting in a vast still lake.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4307,6 +5181,10 @@
   "place": "A small island with one tree resting in a glass-still lake under morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4331,6 +5209,10 @@
   "place": "A small tree-crowned island resting in a glassy lake under a night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4355,6 +5237,10 @@
   "place": "A tiny snow-covered island with a single bare tree rests in a perfectly still winter lake.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -4376,6 +5262,11 @@
   "place": "The wooden porch of a lake house looks over calm water at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "left chair",
    "right chair"
@@ -4398,6 +5289,11 @@
   "place": "A wooden porch of a lake house overlooking a calm lake in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "left chair",
    "right chair"
@@ -4421,6 +5317,11 @@
   "place": "A wooden lake house porch with empty chairs overlooking a calm lake on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "left chair",
    "right chair"
@@ -4444,6 +5345,11 @@
   "place": "A wooden porch of a lake house looking over a calm lake on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden chair",
    "empty chair"
@@ -4467,6 +5373,10 @@
   "place": "A wooden porch of a lake house overlooking a calm lake at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "porch chair",
    "empty chair"
@@ -4489,6 +5399,11 @@
   "place": "A wooden porch with two empty chairs overlooking a calm lake in gentle rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "wooden chair",
    "empty chair"
@@ -4512,6 +5427,11 @@
   "place": "A quiet garden at dusk with glowing lanterns strung among dark trees under a lilac blue sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "paper lantern",
    "small lantern"
@@ -4537,6 +5457,11 @@
   "place": "A quiet summer garden at night strung with glowing paper lanterns among trees.",
   "time_of_day": "night",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "paper lantern",
    "small lantern"
@@ -4562,6 +5487,11 @@
   "place": "A peaceful garden glowing with paper lanterns in low golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "paper lantern"
   ],
@@ -4586,6 +5516,11 @@
   "place": "A quiet garden at night glowing with paper lanterns among the trees.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "paper lantern",
    "smooth stone"
@@ -4612,6 +5547,11 @@
   "place": "A quiet garden with trees strung with glowing paper lanterns in soft grey rain.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "paper lantern"
   ],
@@ -4636,6 +5576,11 @@
   "place": "A quiet snow-covered garden at dusk with glowing lanterns among trees.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "paper lantern",
    "round lantern"
@@ -4660,6 +5605,11 @@
   "place": "A lavender field at dusk with long purple rows leading to a single tree on a low hill.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden bench",
    "smooth stone"
@@ -4682,6 +5632,11 @@
   "place": "A lavender field with long purple rows leading to a lone tree on a low hill.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "woven basket",
    "white butterfly"
@@ -4707,6 +5662,11 @@
   "place": "A lavender field with long purple rows leading to a lone tree on a low hill.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket",
    "smooth stone"
@@ -4730,6 +5690,11 @@
   "place": "A lavender field with long purple rows leading to a single tree on a low hill.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "woven basket",
    "smooth stone"
@@ -4753,6 +5718,11 @@
   "place": "A lavender field at night with long rows leading to a lone tree on a low hill.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -4774,6 +5744,11 @@
   "place": "A small grassy island with a white lighthouse surrounded by calm sea in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "connection_gratitude"
+  ],
   "subjects": [
    "white lighthouse"
   ],
@@ -4796,6 +5771,11 @@
   "place": "A small grassy isle with a lighthouse surrounded by calm sea in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "white lighthouse"
   ],
@@ -4818,6 +5798,11 @@
   "place": "A small grassy island with a white lighthouse surrounded by a calm sea on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "white lighthouse",
    "wooden rowboat"
@@ -4844,6 +5829,11 @@
   "place": "A small grassy island with a white lighthouse surrounded by calm sea at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "white lighthouse"
   ],
@@ -4865,6 +5855,10 @@
   "place": "A still pond covered with round lily leaves and pale flowers at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4888,6 +5882,10 @@
   "place": "A still pond covered in round lily leaves and pale blossoms in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4911,6 +5909,10 @@
   "place": "A calm sunlit pond covered with round lily leaves and pale blossoms.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "white butterfly"
@@ -4937,6 +5939,11 @@
   "place": "A still pond covered with round lily leaves and pale blossoms on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -4963,6 +5970,11 @@
   "place": "A still pond covered with round lily leaves and pale flowers in soft grey rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "release_let_go",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -4987,6 +5999,11 @@
   "place": "A quiet marsh with still mirror pools and small grassy islets at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -5013,6 +6030,10 @@
   "place": "A quiet marsh with grass islands and still pools at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -5036,6 +6057,10 @@
   "place": "A quiet marsh with reed-fringed pools and small grassy islets in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -5062,6 +6087,10 @@
   "place": "A quiet marsh with still pools and grassy islands under soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -5088,6 +6117,10 @@
   "place": "A quiet marsh of still pools and grass islands under a low full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -5111,6 +6144,11 @@
   "place": "A quiet freshwater marsh with still pools and low grass islands under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -5137,6 +6175,11 @@
   "place": "A narrow sandy path winds through a tall summer meadow at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "wooden post"
@@ -5159,6 +6202,11 @@
   "place": "A narrow path winds through tall summer grass under a warm starry night sky.",
   "time_of_day": "night",
   "sleep": false,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -5181,6 +6229,11 @@
   "place": "A narrow dirt path through a tall summer meadow at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -5206,6 +6259,11 @@
   "place": "A narrow sandy path winds through a tall summer meadow under a wide blue sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -5231,6 +6289,11 @@
   "place": "A narrow path winds through a bright summer meadow.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "weathered fence post"
@@ -5253,6 +6316,11 @@
   "place": "A narrow path winds through a tall summer meadow in full bloom.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -5278,6 +6346,11 @@
   "place": "An ancient moss-covered forest clearing at dusk with twisted trees and quiet light.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "large mossy stone",
    "small mossy stone"
@@ -5300,6 +6373,11 @@
   "place": "An ancient moss-covered forest glowing in warm golden hour light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "mossy stone",
    "mossy boulder"
@@ -5322,6 +6400,11 @@
   "place": "An ancient mossy forest resting quietly in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "mossy stone",
    "mossy boulder"
@@ -5344,6 +6427,11 @@
   "place": "An ancient forest glade carpeted in soft moss beneath twisted old trees.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "mossy stone",
    "mossy boulder"
@@ -5366,6 +6454,11 @@
   "place": "An ancient moss-covered forest resting in soft grey rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "release_let_go",
+   "reflection_insight"
+  ],
   "subjects": [
    "mossy boulder",
    "mossy stone"
@@ -5388,6 +6481,11 @@
   "place": "A wooden mountain hut rests on a high meadow at dusk with peaks behind.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden hut",
    "smooth stone"
@@ -5410,6 +6508,11 @@
   "place": "A wooden mountain hut on a high meadow with peaks rising behind.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden bench",
    "smooth stone"
@@ -5433,6 +6536,10 @@
   "place": "A wooden hut on a high mountain meadow on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden hut"
   ],
@@ -5454,6 +6561,11 @@
   "place": "A wooden hut stands on a high sunny meadow with clear peaks behind.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "confidence_strength"
+  ],
   "subjects": [
    "wooden mountain hut",
    "smooth stone"
@@ -5476,6 +6588,11 @@
   "place": "A wooden mountain hut rests on a snowy high meadow beneath clear peaks.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden hut",
    "snowy boulder"
@@ -5498,6 +6615,11 @@
   "place": "A wooden hut rests on a high meadow under stars with dark peaks behind.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden hut",
    "paper lantern"
@@ -5523,6 +6645,11 @@
   "place": "A clear mountain lake at dawn surrounded by calm peaks and a stone-lined shore.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone",
    "pale stone"
@@ -5545,6 +6672,11 @@
   "place": "A clear mountain lake mirrors soft peaks at golden hour beside a calm stone shore.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -5567,6 +6699,11 @@
   "place": "A clear mountain lake mirroring peaks under bright midday sun.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -5593,6 +6730,11 @@
   "place": "A clear mountain lake mirroring peaks on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "pale stone"
@@ -5615,6 +6757,11 @@
   "place": "A still mountain lake mirrors peaks under a starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -5637,6 +6784,11 @@
   "place": "An open grassy hill under soft northern lights.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "round boulder"
@@ -5659,6 +6811,11 @@
   "place": "A soft grassy hill opens wide under a dark summer night sky.",
   "time_of_day": "night",
   "sleep": false,
+  "moods": [
+   "restore_sleep",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat rock"
@@ -5681,6 +6838,11 @@
   "place": "An open grassy hill at night under silver moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5702,6 +6864,11 @@
   "place": "A wide grassy hill resting quietly under a vast starry sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5723,6 +6890,11 @@
   "place": "A single old oak tree with a wide crown stands on a soft green autumn meadow.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5745,6 +6917,11 @@
   "place": "A lone old oak stands wide over a quiet green meadow at first light.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "confidence_strength",
+   "energy_motivation",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5767,6 +6944,11 @@
   "place": "A single old oak tree with a wide crown stands on a soft green meadow in golden evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "pale rock"
@@ -5790,6 +6972,11 @@
   "place": "A single old oak tree spreads its wide crown over a soft green meadow on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5812,6 +6999,11 @@
   "place": "A single old oak tree stands on a snow-dusted green meadow under a pale winter sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5833,6 +7025,11 @@
   "place": "A single old oak stands on a quiet green meadow under a vast starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -5855,6 +7052,11 @@
   "place": "A quiet palm oasis with a clear pool sheltered by golden dunes at sunrise.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "confidence_strength",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "clay pot"
@@ -5878,6 +7080,11 @@
   "place": "A quiet desert oasis with palm trees around a still clear pool at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "paper lantern"
@@ -5904,6 +7111,11 @@
   "place": "A desert oasis with palm trees gathered around a clear pool among golden dunes.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "clay pot"
@@ -5927,6 +7139,11 @@
   "place": "A shaded desert oasis pool surrounded by golden dunes and palm trees.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "clay water jug"
@@ -5950,6 +7167,11 @@
   "place": "A quiet desert oasis with palm trees gathered around a clear pool among golden dunes.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "clay jar"
@@ -5973,6 +7195,11 @@
   "place": "A palm-ringed desert oasis with a clear still pool and golden dunes under stars.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -5996,6 +7223,11 @@
   "place": "A quiet olive grove on a warm sunny hillside at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "clay pot"
@@ -6019,6 +7251,11 @@
   "place": "A sunlit olive grove resting on a warm hillside beneath a wide golden sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "clay pot",
    "smooth stone"
@@ -6042,6 +7279,11 @@
   "place": "A sunlit olive grove spreading across a warm hillside.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "focus_clarity"
+  ],
   "subjects": [
    "clay pot",
    "smooth stone"
@@ -6064,6 +7306,11 @@
   "place": "An olive grove with silver-green leaves on a sunny hillside in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "clay pot"
@@ -6086,6 +7333,10 @@
   "place": "A quiet olive grove on a warm hillside under a low full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "clay pot",
    "smooth stone"
@@ -6108,6 +7359,11 @@
   "place": "A sunny olive grove on a gentle hillside under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "terracotta pot"
@@ -6130,6 +7386,11 @@
   "place": "A calm open sea rolls gently toward a quiet shore under a wide sky at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "confidence_strength"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -6153,6 +7414,11 @@
   "place": "A calm open sea rolls gently toward a quiet shore under a wide dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -6176,6 +7442,11 @@
   "place": "A calm open sea rolling gently toward a quiet sandy shore under a wide sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -6201,6 +7472,11 @@
   "place": "A calm open sea rolling gently toward a quiet sandy shore under a wide bright sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -6224,6 +7500,10 @@
   "place": "A calm open sea at night rolling gently toward a quiet shore under a wide moonlit sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -6247,6 +7527,11 @@
   "place": "A calm open sea under a wide starry sky with gentle swells reaching a quiet sandy shore.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -6270,6 +7555,11 @@
   "place": "A quiet park bench under tall old trees beside a curving gravel path in autumn.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -6292,6 +7582,11 @@
   "place": "A quiet park bench under tall old trees beside a curving gravel path.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -6314,6 +7609,11 @@
   "place": "A quiet park with a bench under tall old trees beside a curving gravel path on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -6336,6 +7636,11 @@
   "place": "A quiet park with tall old trees and a curving gravel path in gentle rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "release_let_go",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -6358,6 +7663,11 @@
   "place": "A quiet snow-covered park with tall old trees and a curving gravel path.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -6379,6 +7689,11 @@
   "place": "A quiet park bench under tall old trees beside a curving gravel path in spring.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -6400,6 +7715,11 @@
   "place": "A wooden pavilion beside a still lotus pond at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden rowboat",
    "paper lantern"
@@ -6425,6 +7745,11 @@
   "place": "A wooden pavilion stands beside a calm pond dotted with pink lotus flowers.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "stone lantern",
    "wooden rowboat"
@@ -6451,6 +7776,11 @@
   "place": "A quiet wooden pavilion beside a lotus-covered pond in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden pavilion",
    "stone lantern"
@@ -6474,6 +7804,11 @@
   "place": "A wooden pavilion beside a still lotus pond under a low full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "paper lantern",
    "smooth stone"
@@ -6499,6 +7834,11 @@
   "place": "A wooden pavilion stands beside a calm lotus pond on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "stone lantern"
@@ -6522,6 +7862,11 @@
   "place": "A wooden pavilion beside a calm lotus pond in gentle rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "stone lantern",
    "wooden rowboat"
@@ -6548,6 +7893,11 @@
   "place": "An open pine forest at twilight with tall trunks standing wide apart.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -6569,6 +7919,11 @@
   "place": "A calm pine forest with straight trunks standing far apart in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "mossy boulder"
@@ -6591,6 +7946,11 @@
   "place": "A calm pine forest with tall straight trunks standing far apart on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "large boulder"
@@ -6614,6 +7974,11 @@
   "place": "An open pine forest in winter with tall straight trunks standing far apart over fresh untouched snow.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
+  ],
   "subjects": [
    "snowy boulder",
    "small boulder"
@@ -6636,6 +8001,11 @@
   "place": "A small round pond in an autumn meadow surrounded by tall grass.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "release_let_go",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -6660,6 +8030,11 @@
   "place": "A small round pond in a summer meadow under a starry night sky.",
   "time_of_day": "night",
   "sleep": false,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -6682,6 +8057,11 @@
   "place": "A small round pond in a quiet meadow at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -6708,6 +8088,11 @@
   "place": "A small round still pond in a bright wildflower meadow.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -6730,6 +8115,10 @@
   "place": "A small still pond resting quietly in an open wildflower meadow under morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -6756,6 +8145,11 @@
   "place": "A small still pond sits in an open sunny meadow dotted with wildflowers.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale stone"
@@ -6778,6 +8172,11 @@
   "place": "A lush rainforest clearing with ferns around a clear still pool at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -6801,6 +8200,11 @@
   "place": "A lush rainforest clearing with soft ferns around a clear still pool.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "connection_gratitude"
+  ],
   "subjects": [
    "mossy stone",
    "smooth stone"
@@ -6824,6 +8228,10 @@
   "place": "A lush rainforest clearing where ferns surround a clear still pool in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "round pebble"
@@ -6847,6 +8255,11 @@
   "place": "A lush rainforest clearing with soft ferns around a clear still pool.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -6870,6 +8283,11 @@
   "place": "A lush rainforest clearing with ferns around a clear still pool at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -6893,6 +8311,11 @@
   "place": "A lush rainforest clearing with ferns surrounding a clear still pool in soft rain.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "release_let_go",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -6916,6 +8339,11 @@
   "place": "A quiet grove of giant redwood trees in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "mossy boulder"
@@ -6938,6 +8366,11 @@
   "place": "A quiet grove of giant redwood trees in soft grey rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "release_let_go",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "mossy stone"
@@ -6960,6 +8393,11 @@
   "place": "Green rice terraces curve down a quiet hillside at dusk, water shining in each step.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "thatched hut",
    "stone lantern"
@@ -6986,6 +8424,11 @@
   "place": "Green rice terraces curve down a quiet hillside in golden evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "woven basket",
    "smooth stone"
@@ -7009,6 +8452,11 @@
   "place": "Green rice terraces curve down a sunlit hillside with shining water in each step.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "thatched hut",
    "white butterfly"
@@ -7035,6 +8483,11 @@
   "place": "Green rice terraces curve down a misty hillside in hushed morning stillness.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "thatched hut",
    "smooth stone"
@@ -7057,6 +8510,11 @@
   "place": "Green rice terraces curve down a hillside under a full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7078,6 +8536,11 @@
   "place": "Green rice terraces curve down a quiet hillside under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "thatched hut",
    "wooden footbridge"
@@ -7101,6 +8564,11 @@
   "place": "A quiet grassy mountain ridge overlooking endless soft blue peaks at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "confidence_strength",
+   "focus_clarity",
+   "energy_motivation"
+  ],
   "subjects": [
    "rounded boulder",
    "stone cairn"
@@ -7123,6 +8591,11 @@
   "place": "A calm grassy ridge looks out over layered mountain ranges fading to blue at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "rounded boulder",
    "stone cairn"
@@ -7145,6 +8618,11 @@
   "place": "A quiet grassy mountain ridge overlooking endless soft blue peaks at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "confidence_strength",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "stone cairn"
@@ -7167,6 +8645,11 @@
   "place": "A quiet grassy mountain ridge looking out over endless soft blue peaks.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "calm_ground",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone",
    "stone cairn"
@@ -7189,6 +8672,11 @@
   "place": "A quiet grassy ridge overlooking endless soft blue mountain ranges fading into morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7210,6 +8698,11 @@
   "place": "A quiet mountain ridge overlooking endless soft blue peaks under a vast starry sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "pale rock"
@@ -7231,6 +8724,11 @@
   "place": "A slow river winding through a quiet meadow at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7257,6 +8755,11 @@
   "place": "A gentle river winds through a quiet sunlit meadow edged with willows.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7284,6 +8787,11 @@
   "place": "A slow river winding through a soft green meadow on a misty morning with willows in the distance.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7311,6 +8819,11 @@
   "place": "A slow river winding through a sunny meadow with willows on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -7338,6 +8851,11 @@
   "place": "A slow river winds through a soft meadow at night under silver moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -7365,6 +8883,11 @@
   "place": "A wide river bend with pale sandbanks and golden willows in autumn.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "release_let_go",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "driftwood log"
@@ -7387,6 +8910,11 @@
   "place": "A wide river bend with pale sandbanks and willows at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7412,6 +8940,11 @@
   "place": "A wide calm river bend with sandy banks and willows in warm light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7437,6 +8970,11 @@
   "place": "A wide river bend with sandbanks and willows on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7462,6 +9000,11 @@
   "place": "A wide calm river bend with pale sandbanks and willows under a full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7487,6 +9030,11 @@
   "place": "A wide river bend with pale sandbanks and willows on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -7512,6 +9060,11 @@
   "place": "A quiet rooftop garden high above the city at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench",
    "clay pot"
@@ -7534,6 +9087,11 @@
   "place": "A quiet rooftop garden high above the city on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "clay pot",
    "wooden bench"
@@ -7556,6 +9114,11 @@
   "place": "A quiet rooftop garden high above the city at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench",
    "stone lantern"
@@ -7578,6 +9141,11 @@
   "place": "A quiet rooftop garden high above the city in gentle rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "release_let_go"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -7599,6 +9167,11 @@
   "place": "A quiet rooftop garden high above the sleeping city under a starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench"
   ],
@@ -7619,6 +9192,11 @@
   "place": "A quiet rose garden with a rose-covered arched trellis over a white bench at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "white bench"
   ],
@@ -7641,6 +9219,10 @@
   "place": "A quiet rose garden with a rose-covered arched trellis glowing in golden hour light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "white bench"
   ],
@@ -7662,6 +9244,10 @@
   "place": "A warm sunlit rose garden with a flower-covered arched trellis over a quiet bench.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "white bench"
   ],
@@ -7684,6 +9270,10 @@
   "place": "A rose garden with an arched trellis covered in climbing roses on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation"
+  ],
   "subjects": [
    "white bench"
   ],
@@ -7705,6 +9295,11 @@
   "place": "A quiet rose garden with a flower-covered arched trellis in soft rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "white bench"
   ],
@@ -7726,6 +9321,11 @@
   "place": "A sunlit rose garden with a flower-covered arched trellis and lawn in high summer.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "white bench"
   ],
@@ -7748,6 +9348,11 @@
   "place": "A vast white salt flat holding thin still water that mirrors the dawn sky.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale rock"
@@ -7770,6 +9375,11 @@
   "place": "A vast white salt flat covered in thin still water mirroring the dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "pale stone"
@@ -7792,6 +9402,11 @@
   "place": "A vast white salt flat holds a thin sheet of water mirroring the golden sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "pale stone",
    "grey stone"
@@ -7814,6 +9429,11 @@
   "place": "A vast white salt flat holding a thin mirror of water under a warm bright sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -7836,6 +9456,11 @@
   "place": "A vast white salt flat covered in thin still water mirroring the clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "reflection_insight",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "pale rock"
@@ -7858,6 +9483,11 @@
   "place": "A vast white salt flat covered in thin still water mirroring the starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7879,6 +9509,11 @@
   "place": "A wide golden savanna with a lone acacia tree under a soft dawn sky.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone",
    "pale boulder"
@@ -7902,6 +9537,11 @@
   "place": "A wide savanna of golden grass with a lone acacia tree under a lilac to deep blue dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7924,6 +9564,11 @@
   "place": "A wide golden savanna with a lone acacia tree under a vast sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "release_let_go"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7946,6 +9591,11 @@
   "place": "A wide golden savanna stretches to a distant horizon with a lone acacia tree under a vast bright sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "focus_clarity",
+   "energy_motivation",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7968,6 +9618,11 @@
   "place": "A wide savanna of golden grass with a lone acacia tree under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -7990,6 +9645,11 @@
   "place": "A wide savanna of golden grass with a lone acacia on the horizon under a vast starry sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -8012,6 +9672,11 @@
   "place": "A little white cottage by the sea at dusk with tall grasses leading to the shore.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "white cottage",
    "wooden rowboat"
@@ -8038,6 +9703,11 @@
   "place": "A little white cottage by the sea with tall grasses leading to the shore.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "white cottage",
    "wooden rowboat"
@@ -8061,6 +9731,11 @@
   "place": "A little white cottage by the sea with tall grasses leading down to the shore.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "focus_clarity"
+  ],
   "subjects": [
    "white cottage",
    "wooden rowboat"
@@ -8084,6 +9759,10 @@
   "place": "A little white cottage by the sea with tall grasses leading down to a quiet shore.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "white cottage",
    "wooden rowboat"
@@ -8107,6 +9786,11 @@
   "place": "A little white cottage on grassy ground above a calm sea, with tall grasses leading to a sandy shore.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "white cottage",
    "wooden rowboat"
@@ -8133,6 +9817,10 @@
   "place": "A little white cottage by the calm sea at night with tall grasses leading down to the shore.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "white cottage",
    "wooden rowboat"
@@ -8156,6 +9844,11 @@
   "place": "A wide untouched snowfield cradled by white peaks at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "confidence_strength"
+  ],
   "subjects": [
    "snowy boulder",
    "smooth stone"
@@ -8177,6 +9870,10 @@
   "place": "A wide untouched snowfield in a quiet valley beneath moonlit snowy peaks at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "snowy boulder"
   ],
@@ -8197,6 +9894,11 @@
   "place": "Wide open grassland stretches beneath a vast sky at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "confidence_strength"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -8218,6 +9920,10 @@
   "place": "Wide open grassland under a huge dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "paper lantern"
@@ -8243,6 +9949,11 @@
   "place": "Wide open grassland waving softly under a vast golden sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "woven basket"
@@ -8265,6 +9976,10 @@
   "place": "An endless sunlit meadow under a huge open sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -8286,6 +10001,11 @@
   "place": "Wide open grassland rolling in slow waves under a huge clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "wooden post"
@@ -8308,6 +10028,10 @@
   "place": "Wide open grassland under a huge starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -8329,6 +10053,10 @@
   "place": "An old ivy-covered stone bridge arches over a quiet stream in autumn.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "mossy boulder",
    "smooth stone"
@@ -8352,6 +10080,10 @@
   "place": "An old ivy-covered stone bridge arches over a quiet stream at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "mossy boulder"
@@ -8376,6 +10108,10 @@
   "place": "An old ivy-covered stone bridge arches over a quiet stream on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "flat stone"
@@ -8399,6 +10135,10 @@
   "place": "An old ivy-covered stone bridge arches over a quiet stream on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "mossy stone"
@@ -8423,6 +10163,10 @@
   "place": "An old stone bridge with ivy-covered arches spans a quiet stream in fresh winter snow.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench",
    "smooth stone"
@@ -8445,6 +10189,11 @@
   "place": "An old ivy-covered stone bridge arches over a quiet stream in spring.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -8471,6 +10220,10 @@
   "place": "A clear stream curves over round stones between mossy banks in a golden autumn forest.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "mossy stone"
@@ -8493,6 +10246,10 @@
   "place": "A clear shallow stream winding through mossy banks in a green forest.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "mossy stone"
@@ -8515,6 +10272,11 @@
   "place": "A clear stream flows over round stones through a green forest on a bright morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "round stone"
@@ -8537,6 +10299,11 @@
   "place": "A clear stream flowing over stones through a green forest in winter with snow and mossy banks.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "mossy stone"
@@ -8559,6 +10326,11 @@
   "place": "A clear stream winding through a fresh green spring forest.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "mossy stone"
@@ -8581,6 +10353,11 @@
   "place": "A wide field of tall sunflowers glowing under a soft pink and golden dawn sky.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "confidence_strength",
+   "connection_gratitude"
+  ],
   "subjects": [
    "woven basket",
    "white butterfly"
@@ -8606,6 +10383,11 @@
   "place": "A wide field of tall sunflowers under a fading lilac dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "paper lantern"
@@ -8631,6 +10413,11 @@
   "place": "A wide field of tall sunflowers glowing in low golden sunlight.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket"
   ],
@@ -8652,6 +10439,11 @@
   "place": "A wide field of tall sunflowers glowing under a bright summer sun.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "confidence_strength",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "woven basket"
@@ -8674,6 +10466,11 @@
   "place": "A vast sunflower field under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "white butterfly"
   ],
@@ -8697,6 +10494,11 @@
   "place": "A wide sunflower field in high summer under an open blue sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden bench",
    "white butterfly"
@@ -8723,6 +10525,11 @@
   "place": "Rows of tea bushes curving over gentle hills beneath a lilac dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "smooth stone",
    "ceramic teacup"
@@ -8745,6 +10552,11 @@
   "place": "Rows of tea bushes curve over gentle hills in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "ceramic teacup",
    "woven basket"
@@ -8767,6 +10579,10 @@
   "place": "Gentle hills covered in curving rows of tea bushes under a bright warm sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket",
    "ceramic teacup"
@@ -8789,6 +10605,10 @@
   "place": "Gentle hills covered in curving rows of tea under soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket",
    "ceramic teacup"
@@ -8811,6 +10631,11 @@
   "place": "Rows of tea bushes curve over gentle hills under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket"
   ],
@@ -8832,6 +10657,11 @@
   "place": "Rows of tea bushes curving over gentle hills in soft steady rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "release_let_go",
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "woven basket"
   ],
@@ -8852,6 +10682,10 @@
   "place": "Rocky tide pools beside a calm sea at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -8874,6 +10708,10 @@
   "place": "Rocky tide pools beside a calm sea in warm evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "pink seashell"
@@ -8896,6 +10734,10 @@
   "place": "Rocky tide pools beside a calm sea on a warm bright day.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "seashell",
    "smooth pebble"
@@ -8918,6 +10760,10 @@
   "place": "Rocky tide pools beside a calm sea on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "seashell"
@@ -8940,6 +10786,11 @@
   "place": "Rocky tide pools beside a calm sea under a full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth pebble",
    "pale seashell"
@@ -8962,6 +10813,11 @@
   "place": "Rocky tide pools beside a calm sea on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "pale seashell"
@@ -8984,6 +10840,10 @@
   "place": "A big old tree holds a small wooden treehouse with an open window in a quiet autumn meadow.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden ladder"
   ],
@@ -9006,6 +10866,11 @@
   "place": "A big old tree holding a small wooden treehouse under a lilac dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden treehouse",
    "paper lantern"
@@ -9032,6 +10897,10 @@
   "place": "A big old tree holds a small wooden treehouse in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden ladder"
   ],
@@ -9054,6 +10923,11 @@
   "place": "A wooden treehouse nestled in a big old tree on a clear bright morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden ladder",
    "rope swing"
@@ -9080,6 +10954,11 @@
   "place": "A big old tree holds a cozy wooden treehouse with an open window under the night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden ladder",
    "paper lantern"
@@ -9105,6 +10984,10 @@
   "place": "A big old winter tree holding a small wooden treehouse in fresh snow.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden sled",
    "smooth stone"
@@ -9127,6 +11010,11 @@
   "place": "Long striped tulip fields in red, yellow and pink stretch to the horizon with an old windmill under a bright sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "focus_clarity"
+  ],
   "subjects": [
    "old windmill"
   ],
@@ -9148,6 +11036,11 @@
   "place": "Long striped tulip fields stretch to an old windmill under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "old windmill",
    "white butterfly"
@@ -9170,6 +11063,11 @@
   "place": "Colourful tulip fields in long stripes with an old windmill reaching to the horizon in spring.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "old windmill"
   ],
@@ -9192,6 +11090,10 @@
   "place": "Rolling Tuscan hills with cypress trees and a distant farmhouse under a dusky sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "old milestone",
    "clay pot"
@@ -9215,6 +11117,11 @@
   "place": "Gentle Tuscan hills with cypress trees, an old farmhouse, and a winding road at golden hour.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "weathered milestone",
    "clay pot"
@@ -9238,6 +11145,11 @@
   "place": "Gentle Tuscan hills with cypress trees, a winding road, and an old farmhouse under a bright sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "stone farmhouse",
    "terracotta pot"
@@ -9261,6 +11173,11 @@
   "place": "Gentle Tuscan hills with cypress trees, a winding road, and an old farmhouse in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "old farmhouse",
    "stone marker"
@@ -9284,6 +11201,11 @@
   "place": "Gentle Tuscan hills with cypress trees, an old farmhouse, and a winding road on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
   "subjects": [
    "stone milepost",
    "clay jug"
@@ -9307,6 +11229,10 @@
   "place": "Tuscan hills with cypress trees and a farmhouse at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "stone farmhouse"
   ],
@@ -9328,6 +11254,11 @@
   "place": "A vineyard on rolling autumn hills with vine rows leading to a small stone house.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden barrel",
    "woven basket"
@@ -9350,6 +11281,11 @@
   "place": "A sunlit vineyard on rolling hills with long vine rows leading to a small stone house.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "focus_clarity"
+  ],
   "subjects": [
    "woven basket",
    "clay pot"
@@ -9373,6 +11309,11 @@
   "place": "A vineyard on rolling hills under a full moon with a small stone house at the end of vine rows.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden barrel",
    "stone cottage"
@@ -9395,6 +11336,11 @@
   "place": "A vineyard on rolling hills with long rows leading to a small stone house.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "wooden barrel",
    "clay jug"
@@ -9417,6 +11363,11 @@
   "place": "A small waterfall falling softly into a clear pool in a lush green gorge.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "release_let_go",
+   "calm_ground",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "mossy rock"
@@ -9441,6 +11392,10 @@
   "place": "A small waterfall falls softly into a clear pool inside a lush green gorge.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "smooth stone",
    "grey boulder"
@@ -9464,6 +11419,10 @@
   "place": "A small waterfall falls softly into a clear pool in a green gorge on a misty morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -9487,6 +11446,11 @@
   "place": "A small waterfall falls softly into a clear pool in a green mossy gorge.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -9510,6 +11474,10 @@
   "place": "A small waterfall feeds a clear pool in a green gorge beneath a starry sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "rounded boulder"
@@ -9533,6 +11501,11 @@
   "place": "A ripe golden wheat field swaying softly under a vast lilac and deep blue dusk sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "round hay bale"
   ],
@@ -9554,6 +11527,11 @@
   "place": "A ripe golden wheat field stretching to the horizon under a wide evening sky.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "round hay bale"
   ],
@@ -9575,6 +11553,10 @@
   "place": "A ripe golden wheat field stretching wide under a vast bright summer sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "hay bale",
    "wooden fence post"
@@ -9597,6 +11579,10 @@
   "place": "An open ripe wheat field under a vast clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity"
+  ],
   "subjects": [
    "round hay bale",
    "white butterfly"
@@ -9622,6 +11608,10 @@
   "place": "A ripe golden wheat field resting quietly under a vast starry night sky.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "round hay bale"
   ],
@@ -9643,6 +11633,11 @@
   "place": "White houses on a hillside above a calm blue sea at dawn.",
   "time_of_day": "dawn",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "confidence_strength"
+  ],
   "subjects": [
    "clay pot",
    "white butterfly"
@@ -9668,6 +11663,11 @@
   "place": "White houses rest on a hillside above a calm blue sea at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "terracotta pot",
    "paper lantern"
@@ -9693,6 +11693,11 @@
   "place": "White houses on a sunlit hillside above a calm blue sea.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "terracotta pot",
    "paper lantern"
@@ -9718,6 +11723,11 @@
   "place": "White houses on a sunlit hillside above a calm blue sea.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "energy_motivation"
+  ],
   "subjects": [
    "clay pot",
    "white sailboat"
@@ -9743,6 +11753,11 @@
   "place": "White houses with pink flowers sit on a sunny hillside above a calm glittering blue sea on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "focus_clarity"
+  ],
   "subjects": [
    "white sailboat"
   ],
@@ -9766,6 +11781,10 @@
   "place": "White houses rest on a hillside above a calm sea at night.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "white house",
    "paper lantern"
@@ -9791,6 +11810,10 @@
   "place": "A wildflower meadow on a warm summer night under a starry sky.",
   "time_of_day": "night",
   "sleep": false,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone"
   ],
@@ -9812,6 +11835,11 @@
   "place": "A wide wildflower meadow glowing in warm golden evening light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "woven basket",
    "smooth stone"
@@ -9834,6 +11862,11 @@
   "place": "A bright wildflower meadow in long grass under a wide blue sky.",
   "time_of_day": "midday",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -9860,6 +11893,11 @@
   "place": "A bright meadow of poppies, daisies and cornflowers swaying in long grass under a clear morning sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "connection_gratitude"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -9885,6 +11923,11 @@
   "place": "A wide sunlit meadow of tall grass and summer wildflowers reaching toward soft distant trees under an open sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "smooth stone",
    "white butterfly"
@@ -9910,6 +11953,10 @@
   "place": "A great weeping willow leans over a quiet pond at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -9936,6 +11983,10 @@
   "place": "A great weeping willow beside a quiet pond in warm golden light.",
   "time_of_day": "golden hour",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -9963,6 +12014,10 @@
   "place": "A great weeping willow leans over a quiet pond in soft morning mist.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground"
+  ],
   "subjects": [
    "wooden rowboat",
    "smooth stone"
@@ -9990,6 +12045,11 @@
   "place": "A great weeping willow leans over a quiet pond under a low full moon.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden rowboat"
   ],
@@ -10014,6 +12074,11 @@
   "place": "A great weeping willow leaning over a still pond in soft morning light.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -10041,6 +12106,11 @@
   "place": "A great weeping willow bends over a quiet pond in spring.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "connection_gratitude",
+   "reflection_insight"
+  ],
   "subjects": [
    "smooth stone",
    "wooden rowboat"
@@ -10067,6 +12137,10 @@
   "place": "A quiet snow-covered forest at dusk under a lilac-blue sky.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "snowy boulder",
    "paper lantern"
@@ -10092,6 +12166,10 @@
   "place": "A quiet snow-covered pine forest at night under soft moonlight.",
   "time_of_day": "night",
   "sleep": true,
+  "moods": [
+   "restore_sleep",
+   "calm_ground"
+  ],
   "subjects": [
    "snowy boulder"
   ],
@@ -10113,6 +12191,11 @@
   "place": "A quiet snow-covered pine forest clearing in winter.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bench",
    "smooth stone"
@@ -10135,6 +12218,10 @@
   "place": "A quiet pine forest blanketed in fresh snow under a pale winter sky.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight"
+  ],
   "subjects": [
    "snowy boulder",
    "small boulder"
@@ -10157,6 +12244,11 @@
   "place": "A quiet Japanese garden with a still pond in autumn.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
+  ],
   "subjects": [
    "stone lantern",
    "round stone"
@@ -10180,6 +12272,11 @@
   "place": "A still pond in a quiet Japanese garden at dusk.",
   "time_of_day": "dusk",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "restore_sleep"
+  ],
   "subjects": [
    "wooden bridge",
    "stone lantern"
@@ -10206,6 +12303,11 @@
   "place": "A quiet Japanese garden with a still pond on a clear morning.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "calm_ground",
+   "focus_clarity",
+   "reflection_insight"
+  ],
   "subjects": [
    "wooden bridge",
    "stone lantern"
@@ -10229,6 +12331,11 @@
   "place": "A quiet Japanese garden with a still pond in soft rain.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "reflection_insight",
+   "calm_ground",
+   "release_let_go"
+  ],
   "subjects": [
    "stone lantern",
    "wooden bridge"
@@ -10252,6 +12359,11 @@
   "place": "A peaceful Japanese garden with a still pond surrounded by blossoms and young leaves in spring.",
   "time_of_day": "morning",
   "sleep": false,
+  "moods": [
+   "connection_gratitude",
+   "calm_ground",
+   "energy_motivation"
+  ],
   "subjects": [
    "wooden bridge",
    "stone lantern"

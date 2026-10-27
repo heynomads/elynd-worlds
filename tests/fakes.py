@@ -87,7 +87,7 @@ class FakeClient:
 
     def __init__(self, scenes=None, verdicts=None, sam=None, sam_on_plate=None, painting=PAINTING, edit=EDIT,
                  fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None, missing=(),
-                 sam_timeouts=0):
+                 sam_timeouts=0, moods=None):
         self.calls: list[str] = []
         self.requests: list[dict] = []
         self.sam_requests: list[dict] = []
@@ -101,6 +101,7 @@ class FakeClient:
         self._fail_edit, self._fail_sam = fail_edit, fail_sam
         self._fail_chat, self._chat_delay = fail_chat, chat_delay
         self._picks = list(picks or [{"choices": []}])
+        self._moods = list(moods or [{"worlds": []}])
         self._missing = set(missing)  # models answered with 404, as Meta Model API does for one it does not serve
         self._sam_timeouts = sam_timeouts  # the first SAM requests time out, as on a slow hour
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._chat))
@@ -123,7 +124,7 @@ class FakeClient:
             await asyncio.sleep(self._chat_delay)
         if self._fail_chat:
             raise RuntimeError("chat failed")
-        queue = {"scene": self._scenes, "pick": self._picks}.get(name, self._verdicts)
+        queue = {"scene": self._scenes, "pick": self._picks, "moods": self._moods}.get(name, self._verdicts)
         payload = self._pop(queue)
         message = SimpleNamespace(content=payload if isinstance(payload, str) else json.dumps(payload))
         return SimpleNamespace(choices=[SimpleNamespace(message=message)], usage=USAGE)

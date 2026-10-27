@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import csv
+import dataclasses
 import io
 import json
 import time
@@ -811,6 +812,62 @@ def test_without_muse_spark_a_library_world_is_chosen_here_by_the_place_the_medi
     assert library.local(sleepy, []) is None
     # Muse Spark gave no answer: a world may be painted for it (the local one is shown meanwhile).
     assert library.needs_own_world(None)
+
+
+def test_without_a_place_the_world_fits_how_the_listener_feels():
+    # Chosen by the listener's feeling, the same way the background music is chosen: the music's
+    # categories, from the mood picked or written.
+    tagged = [dataclasses.replace(LIBRARY[0], moods=("energy_motivation",)),            # beach-dawn
+              dataclasses.replace(LIBRARY[1], moods=("calm_ground", "reflection_insight")),  # forestlake-mist
+              dataclasses.replace(LIBRARY[2], moods=("connection_gratitude",)),          # wildflowers-golden
+              *LIBRARY[3:]]
+    breathing = Meditation(script="Breathe in slowly, and let your shoulders soften.")
+    assert library.local(breathing, tagged, moods=["calm_ground", "release_let_go"]).entry.id == "forestlake-mist"
+    assert library.local(breathing, tagged, moods=["connection_gratitude"]).entry.id == "wildflowers-golden"
+    # The second feeling when no fresh world suits the first; never a worse fit while a better one is fresh.
+    assert library.local(breathing, tagged, moods=["calm_ground", "energy_motivation"],
+                         recent=["forestlake-mist"]).entry.id == "beach-dawn"
+    # A world's own first feeling counts most: calm as its first beats calm as its third.
+    third = [dataclasses.replace(tagged[0], moods=("energy_motivation", "focus_clarity", "calm_ground")),
+             tagged[1], *LIBRARY[2:]]
+    assert library.local(breathing, third, moods=["calm_ground"]).entry.id == "forestlake-mist"
+    # A meditation that names its place keeps its place, whatever the feeling.
+    walk = Meditation(script="Walk down to the beach at dawn and listen to the small waves.")
+    assert library.local(walk, tagged, moods=["calm_ground"]).entry.id == "beach-dawn"
+    # Only a plural loses its last letter: "seat" names no sea, "tear" no tea (every world was a sea before).
+    seated = Meditation(script="Find a comfortable seat. Let a tear fall if it comes. Your team can wait.")
+    assert not library._named(seated.script)
+    by_the_sea = [dataclasses.replace(tagged[0], place="A sandy beach by the sea at dawn."), *tagged[1:]]
+    assert library.local(seated, by_the_sea, moods=["connection_gratitude"]).entry.id == "wildflowers-golden"
+    assert library._named("tall pines by the lakes, two benches, the beaches") == {
+        "pine": 1, "lake": 1, "bench": 1, "beach": 1}
+    # No feeling known: as before (by time and weather, then the meditation's own pick).
+    assert library.local(breathing, tagged).entry.id in {e.id for e in tagged if not e.sleep}
+
+
+async def test_muse_spark_tags_each_library_world_with_the_feelings_it_suits():
+    worlds = [(e.id, {"title": e.title, "place": e.place, "time_of_day": e.time_of_day}) for e in LIBRARY[:3]]
+    client = FakeClient(moods=[{"worlds": [
+        {"id": "beach-dawn", "moods": ["energy_motivation", "focus_clarity", "energy_motivation", "nonsense"]},
+        {"id": "forestlake-mist", "moods": ["calm_ground", "reflection_insight"]},
+        {"id": "not-asked", "moods": ["calm_ground"]},      # never asked: ignored
+    ]}])                                                    # wildflowers-golden left out: left untagged
+    meter = Meter()
+    tags = await library.tag_moods(client, worlds, meter)
+    assert tags == {"beach-dawn": ("energy_motivation", "focus_clarity"),
+                    "forestlake-mist": ("calm_ground", "reflection_insight")}
+    request = client.requests[0]
+    assert "calm_ground" in request["messages"][0]["content"] and "beach-dawn: Quiet Dawn Beach." in request["messages"][1]["content"]
+    assert request["extra_body"]["prompt_cache_key"] == "elynd-worlds-moods" and meter.calls == {"moods": 1}
+
+
+def test_a_library_world_s_feelings_are_read_with_it(tmp_path):
+    folder = tmp_path / "beach-dawn"
+    folder.mkdir()
+    (folder / "scene.json").write_text(json.dumps({"title": "Dawn Beach", "place": "A beach.", "time_of_day": "dawn"}))
+    (folder / "world.json").write_text(json.dumps({"moods": ["energy_motivation", "nonsense"]}))
+    (entry,) = library.entries_in([tmp_path])
+    assert entry.moods == ("energy_motivation",)
 
 
 def test_a_meditation_without_a_place_keeps_its_library_world():

@@ -22,6 +22,8 @@ place and time the meditation names, and nothing leaves the server.
 """
 from __future__ import annotations
 
+import asyncio
+import dataclasses
 import json
 import re
 import zlib
@@ -47,6 +49,7 @@ class Entry:
     place: str
     time_of_day: str
     sleep: bool = False
+    moods: tuple[str, ...] = ()   # the feelings it suits (MOODS), best first
 
     def line(self) -> str:
         # Short on purpose: the theme (place and time, e.g. harbour-golden) and the painting's title. With
@@ -64,8 +67,11 @@ def entries_in(folders: Iterable[str | Path]) -> list[Entry]:
     found = {}
     for folder in folders:
         for scene in sorted(Path(folder).rglob("scene.json")):
-            if (scene.parent / "world.json").exists():
-                found[scene.parent.name] = Entry.of_scene(scene.parent.name, json.loads(scene.read_text()))
+            world = scene.parent / "world.json"
+            if world.exists():
+                entry = Entry.of_scene(scene.parent.name, json.loads(scene.read_text()))
+                moods = tuple(m for m in json.loads(world.read_text()).get("moods") or [] if m in MOODS)
+                found[scene.parent.name] = dataclasses.replace(entry, moods=moods)
     return list(found.values())
 
 
@@ -176,22 +182,39 @@ SYNONYMS = {"ocean": "sea", "seaside": "sea", "sand": "beach", "sandy": "beach",
 NAMED = PLACES | DETAILS | TIMES
 
 
+def _plain(word: str) -> str:
+    """The word as NAMED lists it: a plural without its s or es ("pines": pine, "beaches": beach), never
+    another word cut short ("seat" is not the sea, "team" not tea)."""
+    if word not in NAMED and word.endswith("s"):
+        for one in (word[:-1], word[:-2] if word.endswith("es") else ""):
+            if one in NAMED:
+                return one
+    return word
+
+
 def _named(text: str) -> Counter:
     """How often a text names each place, detail, time and weather."""
-    words = [SYNONYMS.get(w, w) for w in re.findall(r"[a-z]+", text.lower())]
-    return Counter(w if w in NAMED else w[:-1] for w in words if w in NAMED or w[:-1] in NAMED)
+    words = (_plain(SYNONYMS.get(w, w)) for w in re.findall(r"[a-z]+", text.lower()))
+    return Counter(w for w in words if w in NAMED)
 
 
-def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = ()) -> Pick | None:
-    """A library world chosen here, without Muse Spark: nothing leaves the server. The one whose place the
-    meditation names most (then its details, time and weather), of its kind (a sleep world for a sleep
-    meditation, any other rather than none), and not one seen lately while another fits as well; among
-    equals, the same meditation always gets the same one. Fit 0: Muse Spark never rated it."""
+def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = (),
+          moods: Iterable[str] = ()) -> Pick | None:
+    """A library world chosen here, without Muse Spark: nothing leaves the server. When the meditation names
+    a place, a world of that place (then its details, time and weather); when it names none (the breath,
+    the body), a world of the session's feeling: `moods`, the categories the app's music is chosen by
+    (from the mood the listener picked or wrote), best first. Of its kind
+    (a sleep world for a sleep meditation, any other rather than none), and never one seen lately while one
+    that fits as well is fresh; among equals, the same meditation always gets the same one, another
+    meditation another (as for the music: fit first, variety within the best). Fit 0: Muse Spark
+    never rated it."""
     sleep = is_sleep(meditation)
     candidates = [e for e in entries if e.sleep == sleep] or list(entries)
     if not candidates:
         return None
     said = _named(" ".join(meditation.script.split()[:DEFAULT.pick_words]))
+    moods = [m for m in moods if m in MOODS]
+    names_place = any(w in PLACES for w in said)
 
     weight = {**dict.fromkeys(PLACES, 3), **dict.fromkeys(DETAILS, 1), **dict.fromkeys(TIMES, 2)}
 
@@ -201,12 +224,96 @@ def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = 
         its = set(_named(f"{entry.id.replace('-', ' ')} {entry.title} {entry.place} {entry.time_of_day}")) | main
         return sum(weight[w] * min(said[w], 3) for w in its if w in said) + sum(3 for w in main if w in said)
 
+    def feeling(entry: Entry) -> int:
+        """How well the world suits the session's feelings, 0 best: the session's first feeling as the world's
+        own first; higher as either comes later (most worlds suit calm a little, few as their first)."""
+        return min((i + entry.moods.index(m) for i, m in enumerate(moods) if m in entry.moods),
+                   default=len(moods) + 3)
+
+    # The place first when the meditation names one, else the feeling first.
+    key = ((lambda e: (score(e), -feeling(e))) if names_place else (lambda e: (-feeling(e), score(e))))
     seen = set(recent)
     fresh = [e for e in candidates if e.id not in seen] or candidates
-    best = max(score(e) for e in fresh)
-    tied = [e for e in fresh if score(e) == best]
+    best = max(key(e) for e in fresh)
+    tied = [e for e in fresh if key(e) == best]
     return Pick(tied[zlib.crc32(meditation.script.encode()) % len(tied)], 0,
-                place=any(w in PLACES or w in DETAILS for w in said))
+                place=names_place or any(w in DETAILS for w in said))
+
+
+# ─── The feelings a library world suits ─────────────────────────────────
+
+# The categories the app's music is chosen by, so a world fits how
+# the listener feels the way its music does: what each suits, and what in a world speaks to it.
+MOODS = {
+    "calm_ground": "calm and grounding, for stress and anxiety: still, soft, safe places",
+    "release_let_go": "letting go, for anger and tension: flowing water, wind, rain, open space",
+    "connection_gratitude": "warmth and connection, for sadness and loneliness, and gratitude: warm light, "
+                            "gardens, homes, blossom",
+    "restore_sleep": "rest and sleep, for tiredness: night, late dusk, dim and quiet places",
+    "energy_motivation": "energy and lift, for low motivation, and joy: bright mornings, sunlit meadows, the sea",
+    "reflection_insight": "quiet reflection, for a calm mind: mist, dusk, still water, temples, rain on water",
+    "focus_clarity": "clarity and focus, for a scattered mind: clear air, wide views, mountains, open horizons",
+    "confidence_strength": "strength and courage, for fear: peaks, cliffs, sunrise, big skies",
+}
+
+MOODS_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "worlds": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "id": {"type": "string", "description": "Exactly as listed"},
+                    "moods": {"type": "array", "items": {"type": "string", "enum": list(MOODS)},
+                              "description": "1-3 feelings it suits best, best first"},
+                },
+                "required": ["id", "moods"],
+            },
+        },
+    },
+    "required": ["worlds"],
+}
+
+MOODS_INSTRUCTIONS = ("You tag the painted worlds of ELYND, a meditation app, by the feelings they suit, so a "
+                      "listener's world fits how they feel. The feelings (use the ids exactly):\n"
+                      + "\n".join(f"- {name}: {what}" for name, what in MOODS.items())
+                      + "\nFor each world below, name the 1-3 feelings it suits best, best first. Judge by its "
+                      "place, light, time of day and air. Return only the JSON object.")
+
+
+async def tag_moods(client, worlds: list[tuple[str, dict[str, Any]]], meter: Meter,
+                    settings: Settings = DEFAULT, batch: int = 10) -> dict[str, tuple[str, ...]]:
+    """The feelings each library world suits, by Muse Spark: {id: moods, best first}, from each world's
+    design (`worlds`: (id, scene)). Ten worlds a request; a world left out of an answer is left out here."""
+    gate = asyncio.Semaphore(4)
+
+    async def ask(part: list[tuple[str, dict[str, Any]]]) -> dict[str, tuple[str, ...]]:
+        lines = "\n".join(f"{id}: {scene.get('title')}. {scene.get('place')} Time: {scene.get('time_of_day')}. "
+                          f"Light: {scene.get('light')}. Air: {scene.get('air')}." for id, scene in part)
+        async with gate:
+            response, _ = await spark_chat(
+                client, (settings.library_model, settings.spark_fallback_model),
+                messages=[{"role": "system", "content": MOODS_INSTRUCTIONS}, {"role": "user", "content": lines}],
+                response_format={"type": "json_schema",
+                                 "json_schema": {"name": "moods", "schema": MOODS_SCHEMA, "strict": True}},
+                **reasoning(settings.pick_reasoning),
+                extra_body={**privacy_fields(), **cache_fields("moods")},
+                timeout=30,
+            )
+        meter.spark(getattr(response, "usage", None), "moods")
+        asked = {id for id, _ in part}
+        tags = {}
+        for world in json.loads(response.choices[0].message.content).get("worlds") or []:
+            moods = tuple(dict.fromkeys(m for m in world.get("moods") or [] if m in MOODS))[:3]
+            if world.get("id") in asked and moods:
+                tags[world["id"]] = moods
+        return tags
+
+    answers = await asyncio.gather(*(ask(worlds[i:i + batch]) for i in range(0, len(worlds), batch)))
+    return {id: moods for answer in answers for id, moods in answer.items()}
 
 
 def needs_own_world(chosen: Pick | None, settings: Settings = DEFAULT) -> bool:
