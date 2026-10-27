@@ -613,7 +613,7 @@ async def test_muse_spark_chooses_the_library_world_from_the_meditation():
     assert not library.needs_own_world(chosen)  # it fits: the library world is the session's world
     request = client.requests[0]
     system, user = (m["content"] for m in request["messages"])
-    assert "forestlake-mist | Misty Pine Lake" in system and "beach-night" not in system  # no sleep worlds
+    assert "forestlake-mist: Misty Pine Lake" in system and "beach-night" not in system  # no sleep worlds
     assert "quiet lake at dawn" in user and "quiet lake at dawn" not in system  # the library first, then this
     assert request["model"] == "muse-spark-1.3" and request["reasoning_effort"] == "low"
     assert request["response_format"]["json_schema"]["strict"] is True

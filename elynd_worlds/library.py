@@ -42,7 +42,9 @@ class Entry:
     sleep: bool = False
 
     def line(self) -> str:
-        return f"{self.id} | {self.title} | {self.place} | {self.time_of_day}"
+        # Short on purpose: the theme (place and time, e.g. harbour-golden) and the painting's title. With
+        # 500 worlds every word here is paid for on every session.
+        return f"{self.id}: {self.title}"
 
     @classmethod
     def of_scene(cls, id: str, scene: dict[str, Any]) -> Entry:
@@ -105,7 +107,7 @@ false if it describes no place, or a common place that one of these worlds shows
 river, a forest, a garden, a cabin...), even if it describes it in loving detail.
 Use the ids exactly as listed. Return only the JSON object.
 
-The library (id | title | place | time of day):
+The library (id: title; the id names the place, then the time, season or weather):
 """
 
 
