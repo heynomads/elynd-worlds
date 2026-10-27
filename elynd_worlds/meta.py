@@ -5,7 +5,8 @@ client. This module adds three things around it:
 
 * `Meter`: every step reports what it used (tokens, images, SAM images, audio
   seconds) and the meter prices it with the published rates. A world knows its
-  own cost, and a deployment can stop at a budget.
+  own cost, apart for each bill (Meta Model API, and the open model's host), and
+  a deployment can stop at a budget.
 * `_ResponsesOverHTTP`: SAM 3.1 is served through the Responses API, which
   OpenAI SDKs older than 1.66 do not have. The same streaming request is then
   sent with httpx, so the package also runs inside apps that pin an older SDK.
@@ -27,7 +28,7 @@ import httpx
 from openai import AsyncOpenAI
 from PIL import Image, PngImagePlugin
 
-from .settings import API_BASE, Prices
+from .settings import API_BASE, OPEN_API_BASE, Prices
 
 # Muse Image can search the web and run a shell while it paints. A meditation
 # world needs neither: turning them off keeps every picture self-contained,
@@ -90,12 +91,15 @@ class MetaAPIError(RuntimeError):
 
 @dataclass
 class Meter:
-    """What a world (or a run) used from Meta Model API, and what that costs."""
+    """What a world (or a run) used from Meta Model API and from the open model, and what that costs."""
 
     prices: Prices = field(default_factory=Prices)
     spark_input_tokens: int = 0
     spark_cached_tokens: int = 0
     spark_output_tokens: int = 0
+    open_input_tokens: int = 0
+    open_cached_tokens: int = 0
+    open_output_tokens: int = 0
     images: int = 0
     sam_images: int = 0
     voice_seconds: int = 0
@@ -104,13 +108,18 @@ class Meter:
     def spark(self, usage: Any, step: str) -> None:
         """Record one Muse Spark answer from its `usage` block."""
         self.calls[step] += 1
-        if usage is None:
-            return
-        prompt = int(_get(usage, "prompt_tokens") or 0)
-        cached = int(_get(_get(usage, "prompt_tokens_details"), "cached_tokens") or 0)
-        self.spark_input_tokens += max(prompt - cached, 0)
+        fresh, cached, output = _tokens(usage)
+        self.spark_input_tokens += fresh
         self.spark_cached_tokens += cached
-        self.spark_output_tokens += int(_get(usage, "completion_tokens") or 0)
+        self.spark_output_tokens += output
+
+    def spark_open(self, usage: Any, step: str) -> None:
+        """Record one Muse Spark Open answer (billed by its host, not by Meta)."""
+        self.calls[f"{step}@open"] += 1
+        fresh, cached, output = _tokens(usage)
+        self.open_input_tokens += fresh
+        self.open_cached_tokens += cached
+        self.open_output_tokens += output
 
     def image(self, step: str, count: int = 1) -> None:
         self.calls[step] += 1
@@ -125,7 +134,8 @@ class Meter:
         self.voice_seconds += int(seconds)  # billed in whole seconds, rounded down
 
     @property
-    def usd(self) -> float:
+    def meta_usd(self) -> float:
+        """Meta Model API's bill."""
         p = self.prices
         return round(
             self.spark_input_tokens * p.spark_input_per_million / 1e6
@@ -137,11 +147,31 @@ class Meter:
             5,
         )
 
+    @property
+    def open_usd(self) -> float:
+        """The open model's host's bill (Baseten)."""
+        p = self.prices
+        return round(
+            self.open_input_tokens * p.open_input_per_million / 1e6
+            + self.open_cached_tokens * p.open_cached_input_per_million / 1e6
+            + self.open_output_tokens * p.open_output_per_million / 1e6,
+            5,
+        )
+
+    @property
+    def usd(self) -> float:
+        """Both bills together."""
+        return round(self.meta_usd + self.open_usd, 5)
+
     def as_dict(self) -> dict[str, Any]:
         return {
             "usd": self.usd,
+            "meta_usd": self.meta_usd,
+            "open_usd": self.open_usd,
             "spark_tokens": {"input": self.spark_input_tokens, "cached": self.spark_cached_tokens,
                              "output": self.spark_output_tokens},
+            "open_tokens": {"input": self.open_input_tokens, "cached": self.open_cached_tokens,
+                            "output": self.open_output_tokens},
             "images": self.images,
             "sam_images": self.sam_images,
             "voice_seconds": self.voice_seconds,
@@ -153,6 +183,15 @@ def _get(obj: Any, name: str) -> Any:
     if obj is None:
         return None
     return obj.get(name) if isinstance(obj, dict) else getattr(obj, name, None)
+
+
+def _tokens(usage: Any) -> tuple[int, int, int]:
+    """(fresh input, cached input, output) tokens of a `usage` block; output includes any reasoning."""
+    if usage is None:
+        return 0, 0, 0
+    prompt = int(_get(usage, "prompt_tokens") or 0)
+    cached = int(_get(_get(usage, "prompt_tokens_details"), "cached_tokens") or 0)
+    return max(prompt - cached, 0), cached, int(_get(usage, "completion_tokens") or 0)
 
 
 class _ResponsesOverHTTP:
@@ -198,6 +237,17 @@ def connect(api_key: str | None = None, *, base_url: str = API_BASE, timeout: fl
     if not hasattr(client, "responses"):
         client.responses = _ResponsesOverHTTP(key, base_url)
     return client
+
+
+def connect_open(api_key: str | None = None, *, base_url: str = OPEN_API_BASE, timeout: float = 60.0) -> AsyncOpenAI:
+    """An async client for Muse Spark Open (served by Baseten). The key defaults to $OPEN_MODEL_API_KEY.
+
+    It never retries: when the open model fails, Muse Spark on Meta Model API answers instead.
+    """
+    key = (api_key or os.environ.get("OPEN_MODEL_API_KEY", "")).strip()
+    if not key:
+        raise MetaAPIError("No open-model API key: pass one or set OPEN_MODEL_API_KEY")
+    return AsyncOpenAI(base_url=base_url, api_key=key, timeout=timeout, max_retries=0)
 
 
 def data_url(image_bytes: bytes, mime: str = "image/png") -> str:

@@ -8,6 +8,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 API_BASE = "https://api.meta.ai/v1"
+# Muse Spark Open, Meta's open-weights Muse Spark, as Baseten serves it (the same OpenAI wire format).
+OPEN_API_BASE = "https://inference.baseten.co/v1"
 
 
 @dataclass(frozen=True)
@@ -20,6 +22,11 @@ class Prices:
     image: float = 0.01              # per generated or edited image returned
     sam_image: float = 2.50 / 1000   # per image segmented
     voice_hour: float = 0.18         # per hour of audio transcribed
+    # Muse Spark Open on Baseten (27 Oct 2026): the same rates. It always reasons, and the
+    # reasoning is billed as output.
+    open_input_per_million: float = 1.25
+    open_cached_input_per_million: float = 0.15
+    open_output_per_million: float = 4.25
 
 
 @dataclass(frozen=True)
@@ -28,6 +35,9 @@ class Settings:
     # train on what they receive; a listener's meditation must never be used so.
     director_model: str = "muse-spark-1.3"
     critic_model: str = "muse-spark-1.3"
+    # The critic runs on Muse Spark Open when the deployment passes an open-model client
+    # (critic.py); `critic_model` above takes over whenever it fails.
+    open_critic_model: str = "meta-models/muse-spark-open-1026"
     painter_model: str = "muse-image-1.0"
     cutter_model: str = "sam-3.1"
     voice_model: str = "muse-voice-transcribe-1.0"
@@ -57,8 +67,13 @@ class Settings:
     design_timeout: float = 25
     paint_timeout: float = 45
     critic_timeout: float = 20
+    open_critic_timeout: float = 18  # then Muse Spark judges instead
     cut_timeout: float = 20
     world_timeout: float = 120
+
+    # USD. A deployment stops giving the critic the open model once its own ledger of open-model
+    # spend reaches this (the Baseten credits are $100; the rest covers worlds in flight).
+    open_budget_usd: float = 80.0
 
     prices: Prices = field(default_factory=Prices)
 

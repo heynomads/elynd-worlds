@@ -16,13 +16,13 @@ end, and stays with you afterwards as a card you can share.
 
 ## How a world is made
 
-One agent run per meditation, three Meta models:
+One agent run per meditation, four Meta models, one of them open weights:
 
 ```mermaid
 flowchart TD
     M[Meditation script] --> D[Muse Spark · art director<br/>designs the world as strict JSON]
     D --> P[Muse Image · painter<br/>paints it, 9:16]
-    P --> C[Muse Spark vision · critic<br/>safe? calm? on brief? score]
+    P --> C[Muse Spark Open vision · critic<br/>open weights, on Baseten; Muse Spark if it fails<br/>safe? calm? on brief? score]
     P --> S[SAM 3.1 · cutter<br/>one layer per subject]
     P --> E[Muse Image edit<br/>the scene without its moving subjects]
     P --> N[SAM 3.1 · what moves in nature<br/>water, sky, grass, a stream]
@@ -38,7 +38,7 @@ flowchart TD
 |---|---|---|
 | Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (how each is attached, how it moves, whether it glows), what moves in nature (water, sky, grass, a stream, trees), what drifts through the air (leaves, snow, pollen, fireflies) and the painting prompt. It is told never to copy the listener's words, and no picture carries text. |
 | Painter | `muse-image-1.0` | Paints the world, portrait for a phone. Built-in web search and shell are off. |
-| Critic | `muse-spark-1.3` (vision) | Looks at every painting before a listener does: people or faces, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. |
+| Critic | `meta-models/muse-spark-open-1026` (Muse Spark Open, open weights, served by Baseten; vision) | Looks at every painting before a listener does: people or faces, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. It sees only the painting and the scenery design, never the meditation or the listener. If it fails, takes longer than 18 s or answers out of shape, `muse-spark-1.3` on Meta Model API judges instead. On our six example worlds both agreed on every safety check, and both rejected all four test pictures that must fail (a face, a sign with letters, a storm, a tiny figure). |
 | Revision | `muse-spark-1.3` | A rejected painting goes back to the art director with the critic's note, and the agent paints once more (two paintings at most). |
 | Cutter | `sam-3.1` | Cuts each designed subject out as its own layer: asks name and plural at once, keeps only the near instances, fills holes, and records the outline box. A layer is opaque two pixels past the outline, so it carries the subject's own soft edge; a floating boat's outline is closed over its oars, which then ride with it. |
 | What moves | `sam-3.1` | Finds the water, the sky, the grass and a stream the design names, one request each, and packs them into one region map the phone's shader reads; still subjects are taken out of it, so a stone in a lake never ripples. A glowing subject becomes a light that flickers. |
@@ -80,16 +80,18 @@ after the script is written in our runs; the slower ones were made six at a time
   pseudonymous listener id (a keyed hash Meta cannot reverse) so that any abuse enforcement targets one
   listener, not the whole app.
 * No picture contains people, faces or text; the critic checks every painting.
+* The critic on Baseten receives the painting and its scenery design only: no meditation, no listener id.
 * Every picture a listener sees or shares is marked as made by AI in its metadata (the IPTC digital source
   type `trainedAlgorithmicMedia` that Muse Image puts on its paintings). The plate, the layers and the share
   card keep the mark (EU AI Act, Art. 50).
 
 ## Cost
 
-Every step reports its usage to a meter priced with Meta's published rates. A world costs about **$0.06**
+Every step reports its usage to a meter priced with the published rates. A world costs about **$0.06**
 ($0.050–0.063 in our last six): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves)
-and a handful of SAM images. The command line refuses to run
-past a budget, and the ELYND backend stops making worlds at a total and a daily cap.
+and a handful of SAM images. When Muse Spark Open judges, its share (half a cent to a cent) is Baseten's bill:
+the meter keeps the two bills apart. The command line refuses to run past a budget and stops asking the open
+model at a budget of its own; the ELYND backend stops making worlds at a total and a daily cap.
 
 ## See it in a browser
 
@@ -108,6 +110,7 @@ python -m http.server 8000          # then http://localhost:8000/web/  (web/pari
 ```bash
 python -m venv .venv && .venv/bin/pip install -e ".[dev]"
 export MODEL_API_KEY=...            # a Meta Model API key
+export OPEN_MODEL_API_KEY=...       # optional: Muse Spark Open on Baseten as the critic
 .venv/bin/elynd-worlds make examples/lake_visualization.txt   # writes out/<time>/<name>/world.json + pictures
 .venv/bin/elynd-worlds sheet out/<time>                         # a contact sheet
 .venv/bin/pytest                                                # tests, no network
@@ -128,14 +131,14 @@ ffmpeg -framerate 30 -i /abs/frames/%04d.png -pix_fmt yuv420p preview.mp4
 elynd_worlds/          the engine (Python)
   art_director.py      Muse Spark designs and revises
   painter.py           Muse Image paints and repaints without the subjects
-  critic.py            Muse Spark vision judges each painting
+  critic.py            Muse Spark Open (or Muse Spark) judges each painting
   cutter.py            SAM 3.1 cuts the layers
   regions.py           SAM 3.1 finds the water, sky, grass and a stream
   plate.py             the clean plate behind the moving layers
   director.py          the agent loop
   timeline.py          how much of the world shows over the session
   card.py              the share card
-  meta.py              the client, privacy fields, cost meter
+  meta.py              the clients, privacy fields, cost meter
 flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living painting's shader)
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
 scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline

@@ -7,6 +7,10 @@
 
 `make` refuses to start when the spend ledger (a CSV of every run's cost) is
 already at the budget. The key comes from $MODEL_API_KEY or --key-file.
+
+With an open-model key ($OPEN_MODEL_API_KEY or --open-key-file), Muse Spark Open
+on Baseten is the critic, and its spend goes to a ledger of its own. Once that
+ledger reaches --open-budget, Muse Spark on Meta Model API judges again.
 """
 from __future__ import annotations
 
@@ -23,13 +27,17 @@ from pathlib import Path
 from . import timeline
 from .art_director import Meditation
 from .director import make_world
-from .meta import Meter, connect, encode
+from .meta import Meter, connect, connect_open, encode
+from .settings import DEFAULT
+
+# The most one world's critic can cost on the open model: two paintings, about 1.2 cents each at most.
+OPEN_ESTIMATE_USD = 0.03
 
 
-def read_key(path: str | None) -> str | None:
+def read_key(path: str | None, env: str = "MODEL_API_KEY") -> str | None:
     if path:
         return Path(path).expanduser().read_text().strip()
-    return os.environ.get("MODEL_API_KEY")
+    return os.environ.get(env)
 
 
 def spent(ledger: Path) -> float:
@@ -63,6 +71,17 @@ def meditation_for(path: Path, args: argparse.Namespace) -> Meditation:
     return Meditation(script=text, **meta)
 
 
+def open_critic(args: argparse.Namespace):
+    """(the open-model client for the critic, or None; and why): None without a key or at the budget."""
+    key = read_key(args.open_key_file, "OPEN_MODEL_API_KEY")
+    if not key:
+        return None, "no open-model key"
+    already = spent(Path(args.open_ledger).expanduser())
+    if already + OPEN_ESTIMATE_USD * len(args.scripts) > args.open_budget:
+        return None, f"the open-model ledger shows ${already:.2f} of its ${args.open_budget:.2f} budget"
+    return connect_open(key), f"${already:.2f} of ${args.open_budget:.2f} spent"
+
+
 async def _make(args: argparse.Namespace) -> int:
     ledger = Path(args.ledger).expanduser()
     already = spent(ledger)
@@ -72,6 +91,8 @@ async def _make(args: argparse.Namespace) -> int:
               f"over the ${args.budget:.2f} budget", file=sys.stderr)
         return 2
     client = connect(read_key(args.key_file))
+    open_client, why = open_critic(args)
+    print(f"critic: {'Muse Spark Open' if open_client else 'Muse Spark'} ({why})", file=sys.stderr)
     out = Path(args.out) / time.strftime("%Y%m%d-%H%M%S")
     gate = asyncio.Semaphore(args.parallel)
 
@@ -80,26 +101,31 @@ async def _make(args: argparse.Namespace) -> int:
             meter = Meter()
             started = time.monotonic()
             try:
-                world = await make_world(client, meditation_for(path, args), meter=meter)
+                world = await make_world(client, meditation_for(path, args), meter=meter, open_client=open_client)
             except Exception as error:  # noqa: BLE001 - report and keep the batch going
                 return {"name": path.stem, "ok": False, "error": f"{type(error).__name__}: {error}"[:300],
-                        "usd": meter.usd}
+                        "usd": meter.usd, "meta_usd": meter.meta_usd, "open_usd": meter.open_usd}
             folder = world.save(out / path.stem)
             return {"name": path.stem, "ok": True, "title": world.scene["title"], "usd": meter.usd,
+                    "meta_usd": meter.meta_usd, "open_usd": meter.open_usd,
                     "seconds": round(time.monotonic() - started, 1), "paintings": world.paintings,
-                    "score": world.verdict.get("score"), "plate": world.plate_source,
+                    "score": world.verdict.get("score"), "judge": world.verdict.get("judge"),
+                    "plate": world.plate_source,
                     "layers": [layer.wording for layer in world.layers] if world.moving else [],
                     "wanted": [s["name"] for s in world.scene["subjects"]], "folder": str(folder)}
 
     results = await asyncio.gather(*(one(Path(p)) for p in args.scripts))
-    total = round(sum(r["usd"] for r in results), 5)
+    total = round(sum(r["meta_usd"] for r in results), 5)
+    open_total = round(sum(r["open_usd"] for r in results), 5)
     record(ledger, "make", total, f"{len(results)} worlds -> {out}")
+    if open_total:
+        record(Path(args.open_ledger).expanduser(), "make", open_total, f"critic of {len(results)} worlds -> {out}")
     out.mkdir(parents=True, exist_ok=True)
     (out / "report.json").write_text(json.dumps(results, indent=2, ensure_ascii=False))
     for r in results:
         print(json.dumps(r, ensure_ascii=False))
-    print(f"{sum(r['ok'] for r in results)}/{len(results)} worlds, ${total:.4f} this run, "
-          f"${already + total:.4f} in the ledger -> {out}")
+    print(f"{sum(r['ok'] for r in results)}/{len(results)} worlds, ${total:.4f} Meta + ${open_total:.4f} open model "
+          f"this run, ${already + total:.4f} in the Meta ledger -> {out}")
     return 0
 
 
@@ -164,6 +190,10 @@ def main(argv: list[str] | None = None) -> int:
     make.add_argument("--key-file", default=os.environ.get("MODEL_API_KEY_FILE"))
     make.add_argument("--ledger", default=os.environ.get("ELYND_WORLDS_LEDGER", "out/spend.csv"))
     make.add_argument("--budget", type=float, default=float(os.environ.get("ELYND_WORLDS_BUDGET", "25")))
+    make.add_argument("--open-key-file", default=os.environ.get("OPEN_MODEL_API_KEY_FILE"),
+                      help="Muse Spark Open (Baseten) as the critic; without a key, Muse Spark judges")
+    make.add_argument("--open-ledger", default=os.environ.get("ELYND_WORLDS_OPEN_LEDGER", "out/open_spend.csv"))
+    make.add_argument("--open-budget", type=float, default=DEFAULT.open_budget_usd)
 
     sheet = sub.add_parser("sheet", help="one contact sheet of saved worlds")
     sheet.add_argument("folders", nargs="+")

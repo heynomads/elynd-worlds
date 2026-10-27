@@ -1,16 +1,19 @@
 """The engine, step by step, against the fake Meta Model API (tests/fakes.py)."""
 from __future__ import annotations
 
+import argparse
 import asyncio
+import csv
 import io
 import json
+import time
 
 import httpx
 import numpy as np
 import pytest
 from PIL import Image
 
-from elynd_worlds import Meditation, Meter, Settings, art_director, critic, cutter, painter, plate, timeline
+from elynd_worlds import Meditation, Meter, Settings, art_director, cli, critic, cutter, painter, plate, timeline
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
@@ -45,6 +48,18 @@ def test_meter_prices_every_kind_of_use():
     assert meter.as_dict()["calls"] == {"design": 1, "paint": 1, "segment": 1, "transcribe": 1}
 
 
+def test_the_open_model_is_a_bill_of_its_own():
+    meter = Meter(Prices())
+    meter.spark_open({"prompt_tokens": 2_000_000, "completion_tokens": 1_000_000,
+                      "prompt_tokens_details": {"cached_tokens": 1_000_000}}, "critique")
+    meter.image("paint")
+    assert meter.open_usd == pytest.approx(1.25 + 0.15 + 4.25)
+    assert meter.meta_usd == pytest.approx(0.01)
+    assert meter.usd == pytest.approx(5.66)
+    assert meter.as_dict()["calls"] == {"critique@open": 1, "paint": 1}
+    assert meter.as_dict()["open_tokens"] == {"input": 1_000_000, "cached": 1_000_000, "output": 1_000_000}
+
+
 # ─── art director ───────────────────────────────────────────────────────
 
 def test_scene_check_cleans_and_refuses():
@@ -66,9 +81,10 @@ async def test_design_and_revise_go_to_muse_spark_with_strict_json():
     assert first["model"] == "muse-spark-1.3"
     assert first["response_format"]["json_schema"]["strict"] is True
     assert "quiet lake at dawn" in first["messages"][1]["content"]
-    await art_director.revise(client, scene, FAIL, meter)
+    await art_director.revise(client, scene, {**FAIL, "judge": "meta-models/muse-spark-open-1026"}, meter)
     revise = client.requests[1]["messages"][1]["content"]
     assert "Remove any figure" in revise and "under your hand" not in revise  # the meditation is not resent
+    assert "muse-spark-open" not in revise  # who judged is no business of the director
     assert meter.calls == {"design": 1, "revise": 1}
 
 
@@ -88,6 +104,57 @@ async def test_the_critic_sees_a_small_jpeg_and_scores_are_clamped():
     image_part = client.requests[0]["messages"][1]["content"][1]["image_url"]["url"]
     assert image_part.startswith("data:image/jpeg;base64,")
     assert Image.open(io.BytesIO(preview_jpeg(png(1200, 2000), 576))).size == (576, 960)
+    assert verdict["judge"] == "muse-spark-1.3"
+
+
+CHECKED = art_director.check(json.loads(json.dumps(SCENE)))
+
+
+async def test_the_open_model_judges_and_never_sees_the_listener_or_the_meditation():
+    meta, open_model = FakeClient(), FakeClient(verdicts=[PASS])
+    world = await make_world(meta, MEDITATION, user="listener-7f3a", open_client=open_model)
+    assert open_model.calls == ["verdict"] and "verdict" not in meta.calls
+    request = open_model.requests[0]
+    assert request["model"] == "meta-models/muse-spark-open-1026"
+    sent = json.dumps(request)
+    assert "extra_body" not in request and "listener-7f3a" not in sent
+    assert "Breathe in" not in sent and "under your hand" not in sent  # only the scenery design and the painting
+    assert world.verdict["judge"] == "meta-models/muse-spark-open-1026"
+    assert world.meter.calls["critique@open"] == 1 and "critique" not in world.meter.calls
+    assert world.meter.open_usd > 0 and world.meter.usd == pytest.approx(world.meter.meta_usd + world.meter.open_usd)
+    assert any(s.name == "critique 1" and "by meta-models/muse-spark-open-1026" in s.note for s in world.trace)
+
+
+@pytest.mark.parametrize("broken, billed", [
+    (FakeClient(fail_chat=True), 0),                          # an error or an outage
+    (FakeClient(verdicts=['{"score": 9}']), 1),               # an answer without the checks
+    (FakeClient(verdicts=[{**PASS, "calm": "yes"}]), 1),      # a check that is not true or false
+    (FakeClient(verdicts=["not json"]), 1),
+])
+async def test_when_the_open_model_fails_muse_spark_judges(broken, billed):
+    meta, meter = FakeClient(), Meter()
+    verdict = await critic.critique(meta, PAINTING, CHECKED, meter, open_client=broken)
+    assert verdict["judge"] == "muse-spark-1.3" and meta.calls == ["verdict"]
+    assert meta.requests[0]["extra_body"]["store"] is False
+    assert meter.calls["critique@open"] == billed and meter.calls["critique"] == 1  # what was answered is paid
+
+
+async def test_a_slow_open_model_is_not_waited_for():
+    started = time.monotonic()
+    verdict = await critic.critique(FakeClient(), PAINTING, CHECKED, Meter(), Settings(open_critic_timeout=0.05),
+                                    open_client=FakeClient(chat_delay=5))
+    assert verdict["judge"] == "muse-spark-1.3" and time.monotonic() - started < 2  # the fake answers after 5 s
+
+
+@pytest.mark.parametrize("given, reason", [
+    ({**PASS, "reason": " "}, "No fault found; score 9 of 10."),
+    ({**FAIL, "reason": ""}, "The painting shows a person or a face."),
+    ({**PASS, "calm": False, "belongs": False, "reason": ""},
+     "The painting is not calm, does not show the designed place and mood."),
+])
+async def test_a_missing_reason_is_written_from_the_checks(given, reason):
+    verdict = await critic.critique(FakeClient(verdicts=[given]), PAINTING, CHECKED, Meter())
+    assert verdict["reason"] == reason
 
 
 # ─── cutter (SAM 3.1) ───────────────────────────────────────────────────
@@ -476,3 +543,40 @@ async def test_responses_over_http_streams_events_and_reports_errors():
     assert events == [{"type": "a"}, {"type": "b"}]
     with pytest.raises(MetaAPIError, match="402"):
         [e async for e in await responses.create(model="bad", input=[])]
+
+
+# ─── command line ───────────────────────────────────────────────────────
+
+def test_the_open_critic_needs_a_key_and_room_in_its_budget(tmp_path, monkeypatch):
+    monkeypatch.delenv("OPEN_MODEL_API_KEY", raising=False)
+    ledger = tmp_path / "open.csv"
+    args = argparse.Namespace(open_key_file=None, open_ledger=str(ledger), open_budget=80.0, scripts=["a.txt"])
+    assert cli.open_critic(args) == (None, "no open-model key")
+    key = tmp_path / "key"
+    key.write_text("test-key\n")
+    args.open_key_file = str(key)
+    assert cli.open_critic(args)[0] is not None
+    cli.record(ledger, "make", 79.99, "earlier runs")
+    client, why = cli.open_critic(args)
+    assert client is None and "$79.99 of its $80.00 budget" in why
+
+
+def test_make_writes_each_bill_to_its_own_ledger(tmp_path, monkeypatch):
+    meta, open_model = FakeClient(), FakeClient()
+    monkeypatch.setattr(cli, "connect", lambda key: meta)
+    monkeypatch.setattr(cli, "connect_open", lambda key: open_model)
+    script = tmp_path / "lake.txt"
+    script.write_text("# technique=visualization\nBreathe in. Picture a quiet lake at dawn.")
+    key = tmp_path / "key"
+    key.write_text("test-key")
+    ledgers = tmp_path / "meta.csv", tmp_path / "open.csv"
+    assert cli.main(["make", str(script), "--out", str(tmp_path / "out"), "--key-file", str(key),
+                     "--ledger", str(ledgers[0]), "--open-ledger", str(ledgers[1]),
+                     "--open-key-file", str(key)]) == 0
+    report = json.loads(next((tmp_path / "out").glob("*/report.json")).read_text())[0]
+    assert report["ok"] and report["judge"] == "meta-models/muse-spark-open-1026"
+    meta_row, open_row = (list(csv.DictReader(ledger.open()))[0] for ledger in ledgers)
+    assert float(meta_row["usd"]) == pytest.approx(report["meta_usd"], abs=1e-5)
+    assert float(open_row["usd"]) == pytest.approx(report["open_usd"], abs=1e-5) and report["open_usd"] > 0
+    assert report["usd"] == pytest.approx(report["meta_usd"] + report["open_usd"])
+

@@ -5,6 +5,7 @@ answers with the blocks it is told about; the critic answers from a queue.
 """
 from __future__ import annotations
 
+import asyncio
 import base64
 import io
 import json
@@ -77,11 +78,12 @@ USAGE = SimpleNamespace(prompt_tokens=1000, completion_tokens=200,
 
 
 class FakeClient:
-    """Answers like Meta Model API. `sam` maps a phrase to boxes found on the painting;
-    `sam_on_plate` maps a phrase to boxes found on any other picture (the plate)."""
+    """Answers like Meta Model API (or, as `open_client`, like Muse Spark Open on Baseten).
+    `sam` maps a phrase to boxes found on the painting; `sam_on_plate` maps a phrase to boxes
+    found on any other picture (the plate). A verdict given as a string is answered verbatim."""
 
     def __init__(self, scenes=None, verdicts=None, sam=None, sam_on_plate=None, painting=PAINTING, edit=EDIT,
-                 fail_edit=False, fail_sam=False):
+                 fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0):
         self.calls: list[str] = []
         self.requests: list[dict] = []
         self.sam_requests: list[dict] = []
@@ -93,6 +95,7 @@ class FakeClient:
         self._painting, self._edit = painting, edit
         self._painting_url = sam_image_url(painting)
         self._fail_edit, self._fail_sam = fail_edit, fail_sam
+        self._fail_chat, self._chat_delay = fail_chat, chat_delay
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._chat))
         self.images = SimpleNamespace(generate=self._generate, edit=self._edit_image)
         self.responses = SimpleNamespace(create=self._responses)
@@ -105,8 +108,12 @@ class FakeClient:
         name = kwargs["response_format"]["json_schema"]["name"]
         self.calls.append(name)
         self.requests.append(kwargs)
+        if self._chat_delay:
+            await asyncio.sleep(self._chat_delay)
+        if self._fail_chat:
+            raise RuntimeError("chat failed")
         payload = self._pop(self._scenes) if name == "scene" else self._pop(self._verdicts)
-        message = SimpleNamespace(content=json.dumps(payload))
+        message = SimpleNamespace(content=payload if isinstance(payload, str) else json.dumps(payload))
         return SimpleNamespace(choices=[SimpleNamespace(message=message)], usage=USAGE)
 
     async def _generate(self, **kwargs):

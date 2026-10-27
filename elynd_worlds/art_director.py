@@ -204,7 +204,8 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
             {"role": "system", "content": DIRECTOR_INSTRUCTIONS + "\n\n" + REVISE_INSTRUCTIONS},
             {"role": "user", "content": (
                 f"Your design:\n{json.dumps(scene, ensure_ascii=False)}\n\n"
-                f"The critic's verdict on the painting:\n{json.dumps(critique, ensure_ascii=False)}\n\n"
+                f"The critic's verdict on the painting:\n"
+                f"{json.dumps({k: v for k, v in critique.items() if k != 'judge'}, ensure_ascii=False)}\n\n"
                 f"What to change: {note}"
             )},
         ],

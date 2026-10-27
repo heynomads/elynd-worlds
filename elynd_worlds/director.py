@@ -2,10 +2,11 @@
 
     design (Muse Spark)
       └─ paint (Muse Image)
-           ├─ critique (Muse Spark, vision) ──┐
-           ├─ cut layers (SAM 3.1)            │
-           ├─ find what moves (SAM 3.1)       ├─ run at the same time
-           └─ paint without subjects (Image) ─┘
+           ├─ critique (Muse Spark Open, vision; ┐
+           │   Muse Spark if it fails)          │
+           ├─ cut layers (SAM 3.1)              │
+           ├─ find what moves (SAM 3.1)         ├─ run at the same time
+           └─ paint without subjects (Image) ───┘
          rejected → the art director revises its design from the critic's note
                     → paint again (at most `Settings.paintings` paintings)
          accepted → `on_painting` shows the still painting at once,
@@ -43,9 +44,11 @@ async def _nothing() -> None:
 
 
 async def make_world(client, meditation: Meditation, *, settings: Settings = DEFAULT, meter: Meter | None = None,
-                     on_painting: OnPainting | None = None, user: str | None = None) -> World:
+                     on_painting: OnPainting | None = None, user: str | None = None,
+                     open_client=None) -> World:
     """Run the agent for one meditation. `on_painting(painting, scene, verdict)` fires as soon as a
-    painting is accepted, before the layers and the plate are ready."""
+    painting is accepted, before the layers and the plate are ready. With `open_client`
+    (meta.connect_open), Muse Spark Open is the critic."""
     meter = meter or Meter(settings.prices)
     trace: list[Step] = []
     started = time.monotonic()
@@ -71,8 +74,9 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
     painting = b""
     for attempt in range(1, settings.paintings + 1):
         painting = await step(f"paint {attempt}", painter.paint(client, scene, meter, settings))
-        checking = asyncio.ensure_future(step(f"critique {attempt}", critic.critique(client, painting, scene, meter, settings),
-                                              lambda v: f"score {v['score']}: {v['reason']}"))
+        checking = asyncio.ensure_future(step(f"critique {attempt}",
+                                              critic.critique(client, painting, scene, meter, settings, open_client),
+                                              lambda v: f"score {v['score']} by {v['judge']}: {v['reason']}"))
         cutting = asyncio.ensure_future(step(f"cut {attempt}", cutter.cut(client, painting, scene, meter, settings),
                                              lambda ls: ", ".join(layer.wording for layer in ls) or "no layers"))
         # Only a moving subject needs what lies behind it painted (plate.py); with none, no repaint.
@@ -128,11 +132,12 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
 
 async def make_world_or_none(client, meditation: Meditation, *, settings: Settings = DEFAULT,
                              meter: Meter | None = None, on_painting: OnPainting | None = None,
-                             user: str | None = None) -> World | None:
+                             user: str | None = None, open_client=None) -> World | None:
     """`make_world` within `Settings.world_timeout`; None on any failure (a world must never break a meditation)."""
     try:
         return await asyncio.wait_for(
-            make_world(client, meditation, settings=settings, meter=meter, on_painting=on_painting, user=user),
+            make_world(client, meditation, settings=settings, meter=meter, on_painting=on_painting, user=user,
+                       open_client=open_client),
             settings.world_timeout)
     except Exception as error:  # noqa: BLE001
         log.warning("no world: %s: %s", type(error).__name__, error)
