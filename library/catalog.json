@@ -42,28 +42,6 @@
   "cost_usd": 0.04081
  },
  {
-  "id": "aboveclouds-midday",
-  "title": "Above the Clouds",
-  "place": "A warm rocky mountaintop resting above a vast sea of soft clouds under a wide open sky.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "flat rock"
-  ],
-  "moving": [],
-  "nature": [
-   "sky",
-   "grass"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04347
- },
- {
   "id": "aboveclouds-night",
   "title": "Still Mountain Night",
   "place": "A quiet mountain summit resting above a vast sea of soft clouds at night.",
@@ -287,27 +265,6 @@
   "cost_usd": 0.0339
  },
  {
-  "id": "alpinevillage-snow",
-  "title": "Quiet Alpine Valley",
-  "place": "A small alpine village with wooden chalets rests in a snowy green valley below high peaks.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "wooden chalet",
-   "wooden sled"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02902
- },
- {
   "id": "alpinevillage-snowfall",
   "title": "Snowy Valley Village",
   "place": "A small alpine village in a green valley below high snowy peaks.",
@@ -439,27 +396,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03484
- },
- {
-  "id": "appleorchard-spring",
-  "title": "Spring Apple Orchard",
-  "place": "An old apple orchard in spring with rows of blossoming trees standing in long soft grass.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "wooden crate",
-   "white butterfly"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02788
  },
  {
   "id": "autumnforest-golden",
@@ -642,27 +578,6 @@
   "cost_usd": 0.04137
  },
  {
-  "id": "barn-dusk",
-  "title": "Quiet Barn Dusk",
-  "place": "A red barn at the edge of wide fields beside a quiet country lane at dusk.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "round hay bale",
-   "wooden barrel"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.0361
- },
- {
   "id": "barn-golden",
   "title": "Golden Barn Field",
   "place": "A red barn at the edge of wide golden fields beside a quiet country lane.",
@@ -683,48 +598,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03398
- },
- {
-  "id": "barn-mist",
-  "title": "Misty Barn Morning",
-  "place": "A red barn at the edge of wide fields beside a quiet country lane in morning mist.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "red barn",
-   "fence post"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04321
- },
- {
-  "id": "barn-morning",
-  "title": "Quiet Barn Morning",
-  "place": "A red barn at the edge of wide green fields beside a quiet country lane on a clear morning.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "red barn",
-   "round hay bale"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.05887
  },
  {
   "id": "barn-night",
@@ -817,27 +690,6 @@
   "cost_usd": 0.03399
  },
  {
-  "id": "bay-midday",
-  "title": "Sunlit Calm Bay",
-  "place": "A sheltered bay with calm water and green hills on a warm bright day.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "white sailboat",
-   "blue sailboat"
-  ],
-  "moving": [
-   "white sailboat"
-  ],
-  "nature": [],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03553
- },
- {
   "id": "bay-mist",
   "title": "Misty Morning Bay",
   "place": "A sheltered bay with still water and soft green hills in morning mist.",
@@ -862,50 +714,6 @@
   "cost_usd": 0.06937
  },
  {
-  "id": "bay-morning",
-  "title": "Calm Morning Bay",
-  "place": "A sheltered bay where green hills meet calm water on a clear morning.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "white sailboat",
-   "small sailboat"
-  ],
-  "moving": [
-   "white sailboat"
-  ],
-  "nature": [],
-  "particles": "none",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.0287
- },
- {
-  "id": "bay-night",
-  "title": "Moonlit Sheltered Bay",
-  "place": "A sheltered bay at night where green hills meet calm water under moonlight.",
-  "time_of_day": "night",
-  "sleep": true,
-  "subjects": [
-   "small sailboat",
-   "wooden sailboat"
-  ],
-  "moving": [
-   "small sailboat"
-  ],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03323
- },
- {
   "id": "beach-dawn",
   "title": "Quiet Dawn Beach",
   "place": "A quiet sandy beach at dawn where small waves fold onto the sand.",
@@ -926,25 +734,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.04028
- },
- {
-  "id": "beach-dusk",
-  "title": "Quiet Dusk Beach",
-  "place": "A quiet sandy beach at dusk where small waves meet the shore.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "seashell",
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02957
  },
  {
   "id": "beach-golden",
@@ -1034,134 +823,6 @@
   "cost_usd": 0.0369
  },
  {
-  "id": "beechforest-golden",
-  "title": "Golden Beech Path",
-  "place": "A soft path winds through tall old beech trees in warm golden light.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "mossy boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "leaves",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.0436
- },
- {
-  "id": "beechforest-mist",
-  "title": "Misty Beech Path",
-  "place": "A soft path winding through tall old beech trees in morning mist.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "pale stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.04159
- },
- {
-  "id": "beechforest-morning",
-  "title": "Morning Beech Path",
-  "place": "A quiet path winds through an old beech forest in bright clear morning light.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "mossy boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.0403
- },
- {
-  "id": "beechforest-spring",
-  "title": "Spring Beech Path",
-  "place": "A soft path through an old beech forest in spring.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "white butterfly"
-  ],
-  "moving": [
-   "white butterfly"
-  ],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.0291
- },
- {
-  "id": "birch-autumn",
-  "title": "Autumn Birch Light",
-  "place": "A bright birch forest in autumn with white trunks and golden light.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "gray boulder",
-   "mossy rock"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "leaves",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02694
- },
- {
-  "id": "birch-golden",
-  "title": "Golden Birch Light",
-  "place": "A bright birch forest glowing in low golden sunlight.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "mossy rock"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02901
- },
- {
   "id": "birch-mist",
   "title": "Birch Morning Mist",
   "place": "A bright birch forest clearing with white trunks in soft morning light.",
@@ -1185,88 +846,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03919
- },
- {
-  "id": "birch-morning",
-  "title": "Bright Birch Morning",
-  "place": "A bright birch forest clearing with white trunks in soft green morning light.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "fallen log",
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03193
- },
- {
-  "id": "birch-snow",
-  "title": "Bright Winter Birches",
-  "place": "A bright birch forest in winter with tall white trunks over fresh untouched snow.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "snowy boulder",
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03197
- },
- {
-  "id": "birch-spring",
-  "title": "Bright Birch Morning",
-  "place": "A bright spring birch forest with white trunks in soft green light.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "white butterfly"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02369
- },
- {
-  "id": "blacksand-aurora",
-  "title": "Quiet Aurora Beach",
-  "place": "A black sand beach with soft white surf and a calm sea beneath slow green northern lights, with dark basalt cliffs behind.",
-  "time_of_day": "night",
-  "sleep": true,
-  "subjects": [
-   "smooth stone",
-   "rounded boulder"
-  ],
-  "moving": [],
-  "nature": [],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.0352
  },
  {
   "id": "blacksand-dusk",
@@ -1501,109 +1080,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03491
- },
- {
-  "id": "bluebells-dusk",
-  "title": "Bluebell Dusk Wood",
-  "place": "A quiet beech wood at dusk with the forest floor covered in a soft haze of bluebells.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03247
- },
- {
-  "id": "bluebells-golden",
-  "title": "Bluebell Golden Wood",
-  "place": "A sunlit beech wood with its floor carpeted in bluebells.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03109
- },
- {
-  "id": "bluebells-midday",
-  "title": "Bluebell Beech Wood",
-  "place": "A sunlit beech wood with the forest floor carpeted in bluebells.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "mossy stone",
-   "fallen log"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03116
- },
- {
-  "id": "bluebells-mist",
-  "title": "Misty Bluebell Wood",
-  "place": "A quiet beech wood with a soft carpet of bluebells in morning mist.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "mossy stone",
-   "pale stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03742
- },
- {
-  "id": "bluebells-morning",
-  "title": "Quiet Bluebell Wood",
-  "place": "A bright beech wood with a soft blue carpet of bluebells on a clear morning.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "white butterfly"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.02791
  },
  {
   "id": "bluebells-spring",
@@ -2002,111 +1478,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.08074
- },
- {
-  "id": "canyon-dawn",
-  "title": "Red Canyon Dawn",
-  "place": "A wide red-rock canyon glowing softly at dawn.",
-  "time_of_day": "dawn",
-  "sleep": false,
-  "subjects": [
-   "rounded boulder",
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03678
- },
- {
-  "id": "canyon-dusk",
-  "title": "Quiet Canyon Dusk",
-  "place": "A wide red-rock canyon with layered glowing cliffs under a soft lilac and deep blue dusk sky.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "smooth boulder",
-   "stone cairn"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.07037
- },
- {
-  "id": "canyon-golden",
-  "title": "Warm Canyon Glow",
-  "place": "A wide red-rock canyon glowing in low golden light.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "rounded boulder",
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03743
- },
- {
-  "id": "canyon-midday",
-  "title": "Warm Red Canyon",
-  "place": "A wide red-rock canyon with layered glowing cliffs under a bright midday sky.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "rounded boulder",
-   "flat stone"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03668
- },
- {
-  "id": "canyon-morning",
-  "title": "Still Morning Canyon",
-  "place": "A wide red-rock canyon with glowing layered cliffs under a clear morning sky.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "pale boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04085
  },
  {
   "id": "canyon-stars",
@@ -2805,26 +2176,6 @@
   "cost_usd": 0.03509
  },
  {
-  "id": "courtyard-midday",
-  "title": "Sunlit Courtyard Fountain",
-  "place": "A sunlit courtyard with a mosaic fountain surrounded by orange trees.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "tiled fountain"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03167
- },
- {
   "id": "courtyard-morning",
   "title": "Sunlit Courtyard Calm",
   "place": "A sunny courtyard with a tiled fountain surrounded by orange trees on a clear morning.",
@@ -2890,27 +2241,6 @@
   "cost_usd": 0.03973
  },
  {
-  "id": "dunes-dawn",
-  "title": "Dawn Desert Dunes",
-  "place": "Wide smooth desert dunes stretching away under a clear dawn sky.",
-  "time_of_day": "dawn",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "sandstone rock"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.03906
- },
- {
   "id": "dunes-dusk",
   "title": "Quiet Dusk Dunes",
   "place": "Wide smooth desert dunes curve softly away under a clear lilac to deep blue dusk sky.",
@@ -2930,47 +2260,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.04022
- },
- {
-  "id": "dunes-golden",
-  "title": "Golden Quiet Dunes",
-  "place": "Wide desert dunes curving softly under a clear golden sky.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "smooth stone"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.06141
- },
- {
-  "id": "dunes-midday",
-  "title": "Still Desert Dunes",
-  "place": "Wide smooth desert dunes curving away under a clear bright sky.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "pale rock"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03571
  },
  {
   "id": "dunes-stars",
@@ -3676,129 +2965,6 @@
   "cost_usd": 0.05555
  },
  {
-  "id": "greenhouse-dusk",
-  "title": "Quiet Greenhouse Dusk",
-  "place": "A glass greenhouse full of green plants at dusk.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "clay pot",
-   "glass lantern"
-  ],
-  "moving": [
-   "clay pot",
-   "glass lantern"
-  ],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03808
- },
- {
-  "id": "greenhouse-golden",
-  "title": "Golden Greenhouse Calm",
-  "place": "A sunlit glass greenhouse filled with green plants and flowers at golden hour.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "clay pot",
-   "brass watering can"
-  ],
-  "moving": [],
-  "nature": [],
-  "particles": "pollen",
-  "critic": {
-   "score": 8,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03668
- },
- {
-  "id": "greenhouse-midday",
-  "title": "Warm Glass Greenhouse",
-  "place": "A bright glass greenhouse filled with green plants on a warm day.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "clay pot"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03919
- },
- {
-  "id": "greenhouse-morning",
-  "title": "Clear Morning Greenhouse",
-  "place": "A bright glass greenhouse filled with green plants on a clear morning.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "watering can",
-   "clay pot"
-  ],
-  "moving": [],
-  "nature": [],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04039
- },
- {
-  "id": "greenhouse-rain",
-  "title": "Greenhouse Soft Rain",
-  "place": "A glass greenhouse full of green plants in gentle rain.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "clay pot",
-   "metal watering can"
-  ],
-  "moving": [],
-  "nature": [],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03903
- },
- {
-  "id": "greenhouse-snow",
-  "title": "Winter Greenhouse Light",
-  "place": "A glass greenhouse filled with green leaves and soft flowers, surrounded by fresh snow.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "wooden stool",
-   "watering can"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04151
- },
- {
   "id": "greenlake-dusk",
   "title": "Quiet Dusk Lake",
   "place": "A calm lake among soft green hills at dusk with reeds near the quiet shore.",
@@ -4201,7 +3367,8 @@
   ],
   "moving": [],
   "nature": [
-   "sky"
+   "sky",
+   "grass"
   ],
   "particles": "none",
   "critic": {
@@ -4222,7 +3389,8 @@
   ],
   "moving": [],
   "nature": [
-   "sky"
+   "sky",
+   "grass"
   ],
   "particles": "pollen",
   "critic": {
@@ -4243,7 +3411,8 @@
   ],
   "moving": [],
   "nature": [
-   "sky"
+   "sky",
+   "grass"
   ],
   "particles": "none",
   "critic": {
@@ -4846,27 +4015,6 @@
   "cost_usd": 0.04462
  },
  {
-  "id": "kitchengarden-golden",
-  "title": "Golden Garden Calm",
-  "place": "A neat vegetable garden with a small wooden shed glowing in low evening sun.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "clay pot",
-   "wooden crate"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04246
- },
- {
   "id": "kitchengarden-midday",
   "title": "Sunlit Garden Rest",
   "place": "A sunlit vegetable garden with neat rows of herbs and a small wooden shed.",
@@ -4943,7 +4091,8 @@
   ],
   "moving": [],
   "nature": [
-   "sky"
+   "sky",
+   "grass"
   ],
   "particles": "pollen",
   "critic": {
@@ -6212,27 +5361,6 @@
   "cost_usd": 0.03992
  },
  {
-  "id": "mossforest-night",
-  "title": "Moonlit Moss Forest",
-  "place": "An ancient moss-covered forest at night resting in quiet silver moonlight.",
-  "time_of_day": "night",
-  "sleep": true,
-  "subjects": [
-   "mossy stone",
-   "mossy boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03656
- },
- {
   "id": "mossforest-rain",
   "title": "Mossy Rain Forest",
   "place": "An ancient moss-covered forest resting in soft grey rain.",
@@ -7481,27 +6609,6 @@
   "cost_usd": 0.0403
  },
  {
-  "id": "pineforest-night",
-  "title": "Moonlit Pine Rest",
-  "place": "A calm widely spaced pine forest at night bathed in silver moonlight.",
-  "time_of_day": "night",
-  "sleep": true,
-  "subjects": [
-   "smooth stone",
-   "fallen log"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04178
- },
- {
   "id": "pineforest-snow",
   "title": "Still Winter Pines",
   "place": "An open pine forest in winter with tall straight trunks standing far apart over fresh untouched snow.",
@@ -7804,27 +6911,6 @@
   "cost_usd": 0.04346
  },
  {
-  "id": "redwoods-dusk",
-  "title": "Quiet Redwood Dusk",
-  "place": "A quiet grove of giant redwood trunks at dusk fading into lilac and deep blue mist.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "mossy rock"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04565
- },
- {
   "id": "redwoods-golden",
   "title": "Golden Redwood Grove",
   "place": "A quiet grove of giant redwood trees in warm evening light.",
@@ -7845,69 +6931,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03704
- },
- {
-  "id": "redwoods-mist",
-  "title": "Misty Redwood Grove",
-  "place": "A quiet grove of towering redwoods wrapped in soft morning mist.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "large stone",
-   "small stone"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.042
- },
- {
-  "id": "redwoods-morning",
-  "title": "Redwood Morning Calm",
-  "place": "A quiet grove of giant redwood trunks in soft morning light.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "mossy boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04063
- },
- {
-  "id": "redwoods-night",
-  "title": "Quiet Redwood Night",
-  "place": "A giant redwood forest at night bathed in soft silver moonlight.",
-  "time_of_day": "night",
-  "sleep": true,
-  "subjects": [
-   "smooth stone",
-   "round boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03661
  },
  {
   "id": "redwoods-rain",
@@ -8482,26 +7505,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.05228
- },
- {
-  "id": "rooftop-dusk",
-  "title": "Quiet Rooftop Dusk",
-  "place": "A quiet rooftop garden high above the city at dusk.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "wooden bench"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03054
  },
  {
   "id": "rooftop-golden",
@@ -9167,48 +8170,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.04576
- },
- {
-  "id": "snowpeaks-golden",
-  "title": "Golden Snow Valley",
-  "place": "A wide untouched snowfield rests in a calm valley beneath towering white peaks.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "smooth stone",
-   "rounded boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04089
- },
- {
-  "id": "snowpeaks-midday",
-  "title": "Bright Snow Valley",
-  "place": "A wide untouched snowfield in a quiet valley ringed by white peaks under bright sun.",
-  "time_of_day": "midday",
-  "sleep": false,
-  "subjects": [
-   "rounded boulder",
-   "small boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03799
  },
  {
   "id": "snowpeaks-night",
@@ -10161,66 +9122,6 @@
   "cost_usd": 0.04055
  },
  {
-  "id": "tulips-dawn",
-  "title": "Tulip Dawn Field",
-  "place": "Endless tulip stripes in red, yellow and pink reach to an old windmill at dawn.",
-  "time_of_day": "dawn",
-  "sleep": false,
-  "subjects": [
-   "old windmill"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03437
- },
- {
-  "id": "tulips-dusk",
-  "title": "Tulip Fields at Dusk",
-  "place": "Colourful tulip fields stretching to the horizon with an old windmill under a dusk sky.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "old windmill"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 10,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.06669
- },
- {
-  "id": "tulips-golden",
-  "title": "Golden Tulip Fields",
-  "place": "Colourful tulip stripes stretch to the horizon beneath an old windmill in warm evening light.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "old windmill"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.03716
- },
- {
   "id": "tulips-midday",
   "title": "Bright Tulip Fields",
   "place": "Long striped tulip fields in red, yellow and pink stretch to the horizon with an old windmill under a bright sky.",
@@ -10442,49 +9343,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03894
- },
- {
-  "id": "vineyard-dusk",
-  "title": "Quiet Vineyard Dusk",
-  "place": "Rolling vineyard hills at dusk with vine rows leading to a small stone house.",
-  "time_of_day": "dusk",
-  "sleep": false,
-  "subjects": [
-   "wooden barrel",
-   "clay jug"
-  ],
-  "moving": [],
-  "nature": [
-   "sky",
-   "grass"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04141
- },
- {
-  "id": "vineyard-golden",
-  "title": "Golden Vineyard Hills",
-  "place": "A vineyard on rolling hills with long vine rows leading to a small stone house.",
-  "time_of_day": "golden hour",
-  "sleep": false,
-  "subjects": [
-   "wooden barrel",
-   "clay amphora"
-  ],
-  "moving": [],
-  "nature": [
-   "sky"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "meta-models/muse-spark-open-1026"
-  },
-  "cost_usd": 0.04092
  },
  {
   "id": "vineyard-midday",

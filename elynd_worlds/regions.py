@@ -10,6 +10,12 @@ inverted on purpose: phones keep pictures premultiplied by alpha, so a mask in
 plain alpha would wipe the other three wherever there is no stream. "trees" needs no mask: the phone
 sways the upper part of the painting outside the sky.
 
+Grass is asked for by its own name too: SAM finds a lavender field, tulips, heather, vines or wheat by those
+names, not as "grass", and before 27 Oct such fields stood still in the wind. Up to two of the plants the
+place is made of (`plants`) are asked for besides "grass", and the masks of all of them become the grass.
+A request that still fails after its retries is kept in `failed`: a part that could not be found is not
+the same as a part that is not there, and the library replaces a world whose parts could not be found.
+
 A glowing subject (a lantern, a candle) becomes a light that flickers, at the
 place SAM cut it out (`lights_from`). A still subject is taken out of the map
 (`without`): SAM's masks are filled solid, so a stone in a lake would otherwise
@@ -20,6 +26,7 @@ from __future__ import annotations
 import asyncio
 import dataclasses
 import io
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -33,6 +40,14 @@ from .settings import DEFAULT, Settings
 # Channel order of the region map, and what SAM 3.1 is asked for each.
 CHANNELS = ("water", "sky", "grass", "stream")
 PHRASES = {"water": "water", "sky": "sky", "grass": "grass", "stream": "stream"}
+# What a field is made of, in the words of the design's place, and what SAM is asked for: the specific
+# plants first, then flowers in general.
+PLANTS = [(re.compile(rf"\b({words})\b", re.I), phrase) for words, phrase in (
+    ("tulips?", "tulips"), ("lavender", "lavender"), ("heather", "heather"), ("sunflowers?", "sunflowers"),
+    ("popp(y|ies)", "poppies"), ("bluebells?", "bluebells"), ("wildflowers?", "wildflowers"), ("wheat", "wheat"),
+    ("barley", "barley"), ("crops?", "crops"), ("vineyards?|vines?", "vines"), ("vegetables?", "vegetables"),
+    ("reeds?", "reeds"), ("ferns?", "ferns"), ("rice", "rice plants"), ("flowers?", "flowers"),
+)]  # never "field" or "hills": SAM would take a whole hillside, and distant hills never wave
 
 
 @dataclass
@@ -44,6 +59,7 @@ class Regions:
     coverage: dict[str, float] = field(default_factory=dict)
     horizon: float | None = None                 # where the water starts (fraction of the height)
     trees: bool = False
+    failed: list[str] = field(default_factory=list)  # what SAM was asked for and never answered
 
     @property
     def any(self) -> bool:
@@ -102,24 +118,46 @@ async def find_regions(client, painting: bytes, scene: dict[str, Any], meter: Me
     regions = Regions(trees="trees" in (scene.get("nature") or []))
     if not wanted:
         return regions
+    asks = [(name, PHRASES[name]) for name in wanted]
+    if "grass" in wanted:
+        asks += [("grass", phrase) for phrase in plants(scene)]
     url = await asyncio.to_thread(sam_image_url, painting)
-    answers = await asyncio.gather(*(segment(client, url, PHRASES[name], meter, settings) for name in wanted),
+    answers = await asyncio.gather(*(segment(client, url, phrase, meter, settings) for _, phrase in asks),
                                    return_exceptions=True)
     # The pixel work runs in a worker thread, so the other steps' answers are read on time meanwhile.
-    return await asyncio.to_thread(_map, painting, wanted, answers, regions, settings)
+    return await asyncio.to_thread(_map, painting, asks, answers, regions, settings)
 
 
-def _map(painting: bytes, wanted: list[str], answers: list[Any], regions: Regions, settings: Settings) -> Regions:
+def plants(scene: dict[str, Any], most: int = 2) -> list[str]:
+    """What the place's field is made of, as SAM is asked for it (at most `most`, the specific plants first)."""
+    words = " ".join(str(scene.get(key) or "") for key in ("title", "place"))
+    return [phrase for pattern, phrase in PLANTS if pattern.search(words)][:most]
+
+
+def note(regions: Regions) -> str:
+    """The step's line in the trace: what was found, and what could not be asked."""
+    found = ", ".join(name for name, present in regions.present.items() if present) or "none"
+    return f"{found}; failed: {', '.join(regions.failed)}" if regions.failed else found
+
+
+def _map(painting: bytes, asks: list[tuple[str, str]], answers: list[Any], regions: Regions,
+         settings: Settings) -> Regions:
     width, height = Image.open(io.BytesIO(painting)).size
     w2, h2 = max(width // 2, 1), max(height // 2, 1)
     channels = {name: np.zeros((h2, w2), dtype=np.uint8) for name in CHANNELS}
-    for name, records in zip(wanted, answers):
+    masks: dict[str, np.ndarray] = {}
+    for (name, phrase), records in zip(asks, answers):
         if isinstance(records, BaseException):
-            continue  # a missing region only means that part stays still
-        mask = np.zeros((height, width), dtype=np.uint8)
+            regions.failed.append(phrase)  # asked again and still no answer: that part stays still
+            continue
+        mask = masks.setdefault(name, np.zeros((height, width), dtype=np.uint8))
         for record in records:
             if record.confidence is None or record.confidence >= settings.min_confidence:
                 mask |= to_canvas(record, width, height)
+    for name in CHANNELS:
+        if name not in masks:
+            continue
+        mask = masks[name]
         share = float(mask.mean())
         if share < settings.min_region_share:
             continue

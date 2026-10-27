@@ -85,7 +85,7 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
                                          if painter.moving_subjects(scene) else _nothing())
         finding = asyncio.ensure_future(step(f"regions {attempt}",
                                              nature.find_regions(client, painting, scene, meter, settings),
-                                             lambda r: ", ".join(k for k, v in r.present.items() if v) or "none"))
+                                             nature.note))
         try:
             verdict = await checking
         except BaseException:

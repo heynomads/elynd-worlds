@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .art_director import Meditation
+from .life import life
 from .meta import Meter, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
@@ -187,3 +188,33 @@ def _shortened(meditation: Meditation, words: int) -> Meditation:
         return meditation
     return Meditation(script=" ".join(script[:words]) + " ...", technique=meditation.technique,
                       mood=meditation.mood, language=meditation.language, minutes=meditation.minutes)
+
+
+# ─── Only worlds that look alive ──────────────────────────────────────────
+
+# A world must never look static or dead. Measured on phone renders (the
+# share of the picture that visibly changes within a second): a wheat field 34%, a stream in the snow 11%,
+# a misty pine forest 10%, a lavender field 7.5%, a salt flat's water 6%, a sea of clouds 5%, a canyon under
+# the stars 4.3%; a rooftop at dusk 2.4%, dunes 0.4% and a canyon by day 0.2%, where only a sliver of sky drifts.
+FALLING = {"rain", "snow", "leaves", "petals"}
+
+
+def looks_dead(manifest: dict[str, Any], scene: dict[str, Any]) -> str | None:
+    """Why a saved world would look dead on the phone, or None when something clearly moves all the time:
+    water, a stream, a field or meadow, swaying crowns, falling rain, snow, leaves or petals, a moving
+    subject; or a sky so wide (half the picture) or so starry (at night) that it carries the world alone."""
+    living = manifest.get("living") or {}
+    share = living.get("coverage") or {}
+    named = {"water", "sky", "grass", "stream"} & set(scene.get("nature") or [])
+    if named and not living.get("regions"):
+        return "what moves in it was never found (" + ", ".join(sorted(named)) + ")"
+    particles = life(scene, {k: bool(living.get(k)) for k in ("water", "sky", "grass", "stream")})["particles"]
+    if (share.get("water", 0) >= 0.05 or living.get("stream") or share.get("grass", 0) >= 0.10
+            or living.get("trees") or particles in FALLING
+            or any(layer.get("motion") != "still" for layer in manifest.get("layers") or [])):
+        return None
+    sky = share.get("sky", 0)
+    if sky >= 0.5 or (scene.get("time_of_day") == "night" and sky >= 0.25):
+        return None
+    return f"only a little sky moves ({sky:.0%})" if sky else "nothing moves"
+

@@ -28,10 +28,14 @@ from typing import Any
 import numpy as np
 from meta_sam_parser import SegmentationMaskRecord, decode_mask_to_raster, image_segmentation_format, \
     parse_responses_stream
+from openai import APIConnectionError, InternalServerError, NotFoundError, RateLimitError
 from PIL import Image, ImageDraw, ImageFilter
 
 from .meta import Meter, data_url, encode, privacy_fields
 from .settings import DEFAULT, Settings
+
+# Worth asking again (APITimeoutError is an APIConnectionError); anything else is a real answer.
+TRANSIENT = (APIConnectionError, InternalServerError, NotFoundError, RateLimitError, asyncio.TimeoutError)
 
 IRREGULAR_PLURALS = {
     "leaf": "leaves", "knife": "knives", "shelf": "shelves", "loaf": "loaves", "wolf": "wolves",
@@ -207,22 +211,34 @@ def cutout(painting: Image.Image, mask01: np.ndarray, feather_px: float = 2.0) -
 
 async def segment(client, image_url: str, phrase: str, meter: Meter,
                   settings: Settings = DEFAULT) -> list[SegmentationMaskRecord]:
-    """One SAM 3.1 request (one concept per request); the mask records it returns."""
-    stream = await client.responses.create(
-        model=settings.cutter_model,
-        input=[{"role": "user", "content": [
-            {"type": "input_image", "image_url": image_url},
-            {"type": "input_text", "text": phrase},
-        ]}],
-        metadata={"include_confidence": "true"},
-        stream=True,
-        timeout=settings.cut_timeout,
-        **privacy_fields(),
-    )
-    meter.sam("segment")
-    parsed = parse_responses_stream(stream, image_segmentation_format())
-    result = await parsed.final_result()
-    return [r for r in result.records if isinstance(r, SegmentationMaskRecord)]
+    """One SAM 3.1 request (one concept per request); the mask records it returns.
+
+    A request that fails on the way (a timeout, a dropped line, a busy server, the model briefly missing from
+    the account's catalog) is asked again, `settings.sam_attempts` times in all: on 27 Oct a slow hour turned
+    the water and the sky of 36 library worlds into "none", and those worlds stood still.
+    """
+    attempts = max(1, settings.sam_attempts)
+    for attempt in range(1, attempts + 1):
+        try:
+            stream = await client.responses.create(
+                model=settings.cutter_model,
+                input=[{"role": "user", "content": [
+                    {"type": "input_image", "image_url": image_url},
+                    {"type": "input_text", "text": phrase},
+                ]}],
+                metadata={"include_confidence": "true"},
+                stream=True,
+                timeout=settings.cut_timeout,
+                **privacy_fields(),
+            )
+            meter.sam("segment")
+            parsed = parse_responses_stream(stream, image_segmentation_format())
+            result = await parsed.final_result()
+            return [r for r in result.records if isinstance(r, SegmentationMaskRecord)]
+        except TRANSIENT:
+            if attempt == attempts:
+                raise
+            await asyncio.sleep(settings.sam_retry_seconds * attempt)
 
 
 def _confident(records: list[SegmentationMaskRecord], settings: Settings) -> list[SegmentationMaskRecord]:

@@ -54,8 +54,11 @@ after the script is written in our runs; the slower ones were made six at a time
 A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
 places a library can hold. So the same agent painted a **library of 500 worlds** in advance: 90 places guided
 meditations visit most, each at several times of day, seasons or weathers, 75 of them dark worlds for falling
-asleep (`scripts/library_briefs.py`), each checked by the critic like any other (`library/catalog.json` lists
-them). For each meditation Muse Spark reads the text (the same text the art director reads, at most its first
+asleep (`scripts/library_briefs.py`), each checked by the critic like any other. Only worlds that look alive stay
+(`library.looks_dead`: water, a stream, a field, swaying crowns, rain, snow, leaves or petals, a moving subject, or
+a sky wide or starry enough to carry the world; `scripts/library_audit.py`): **445 worlds**, 70 for sleep
+(`library/catalog.json` lists them). The 55 others were taken out: a canyon or dunes by day, where only a sliver of
+sky drifts, and worlds whose water and sky timed out in a slow hour (SAM requests are now asked again). For each meditation Muse Spark reads the text (the same text the art director reads, at most its first
 1,500 words), names the three library worlds that fit best and says whether the meditation is built around
 something no library world shows: a particular animal or object that matters to the listener, a particular
 person's place, an unusual setting (`library.py`, low reasoning effort: 2–7 s, under a cent). A sleep meditation
@@ -69,7 +72,8 @@ chooses only among the sleep worlds; the listener's recent worlds give way to th
 ```bash
 .venv/bin/python scripts/library_briefs.py                     # library/briefs/*.txt (500 themes)
 .venv/bin/elynd-worlds make library/briefs/*.txt --out library/worlds --parallel 4
-.venv/bin/elynd-worlds pick my_meditation.txt --library library/worlds   # what a meditation would get
+.venv/bin/elynd-worlds pick my_meditation.txt --library library/catalog   # what a meditation would get
+.venv/bin/python scripts/library_audit.py                      # which library worlds would look dead
 ```
 
 ## On the phone

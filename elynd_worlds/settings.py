@@ -85,6 +85,9 @@ class Settings:
     # A library world that fits less than this (0-10) is not the session's world: one is painted for it.
     library_min_fit: int = 5
     cut_timeout: float = 20
+    # A SAM request that fails on the way is asked again (cutter.segment), after 2 s, then 4 s.
+    sam_attempts: int = 3
+    sam_retry_seconds: float = 2.0
     world_timeout: float = 120
 
     # USD. A deployment stops giving the critic the open model once its own ledger of open-model

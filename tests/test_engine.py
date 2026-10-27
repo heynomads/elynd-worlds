@@ -15,12 +15,13 @@ from PIL import Image
 
 from elynd_worlds import (Meditation, Meter, Settings, art_director, cli, critic, cutter, library, life, painter,
                           plate, timeline)
+from elynd_worlds import regions as regions_module
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
 from elynd_worlds.settings import Prices
 
-from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, FakeClient, png
+from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, WATER_BOX, FakeClient, png
 
 @pytest.fixture(autouse=True)
 def _every_model_offered():
@@ -507,6 +508,59 @@ async def test_a_scrap_of_water_does_not_ripple_and_a_failed_search_keeps_the_wo
     world = await make_world(client, MEDITATION)
     assert world.regions.present == {"sky": True} and world.regions.horizon is None
     assert world.moving   # the subjects still move
+
+
+async def test_a_sam_request_that_times_out_is_asked_again():
+    # 27 Oct: in a slow hour the water and the sky of 36 library worlds timed out and those worlds stood still.
+    quick = Settings(sam_retry_seconds=0)
+    client = FakeClient(scenes=[LIVING], sam_timeouts=2)
+    world = await make_world(client, MEDITATION, settings=quick)
+    assert world.regions.present == {"water": True, "sky": True} and world.regions.failed == []
+    # Never answered: told apart from "not in the painting", in the regions step's line of the trace.
+    client = FakeClient(scenes=[LIVING], sam_timeouts=1000)
+    world = await make_world(client, MEDITATION, settings=quick)
+    assert world.regions.present == {} and set(world.regions.failed) == {"water", "sky"}
+    note = next(s.note for s in world.trace if s.name == "regions 1")
+    assert note.startswith("none; failed: ") and "water" in note and "sky" in note
+    assert client.calls.count("sam:water") == 3   # three attempts in all
+
+
+def test_only_worlds_that_look_alive_stay_in_the_library():
+    # A world must never look static or dead. Cases measured on phone renders.
+    def world(time="golden hour", nature=("sky",), layers=(), particles="none", **living):
+        regions = "regions.png" if living.get("coverage") else None
+        return ({"living": {"regions": regions, "particles": particles, **living}, "layers": list(layers)},
+                {"title": "A place", "place": "A wide place.", "time_of_day": time, "nature": list(nature),
+                 "particles": particles})
+    dead = library.looks_dead
+    assert dead(*world(coverage={"sky": 0.26})) == "only a little sky moves (26%)"     # a canyon by day: 0.2%
+    assert dead(*world(time="night", coverage={"sky": 0.34})) is None                  # under the stars: 4.3%
+    assert dead(*world(coverage={"sky": 0.65})) is None                                # a sea of clouds: 5%
+    assert dead(*world(nature=("sky", "grass"), coverage={"sky": 0.48, "grass": 0.27})) is None   # tulips
+    assert dead(*world(nature=("sky", "grass"), coverage={"sky": 0.39, "grass": 0.06})) is not None  # a vineyard
+    assert dead(*world(nature=("water", "sky"))).startswith("what moves in it was never found")   # timed out
+    assert dead(*world(nature=(), layers=[{"motion": "float"}])) is None               # a boat on the swell
+    assert dead(*world(nature=(), particles="snow")) is None                           # falling snow
+    assert dead(*world(nature=())) == "nothing moves"
+
+
+def test_a_field_is_asked_for_by_its_plants():
+    def plants(place):
+        return regions_module.plants({"title": "", "place": place})
+    assert plants("Long striped tulip fields stretch to the horizon with an old windmill.") == ["tulips"]
+    assert plants("A vineyard on rolling hills with long vine rows.") == ["vines"]
+    assert plants("A cottage garden full of flowers and lavender.") == ["lavender", "flowers"]
+    assert plants("A red barn at the edge of wide fields.") == []   # never a whole hillside
+    assert plants("A quiet lake at dawn.") == []
+
+
+async def test_a_lavender_field_sways_like_grass():
+    field = {**LIVING, "place": "A lavender field with long purple rows under a wide sky.", "nature": ["sky", "grass"]}
+    client = FakeClient(scenes=[field], sam={"smooth stone": [STONE_BOX], "pine branches": [BRANCH_BOX],
+                                             "sky": [SKY_BOX], "lavender": [WATER_BOX]})
+    world = await make_world(client, MEDITATION)
+    assert {"sam:grass", "sam:lavender"} <= set(client.calls)
+    assert world.regions.present == {"sky": True, "grass": True}   # SAM found no "grass", but the lavender
 
 
 async def test_the_region_map_is_saved_with_the_world(tmp_path):

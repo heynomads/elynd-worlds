@@ -12,7 +12,7 @@ import json
 from types import SimpleNamespace
 
 import httpx
-from openai import NotFoundError
+from openai import APITimeoutError, NotFoundError
 
 from meta_sam_parser._mask_codec import _encode_raster
 from PIL import Image, ImageDraw
@@ -86,7 +86,8 @@ class FakeClient:
     found on any other picture (the plate). A verdict given as a string is answered verbatim."""
 
     def __init__(self, scenes=None, verdicts=None, sam=None, sam_on_plate=None, painting=PAINTING, edit=EDIT,
-                 fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None, missing=()):
+                 fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None, missing=(),
+                 sam_timeouts=0):
         self.calls: list[str] = []
         self.requests: list[dict] = []
         self.sam_requests: list[dict] = []
@@ -101,6 +102,7 @@ class FakeClient:
         self._fail_chat, self._chat_delay = fail_chat, chat_delay
         self._picks = list(picks or [{"choices": []}])
         self._missing = set(missing)  # models answered with 404, as Meta Model API does for one it does not serve
+        self._sam_timeouts = sam_timeouts  # the first SAM requests time out, as on a slow hour
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._chat))
         self.images = SimpleNamespace(generate=self._generate, edit=self._edit_image)
         self.responses = SimpleNamespace(create=self._responses)
@@ -147,6 +149,9 @@ class FakeClient:
         self.calls.append(f"sam{'@plate' if on_plate else ''}:{phrase}")
         if self._fail_sam:
             raise RuntimeError("sam failed")
+        if self._sam_timeouts:
+            self._sam_timeouts -= 1
+            raise APITimeoutError(request=httpx.Request("POST", "https://api.meta.ai/v1/responses"))
         boxes = (self._sam_on_plate if on_plate else self._sam).get(phrase, [])
         text = "\n".join(sam_record(i, box) for i, box in enumerate(boxes))
         return _stream(text)
