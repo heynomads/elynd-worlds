@@ -35,6 +35,9 @@ class Settings:
     # train on what they receive; a listener's meditation must never be used so.
     director_model: str = "muse-spark-1.3"
     critic_model: str = "muse-spark-1.3"
+    # When Meta Model API answers 404 for a Muse Spark model (27 Oct 2026: muse-spark-1.3 vanished from this
+    # account's catalog for a while), this one answers instead (same prices, Standard mode).
+    spark_fallback_model: str = "muse-spark-1.2"
     # Chooses the library world a session opens on (library.py).
     library_model: str = "muse-spark-1.3"
     # The critic runs on Muse Spark Open when the deployment passes an open-model client
@@ -91,7 +94,7 @@ class Settings:
     prices: Prices = field(default_factory=Prices)
 
     def __post_init__(self) -> None:
-        for name in ("director_model", "critic_model"):
+        for name in ("director_model", "critic_model", "library_model", "spark_fallback_model"):
             if getattr(self, name).endswith("-contributor"):
                 raise ValueError(f"{name}: contributor-mode models may train on listeners' meditations")
 

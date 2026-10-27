@@ -11,6 +11,9 @@ import io
 import json
 from types import SimpleNamespace
 
+import httpx
+from openai import NotFoundError
+
 from meta_sam_parser._mask_codec import _encode_raster
 from PIL import Image, ImageDraw
 
@@ -83,7 +86,7 @@ class FakeClient:
     found on any other picture (the plate). A verdict given as a string is answered verbatim."""
 
     def __init__(self, scenes=None, verdicts=None, sam=None, sam_on_plate=None, painting=PAINTING, edit=EDIT,
-                 fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None):
+                 fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None, missing=()):
         self.calls: list[str] = []
         self.requests: list[dict] = []
         self.sam_requests: list[dict] = []
@@ -97,6 +100,7 @@ class FakeClient:
         self._fail_edit, self._fail_sam = fail_edit, fail_sam
         self._fail_chat, self._chat_delay = fail_chat, chat_delay
         self._picks = list(picks or [{"choices": []}])
+        self._missing = set(missing)  # models answered with 404, as Meta Model API does for one it does not serve
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._chat))
         self.images = SimpleNamespace(generate=self._generate, edit=self._edit_image)
         self.responses = SimpleNamespace(create=self._responses)
@@ -107,6 +111,10 @@ class FakeClient:
 
     async def _chat(self, **kwargs):
         name = kwargs["response_format"]["json_schema"]["name"]
+        if kwargs.get("model") in self._missing:
+            request = httpx.Request("POST", "https://api.meta.ai/v1/chat/completions")
+            raise NotFoundError("The requested model was not found.", response=httpx.Response(404, request=request),
+                                body=None)
         self.calls.append(name)
         self.requests.append(kwargs)
         if self._chat_delay:

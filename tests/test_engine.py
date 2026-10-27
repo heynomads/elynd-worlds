@@ -22,6 +22,15 @@ from elynd_worlds.settings import Prices
 
 from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, FakeClient, png
 
+@pytest.fixture(autouse=True)
+def _every_model_offered():
+    """The engine remembers models Meta Model API did not find; each test starts without that memory."""
+    from elynd_worlds import meta
+    meta._missing.clear()
+    yield
+    meta._missing.clear()
+
+
 MEDITATION = Meditation(script="Breathe in. Picture a quiet lake at dawn. Feel the cool stone under your hand.",
                         technique="visualization", mood="stressed", minutes=10)
 
@@ -678,4 +687,37 @@ def test_pick_shows_the_choice_for_each_meditation(tmp_path, monkeypatch, capsys
     assert line == {"name": "monkey", "library": "forestlake-mist", "fit": 7, "own_world": True,
                     "paint_its_own": True, "seconds": line["seconds"]}
     assert float(list(csv.DictReader(ledger.open()))[0]["usd"]) > 0  # what it cost is in the ledger
+
+
+# ─── Meta Model API: a model that is not found ─────────────────────────
+
+async def test_a_muse_spark_model_not_found_hands_over_to_the_previous_one_and_is_skipped_meanwhile(monkeypatch):
+    from elynd_worlds import meta
+    client = FakeClient(missing={"muse-spark-1.3"})
+    world = await make_world(client, MEDITATION, user="listener-7f3a")
+    chats = [r for r in client.requests if "messages" in r]
+    assert {r["model"] for r in chats} == {"muse-spark-1.2"}  # design and critique, all on the previous version
+    assert world.verdict["judge"] == "muse-spark-1.2"
+    assert all(r["extra_body"]["store"] is False for r in chats)  # still Standard mode, still no copy kept
+    # Remembered: the next requests do not ask for 1.3 again for ten minutes, then they do.
+    asked = []
+    original = client._chat
+
+    async def counting(**kwargs):
+        asked.append(kwargs["model"])
+        return await original(**kwargs)
+
+    client.chat.completions.create = counting
+    await art_director.design(client, MEDITATION, Meter())
+    assert asked == ["muse-spark-1.2"]
+    monkeypatch.setattr(meta.time, "monotonic", lambda: meta._missing["muse-spark-1.3"] + 1)
+    await art_director.design(client, MEDITATION, Meter())
+    assert asked[1:] == ["muse-spark-1.3", "muse-spark-1.2"]  # tried again, still missing
+
+
+async def test_when_no_muse_spark_model_is_found_the_world_fails_as_any_failure_does():
+    client = FakeClient(missing={"muse-spark-1.3", "muse-spark-1.2"})
+    assert await make_world_or_none(client, MEDITATION) is None
+    with pytest.raises(ValueError, match="contributor"):
+        Settings(spark_fallback_model="muse-spark-1.2-contributor")
 

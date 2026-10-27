@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .art_director import Meditation
-from .meta import Meter, privacy_fields, reasoning
+from .meta import Meter, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
 SLEEP_TECHNIQUES = {"sleep_journey"}
@@ -123,8 +123,8 @@ async def pick(client, meditation: Meditation, entries: list[Entry], meter: Mete
     if not candidates:
         return None
     # The library first and the meditation last: the long, unchanging start of the request can be cached.
-    response = await client.chat.completions.create(
-        model=settings.library_model,
+    response, _ = await spark_chat(
+        client, (settings.library_model, settings.spark_fallback_model),
         messages=[
             {"role": "system", "content": PICK_INSTRUCTIONS + "\n".join(e.line() for e in candidates)},
             {"role": "user", "content": _shortened(meditation, settings.pick_words).as_message()},

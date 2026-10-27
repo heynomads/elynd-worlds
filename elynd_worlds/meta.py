@@ -18,14 +18,16 @@ from __future__ import annotations
 import base64
 import io
 import json
+import logging
 import os
+import time
 from collections import Counter
 from contextvars import ContextVar
 from dataclasses import dataclass, field
 from typing import Any, AsyncIterator
 
 import httpx
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, NotFoundError
 from PIL import Image, PngImagePlugin
 
 from .settings import API_BASE, OPEN_API_BASE, Prices
@@ -254,6 +256,33 @@ def connect_open(api_key: str | None = None, *, base_url: str = OPEN_API_BASE, t
     if not key:
         raise MetaAPIError("No open-model API key: pass one or set OPEN_MODEL_API_KEY")
     return AsyncOpenAI(base_url=base_url, api_key=key, timeout=timeout, max_retries=0)
+
+
+# Models Meta Model API answered 404 for, and until when (time.monotonic()) they are skipped.
+_missing: dict[str, float] = {}
+MISSING_FOR = 600.0
+
+
+async def spark_chat(client, models: tuple[str, ...], **request: Any) -> tuple[Any, str]:
+    """(answer, model): `client.chat.completions.create` with the first of `models` Meta Model API serves.
+
+    A model it answers 404 for (not found: retired, renamed, or for a while not offered to this account)
+    is skipped for ten minutes, so the next requests go straight to the next model instead of each
+    paying for the refusal (it took 8 s on 27 Oct 2026).
+    """
+    error: Exception | None = None
+    for model in dict.fromkeys(models):
+        if _missing.get(model, 0.0) > time.monotonic():
+            continue
+        try:
+            return await client.chat.completions.create(model=model, **request), model
+        except NotFoundError as refused:
+            _missing[model] = time.monotonic() + MISSING_FOR
+            logging.getLogger("elynd_worlds").warning("%s not found; the next Muse Spark answers", model)
+            error = refused
+    if error is None:  # every model is being skipped: ask the first again rather than none
+        return await client.chat.completions.create(model=models[0], **request), models[0]
+    raise error
 
 
 def data_url(image_bytes: bytes, mime: str = "image/png") -> str:

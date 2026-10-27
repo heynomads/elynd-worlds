@@ -23,7 +23,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from .meta import Meter, privacy_fields
+from .meta import Meter, privacy_fields, spark_chat
 from .settings import DEFAULT, Settings
 
 # The parts of a place that move in nature, as the app animates them: open water
@@ -180,8 +180,8 @@ def _response_format() -> dict[str, Any]:
 
 async def design(client, meditation: Meditation, meter: Meter, settings: Settings = DEFAULT) -> dict[str, Any]:
     """Muse Spark designs the world of one meditation."""
-    response = await client.chat.completions.create(
-        model=settings.director_model,
+    response, _ = await spark_chat(
+        client, (settings.director_model, settings.spark_fallback_model),
         messages=[
             {"role": "system", "content": DIRECTOR_INSTRUCTIONS},
             {"role": "user", "content": meditation.as_message()},
@@ -198,8 +198,8 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
                  settings: Settings = DEFAULT) -> dict[str, Any]:
     """The director rewrites its design from the critic's note on the painting."""
     note = critique.get("fix") or critique.get("reason") or "The painting did not pass."
-    response = await client.chat.completions.create(
-        model=settings.director_model,
+    response, _ = await spark_chat(
+        client, (settings.director_model, settings.spark_fallback_model),
         messages=[
             {"role": "system", "content": DIRECTOR_INSTRUCTIONS + "\n\n" + REVISE_INSTRUCTIONS},
             {"role": "user", "content": (
