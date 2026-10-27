@@ -831,6 +831,13 @@ def test_without_a_place_the_world_fits_how_the_listener_feels():
     third = [dataclasses.replace(tagged[0], moods=("energy_motivation", "focus_clarity", "calm_ground")),
              tagged[1], *LIBRARY[2:]]
     assert library.local(breathing, third, moods=["calm_ground"]).entry.id == "forestlake-mist"
+    # Any world with the listener's first feeling before one with only the second, as the music's tiers: an
+    # angry listener gets the world that lets go (even as its third feeling) before one that is only calm.
+    angry = [dataclasses.replace(tagged[0], moods=("calm_ground", "reflection_insight", "release_let_go")),
+             dataclasses.replace(tagged[1], moods=("calm_ground",)), *LIBRARY[2:]]
+    for n in range(5):
+        meditation = Meditation(script=f"Breathe in slowly. Breath {n}.")
+        assert library.local(meditation, angry, moods=["release_let_go", "calm_ground"]).entry.id == "beach-dawn"
     # A meditation that names its place keeps its place, whatever the feeling.
     walk = Meditation(script="Walk down to the beach at dawn and listen to the small waves.")
     assert library.local(walk, tagged, moods=["calm_ground"]).entry.id == "beach-dawn"
@@ -859,6 +866,29 @@ async def test_muse_spark_tags_each_library_world_with_the_feelings_it_suits():
     request = client.requests[0]
     assert "calm_ground" in request["messages"][0]["content"] and "beach-dawn: Quiet Dawn Beach." in request["messages"][1]["content"]
     assert request["extra_body"]["prompt_cache_key"] == "elynd-worlds-moods" and meter.calls == {"moods": 1}
+
+
+async def test_muse_spark_sees_each_painting_when_it_tags_by_sight():
+    # The designs all speak softly ("a quiet ridge", "a slow river"): only the picture tells a summit at sunrise
+    # from a sunny garden (a sleepy beach motivates no one).
+    worlds = [(e.id, {"title": e.title, "place": e.place, "time_of_day": e.time_of_day}) for e in LIBRARY[:2]]
+    shown = []
+
+    async def picture(id):
+        shown.append(id)
+        return png(1080, 1920)
+
+    client = FakeClient(moods=[{"worlds": [{"id": "beach-dawn", "moods": ["calm_ground", "joy"]}]},
+                               {"worlds": [{"id": "forestlake-mist", "moods": ["reflection_insight"]}]}])
+    meter = Meter()
+    tags = await library.tag_moods(client, worlds, meter, picture=picture)
+    assert tags == {"beach-dawn": ("calm_ground", "joy"), "forestlake-mist": ("reflection_insight",)}
+    assert sorted(shown) == ["beach-dawn", "forestlake-mist"] and meter.calls == {"moods": 2}   # one world a request
+    content = client.requests[0]["messages"][1]["content"]
+    assert content[0]["type"] == "text" and content[1]["image_url"]["url"].startswith("data:image/jpeg;base64,")
+    assert "a lazy beach calms; it does not motivate" in client.requests[0]["messages"][0]["content"]
+    # Motivation is the push, joy the smile: two feelings now, where the music has one.
+    assert {"energy_motivation", "joy"} <= set(library.MOODS)
 
 
 def test_a_library_world_s_feelings_are_read_with_it(tmp_path):

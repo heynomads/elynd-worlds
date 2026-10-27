@@ -25,17 +25,20 @@ from __future__ import annotations
 import asyncio
 import dataclasses
 import json
+import logging
 import re
 import zlib
 from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Awaitable, Callable, Iterable
 
 from .art_director import Meditation
 from .life import life
-from .meta import Meter, cache_fields, privacy_fields, reasoning, spark_chat
+from .meta import Meter, cache_fields, data_url, preview_jpeg, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
+
+log = logging.getLogger("elynd_worlds")
 
 SLEEP_TECHNIQUES = {"sleep_journey"}
 
@@ -225,10 +228,12 @@ def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = 
         return sum(weight[w] * min(said[w], 3) for w in its if w in said) + sum(3 for w in main if w in said)
 
     def feeling(entry: Entry) -> int:
-        """How well the world suits the session's feelings, 0 best: the session's first feeling as the world's
-        own first; higher as either comes later (most worlds suit calm a little, few as their first)."""
-        return min((i + entry.moods.index(m) for i, m in enumerate(moods) if m in entry.moods),
-                   default=len(moods) + 3)
+        """How well the world suits the session's feelings, 0 best. As the music's tiers: every world with the
+        session's first feeling before any with only its second, and among them the world's own order (its
+        first feeling before its third). Nearly every world is calm somewhere, so calm as a world's first
+        must never tie with letting go as its second (an angry listener got generic calm worlds)."""
+        return min((3 * i + entry.moods.index(m) for i, m in enumerate(moods) if m in entry.moods),
+                   default=3 * len(moods))
 
     # The place first when the meditation names one, else the feeling first.
     key = ((lambda e: (score(e), -feeling(e))) if names_place else (lambda e: (-feeling(e), score(e))))
@@ -243,14 +248,23 @@ def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = 
 # ─── The feelings a library world suits ─────────────────────────────────
 
 # The categories the app's music is chosen by, so a world fits how
-# the listener feels the way its music does: what each suits, and what in a world speaks to it.
+# the listener feels the way its music does: what each suits, and what in a world speaks to it. Plus joy: a
+# happy listener and an unmotivated one hear the same lifting music (energy_motivation) but need different
+# places: a sleepy tropical beach motivates no one. Here energy_motivation is the push, joy the smile.
 MOODS = {
     "calm_ground": "calm and grounding, for stress and anxiety: still, soft, safe places",
     "release_let_go": "letting go, for anger and tension: flowing water, wind, rain, open space",
     "connection_gratitude": "warmth and connection, for sadness and loneliness, and gratitude: warm light, "
                             "gardens, homes, blossom",
     "restore_sleep": "rest and sleep, for tiredness: night, late dusk, dim and quiet places",
-    "energy_motivation": "energy and lift, for low motivation, and joy: bright mornings, sunlit meadows, the sea",
+    "energy_motivation": "momentum, for low motivation: a way forward, upward or a new beginning, seen in the "
+                         "place itself: a path or trail leading on, steps or a ridge climbing, a summit or peaks "
+                         "in view, sunrise over open heights, water in full flow (a waterfall, a rushing river, "
+                         "surf on rocks). Bright morning light alone is not enough: a sunny garden, courtyard, "
+                         "grove or field is joy or calm. Never a place to lie back and do nothing (a lazy beach, "
+                         "a hammock, an oasis pool, still midday heat)",
+    "joy": "joy and lightness, for a happy listener: bright, colourful, sunlit places that smile: sunflowers, "
+           "meadows in bloom, blossom, a sunny garden or courtyard, sparkling water",
     "reflection_insight": "quiet reflection, for a calm mind: mist, dusk, still water, temples, rain on water",
     "focus_clarity": "clarity and focus, for a scattered mind: clear air, wide views, mountains, open horizons",
     "confidence_strength": "strength and courage, for fear: peaks, cliffs, sunrise, big skies",
@@ -280,29 +294,50 @@ MOODS_SCHEMA: dict[str, Any] = {
 MOODS_INSTRUCTIONS = ("You tag the painted worlds of ELYND, a meditation app, by the feelings they suit, so a "
                       "listener's world fits how they feel. The feelings (use the ids exactly):\n"
                       + "\n".join(f"- {name}: {what}" for name, what in MOODS.items())
-                      + "\nFor each world below, name the 1-3 feelings it suits best, best first. Judge by its "
+                      + "\nFor each world below, name the 1-3 feelings it suits best, best first: the feelings "
+                      "of a listener who would be helped by being there (a lazy beach calms; it does not "
+                      "motivate). Judge by what the listener would see: the painting when it is attached, its "
                       "place, light, time of day and air. Return only the JSON object.")
 
 
 async def tag_moods(client, worlds: list[tuple[str, dict[str, Any]]], meter: Meter,
-                    settings: Settings = DEFAULT, batch: int = 10) -> dict[str, tuple[str, ...]]:
+                    settings: Settings = DEFAULT, batch: int = 10,
+                    picture: Callable[[str], Awaitable[bytes]] | None = None) -> dict[str, tuple[str, ...]]:
     """The feelings each library world suits, by Muse Spark: {id: moods, best first}, from each world's
-    design (`worlds`: (id, scene)). Ten worlds a request; a world left out of an answer is left out here."""
-    gate = asyncio.Semaphore(4)
+    design (`worlds`: (id, scene)), ten worlds a request. With `picture` (a world's painting by id), Muse
+    Spark also sees each painting, one world a request: the designs all speak softly ("a quiet ridge", "a
+    slow river"), so only the picture tells a summit at sunrise from a sunny garden. A world left out of an
+    answer, or whose request failed three times, is left out here."""
+    gate = asyncio.Semaphore(4)   # also the most paintings held at once
 
     async def ask(part: list[tuple[str, dict[str, Any]]]) -> dict[str, tuple[str, ...]]:
         lines = "\n".join(f"{id}: {scene.get('title')}. {scene.get('place')} Time: {scene.get('time_of_day')}. "
                           f"Light: {scene.get('light')}. Air: {scene.get('air')}." for id, scene in part)
-        async with gate:
-            response, _ = await spark_chat(
-                client, (settings.library_model, settings.spark_fallback_model),
-                messages=[{"role": "system", "content": MOODS_INSTRUCTIONS}, {"role": "user", "content": lines}],
-                response_format={"type": "json_schema",
-                                 "json_schema": {"name": "moods", "schema": MOODS_SCHEMA, "strict": True}},
-                **reasoning(settings.pick_reasoning),
-                extra_body={**privacy_fields(), **cache_fields("moods")},
-                timeout=30,
-            )
+        for attempt in range(3):
+            try:
+                async with gate:
+                    content: Any = lines
+                    if picture is not None:
+                        content = [{"type": "text", "text": lines}, *[
+                            {"type": "image_url", "image_url": {"url": data_url(await asyncio.to_thread(
+                                preview_jpeg, await picture(id), settings.moods_image_width), "image/jpeg")}}
+                            for id, _ in part]]
+                    response, _ = await spark_chat(
+                        client, (settings.library_model, settings.spark_fallback_model),
+                        messages=[{"role": "system", "content": MOODS_INSTRUCTIONS},
+                                  {"role": "user", "content": content}],
+                        response_format={"type": "json_schema",
+                                         "json_schema": {"name": "moods", "schema": MOODS_SCHEMA, "strict": True}},
+                        **reasoning(settings.pick_reasoning),
+                        extra_body={**privacy_fields(), **cache_fields("moods")},
+                        timeout=30,
+                    )
+                break
+            except Exception as error:  # noqa: BLE001 - asked again, then left out
+                log.info("tagging %s failed (%s), attempt %d", part[0][0], type(error).__name__, attempt + 1)
+                await asyncio.sleep(2 * (attempt + 1))
+        else:
+            return {}
         meter.spark(getattr(response, "usage", None), "moods")
         asked = {id for id, _ in part}
         tags = {}
@@ -312,7 +347,8 @@ async def tag_moods(client, worlds: list[tuple[str, dict[str, Any]]], meter: Met
                 tags[world["id"]] = moods
         return tags
 
-    answers = await asyncio.gather(*(ask(worlds[i:i + batch]) for i in range(0, len(worlds), batch)))
+    size = 1 if picture is not None else batch
+    answers = await asyncio.gather(*(ask(worlds[i:i + size]) for i in range(0, len(worlds), size)))
     return {id: moods for answer in answers for id, moods in answer.items()}
 
 

@@ -6,9 +6,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
+   "energy_motivation",
    "confidence_strength",
-   "focus_clarity",
-   "calm_ground"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -32,9 +32,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "calm_ground",
    "focus_clarity",
-   "connection_gratitude"
+   "confidence_strength",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -84,9 +84,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -112,9 +112,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -139,9 +139,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -166,7 +166,7 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "joy",
    "focus_clarity",
    "calm_ground"
   ],
@@ -194,8 +194,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "rounded boulder",
@@ -221,8 +221,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden chalet",
@@ -250,9 +250,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden chalet",
@@ -277,9 +277,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden chalet",
@@ -332,8 +332,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "connection_gratitude"
+   "connection_gratitude",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden chalet",
@@ -360,7 +360,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "woven basket",
@@ -386,8 +386,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -414,7 +414,7 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
-   "energy_motivation",
+   "joy",
    "calm_ground"
   ],
   "subjects": [
@@ -440,9 +440,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "woven basket",
@@ -468,9 +468,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight"
   ],
   "subjects": [
    "woven basket"
@@ -494,9 +493,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "smooth stone"
@@ -522,7 +521,7 @@
   "moods": [
    "reflection_insight",
    "calm_ground",
-   "connection_gratitude"
+   "joy"
   ],
   "subjects": [
    "mossy stone",
@@ -547,9 +546,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "connection_gratitude"
+   "joy",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -574,9 +572,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "calm_ground",
    "reflection_insight",
-   "release_let_go"
+   "release_let_go",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -601,9 +599,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude",
+   "energy_motivation"
   ],
   "subjects": [
    "smooth stone",
@@ -632,9 +630,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "focus_clarity",
    "calm_ground",
-   "energy_motivation"
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -660,9 +658,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
+   "calm_ground",
    "energy_motivation",
-   "calm_ground"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -716,7 +714,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "red barn",
@@ -742,7 +740,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "red barn",
@@ -792,9 +791,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "small sailboat",
@@ -850,9 +848,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "white sailboat",
@@ -880,8 +877,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "confidence_strength"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "seashell",
@@ -907,8 +904,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "release_let_go"
+   "connection_gratitude"
   ],
   "subjects": [
    "seashell",
@@ -933,9 +929,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "release_let_go",
-   "calm_ground"
+   "calm_ground",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -988,8 +983,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "energy_motivation",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -1013,9 +1008,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -1043,8 +1037,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -1071,7 +1065,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "confidence_strength",
+   "reflection_insight",
    "connection_gratitude"
   ],
   "subjects": [
@@ -1098,8 +1092,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "release_let_go"
+   "focus_clarity",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth basalt stone",
@@ -1150,9 +1144,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "focus_clarity"
+   "focus_clarity",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -1209,6 +1203,7 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
+   "joy",
    "calm_ground"
   ],
   "subjects": [
@@ -1235,8 +1230,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
    "calm_ground"
   ],
   "subjects": [
@@ -1263,9 +1258,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "woven basket",
@@ -1295,8 +1290,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "connection_gratitude",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -1326,8 +1321,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "energy_motivation"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -1352,9 +1347,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude",
+   "restore_sleep"
   ],
   "subjects": [
    "wooden cabin"
@@ -1379,8 +1374,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
+   "connection_gratitude",
    "focus_clarity"
   ],
   "subjects": [
@@ -1433,8 +1428,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
+   "connection_gratitude",
    "restore_sleep"
   ],
   "subjects": [
@@ -1489,9 +1484,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat",
@@ -1519,8 +1514,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "wooden rowboat",
@@ -1546,9 +1540,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
    "calm_ground",
-   "energy_motivation"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden boat",
@@ -1605,8 +1599,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden rowboat",
@@ -1634,8 +1628,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -1664,8 +1658,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "energy_motivation"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden canoe"
@@ -1693,8 +1686,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden canoe"
@@ -1749,9 +1742,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden canoe"
@@ -1779,7 +1772,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden canoe"
@@ -1807,8 +1801,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -1863,8 +1857,8 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
-   "calm_ground",
-   "energy_motivation"
+   "joy",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -1893,9 +1887,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "reflection_insight",
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat",
@@ -1924,9 +1918,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "wooden rowboat",
@@ -1956,7 +1950,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat"
@@ -1984,7 +1978,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "wooden rowboat",
@@ -2014,7 +2008,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight"
   ],
   "subjects": [
    "mossy stone",
@@ -2040,9 +2034,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -2068,9 +2062,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -2099,9 +2093,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -2128,8 +2122,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -2156,8 +2149,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -2183,9 +2176,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "rounded rock",
@@ -2211,9 +2203,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -2266,8 +2258,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "energy_motivation"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -2294,7 +2285,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "rounded boulder",
@@ -2321,6 +2313,7 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
+   "joy",
    "calm_ground"
   ],
   "subjects": [
@@ -2346,8 +2339,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude"
+   "joy",
+   "connection_gratitude",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -2375,7 +2369,7 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "joy",
    "connection_gratitude",
    "calm_ground"
   ],
@@ -2404,6 +2398,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
+   "release_let_go",
    "reflection_insight"
   ],
   "subjects": [
@@ -2430,8 +2425,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "reflection_insight",
-   "calm_ground"
+   "restore_sleep"
   ],
   "subjects": [
    "weathered boulder",
@@ -2457,9 +2453,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "round hay bale",
@@ -2511,9 +2507,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "focus_clarity"
+   "focus_clarity",
+   "joy"
   ],
   "subjects": [
    "mossy boulder",
@@ -2539,8 +2535,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "release_let_go",
    "calm_ground",
+   "release_let_go",
    "reflection_insight"
   ],
   "subjects": [
@@ -2593,9 +2589,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "tiled fountain"
@@ -2619,9 +2615,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "calm_ground",
-   "energy_motivation"
+   "calm_ground"
   ],
   "subjects": [
    "tiled fountain"
@@ -2645,9 +2641,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "tiled fountain",
@@ -2698,8 +2694,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
    "calm_ground"
   ],
   "subjects": [
@@ -2725,8 +2721,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -2752,8 +2748,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -2778,7 +2774,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight"
+   "reflection_insight",
+   "restore_sleep"
   ],
   "subjects": [
    "smooth stone",
@@ -2803,8 +2800,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -2830,8 +2828,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "focus_clarity",
+   "joy"
   ],
   "subjects": [
    "pale seashell",
@@ -2857,8 +2856,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -2885,7 +2884,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -2911,7 +2911,7 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "focus_clarity"
   ],
   "subjects": [
@@ -2939,7 +2939,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "red cabin",
@@ -2969,7 +2970,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude"
+   "connection_gratitude",
+   "reflection_insight"
   ],
   "subjects": [
    "red cabin",
@@ -3024,9 +3026,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "focus_clarity",
-   "energy_motivation",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "red cabin"
@@ -3052,8 +3054,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "red cabin"
@@ -3079,7 +3081,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "red cabin"
@@ -3162,9 +3165,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3194,7 +3197,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3224,6 +3228,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -3278,8 +3283,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -3306,7 +3311,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone"
@@ -3414,8 +3420,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "restore_sleep"
+   "calm_ground"
   ],
   "subjects": [
    "pale ice floe",
@@ -3443,9 +3448,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "focus_clarity",
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "small iceberg",
@@ -3472,9 +3477,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "focus_clarity",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "pale ice floe",
@@ -3530,8 +3535,8 @@
   "sleep": false,
   "moods": [
    "focus_clarity",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "small iceberg",
@@ -3559,8 +3564,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "rounded ice floe",
@@ -3587,9 +3592,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -3618,8 +3622,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3649,7 +3653,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3678,8 +3683,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "release_let_go"
   ],
   "subjects": [
@@ -3738,8 +3743,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "canvas hammock"
@@ -3765,8 +3771,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "empty hammock"
@@ -3792,9 +3797,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "focus_clarity"
+   "joy"
   ],
   "subjects": [
    "empty hammock"
@@ -3849,8 +3853,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "energy_motivation"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3881,8 +3885,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "energy_motivation"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3910,8 +3913,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3967,9 +3970,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden rowboat",
@@ -3998,7 +4001,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden boat",
@@ -4026,8 +4030,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "rounded boulder",
@@ -4052,9 +4056,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -4080,8 +4083,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "energy_motivation"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -4106,8 +4109,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -4133,7 +4136,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone"
@@ -4157,7 +4161,8 @@
   "sleep": false,
   "moods": [
    "energy_motivation",
-   "focus_clarity"
+   "focus_clarity",
+   "joy"
   ],
   "subjects": [
    "rounded boulder",
@@ -4209,8 +4214,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -4268,7 +4274,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -4328,6 +4335,7 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
+   "reflection_insight",
    "calm_ground"
   ],
   "subjects": [
@@ -4357,7 +4365,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation"
+   "focus_clarity",
+   "reflection_insight"
   ],
   "subjects": [
    "hay bale"
@@ -4381,8 +4390,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -4407,7 +4417,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
+   "joy",
    "focus_clarity"
   ],
   "subjects": [
@@ -4544,8 +4555,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "connection_gratitude"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -4571,7 +4582,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -4624,7 +4636,6 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
    "reflection_insight"
   ],
   "subjects": [
@@ -4651,8 +4662,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "energy_motivation"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden jetty"
@@ -4702,9 +4712,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "release_let_go"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat"
@@ -4732,8 +4742,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "focus_clarity"
+   "focus_clarity",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden jetty"
@@ -4784,7 +4794,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -4812,9 +4823,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "reflection_insight",
-   "connection_gratitude",
-   "calm_ground"
+   "connection_gratitude"
   ],
   "subjects": [
    "clay pot",
@@ -4840,8 +4851,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
    "calm_ground"
   ],
   "subjects": [
@@ -4867,9 +4878,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "focus_clarity"
+   "joy",
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "watering can",
@@ -4896,7 +4907,7 @@
   "moods": [
    "calm_ground",
    "reflection_insight",
-   "connection_gratitude"
+   "release_let_go"
   ],
   "subjects": [
    "wooden shed",
@@ -4920,8 +4931,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
    "calm_ground"
   ],
   "subjects": [
@@ -4947,9 +4958,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "confidence_strength"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "white seashell",
@@ -4978,9 +4989,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden canoe",
@@ -5009,8 +5020,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "joy"
   ],
   "subjects": [
    "wooden canoe",
@@ -5040,7 +5051,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -5070,7 +5082,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -5100,8 +5113,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "energy_motivation"
+   "reflection_insight"
   ],
   "subjects": [
    "tiny island"
@@ -5127,7 +5139,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "restore_sleep"
   ],
   "subjects": [
    "wooden rowboat"
@@ -5155,6 +5168,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
+   "reflection_insight",
    "connection_gratitude"
   ],
   "subjects": [
@@ -5211,7 +5225,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat"
@@ -5238,8 +5253,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone"
@@ -5264,8 +5280,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "left chair",
@@ -5318,9 +5334,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "left chair",
@@ -5347,8 +5362,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "energy_motivation"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden chair",
@@ -5375,7 +5390,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "porch chair",
@@ -5400,8 +5416,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "release_let_go"
   ],
   "subjects": [
@@ -5459,8 +5475,8 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
-   "calm_ground",
-   "restore_sleep"
+   "restore_sleep",
+   "calm_ground"
   ],
   "subjects": [
    "paper lantern",
@@ -5490,7 +5506,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "paper lantern"
@@ -5518,8 +5534,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "connection_gratitude",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "paper lantern",
@@ -5548,9 +5564,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "paper lantern"
@@ -5577,9 +5593,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude",
+   "restore_sleep"
   ],
   "subjects": [
    "paper lantern",
@@ -5606,8 +5622,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -5633,9 +5649,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "woven basket",
@@ -5663,9 +5679,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "woven basket",
@@ -5691,9 +5707,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "connection_gratitude"
+   "joy",
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "woven basket",
@@ -5746,8 +5762,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "connection_gratitude"
+   "connection_gratitude",
+   "reflection_insight"
   ],
   "subjects": [
    "white lighthouse"
@@ -5773,8 +5789,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "white lighthouse"
@@ -5799,9 +5814,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "white lighthouse",
@@ -5884,7 +5899,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden rowboat"
@@ -5911,7 +5927,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat",
@@ -5940,9 +5957,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -5972,8 +5989,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "release_let_go",
-   "calm_ground"
+   "calm_ground",
+   "release_let_go"
   ],
   "subjects": [
    "wooden rowboat"
@@ -6000,9 +6017,8 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -6058,8 +6074,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden rowboat",
@@ -6119,7 +6136,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -6146,8 +6164,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden rowboat",
@@ -6177,8 +6195,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -6205,7 +6222,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -6230,9 +6247,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
-   "calm_ground",
-   "energy_motivation"
+   "energy_motivation",
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -6260,9 +6277,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "confidence_strength"
+   "joy",
+   "calm_ground",
+   "energy_motivation"
   ],
   "subjects": [
    "smooth stone",
@@ -6291,8 +6308,8 @@
   "sleep": false,
   "moods": [
    "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -6317,7 +6334,7 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
+   "joy",
    "energy_motivation",
    "calm_ground"
   ],
@@ -6348,8 +6365,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "restore_sleep"
+   "calm_ground"
   ],
   "subjects": [
    "large mossy stone",
@@ -6374,9 +6390,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "mossy stone",
@@ -6401,9 +6417,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "mossy stone",
@@ -6429,7 +6444,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
+   "joy",
    "focus_clarity"
   ],
   "subjects": [
@@ -6456,8 +6471,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "release_let_go",
-   "reflection_insight"
+   "reflection_insight",
+   "release_let_go"
   ],
   "subjects": [
    "mossy boulder",
@@ -6482,9 +6497,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden hut",
@@ -6510,8 +6525,8 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden bench",
@@ -6538,7 +6553,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden hut"
@@ -6562,9 +6578,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "focus_clarity",
-   "confidence_strength"
+   "calm_ground",
+   "joy"
   ],
   "subjects": [
    "wooden mountain hut",
@@ -6591,7 +6607,7 @@
   "moods": [
    "calm_ground",
    "focus_clarity",
-   "reflection_insight"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden hut",
@@ -6618,7 +6634,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden hut",
@@ -6646,9 +6662,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "confidence_strength"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -6673,9 +6689,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -6702,7 +6718,7 @@
   "moods": [
    "focus_clarity",
    "calm_ground",
-   "energy_motivation"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -6732,8 +6748,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -6813,8 +6828,8 @@
   "sleep": false,
   "moods": [
    "restore_sleep",
-   "connection_gratitude",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -6866,8 +6881,7 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground",
-   "reflection_insight"
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone"
@@ -6891,9 +6905,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone"
@@ -6918,9 +6932,8 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "confidence_strength",
-   "energy_motivation",
-   "connection_gratitude"
+   "calm_ground",
+   "confidence_strength"
   ],
   "subjects": [
    "smooth stone"
@@ -6945,9 +6958,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -6973,9 +6986,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "connection_gratitude"
+   "joy"
   ],
   "subjects": [
    "smooth stone"
@@ -7001,8 +7013,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "focus_clarity"
+   "focus_clarity",
+   "confidence_strength"
   ],
   "subjects": [
    "smooth stone"
@@ -7053,9 +7065,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "confidence_strength",
-   "reflection_insight"
+   "calm_ground",
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -7081,9 +7093,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -7112,9 +7123,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -7140,9 +7151,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -7168,9 +7179,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "focus_clarity",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -7224,9 +7235,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "connection_gratitude",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -7252,9 +7262,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "clay pot",
@@ -7280,9 +7290,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "focus_clarity"
+   "calm_ground",
+   "joy"
   ],
   "subjects": [
    "clay pot",
@@ -7307,9 +7316,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -7360,9 +7369,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "connection_gratitude"
+   "calm_ground",
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -7387,9 +7396,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "confidence_strength"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden rowboat"
@@ -7415,9 +7424,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat"
@@ -7443,9 +7451,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -7473,9 +7481,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "focus_clarity",
-   "calm_ground"
+   "release_let_go"
   ],
   "subjects": [
    "wooden rowboat"
@@ -7502,7 +7510,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat"
@@ -7556,8 +7565,8 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
+   "connection_gratitude",
    "reflection_insight"
   ],
   "subjects": [
@@ -7583,9 +7592,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden bench"
@@ -7610,9 +7619,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden bench"
@@ -7637,8 +7646,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "release_let_go",
    "reflection_insight",
+   "release_let_go",
    "calm_ground"
   ],
   "subjects": [
@@ -7690,9 +7699,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden bench"
@@ -7746,9 +7755,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "stone lantern",
@@ -7779,7 +7788,7 @@
   "moods": [
    "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden pavilion",
@@ -7806,8 +7815,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "paper lantern",
@@ -7836,8 +7845,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "focus_clarity"
+   "joy",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -7894,8 +7903,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -7920,9 +7929,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -7947,9 +7955,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "focus_clarity",
    "calm_ground",
-   "energy_motivation"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -7976,8 +7983,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "focus_clarity"
+   "focus_clarity",
+   "reflection_insight"
   ],
   "subjects": [
    "snowy boulder",
@@ -8002,9 +8009,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "release_let_go",
-   "energy_motivation"
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -8033,7 +8040,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone"
@@ -8058,9 +8065,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden rowboat",
@@ -8089,9 +8096,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "calm_ground",
-   "connection_gratitude"
+   "joy",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone"
@@ -8116,8 +8122,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -8146,9 +8152,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -8174,8 +8180,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "restore_sleep"
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -8202,8 +8207,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "connection_gratitude"
+   "joy",
+   "reflection_insight"
   ],
   "subjects": [
    "mossy stone",
@@ -8229,8 +8234,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -8257,7 +8262,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
+   "joy",
    "connection_gratitude"
   ],
   "subjects": [
@@ -8313,8 +8318,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "release_let_go",
-   "calm_ground"
+   "calm_ground",
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -8395,8 +8400,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "restore_sleep"
+   "calm_ground"
   ],
   "subjects": [
    "thatched hut",
@@ -8425,8 +8429,8 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
+   "connection_gratitude",
    "reflection_insight"
   ],
   "subjects": [
@@ -8453,8 +8457,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
+   "calm_ground",
+   "joy",
    "connection_gratitude"
   ],
   "subjects": [
@@ -8484,9 +8488,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "thatched hut",
@@ -8512,8 +8515,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone"
@@ -8537,9 +8540,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "focus_clarity",
-   "connection_gratitude"
+   "joy"
   ],
   "subjects": [
    "thatched hut",
@@ -8565,8 +8568,8 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "confidence_strength",
    "focus_clarity",
+   "confidence_strength",
    "energy_motivation"
   ],
   "subjects": [
@@ -8592,8 +8595,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -8620,8 +8623,8 @@
   "sleep": false,
   "moods": [
    "focus_clarity",
-   "confidence_strength",
-   "connection_gratitude"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -8647,8 +8650,7 @@
   "sleep": false,
   "moods": [
    "focus_clarity",
-   "calm_ground",
-   "confidence_strength"
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -8701,7 +8703,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "reflection_insight"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -8756,9 +8758,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden rowboat",
@@ -8788,9 +8790,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -8820,8 +8821,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -8884,9 +8885,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "release_let_go",
-   "calm_ground"
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -8972,8 +8973,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "focus_clarity"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -9032,8 +9032,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "focus_clarity"
+   "focus_clarity",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -9063,7 +9063,7 @@
   "moods": [
    "calm_ground",
    "connection_gratitude",
-   "reflection_insight"
+   "joy"
   ],
   "subjects": [
    "wooden bench",
@@ -9088,9 +9088,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "clay pot",
@@ -9143,8 +9143,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "release_let_go"
+   "release_let_go",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden bench"
@@ -9221,6 +9221,7 @@
   "sleep": false,
   "moods": [
    "connection_gratitude",
+   "joy",
    "calm_ground"
   ],
   "subjects": [
@@ -9245,8 +9246,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation"
+   "calm_ground"
   ],
   "subjects": [
    "white bench"
@@ -9271,8 +9273,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation"
+   "calm_ground"
   ],
   "subjects": [
    "white bench"
@@ -9296,9 +9299,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "release_let_go"
+   "release_let_go",
+   "reflection_insight"
   ],
   "subjects": [
    "white bench"
@@ -9322,9 +9325,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "calm_ground",
-   "energy_motivation"
+   "calm_ground"
   ],
   "subjects": [
    "white bench"
@@ -9350,8 +9353,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -9378,7 +9381,7 @@
   "moods": [
    "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -9403,8 +9406,8 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "calm_ground",
    "reflection_insight",
+   "calm_ground",
    "connection_gratitude"
   ],
   "subjects": [
@@ -9431,8 +9434,8 @@
   "sleep": false,
   "moods": [
    "focus_clarity",
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -9459,7 +9462,7 @@
   "moods": [
    "focus_clarity",
    "reflection_insight",
-   "energy_motivation"
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -9511,8 +9514,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
-   "confidence_strength"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -9540,7 +9542,7 @@
   "moods": [
    "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone"
@@ -9566,8 +9568,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "release_let_go"
+   "focus_clarity",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone"
@@ -9592,9 +9594,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "focus_clarity",
-   "energy_motivation",
-   "confidence_strength"
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone"
@@ -9619,9 +9620,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "focus_clarity",
-   "confidence_strength"
+   "calm_ground",
+   "joy"
   ],
   "subjects": [
    "smooth stone"
@@ -9706,7 +9707,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "white cottage",
@@ -9732,9 +9733,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "connection_gratitude",
-   "focus_clarity"
+   "joy"
   ],
   "subjects": [
    "white cottage",
@@ -9761,7 +9762,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "white cottage",
@@ -9787,8 +9789,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
+   "focus_clarity",
    "connection_gratitude"
   ],
   "subjects": [
@@ -9819,7 +9821,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "white cottage",
@@ -9845,9 +9848,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "calm_ground",
-   "reflection_insight",
-   "confidence_strength"
+   "confidence_strength",
+   "focus_clarity",
+   "calm_ground"
   ],
   "subjects": [
    "snowy boulder",
@@ -9895,9 +9898,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
    "calm_ground",
-   "confidence_strength"
+   "focus_clarity",
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone"
@@ -9922,7 +9925,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -9950,9 +9954,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "energy_motivation",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -9977,8 +9981,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity"
+   "calm_ground",
+   "focus_clarity",
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone"
@@ -10002,9 +10007,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -10055,6 +10059,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
+   "reflection_insight",
    "connection_gratitude"
   ],
   "subjects": [
@@ -10081,8 +10086,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -10109,8 +10115,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -10136,7 +10142,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -10165,7 +10172,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden bench",
@@ -10190,9 +10198,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -10222,7 +10230,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight"
+   "reflection_insight",
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -10247,8 +10256,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity"
+   "calm_ground",
+   "joy",
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -10273,9 +10283,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "focus_clarity",
-   "calm_ground"
+   "release_let_go"
   ],
   "subjects": [
    "smooth stone",
@@ -10301,8 +10311,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -10328,7 +10338,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
+   "joy",
    "reflection_insight"
   ],
   "subjects": [
@@ -10354,8 +10364,8 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "confidence_strength",
+   "joy",
+   "calm_ground",
    "connection_gratitude"
   ],
   "subjects": [
@@ -10384,9 +10394,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
+   "connection_gratitude",
    "calm_ground",
-   "connection_gratitude"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -10414,8 +10424,8 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "joy",
    "connection_gratitude",
-   "energy_motivation",
    "calm_ground"
   ],
   "subjects": [
@@ -10440,9 +10450,8 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "confidence_strength",
-   "connection_gratitude"
+   "joy",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -10467,8 +10476,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
+   "joy",
+   "calm_ground",
    "connection_gratitude"
   ],
   "subjects": [
@@ -10495,9 +10504,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden bench",
@@ -10526,9 +10535,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -10555,7 +10563,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "ceramic teacup",
@@ -10580,8 +10588,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "woven basket",
@@ -10606,8 +10615,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "woven basket",
@@ -10632,9 +10641,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "woven basket"
@@ -10709,8 +10717,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -10736,7 +10745,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "seashell",
@@ -10815,7 +10824,6 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
    "focus_clarity"
   ],
   "subjects": [
@@ -10842,7 +10850,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden ladder"
@@ -10868,7 +10877,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
+   "connection_gratitude",
    "restore_sleep"
   ],
   "subjects": [
@@ -10899,7 +10908,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden ladder"
@@ -10924,9 +10934,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden ladder",
@@ -10986,6 +10996,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
+   "connection_gratitude",
    "reflection_insight"
   ],
   "subjects": [
@@ -11011,7 +11022,7 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "joy",
    "connection_gratitude",
    "focus_clarity"
   ],
@@ -11037,9 +11048,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "connection_gratitude"
+   "joy",
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "old windmill",
@@ -11064,9 +11075,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "old windmill"
@@ -11091,8 +11102,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "reflection_insight",
-   "calm_ground"
+   "connection_gratitude"
   ],
   "subjects": [
    "old milestone",
@@ -11146,9 +11158,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "joy"
   ],
   "subjects": [
    "stone farmhouse",
@@ -11175,8 +11187,7 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground",
-   "connection_gratitude"
+   "calm_ground"
   ],
   "subjects": [
    "old farmhouse",
@@ -11203,8 +11214,8 @@
   "sleep": false,
   "moods": [
    "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
+   "calm_ground",
+   "focus_clarity"
   ],
   "subjects": [
    "stone milepost",
@@ -11255,9 +11266,8 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden barrel",
@@ -11282,9 +11292,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "joy",
    "connection_gratitude",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "woven basket",
@@ -11312,7 +11322,7 @@
   "moods": [
    "restore_sleep",
    "calm_ground",
-   "reflection_insight"
+   "connection_gratitude"
   ],
   "subjects": [
    "wooden barrel",
@@ -11337,9 +11347,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "connection_gratitude"
+   "calm_ground",
+   "joy",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden barrel",
@@ -11364,8 +11374,8 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "release_let_go",
    "calm_ground",
+   "release_let_go",
    "connection_gratitude"
   ],
   "subjects": [
@@ -11394,7 +11404,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "release_let_go"
+   "release_let_go",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -11420,8 +11431,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -11448,7 +11459,7 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "energy_motivation",
+   "reflection_insight",
    "focus_clarity"
   ],
   "subjects": [
@@ -11476,7 +11487,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "smooth stone",
@@ -11502,9 +11514,9 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "restore_sleep"
+   "reflection_insight",
+   "connection_gratitude"
   ],
   "subjects": [
    "round hay bale"
@@ -11528,9 +11540,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "round hay bale"
@@ -11554,8 +11566,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity"
+   "calm_ground",
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "hay bale",
@@ -11580,7 +11593,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "joy",
+   "calm_ground",
    "focus_clarity"
   ],
   "subjects": [
@@ -11610,7 +11624,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "round hay bale"
@@ -11634,9 +11649,9 @@
   "time_of_day": "dawn",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "calm_ground",
    "connection_gratitude",
-   "confidence_strength"
+   "reflection_insight"
   ],
   "subjects": [
    "clay pot",
@@ -11665,8 +11680,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight",
-   "connection_gratitude"
+   "connection_gratitude",
+   "reflection_insight"
   ],
   "subjects": [
    "terracotta pot",
@@ -11696,7 +11711,7 @@
   "moods": [
    "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy"
   ],
   "subjects": [
    "terracotta pot",
@@ -11724,9 +11739,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
+   "joy",
    "calm_ground",
-   "focus_clarity",
-   "energy_motivation"
+   "connection_gratitude"
   ],
   "subjects": [
    "clay pot",
@@ -11754,9 +11769,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
+   "joy",
    "connection_gratitude",
-   "focus_clarity"
+   "calm_ground"
   ],
   "subjects": [
    "white sailboat"
@@ -11783,7 +11798,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "white house",
@@ -11812,7 +11828,8 @@
   "sleep": false,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone"
@@ -11836,9 +11853,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "joy",
+   "connection_gratitude"
   ],
   "subjects": [
    "woven basket",
@@ -11863,9 +11880,9 @@
   "time_of_day": "midday",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "calm_ground",
-   "focus_clarity"
+   "joy",
+   "connection_gratitude",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -11894,9 +11911,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "connection_gratitude"
+   "joy",
+   "calm_ground"
   ],
   "subjects": [
    "smooth stone",
@@ -11924,9 +11940,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "energy_motivation",
-   "connection_gratitude",
-   "calm_ground"
+   "joy",
+   "calm_ground",
+   "connection_gratitude"
   ],
   "subjects": [
    "smooth stone",
@@ -11955,7 +11971,8 @@
   "sleep": false,
   "moods": [
    "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "restore_sleep"
   ],
   "subjects": [
    "wooden rowboat",
@@ -11984,8 +12001,9 @@
   "time_of_day": "golden hour",
   "sleep": false,
   "moods": [
+   "calm_ground",
    "connection_gratitude",
-   "calm_ground"
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -12015,8 +12033,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "wooden rowboat",
@@ -12076,8 +12094,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "smooth stone",
@@ -12108,8 +12126,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "connection_gratitude",
-   "reflection_insight"
+   "reflection_insight",
+   "joy"
   ],
   "subjects": [
    "smooth stone",
@@ -12139,7 +12157,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "reflection_insight"
+   "reflection_insight",
+   "restore_sleep"
   ],
   "subjects": [
    "snowy boulder",
@@ -12168,7 +12187,8 @@
   "sleep": true,
   "moods": [
    "restore_sleep",
-   "calm_ground"
+   "calm_ground",
+   "reflection_insight"
   ],
   "subjects": [
    "snowy boulder"
@@ -12193,8 +12213,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "focus_clarity"
   ],
   "subjects": [
    "wooden bench",
@@ -12273,8 +12293,8 @@
   "time_of_day": "dusk",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
+   "reflection_insight",
    "restore_sleep"
   ],
   "subjects": [
@@ -12305,8 +12325,8 @@
   "sleep": false,
   "moods": [
    "calm_ground",
-   "focus_clarity",
-   "reflection_insight"
+   "reflection_insight",
+   "joy"
   ],
   "subjects": [
    "wooden bridge",
@@ -12332,9 +12352,8 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "reflection_insight",
    "calm_ground",
-   "release_let_go"
+   "reflection_insight"
   ],
   "subjects": [
    "stone lantern",
@@ -12360,9 +12379,9 @@
   "time_of_day": "morning",
   "sleep": false,
   "moods": [
-   "connection_gratitude",
    "calm_ground",
-   "energy_motivation"
+   "connection_gratitude",
+   "joy"
   ],
   "subjects": [
    "wooden bridge",

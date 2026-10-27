@@ -54,6 +54,8 @@ class Settings:
     image_size: str = "1080x1920"
     # The critic sees a smaller copy: fewer image tokens, same judgement.
     critic_image_width: int = 576
+    # Tagging a library world with its feelings: a path, a summit or a beach shows at this size too.
+    moods_image_width: int = 384
 
     paintings: int = 2               # the first painting plus at most one revision
     pass_score: int = 7              # the critic's score a painting needs, 0-10
