@@ -9,7 +9,7 @@ is a meditation in miniature: the art director designs a world from it exactly
 as it does from a listener's meditation, and the critic checks the painting.
 
     .venv/bin/python scripts/library_briefs.py            # writes library/briefs/
-    .venv/bin/elynd-worlds make library/briefs/*.txt ...  # paints them
+    .venv/bin/elynd-worlds make library/briefs/*.txt ...  # paints them (the push briefs with --mood unmotivated)
 """
 from __future__ import annotations
 
@@ -248,6 +248,65 @@ def brief(place: str, variant: str) -> str:
             f"Let your breath settle into the rhythm of this place, and feel how calm and safe it is here.\n")
 
 
+# Worlds that give a push (27 Oct 2026): a sleepy tropical beach motivates no one.
+# Every brief above ends "feel how calm and safe it is here", so the library had almost no
+# world with a way forward in it. These show one: a path leading on and up, a summit at sunrise, water in full
+# flow; bright and fresh, never stormy (the critic fails anything threatening or busy). Painted with --mood
+# unmotivated, so the art director knows what they are for.
+PUSH_LIGHT = {
+    "dawn": "The sun is rising and its first light is warm and bright; the air is cool and clear.",
+    "morning": "Bright morning sunlight fills the air, fresh and clear.",
+    "midday": "The sun is high and the light is bright and clear.",
+}
+PUSH = {
+    "summittrail-dawn": "a mountain trail at sunrise. The path climbs ahead over grass and stones toward a bright "
+                        "summit, and the first sun is just touching the peak. The way is open and easy to follow.",
+    "ridgetrail-morning": "a trail running along a high grassy ridge. It leads on toward far blue peaks, and the "
+                          "wind moves through the grass beside it.",
+    "mountainpath-dawn": "a path winding up a green mountainside in easy turns. Above, the crest glows with the first "
+                         "light, and every turn of the path brings it closer.",
+    "foreststeps-morning": "old stone steps climbing through a green forest toward an opening full of light. Sunbeams "
+                           "fall across the steps, and the top is bright and near.",
+    "bigwaterfall-morning": "a tall waterfall in full flow. The water pours down the rock face into a clear pool, and "
+                            "its spray shines in the sun.",
+    "riverrapids-morning": "a clear mountain river rushing over rocks through a sunny valley. A path follows the bank "
+                           "upstream toward the hills.",
+    "surfcoast-dawn": "the sea at sunrise from a rocky shore. Waves roll in steadily and break in white lines on the "
+                      "dark rocks, and the spray catches the golden light.",
+    "lighthousepath-morning": "a white lighthouse on a green headland on a breezy day. A path leads out along the "
+                              "cliff top to the lighthouse, and waves break white on the rocks below.",
+    "forestlight-morning": "a forest path leading toward a bright clearing ahead. Sunbeams pour through the trees onto "
+                           "the path, and the light grows with every step.",
+    "footbridge-morning": "a wooden footbridge across a rushing stream. On the far side a sunlit path leads on into "
+                          "green hills.",
+    "mountainpass-dawn": "a high mountain pass. A path crests the pass between two peaks, and beyond it a wide valley "
+                         "opens up in the first sunlight.",
+    "meadowtrail-dawn": "a path through a wildflower meadow leading toward the rising sun. The grass shines with dew "
+                        "and the sky brightens ahead.",
+    "coastpath-morning": "a cliff-top path along the sea. It runs on along the green edge toward a far headland, and "
+                         "the sea sparkles below.",
+    "windyhills-midday": "a grassy hilltop on a breezy day. The wind streams through the long grass and white clouds "
+                         "sail across a deep blue sky.",
+    "riceclimb-dawn": "green rice terraces climbing a hillside step by step toward the light. Water shines on each "
+                      "terrace and the hilltop glows above.",
+    "sunrisesea-dawn": "the sun rising out of the sea. Its path of light runs across the water toward the shore, and "
+                       "gulls cross the brightening sky.",
+    "alpinetrail-morning": "a trail through an alpine meadow leading up toward snowy peaks. A stream runs beside the "
+                           "path and flowers line the way.",
+    "glacierpath-morning": "a trail along a mountainside toward a shining glacier. White peaks stand ahead and a "
+                           "bright river winds through the valley.",
+    "peakcairn-dawn": "a small stone cairn on a mountain top at sunrise. Range after range of peaks spreads out below, "
+                      "lit by the rising sun.",
+    "valleytrail-morning": "a trail leading down into a wide green valley. A river shines along its floor and the "
+                           "far hills are bright with sun.",
+}
+
+
+def push_brief(id: str) -> str:
+    return (f"# technique=visualization\nTake a deep breath and picture {PUSH[id]} {PUSH_LIGHT[id.split('-')[1]]} "
+            f"Breathe in the fresh air and feel your energy rising, ready for the way ahead.\n")
+
+
 def main(out: str = "library/briefs") -> int:
     folder = Path(out)
     folder.mkdir(parents=True, exist_ok=True)
@@ -258,7 +317,10 @@ def main(out: str = "library/briefs") -> int:
             (folder / f"{place}-{variant}.txt").write_text(brief(place, variant))
             count += 1
     assert count == 500, count
-    print(f"{count} briefs -> {folder}")
+    for id in PUSH:
+        assert f"{id.split('-')[0]}" not in LIBRARY, id
+        (folder / f"{id}.txt").write_text(push_brief(id))
+    print(f"{count} briefs and {len(PUSH)} push briefs -> {folder}")
     return 0
 
 

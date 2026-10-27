@@ -214,6 +214,34 @@
   "cost_usd": 0.03913
  },
  {
+  "id": "alpinetrail-morning",
+  "title": "Bright Alpine Trail",
+  "place": "An alpine meadow trail winds beside a clear stream toward distant snowy peaks.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "confidence_strength"
+  ],
+  "subjects": [
+   "stone cairn",
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "stream"
+  ],
+  "particles": "pollen",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04636
+ },
+ {
   "id": "alpinevillage-dusk",
   "title": "Quiet Alpine Dusk",
   "place": "A small alpine village with wooden chalets in a green valley below high peaks at dusk.",
@@ -1000,6 +1028,37 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.0369
+ },
+ {
+  "id": "bigwaterfall-morning",
+  "title": "Bright Falling Water",
+  "place": "A high cascade drops over sunlit cliffs into a quiet clear basin.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "joy",
+   "calm_ground"
+  ],
+  "subjects": [
+   "smooth stone",
+   "white butterfly"
+  ],
+  "moving": [
+   "smooth stone",
+   "white butterfly"
+  ],
+  "nature": [
+   "water",
+   "sky",
+   "trees"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.06198
  },
  {
   "id": "birch-mist",
@@ -2306,6 +2365,34 @@
   "cost_usd": 0.04701
  },
  {
+  "id": "coastpath-morning",
+  "title": "Bright Cliff Morning",
+  "place": "A grassy cliff path winds toward a far headland above a glittering sea.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "joy"
+  ],
+  "subjects": [
+   "stone cairn",
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "water",
+   "sky",
+   "grass"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04971
+ },
+ {
   "id": "cottagegarden-golden",
   "title": "Golden Cottage Garden",
   "place": "A cottage flower garden with a gravel path lined by roses, foxgloves and lavender at golden hour.",
@@ -3101,6 +3188,33 @@
   "cost_usd": 0.03778
  },
  {
+  "id": "footbridge-morning",
+  "title": "Bright Bridge Morning",
+  "place": "A small wooden bridge crosses a clear rushing stream with a sunny path winding into soft green hills.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
+  "subjects": [
+   "wooden footbridge"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "stream"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04026
+ },
+ {
   "id": "forestlake-dusk",
   "title": "Still Dusk Lake",
   "place": "A quiet lake in a pine forest at dusk with perfectly still water.",
@@ -3248,6 +3362,62 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.04886
+ },
+ {
+  "id": "forestlight-morning",
+  "title": "Bright Forest Path",
+  "place": "A quiet forest path leads toward a bright sunlit clearing.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "joy"
+  ],
+  "subjects": [
+   "mossy stone",
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "trees"
+  ],
+  "particles": "pollen",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04554
+ },
+ {
+  "id": "foreststeps-morning",
+  "title": "Sunlit Forest Steps",
+  "place": "Old stone steps climb through a green forest toward a bright opening of light.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "calm_ground"
+  ],
+  "subjects": [
+   "mossy boulder",
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "trees"
+  ],
+  "particles": "pollen",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04416
  },
  {
   "id": "frozenlake-aurora",
@@ -5865,6 +6035,33 @@
   "cost_usd": 0.03745
  },
  {
+  "id": "lighthousepath-morning",
+  "title": "Bright Lighthouse Morning",
+  "place": "A white lighthouse stands on a green headland above waves breaking on rocks.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "confidence_strength"
+  ],
+  "subjects": [
+   "white lighthouse"
+  ],
+  "moving": [],
+  "nature": [
+   "water",
+   "sky",
+   "grass"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.03671
+ },
+ {
   "id": "lilypond-dusk",
   "title": "Lily Pond Dusk",
   "place": "A still pond covered with round lily leaves and pale flowers at dusk.",
@@ -6792,6 +6989,60 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.0406
+ },
+ {
+  "id": "mountainpass-dawn",
+  "title": "Sunlit Mountain Pass",
+  "place": "A high mountain pass between two peaks opening onto a wide sunlit valley at sunrise.",
+  "time_of_day": "dawn",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "confidence_strength"
+  ],
+  "subjects": [
+   "stone cairn"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "trees"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.03598
+ },
+ {
+  "id": "mountainpath-dawn",
+  "title": "Morning Mountain Path",
+  "place": "A green mountainside with an easy winding path rising toward a sunlit crest.",
+  "time_of_day": "dawn",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "confidence_strength",
+   "focus_clarity"
+  ],
+  "subjects": [
+   "rounded boulder",
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04749
  },
  {
   "id": "nightfield-aurora",
@@ -8393,6 +8644,33 @@
   "cost_usd": 0.03908
  },
  {
+  "id": "riceclimb-dawn",
+  "title": "Sunlit Rice Terraces",
+  "place": "Terraced green rice fields rise up a bright hillside toward sunrise light.",
+  "time_of_day": "dawn",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "calm_ground",
+   "focus_clarity"
+  ],
+  "subjects": [
+   "thatched hut",
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "water",
+   "sky"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.05206
+ },
+ {
   "id": "riceterraces-dusk",
   "title": "Quiet Terrace Dusk",
   "place": "Green rice terraces curve down a quiet hillside at dusk, water shining in each step.",
@@ -9053,6 +9331,35 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.05228
+ },
+ {
+  "id": "riverrapids-morning",
+  "title": "Bright River Valley",
+  "place": "A clear river winds through a sunlit green valley toward soft distant hills.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "joy",
+   "calm_ground",
+   "focus_clarity"
+  ],
+  "subjects": [
+   "smooth stone",
+   "rounded boulder"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "stream",
+   "trees"
+  ],
+  "particles": "pollen",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.0516
  },
  {
   "id": "rooftop-golden",
@@ -10529,6 +10836,33 @@
   "cost_usd": 0.05851
  },
  {
+  "id": "surfcoast-dawn",
+  "title": "Sunrise Over Rocky Shore",
+  "place": "A rocky shore looking out over the open sea at sunrise.",
+  "time_of_day": "dawn",
+  "sleep": false,
+  "moods": [
+   "confidence_strength",
+   "energy_motivation",
+   "focus_clarity"
+  ],
+  "subjects": [
+   "tall rock",
+   "flat rock"
+  ],
+  "moving": [],
+  "nature": [
+   "water",
+   "sky"
+  ],
+  "particles": "none",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04412
+ },
+ {
   "id": "teahills-dusk",
   "title": "Dusky Tea Hills",
   "place": "Rows of tea bushes curving over gentle hills beneath a lilac dusk sky.",
@@ -11258,6 +11592,34 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.0692
+ },
+ {
+  "id": "valleytrail-morning",
+  "title": "Bright Valley Morning",
+  "place": "A grassy trail overlooks a wide sunlit valley with a winding river below and bright distant hills.",
+  "time_of_day": "morning",
+  "sleep": false,
+  "moods": [
+   "energy_motivation",
+   "focus_clarity",
+   "joy"
+  ],
+  "subjects": [
+   "smooth stone",
+   "rounded boulder"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass",
+   "stream"
+  ],
+  "particles": "pollen",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.04646
  },
  {
   "id": "vineyard-autumn",
@@ -12148,6 +12510,32 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.05859
+ },
+ {
+  "id": "windyhills-midday",
+  "title": "Breezy Sunlit Hilltop",
+  "place": "A broad grass-covered hill crest open to wind and bright sky.",
+  "time_of_day": "midday",
+  "sleep": false,
+  "moods": [
+   "release_let_go",
+   "focus_clarity",
+   "joy"
+  ],
+  "subjects": [
+   "smooth stone"
+  ],
+  "moving": [],
+  "nature": [
+   "sky",
+   "grass"
+  ],
+  "particles": "pollen",
+  "critic": {
+   "score": 9,
+   "judge": "muse-spark-1.3"
+  },
+  "cost_usd": 0.03902
  },
  {
   "id": "winterforest-dusk",
