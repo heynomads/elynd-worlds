@@ -38,7 +38,7 @@ flowchart TD
 |---|---|---|
 | Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (how each is attached, how it moves, whether it glows), what moves in nature (water, sky, grass, a stream, trees), what drifts through the air (leaves, snow, pollen, fireflies) and the painting prompt. It is told never to copy the listener's words, and no picture carries text. |
 | Painter | `muse-image-1.0` | Paints the world, portrait for a phone. Built-in web search and shell are off. |
-| Critic | `meta-models/muse-spark-open-1026` (Muse Spark Open, open weights, served by Baseten; vision) | Looks at every painting before a listener does: people or faces, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. It sees only the painting and the scenery design, never the meditation or the listener. If it fails, takes longer than 18 s or answers out of shape, `muse-spark-1.3` on Meta Model API judges instead. On our six example worlds both agreed on every safety check, and both rejected all four test pictures that must fail (a face, a sign with letters, a storm, a tiny figure). |
+| Critic | `meta-models/muse-spark-open-1026` (Muse Spark Open, open weights, served by Baseten; vision) | Looks at every painting before a listener does: a person or animal drawn wrong, a face up close, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. It sees only the painting and the scenery design, never the meditation or the listener. If it fails, takes longer than 18 s or answers out of shape, `muse-spark-1.3` on Meta Model API judges instead. On our six example worlds both agreed on every safety check, and both rejected the test pictures that must fail (a face up close, a sign with letters, a storm). |
 | Revision | `muse-spark-1.3` | A rejected painting goes back to the art director with the critic's note, and the agent paints once more (two paintings at most). |
 | Cutter | `sam-3.1` | Cuts each designed subject out as its own layer: asks name and plural at once, keeps only the near instances, fills holes, and records the outline box. A layer is opaque two pixels past the outline, so it carries the subject's own soft edge; a floating boat's outline is closed over its oars, which then ride with it. |
 | What moves | `sam-3.1` | Finds the water, the sky, the grass and a stream the design names, one request each, and packs them into one region map the phone's shader reads; still subjects are taken out of it, so a stone in a lake never ripples. A glowing subject becomes a light that flickers. |
@@ -52,22 +52,35 @@ after the script is written in our runs; the slower ones were made six at a time
 ## A world from the first second: the library
 
 A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
-places a library can hold. So the same agent painted a **library of 500 worlds** in advance: 90 places guided
+places a library can hold. So the same agent painted a **library** in advance: 500 worlds of the 90 places guided
 meditations visit most, each at several times of day, seasons or weathers, 75 of them dark worlds for falling
-asleep (`scripts/library_briefs.py`), each checked by the critic like any other. Only worlds that look alive stay
-(`library.looks_dead`: water, a stream, a field, swaying crowns, rain, snow, leaves or petals, a moving subject, or
-a sky wide or starry enough to carry the world; `scripts/library_audit.py`): **445 worlds**, 70 for sleep
-(`library/catalog.json` lists them). The 55 others were taken out: a canyon or dunes by day, where only a sliver of
-sky drifts, and worlds whose water and sky timed out in a slow hour (SAM requests are now asked again). For each meditation Muse Spark reads the text (the same text the art director reads, at most its first
-1,500 words), names the three library worlds that fit best and says whether the meditation is built around
-something no library world shows: a particular animal or object that matters to the listener, a particular
-person's place, an unusual setting (`library.py`, low reasoning effort: 2–7 s, under a cent). A sleep meditation
-chooses only among the sleep worlds; the listener's recent worlds give way to the next best.
+asleep, and 20 more that give an unmotivated listener a push (a path leading on, steps toward the light, a pass
+at sunrise), all from `scripts/library_briefs.py` and each checked by the critic like any other. Only worlds that
+look alive stay (`library.looks_dead`: water, a stream, a field, swaying crowns, rain, snow, leaves or petals, a
+moving subject, or a sky wide or starry enough to carry the world; `scripts/library_audit.py`), and every figure
+and post was looked at up close: **459 worlds**, 70 for sleep (`library/catalog.json` lists them).
+
+**What each world helps with.** Muse Spark looked at every painting (`library.tag_moods`, 384 px, one world a
+request) and named the one to three feelings it helps with, best first: calm, letting go, warmth, rest, a push,
+joy, reflection, clarity, strength. These are the categories ELYND's background music is chosen by, with joy kept
+apart from the push: a happy listener and an unmotivated one hear the same lifting music, but a sleepy beach
+motivates no one. Read from the designs alone, every world sounded soft ("a quiet ridge", "a slow river"); only
+the paintings told a summit at sunrise from a sunny garden.
+
+**Which world a meditation opens on.** By default, ELYND's own server chooses, and nothing is sent anywhere
+(`library.local`): the place the meditation names (in English, German, Spanish or French, German compounds by
+their last part), else the listener's feeling, the same way the music is chosen; fit first, then never a world
+seen in the last ten meditations while one that fits as well is fresh. A sleep meditation gets a sleep world.
+
+With **personal worlds**, which a listener turns on, Muse Spark reads the meditation instead (`library.pick`, at
+most its first 600 words, minimal reasoning, a prompt-cache key per use: about a third of a cent), names the three
+library worlds that fit best and says whether the meditation is built around something no library world shows: a
+particular animal or object that matters to the listener, a particular person's place, an unusual setting.
 
 * **It fits:** the library world is the session's world, on screen within seconds. Nothing is painted.
 * **It is very personal:** the library world shows at once, a world is painted for the meditation, and it takes
   its place in one slow cross-fade when complete; if painting fails, the library world stays.
-* **Muse Spark cannot answer:** a library world of the right kind is chosen without it.
+* **Muse Spark cannot or must not answer:** the server's own choice. There is always a world.
 
 ```bash
 .venv/bin/python scripts/library_briefs.py                     # library/briefs/*.txt (500 themes)
@@ -84,6 +97,9 @@ chooses only among the sleep worlds; the listener's recent worlds give way to th
   moves in nature: ripples travel over the water towards the viewer and its reflections wobble, now and then the
   sun glints on it; the clouds drift; waves of wind roll through the grass; a stream flows; the crowns sway; a
   lantern flickers and its light with it. Leaves, snow, pollen or fireflies drift through the air.
+* **Life passes through.** Now and then a small flock or a few gulls cross the sky, a fish rises on still water,
+  stars twinkle and a faint shooting star falls, rain rings the water, petals drift, cloud shadows slide over a
+  meadow: each only where it belongs, decided from the design (`life.py`).
 * **Objects move as such things move.** A boat sinks a little on the swell, rises back to where it is painted and
   rolls; something in the air floats on a slow loop and a butterfly folds its wings now and then; plants sway
   in gusts about where they grow; mist drifts. Stones, posts and cabins stay still. Nothing grows or shrinks.
@@ -94,19 +110,24 @@ chooses only among the sleep worlds; the listener's recent worlds give way to th
 * **Phones crop.** Each world has a focus point (where its subjects are); the painting is cropped around it,
   and subjects painted too low are lifted above the player's controls with a small zoom.
 * Reduce-motion is respected: the world then only fades.
+* **Battery.** The scene is redrawn at most 30 times a second, 15 while it is only a glow, never at the display's
+  60 or 120; a locked screen draws nothing. A world is about 190 KB to download.
 
 ## Privacy and safety
 
-* Opt-in. Nothing reaches Meta until a listener turns Painted worlds on, on a screen that says plainly
-  what is sent to whom (a one-time card on the home screen, or the switch in Profile, which also turns it
-  off again). The server records that consent before it paints anything.
+* Opt-in for Meta. Every meditation opens on a library world chosen on ELYND's own server, and nothing is sent
+  for that. Nothing reaches Meta until a listener turns on personal worlds, on a screen that says plainly what is
+  sent to whom (a one-time card on the home screen, or the switch in Profile, which also turns it off again). The
+  server records that consent before it asks Meta anything.
 * In ELYND, only the written meditation goes to Meta, with its technique, language and length: no name, no
   email, no mood, no account id.
 * Standard mode only. The package refuses `-contributor` models, which may train on what they receive.
 * `store: false` on every Muse Spark and SAM request (the Responses API stores requests by default), and a
   pseudonymous listener id (a keyed hash Meta cannot reverse) so that any abuse enforcement targets one
   listener, not the whole app.
-* No picture contains people, faces or text; the critic checks every painting.
+* Animals and people appear only as a meditation brings them, at rest and painted naturally, small and seen from
+  behind, never a face up close or a figure looking at the viewer; no picture contains text. The critic checks
+  every painting.
 * The critic on Baseten receives the painting and its scenery design only: no meditation, no listener id.
 * Every picture a listener sees or shares is marked as made by AI in its metadata (the IPTC digital source
   type `trainedAlgorithmicMedia` that Muse Image puts on its paintings). The plate, the layers and the share
@@ -159,7 +180,9 @@ elynd_worlds/          the engine (Python)
   art_director.py      Muse Spark designs and revises
   painter.py           Muse Image paints and repaints without the subjects
   critic.py            Muse Spark Open (or Muse Spark) judges each painting
-  library.py           Muse Spark chooses the library world a session opens on
+  library.py           the library: Muse Spark's choice, the server's own choice (by place or feeling),
+                       each world's feelings tagged by sight, and which worlds look dead
+  life.py              what lives in a world: birds, stars, fish, rain, petals, cloud shadows
   cutter.py            SAM 3.1 cuts the layers
   regions.py           SAM 3.1 finds the water, sky, grass and a stream
   plate.py             the clean plate behind the moving layers
@@ -171,7 +194,7 @@ flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living paint
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
 scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline;
                        library_briefs.py writes the library's themes
-library/briefs/        the 120 themes (the library's pictures are kept out of git)
+library/briefs/        the library's 520 themes (the pictures are kept out of git; catalog.json lists the 459)
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
 ```
