@@ -151,6 +151,7 @@ async def _pick(args: argparse.Namespace) -> int:
         chosen = await library.pick(client, meditation_for(Path(path), args), entries, meter)
         print(json.dumps({"name": Path(path).stem, "library": chosen.entry.id if chosen else None,
                           "fit": chosen.fit if chosen else None, "own_world": chosen.own_world if chosen else None,
+                          "place": chosen.place if chosen else None,
                           "paint_its_own": library.needs_own_world(chosen),
                           "seconds": round(time.monotonic() - started, 1)}))
     record(ledger, "pick", meter.usd, f"{len(args.scripts)} library choices from {len(entries)} worlds")

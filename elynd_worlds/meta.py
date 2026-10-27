@@ -54,6 +54,13 @@ def privacy_fields() -> dict[str, Any]:
     return fields
 
 
+def cache_fields(use: str) -> dict[str, Any]:
+    """Requests that start the same way (the same instructions, the same library) share a key, so Meta routes
+    them together and serves that start from its cache: an eighth of the input price (meta.Prices). One key
+    per use, never per listener (dev.meta.ai/docs/prompt-caching)."""
+    return {"prompt_cache_key": f"elynd-worlds-{use}"}
+
+
 # Muse Image marks each picture it returns as made by AI: IPTC's digital source
 # type "trainedAlgorithmicMedia", in XMP. Every picture made from one (plate,
 # layers, share card) carries the same mark, so cutting and compositing never

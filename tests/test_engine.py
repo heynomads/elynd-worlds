@@ -441,7 +441,10 @@ async def test_every_request_keeps_no_copy_and_names_the_listener_by_a_pseudonym
     await make_world(client, MEDITATION, user="listener-7f3a")
     chats = [r for r in client.requests if "messages" in r]
     images = [r for r in client.requests if "prompt" in r and "messages" not in r]
-    assert chats and all(r["extra_body"] == {"store": False, "safety_identifier": "listener-7f3a"} for r in chats)
+    assert chats and all({k: v for k, v in r["extra_body"].items() if k != "prompt_cache_key"}
+                         == {"store": False, "safety_identifier": "listener-7f3a"} for r in chats)
+    # Meta's cache is shared per use (design, critic), never per listener.
+    assert {r["extra_body"]["prompt_cache_key"] for r in chats} == {"elynd-worlds-design", "elynd-worlds-critic"}
     assert len(images) == 2 and all(r.get("user") == "listener-7f3a" for r in images)  # painting and repaint
     assert client.sam_requests and all(r["store"] is False and r["safety_identifier"] == "listener-7f3a"
                                        for r in client.sam_requests)
@@ -669,10 +672,11 @@ async def test_muse_spark_chooses_the_library_world_from_the_meditation():
     system, user = (m["content"] for m in request["messages"])
     assert "forestlake-mist: Misty Pine Lake" in system and "beach-night" not in system  # no sleep worlds
     assert "quiet lake at dawn" in user and "quiet lake at dawn" not in system  # the library first, then this
-    assert request["model"] == "muse-spark-1.3" and request["reasoning_effort"] == "low"
+    assert request["model"] == "muse-spark-1.3" and request["reasoning_effort"] == "minimal"
     assert request["response_format"]["json_schema"]["strict"] is True
-    assert "own_world" in request["response_format"]["json_schema"]["schema"]["required"]
-    assert request["extra_body"] == {"store": False}
+    assert {"own_world", "place"} <= set(request["response_format"]["json_schema"]["schema"]["required"])
+    # The library, the long start of every choice, is served from Meta's cache: one key for all choices.
+    assert request["extra_body"] == {"store": False, "prompt_cache_key": "elynd-worlds-pick"}
     assert meter.calls == {"pick": 1}
 
 
@@ -779,15 +783,29 @@ async def test_when_no_muse_spark_model_is_found_the_world_fails_as_any_failure_
         Settings(spark_fallback_model="muse-spark-1.2-contributor")
 
 
-def test_without_muse_spark_a_library_world_of_the_right_kind_is_still_chosen():
+def test_without_muse_spark_a_library_world_is_chosen_here_by_the_place_the_meditation_names():
+    # Always a world, and nothing leaves the server: a note that must stay there, a spent budget, no answer.
+    walk = Meditation(script="Walk down to the beach at dawn and listen to the small waves.")
+    assert library.local(walk, LIBRARY).entry.id == "beach-dawn"
+    assert library.local(walk, LIBRARY, recent=["beach-dawn"]).entry.id != "beach-dawn"  # not the same again
     sleepy = Meditation(script="Let your body grow heavy.", technique="sleep_journey")
-    chosen = library.fallback(sleepy, LIBRARY)
-    assert chosen.entry.sleep and chosen.fit == 0 and library.needs_own_world(chosen)
-    assert library.fallback(sleepy, LIBRARY) == chosen  # stable for the same meditation
-    awake = library.fallback(MEDITATION, LIBRARY, recent=["beach-dawn", "forestlake-mist"])
+    chosen = library.local(sleepy, LIBRARY)
+    assert chosen.entry.sleep and chosen.fit == 0 and not chosen.place   # no place named: by kind only
+    assert library.local(sleepy, LIBRARY) == chosen  # stable for the same meditation
+    awake = library.local(MEDITATION, LIBRARY, recent=["beach-dawn", "forestlake-mist"])
     assert awake.entry.id == "wildflowers-golden"  # the only one not seen lately
-    assert library.fallback(MEDITATION, LIBRARY[:2], recent=["beach-dawn", "forestlake-mist"]) is not None
-    assert library.fallback(sleepy, LIBRARY[:3]) is None  # no sleep world at all
+    assert library.local(MEDITATION, LIBRARY[:2], recent=["beach-dawn", "forestlake-mist"]) is not None
+    assert not library.local(sleepy, LIBRARY[:3]).entry.sleep  # no sleep world at all: another, never none
+    assert library.local(sleepy, []) is None
+    # Muse Spark gave no answer: a world may be painted for it (the local one is shown meanwhile).
+    assert library.needs_own_world(None)
+
+
+def test_a_meditation_without_a_place_keeps_its_library_world():
+    body_scan = library.Pick(LIBRARY[2], 4, own_world=False, place=False)   # only the mood fits
+    assert not library.needs_own_world(body_scan)
+    assert library.needs_own_world(library.Pick(LIBRARY[2], 4, own_world=False, place=True))   # a place unseen
+    assert library.needs_own_world(library.Pick(LIBRARY[2], 9, own_world=True, place=True))    # their own dog
 
 
 # ─── life: birds, stars, fish, cloud shadows, rain and petals ───────────

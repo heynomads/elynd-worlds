@@ -78,11 +78,13 @@ class Settings:
     open_critic_timeout: float = 18  # then Muse Spark judges instead
     pick_timeout: float = 12
 
-    # Choosing a library world is a short task: little reasoning, and only the start of a long
-    # meditation (where its place is set).
-    pick_reasoning: str | None = "low"
-    pick_words: int = 1500
-    # A library world that fits less than this (0-10) is not the session's world: one is painted for it.
+    # Choosing a library world is a short task: the least reasoning, and only the start of a meditation,
+    # where its place is set (27 Oct 2026: 0.7 instead of 0.9 cents a choice, the same choices; with the
+    # library served from Meta's cache, cache_fields, about 0.3).
+    pick_reasoning: str | None = "minimal"
+    pick_words: int = 600
+    # A library world that fits less than this (0-10) is not the session's world when the meditation
+    # describes a place: one is painted for it. A meditation without a place keeps its library world.
     library_min_fit: int = 5
     cut_timeout: float = 20
     # A SAM request that fails on the way is asked again (cutter.segment), after 2 s, then 4 s.

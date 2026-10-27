@@ -15,18 +15,24 @@ is painted for it and takes over when ready.
 
 Sleep is decided before Muse Spark is asked: a meditation for falling asleep
 chooses only among the dark, quiet worlds, any other only among the rest.
+
+There is always a world along with the meditation: when Muse Spark must not be
+asked (a note that must stay on the server, a spent budget) or cannot answer, `local` chooses here, by the
+place and time the meditation names, and nothing leaves the server.
 """
 from __future__ import annotations
 
 import json
+import re
 import zlib
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
 from .art_director import Meditation
 from .life import life
-from .meta import Meter, privacy_fields, reasoning, spark_chat
+from .meta import Meter, cache_fields, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
 SLEEP_TECHNIQUES = {"sleep_journey"}
@@ -68,6 +74,7 @@ class Pick:
     entry: Entry
     fit: int                 # 0-10: how well it belongs to the meditation (9-10: the same place and light)
     own_world: bool = False  # the meditation is built around something no library world shows
+    place: bool = True       # the meditation describes or travels to a place (not only the breath or the body)
 
 
 PICK_SCHEMA: dict[str, Any] = {
@@ -76,6 +83,7 @@ PICK_SCHEMA: dict[str, Any] = {
     "properties": {
         "own_world": {"type": "boolean",
                       "description": "The meditation is built around something no library world shows"},
+        "place": {"type": "boolean", "description": "The meditation describes or travels to a place"},
         "choices": {
             "type": "array",
             "description": "The three worlds that belong to the meditation best, best first",
@@ -90,7 +98,7 @@ PICK_SCHEMA: dict[str, Any] = {
             },
         },
     },
-    "required": ["own_world", "choices"],
+    "required": ["own_world", "place", "choices"],
 }
 
 PICK_INSTRUCTIONS = """You choose the painted world that fills a listener's phone screen while their
@@ -107,6 +115,8 @@ its own things (her red bench and the blue watering can by the door, their old s
 setting (a train, a temple). A similar-looking library world is not that place.
 false if it describes no place, or a common place that one of these worlds shows well (a beach, a
 river walk, a forest, a garden, a cabin...), even described in loving detail and full of memories.
+place: true if the meditation describes or travels to a place (outdoors or a room), false if it stays
+with the breath, the body or a feeling.
 Use the ids exactly as listed. Return only the JSON object.
 
 The library (id: title; the id names the place, then the time, season or weather):
@@ -137,43 +147,85 @@ async def pick(client, meditation: Meditation, entries: list[Entry], meter: Mete
         response_format={"type": "json_schema",
                          "json_schema": {"name": "pick", "schema": PICK_SCHEMA, "strict": True}},
         **reasoning(settings.pick_reasoning),
-        extra_body=privacy_fields(),
+        extra_body={**privacy_fields(), **cache_fields("pick")},
         timeout=settings.pick_timeout,
     )
     meter.spark(getattr(response, "usage", None), "pick")
     answer = json.loads(response.choices[0].message.content)
-    return choose(answer.get("choices") or [], candidates, recent, own_world=answer.get("own_world") is True)
+    return choose(answer.get("choices") or [], candidates, recent, own_world=answer.get("own_world") is True,
+                  place=answer.get("place") is not False)
 
 
-def fallback(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = ()) -> Pick | None:
-    """A library world chosen without Muse Spark, for when it cannot answer: one of the right kind (a sleep
-    world for a sleep meditation), not one seen lately when there is another. It fits nobody in
-    particular (fit 0), so a world is still painted for the meditation when that is possible."""
+# What a meditation's place is made of, and its time and weather: the words that tell library worlds apart
+# (`local`). A synonym counts as its word; a library id's place may be a compound ("forestlake"). The details
+# of a place (a bench, a path) count less than the place itself: a river walk with a bench is a river.
+PLACES = set("""beach sea shore coast cliff bay lagoon harbour island lake pond lilies river stream brook
+waterfall pool fjord loch marsh reeds forest pine beech birch oak redwoods bamboo grove orchard garden meadow
+field hills valley mountain peak ridge summit alpine glacier dunes desert canyon cabin chalet cottage barn
+village city rooftop temple courtyard greenhouse treehouse park wheat lavender tulips heather vineyard cherry
+rice tea""".split())
+DETAILS = set("pier bench bridge path window room fire lantern fountain porch hammock".split())
+TIMES = set("dawn morning midday golden dusk night stars moon mist rain snow autumn spring summer blossom aurora".split())
+SYNONYMS = {"ocean": "sea", "seaside": "sea", "sand": "beach", "sandy": "beach", "waves": "sea", "woods": "forest",
+            "harbor": "harbour", "mountains": "mountain", "peaks": "peak", "hut": "cabin", "lodge": "cabin",
+            "fireplace": "fire", "fields": "field", "trees": "forest", "creek": "stream", "lakeside": "lake",
+            "sunrise": "dawn", "daybreak": "dawn", "noon": "midday", "afternoon": "golden", "sunset": "golden",
+            "evening": "dusk", "twilight": "dusk", "starry": "stars", "starlight": "stars", "moonlight": "moon",
+            "moonlit": "moon", "misty": "mist", "fog": "mist", "foggy": "mist", "rainy": "rain", "raindrops": "rain",
+            "snowy": "snow", "snowfall": "snow", "snowflakes": "snow", "winter": "snow", "flowers": "garden"}
+NAMED = PLACES | DETAILS | TIMES
+
+
+def _named(text: str) -> Counter:
+    """How often a text names each place, detail, time and weather."""
+    words = [SYNONYMS.get(w, w) for w in re.findall(r"[a-z]+", text.lower())]
+    return Counter(w if w in NAMED else w[:-1] for w in words if w in NAMED or w[:-1] in NAMED)
+
+
+def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = ()) -> Pick | None:
+    """A library world chosen here, without Muse Spark: nothing leaves the server. The one whose place the
+    meditation names most (then its details, time and weather), of its kind (a sleep world for a sleep
+    meditation, any other rather than none), and not one seen lately while another fits as well; among
+    equals, the same meditation always gets the same one. Fit 0: Muse Spark never rated it."""
     sleep = is_sleep(meditation)
-    candidates = [e for e in entries if e.sleep == sleep]
+    candidates = [e for e in entries if e.sleep == sleep] or list(entries)
     if not candidates:
         return None
+    said = _named(" ".join(meditation.script.split()[:DEFAULT.pick_words]))
+
+    weight = {**dict.fromkeys(PLACES, 3), **dict.fromkeys(DETAILS, 1), **dict.fromkeys(TIMES, 2)}
+
+    def score(entry: Entry) -> int:
+        # What the world is (its id's place: "cabin", "zengarden" a garden) counts twice; what it shows besides once.
+        main = {w for w in PLACES if w in entry.id.split("-")[0]}
+        its = set(_named(f"{entry.id.replace('-', ' ')} {entry.title} {entry.place} {entry.time_of_day}")) | main
+        return sum(weight[w] * min(said[w], 3) for w in its if w in said) + sum(3 for w in main if w in said)
+
     seen = set(recent)
     fresh = [e for e in candidates if e.id not in seen] or candidates
-    # The same meditation always gets the same one: stable across a retry, varied across meditations.
-    return Pick(fresh[zlib.crc32(meditation.script.encode()) % len(fresh)], 0)
+    best = max(score(e) for e in fresh)
+    tied = [e for e in fresh if score(e) == best]
+    return Pick(tied[zlib.crc32(meditation.script.encode()) % len(tied)], 0,
+                place=any(w in PLACES or w in DETAILS for w in said))
 
 
 def needs_own_world(chosen: Pick | None, settings: Settings = DEFAULT) -> bool:
-    """Whether the meditation should get a world painted for it: no library world, none that fits, or
-    one built around something no library world shows."""
-    return chosen is None or chosen.own_world or chosen.fit < settings.library_min_fit
+    """Whether the meditation should get a world painted for it: no answer from Muse Spark, a meditation
+    built around something no library world shows, or a place no library world fits. A meditation without
+    a place (the breath, the body) never does: its library world fits by mood, and a painting would add
+    nothing of its own (27 Oct 2026: a body scan rated 4 for mood would have been painted for 6 cents)."""
+    return chosen is None or chosen.own_world or (chosen.place and chosen.fit < settings.library_min_fit)
 
 
 def choose(choices: list[dict[str, Any]], candidates: list[Entry], recent: Iterable[str] = (),
-           near: int = 2, own_world: bool = False) -> Pick | None:
+           near: int = 2, own_world: bool = False, place: bool = True) -> Pick | None:
     """The first choice the listener has not seen lately and that fits within `near` of the best."""
     by_id = {e.id: e for e in candidates}
     valid = []
     for choice in choices:
         entry = by_id.get(str(choice.get("id", "")).strip())
         if entry is not None and entry.id not in {p.entry.id for p in valid}:
-            valid.append(Pick(entry, max(0, min(10, int(choice.get("fit") or 0))), own_world))
+            valid.append(Pick(entry, max(0, min(10, int(choice.get("fit") or 0))), own_world, place))
     if not valid:
         return None
     seen = set(recent)

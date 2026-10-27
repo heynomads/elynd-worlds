@@ -20,7 +20,7 @@ import json
 import logging
 from typing import Any
 
-from .meta import Meter, data_url, preview_jpeg, privacy_fields, reasoning, spark_chat
+from .meta import Meter, cache_fields, data_url, preview_jpeg, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
 log = logging.getLogger("elynd_worlds")
@@ -92,7 +92,8 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
         except Exception as error:  # noqa: BLE001 - Muse Spark judges instead
             log.info("the open critic failed, Muse Spark judges: %s: %s", type(error).__name__, error)
     response, model = await spark_chat(client, (settings.critic_model, settings.spark_fallback_model),
-                                       extra_body=privacy_fields(), timeout=settings.critic_timeout, **request)
+                                       extra_body={**privacy_fields(), **cache_fields("critic")}, timeout=settings.critic_timeout,
+                                       **request)
     meter.spark(getattr(response, "usage", None), "critique")
     return _verdict(response, model)
 

@@ -23,7 +23,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from .meta import Meter, privacy_fields, spark_chat
+from .meta import Meter, cache_fields, privacy_fields, spark_chat
 from .settings import DEFAULT, Settings
 
 # The parts of a place that move in nature, as the app animates them: open water
@@ -192,7 +192,7 @@ async def design(client, meditation: Meditation, meter: Meter, settings: Setting
             {"role": "user", "content": meditation.as_message()},
         ],
         response_format=_response_format(),
-        extra_body=privacy_fields(),
+        extra_body={**privacy_fields(), **cache_fields("design")},
         timeout=settings.design_timeout,
     )
     meter.spark(getattr(response, "usage", None), "design")
@@ -215,7 +215,7 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
             )},
         ],
         response_format=_response_format(),
-        extra_body=privacy_fields(),
+        extra_body={**privacy_fields(), **cache_fields("design")},
         timeout=settings.design_timeout,
     )
     meter.spark(getattr(response, "usage", None), "revise")
