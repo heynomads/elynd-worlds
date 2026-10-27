@@ -101,10 +101,11 @@ that belong to the meditation best, best first:
    gentle for sadness, bright and fresh for energy or focus, warm for gratitude.
 fit (0-10): 9-10 the same place and light; 6-8 the same kind of place; 3-5 only the mood fits.
 own_world: true only if the meditation is built around something specific that none of these worlds
-shows: a particular animal or object that matters to the listener, a particular person's place (a
-grandmother's kitchen, their old street), or an unusual setting (a city rooftop, a train, a temple).
+shows: a particular animal or object that matters to the listener, a particular person's place known by
+its own things (her red bench and the blue watering can by the door, their old street), or an unusual
+setting (a train, a temple). A similar-looking library world is not that place.
 false if it describes no place, or a common place that one of these worlds shows well (a beach, a
-river, a forest, a garden, a cabin...), even if it describes it in loving detail.
+river walk, a forest, a garden, a cabin...), even described in loving detail and full of memories.
 Use the ids exactly as listed. Return only the JSON object.
 
 The library (id: title; the id names the place, then the time, season or weather):
