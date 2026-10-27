@@ -102,11 +102,15 @@ async def find_regions(client, painting: bytes, scene: dict[str, Any], meter: Me
     regions = Regions(trees="trees" in (scene.get("nature") or []))
     if not wanted:
         return regions
-    image = Image.open(io.BytesIO(painting)).convert("RGB")
-    width, height = image.size
-    url = sam_image_url(painting)
+    url = await asyncio.to_thread(sam_image_url, painting)
     answers = await asyncio.gather(*(segment(client, url, PHRASES[name], meter, settings) for name in wanted),
                                    return_exceptions=True)
+    # The pixel work runs in a worker thread, so the other steps' answers are read on time meanwhile.
+    return await asyncio.to_thread(_map, painting, wanted, answers, regions, settings)
+
+
+def _map(painting: bytes, wanted: list[str], answers: list[Any], regions: Regions, settings: Settings) -> Regions:
+    width, height = Image.open(io.BytesIO(painting)).size
     w2, h2 = max(width // 2, 1), max(height // 2, 1)
     channels = {name: np.zeros((h2, w2), dtype=np.uint8) for name in CHANNELS}
     for name, records in zip(wanted, answers):

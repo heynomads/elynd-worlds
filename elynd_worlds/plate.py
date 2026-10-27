@@ -181,20 +181,26 @@ async def make_plate(client, painting_png: bytes, edit_png: bytes | None, layers
     painting = Image.open(io.BytesIO(painting_png)).convert("RGB")
     moving = [layer for layer in layers if moves(layer)]
     if not moving:
-        return to_png(painting), "painting"
+        return await asyncio.to_thread(to_png, painting), "painting"
     # Where the moving layers are opaque (cutter.cutout): their outlines grown by EDGE_PX.
     covered = [grown(layer.mask) for layer in moving if layer.mask is not None]
     mask = np.zeros((painting.height, painting.width), dtype=np.uint8)
     for region in covered:
         mask |= region
     if edit_png:
-        edit = fit(edit_png, painting.size)
-        for region in covered:
-            edit = tone_match(edit, painting, region)
-        candidate = to_png(confine(painting, edit, mask))
+        # The pixel work runs in a worker thread (like the cutter's), never holding up other worlds' answers.
+        candidate = await asyncio.to_thread(_from_edit, painting, edit_png, covered, mask)
         try:
             if await is_clean(client, candidate, moving, meter, settings):
                 return candidate, "muse_image"
         except Exception:  # noqa: BLE001 - fall back to the local fill
             pass
-    return to_png(fill(painting, mask)), "filled"
+    return await asyncio.to_thread(lambda: to_png(fill(painting, mask))), "filled"
+
+
+def _from_edit(painting: Image.Image, edit_png: bytes, covered: list[np.ndarray], mask: np.ndarray) -> bytes:
+    """The repaint, tone-matched around each moving subject and kept only where the moving layers are opaque."""
+    edit = fit(edit_png, painting.size)
+    for region in covered:
+        edit = tone_match(edit, painting, region)
+    return to_png(confine(painting, edit, mask))

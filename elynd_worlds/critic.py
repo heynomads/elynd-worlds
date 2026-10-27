@@ -73,8 +73,8 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
             {"role": "system", "content": CRITIC_INSTRUCTIONS},
             {"role": "user", "content": [
                 {"type": "text", "text": "The design:\n" + json.dumps(design, ensure_ascii=False)},
-                {"type": "image_url", "image_url": {
-                    "url": data_url(preview_jpeg(painting, settings.critic_image_width), "image/jpeg")}},
+                {"type": "image_url", "image_url": {"url": data_url(
+                    await asyncio.to_thread(preview_jpeg, painting, settings.critic_image_width), "image/jpeg")}},
             ]},
         ],
         "response_format": {"type": "json_schema",

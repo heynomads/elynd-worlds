@@ -258,13 +258,20 @@ def sam_image_url(painting: bytes) -> str:
 
 async def cut(client, painting: bytes, scene: dict[str, Any], meter: Meter,
               settings: Settings = DEFAULT) -> list[Layer]:
-    """One layer per designed subject that SAM finds; nearest first."""
-    image = Image.open(io.BytesIO(painting)).convert("RGB")
-    width, height = image.size
-    url = sam_image_url(painting)
+    """One layer per designed subject that SAM finds; nearest first.
+
+    The pixel work runs in a worker thread: the critic's answer, which arrives meanwhile, is read on time.
+    """
+    url = await asyncio.to_thread(sam_image_url, painting)
     subjects = scene["subjects"]
     found = await asyncio.gather(*(find(client, url, s["name"], meter, settings) for s in subjects),
                                  return_exceptions=True)
+    return await asyncio.to_thread(_layers, painting, subjects, found, settings)
+
+
+def _layers(painting: bytes, subjects: list[dict[str, Any]], found: list[Any], settings: Settings) -> list[Layer]:
+    image = Image.open(io.BytesIO(painting)).convert("RGB")
+    width, height = image.size
     layers: list[Layer] = []
     taken = np.zeros((height, width), dtype=bool)
     for subject, result in zip(subjects, found):
