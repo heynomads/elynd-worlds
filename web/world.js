@@ -171,7 +171,7 @@ function seeded(seed) {
 
 /** What drifts through the air (living.dart WorldParticles), in the painting's rect: width × height. */
 function drawParticles(ctx, kind, clock, width, height) {
-  const count = { leaves: 7, snow: 28, pollen: 18, fireflies: 12 }[kind] || 0;
+  const count = { leaves: 7, snow: 28, pollen: 18, fireflies: 12, rain: 72, petals: 10 }[kind] || 0;
   const leafColors = ["#D69630", "#E2AC40", "#BE6E28"];
   const t = clock;
   for (let i = 0; i < count; i++) {
@@ -206,6 +206,34 @@ function drawParticles(ctx, kind, clock, width, height) {
       ctx.fillStyle = "#FFF4D6";
       ctx.beginPath();
       ctx.arc(x, y, (1.4 * width) / 540, 0, 2 * Math.PI);
+      ctx.fill();
+    } else if (kind === "rain") {
+      // Fine streaks, slanted a little, falling fast and faint (living.dart _rain).
+      const speed = (0.9 + 0.5 * s) * height;
+      const age = (t + start) % ((height + 80) / speed);
+      const y = -40 + age * speed;
+      const x = (x0 * 1.12 - 0.06) * width + 0.1 * y;
+      const len = ((13 + 11 * s) * width) / 540;
+      ctx.strokeStyle = `rgba(230, 236, 242, ${0.13 + 0.13 * s})`;
+      ctx.lineWidth = ((0.6 + 0.5 * s) * width) / 540;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x - 0.1 * len, y - len);
+      ctx.stroke();
+    } else if (kind === "petals") {
+      // Pale pink petals drifting down and turning over (living.dart _petal).
+      const speed = ((15 + 11 * s) * height) / 960;
+      const age = (t + start) % ((height + 30) / speed);
+      const x = x0 * width + (width / 540) * (24 * Math.sin(age * 0.8 + start) + 3.5 * age);
+      const w = ((3.0 + 1.6 * s) * width) / 540;
+      const turn = Math.abs(Math.sin(age * (2.0 + 1.3 * s) + i));
+      ctx.translate(x, -15 + age * speed);
+      ctx.rotate(Math.sin(age * 1.1 + i) * 1.2);
+      ctx.globalAlpha *= 0.86;
+      ctx.fillStyle = i % 3 === 0 ? "#FFF1F4" : "#F4C6D2";
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 0.85 * w, (w * (0.25 + 0.75 * turn)) / 2, 0, 0, 2 * Math.PI);
       ctx.fill();
     } else if (kind === "fireflies") {
       const glow = Math.max(0, Math.sin(t * (0.8 + 0.6 * s) + i * 2.1));
@@ -379,8 +407,12 @@ void main() {
     gl.uniform1f(u.uTime, still ? 0 : clock % (4 * 3600)); // as the phone: exact sines, a wrap never seen
     gl.uniform1f(u.uMotion, still ? 0 : wake);
     gl.uniform4f(u.uOn, on(living.water), on(living.sky), on(living.grass), on(living.stream));
-    gl.uniform4f(u.uScene, living.trees ? 1 : 0, living.horizon ?? -1, 0, 0);
+    gl.uniform4f(u.uScene, living.trees ? 1 : 0, living.horizon ?? -1,
+      on(living.water) * (living.particles === "rain" ? 1 : 0), living.seed || 0);
     gl.uniform4f(u.uLight, light ? light.x : 0, light ? light.y : 0, light ? light.size : 0, light ? 1 : 0);
+    // What lives there (life.py): birds over the sky, a night sky, fish rings, cloud shadows.
+    gl.uniform4f(u.uLife, on(living.sky) * ({ flock: 1, gulls: 2 }[living.birds] || 0), on(living.sky) * (living.night ? 1 : 0),
+      on(living.water) * (living.fish ? 1 : 0), on(living.grass) * (living.shadows ? 1 : 0));
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture(view.background, { mipmaps: true }));
     gl.uniform1i(u.uPlate, 0);

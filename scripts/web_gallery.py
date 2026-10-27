@@ -22,6 +22,7 @@ from pathlib import Path
 
 from PIL import Image
 
+from elynd_worlds.life import life, seed
 from elynd_worlds.meta import encode
 from elynd_worlds.world import focus_of_scene
 
@@ -87,6 +88,9 @@ def build(folder: Path) -> dict:
         layers.append({k: layer[k] for k in ("name", "depth", "motion", "attached", "anchor", "box")}
                       | {"glows": bool(layer.get("glows")), "file": f"layer_{i}.webp"})
     living = {k: v for k, v in (manifest.get("living") or {}).items() if k != "coverage"}
+    if "birds" not in living:  # saved before life.py: decided from the design, as the backend's loader does
+        living.update(life(scene, {k: bool(living.get(k)) for k in ("water", "sky", "grass", "stream")}))
+        living["seed"] = seed(scene)
     if living.get("regions"):
         exact_webp(folder / living["regions"], out / "regions.webp")
         living["regions"] = "regions.webp"

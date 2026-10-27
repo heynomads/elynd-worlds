@@ -61,6 +61,7 @@ class WorldScene extends StatefulWidget {
     this.living,
     this.followVisibility = true,
     this.focus = (x: 0.5, y: 0.5),
+    this.clockStartSeconds = 0,
   });
 
   final ImageProvider background;
@@ -76,6 +77,10 @@ class WorldScene extends StatefulWidget {
 
   /// Fade with the timeline's visibility (eyes closed → a glow).
   final bool followVisibility;
+
+  /// Where the world's own clock starts, in seconds: 0 when it appears. A render can begin later in the
+  /// world's life (a flock passing, a fish rising) without waiting for it.
+  final double clockStartSeconds;
 
   /// Where the subjects are (fractions of the painting). A screen narrower or
   /// shorter than the painting crops around this point, not around the middle.
@@ -175,7 +180,9 @@ class _WorldSceneState extends State<WorldScene>
               context,
             )?.platformDispatcher.accessibilityFeatures.reduceMotion ??
             false);
-    final clock = still ? 0.0 : _clock.inMicroseconds / 1e6;
+    final clock = still
+        ? 0.0
+        : widget.clockStartSeconds + _clock.inMicroseconds / 1e6;
     final wake = still ? 0.0 : WorldScene.wake(clock);
     final visibility = widget.followVisibility
         ? widget.timeline.visibilityAt(_seconds).clamp(0.0, 1.0)

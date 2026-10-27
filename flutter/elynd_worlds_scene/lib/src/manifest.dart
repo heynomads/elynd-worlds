@@ -80,6 +80,11 @@ class LivingSpec {
     this.horizon,
     this.lights = const [],
     this.particles = 'none',
+    this.birds = 'none',
+    this.night = false,
+    this.fish = false,
+    this.shadows = false,
+    this.seed = 0,
   });
 
   static LivingSpec? fromJson(Object? json) {
@@ -87,6 +92,8 @@ class LivingSpec {
     final source = json['regions_url'] ?? json['regions'];
     final horizon = json['horizon'];
     final particles = json['particles'];
+    final birds = json['birds'];
+    final seed = json['seed'];
     return LivingSpec(
       regions: source is String && source.isNotEmpty ? source : null,
       water: json['water'] == true,
@@ -101,9 +108,23 @@ class LivingSpec {
           ?WorldLight.fromJson(l),
       ],
       particles:
-          const {'leaves', 'snow', 'pollen', 'fireflies'}.contains(particles)
+          const {
+            'leaves',
+            'snow',
+            'pollen',
+            'fireflies',
+            'rain',
+            'petals',
+          }.contains(particles)
           ? particles as String
           : 'none',
+      birds: const {'flock', 'gulls'}.contains(birds)
+          ? birds as String
+          : 'none',
+      night: json['night'] == true,
+      fish: json['fish'] == true,
+      shadows: json['shadows'] == true,
+      seed: seed is num ? seed.toDouble().clamp(0.0, 1.0) : 0,
     );
   }
 
@@ -118,6 +139,15 @@ class LivingSpec {
   final List<WorldLight> lights;
   final String particles;
 
+  /// What lives in the world (elynd_worlds/life.py): "flock" | "gulls" | "none" crossing the sky now and
+  /// then; [night] stars twinkle and a shooting star passes; [fish] rings on calm water; [shadows] of
+  /// clouds over the grass. [seed] makes one world's moments its own.
+  final String birds;
+  final bool night;
+  final bool fish;
+  final bool shadows;
+  final double seed;
+
   /// Ready to draw, the region map loaded by [load].
   WorldLiving resolve(ImageProvider? Function(String source) load) =>
       WorldLiving(
@@ -130,6 +160,11 @@ class LivingSpec {
         horizon: horizon,
         lights: lights,
         particles: particles,
+        birds: birds,
+        night: night,
+        fish: fish,
+        shadows: shadows,
+        seed: seed,
       );
 }
 

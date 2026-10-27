@@ -42,6 +42,11 @@ class WorldLiving {
     this.horizon,
     this.lights = const [],
     this.particles = 'none',
+    this.birds = 'none',
+    this.night = false,
+    this.fish = false,
+    this.shadows = false,
+    this.seed = 0,
   });
 
   final ImageProvider? regions;
@@ -55,8 +60,15 @@ class WorldLiving {
   final double? horizon;
   final List<WorldLight> lights;
 
-  /// "leaves" | "snow" | "pollen" | "fireflies" | "none".
+  /// "leaves" | "snow" | "pollen" | "fireflies" | "rain" | "petals" | "none".
   final String particles;
+
+  /// What lives there (LivingSpec): birds crossing the sky, a night sky, fish rings, cloud shadows.
+  final String birds;
+  final bool night;
+  final bool fish;
+  final bool shadows;
+  final double seed;
 
   bool get mapped => regions != null && (water || sky || grass || stream);
 
@@ -276,11 +288,17 @@ class _LivingPainter extends CustomPainter {
       on(living.sky),
       on(living.grass),
       on(living.stream), // uOn
-      living.trees ? 1 : 0, living.horizon ?? -1, 0, 0, // uScene
+      living.trees ? 1 : 0, living.horizon ?? -1,
+      on(living.water) * (living.particles == 'rain' ? 1 : 0),
+      living.seed, // uScene
       light?.x ?? 0,
       light?.y ?? 0,
       light?.size ?? 0,
       light == null ? 0 : 1, // uLight
+      on(living.sky) * (const {'flock': 1.0, 'gulls': 2.0}[living.birds] ?? 0),
+      on(living.sky) * (living.night ? 1 : 0),
+      on(living.water) * (living.fish ? 1 : 0),
+      on(living.grass) * (living.shadows ? 1 : 0), // uLife
     ];
     for (var i = 0; i < values.length; i++) {
       shader.setFloat(i, values[i]);
@@ -322,6 +340,8 @@ class WorldParticles extends CustomPainter {
     'snow': 28,
     'pollen': 18,
     'fireflies': 12,
+    'rain': 72,
+    'petals': 10,
   };
 
   @override
@@ -341,6 +361,10 @@ class WorldParticles extends CustomPainter {
           _mote(canvas, size, x0, s, i, const Color(0xFFFFF4D6), 1.4, 0.55);
         case 'fireflies':
           _firefly(canvas, size, x0, s, i);
+        case 'rain':
+          _rain(canvas, size, x0, start, s);
+        case 'petals':
+          _petal(canvas, size, i, x0, start, s);
       }
     }
   }
@@ -437,6 +461,59 @@ class WorldParticles extends CustomPainter {
       r,
       Paint()..color = const Color(0xFFFFF3B0).withValues(alpha: 0.9 * glow),
     );
+  }
+
+  /// Rain: fine streaks (a raindrop seen through a camera is a short line), slanted a little by the wind,
+  /// falling fast and faint, each at its own pace.
+  void _rain(Canvas canvas, Size size, double x0, double start, double s) {
+    final speed = (0.9 + 0.5 * s) * size.height; // px a second
+    final cycle = (size.height + 80) / speed;
+    final age = (clockSeconds + start) % cycle;
+    final y = -40 + age * speed;
+    final x = (x0 * 1.12 - 0.06) * size.width + 0.1 * y;
+    final len = (13 + 11 * s) * size.width / 540;
+    canvas.drawLine(
+      Offset(x, y),
+      Offset(x - 0.1 * len, y - len),
+      Paint()
+        ..color = const Color(0xFFE6ECF2).withValues(alpha: 0.13 + 0.13 * s)
+        ..strokeWidth = (0.6 + 0.5 * s) * size.width / 540
+        ..strokeCap = StrokeCap.round,
+    );
+  }
+
+  /// Blossom petals: small, pale pink, drifting down slowly and turning over as they fall.
+  void _petal(
+    Canvas canvas,
+    Size size,
+    int i,
+    double x0,
+    double start,
+    double s,
+  ) {
+    final speed = (15 + 11 * s) * size.height / 960;
+    final age = (clockSeconds + start) % ((size.height + 30) / speed);
+    final y = -15 + age * speed;
+    final x =
+        x0 * size.width +
+        size.width / 540 * (24 * math.sin(age * 0.8 + start) + 3.5 * age);
+    final w = (3.0 + 1.6 * s) * size.width / 540;
+    final turn = math.sin(age * (2.0 + 1.3 * s) + i).abs();
+    canvas.save();
+    canvas.translate(x, y);
+    canvas.rotate(math.sin(age * 1.1 + i) * 1.2);
+    canvas.drawOval(
+      Rect.fromCenter(
+        center: Offset.zero,
+        width: 1.7 * w,
+        height: w * (0.25 + 0.75 * turn),
+      ),
+      Paint()
+        ..color =
+            (i % 3 == 0 ? const Color(0xFFFFF1F4) : const Color(0xFFF4C6D2))
+                .withValues(alpha: 0.86),
+    );
+    canvas.restore();
   }
 
   @override
