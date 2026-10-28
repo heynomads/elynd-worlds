@@ -4,6 +4,8 @@
 //     --dart-define=WORLD_DIR=/abs/out/<run>/<world> --dart-define=FRAMES_DIR=/abs/frames \
 //     [--dart-define=SECONDS=8] [--dart-define=START=5] [--dart-define=CLOCK=0] [--dart-define=SILENT=true]
 //     [--dart-define=RATIO=2] (pixels per point: 1.4 gives 546 x 1182, the review videos' width, about twice as fast)
+//     [--dart-define=LIGHT=sunrise|deepen|nightfall] [--dart-define=DURATION=600] (the session, in seconds)
+//     [--dart-define=TIMELAPSE=true] (the whole session's light within the clip, the world fully shown)
 //   ffmpeg -framerate 30 -i /abs/frames/%04d.png -pix_fmt yuv420p preview.mp4
 //
 // Skipped unless WORLD_DIR and FRAMES_DIR are given.
@@ -24,6 +26,9 @@ const _start = int.fromEnvironment('START', defaultValue: 5);
 const _clock = int.fromEnvironment('CLOCK');
 const _silent = bool.fromEnvironment('SILENT');
 final _ratio = double.tryParse(const String.fromEnvironment('RATIO')) ?? 2;
+const _lightName = String.fromEnvironment('LIGHT');
+const _duration = int.fromEnvironment('DURATION', defaultValue: 600);
+const _timelapse = bool.fromEnvironment('TIMELAPSE');
 
 void main() {
   testWidgets('render a world to frames', (tester) async {
@@ -57,9 +62,9 @@ void main() {
     var elapsed = Duration.zero;
     // SILENT: as during a long silence of the voice.
     final timeline = WorldTimeline.build(
-      durationSeconds: 600,
+      durationSeconds: _duration.toDouble(),
       sleep: manifest.sleep,
-      silences: _silent ? const [WorldSilence(0, 600)] : const [],
+      silences: _silent ? [WorldSilence(0, _duration.toDouble())] : const [],
     );
     await tester.pumpWidget(
       RepaintBoundary(
@@ -76,8 +81,18 @@ void main() {
                 aspect: manifest.aspect,
                 layers: layers,
                 timeline: timeline,
-                positionSeconds: () => _start + elapsed.inMilliseconds / 1000,
+                positionSeconds: () => _timelapse
+                    ? _start +
+                          (_duration - _start) *
+                              elapsed.inMilliseconds /
+                              1000 /
+                              _seconds
+                    : _start + elapsed.inMilliseconds / 1000,
                 clockStartSeconds: _clock.toDouble(),
+                followVisibility: !_timelapse,
+                light: _lightName.isEmpty
+                    ? LightJourney.none
+                    : LightJourney.values.byName(_lightName),
               ),
             ),
           ),

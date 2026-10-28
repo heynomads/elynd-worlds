@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
+import 'light.dart';
 import 'living.dart';
 import 'motion.dart';
 import 'timeline.dart';
@@ -66,6 +67,7 @@ class WorldScene extends StatefulWidget {
     this.followVisibility = true,
     this.focus = (x: 0.5, y: 0.5),
     this.clockStartSeconds = 0,
+    this.light = LightJourney.none,
   });
 
   final ImageProvider background;
@@ -81,6 +83,9 @@ class WorldScene extends StatefulWidget {
 
   /// Fade with the timeline's visibility (eyes closed → a glow).
   final bool followVisibility;
+
+  /// How the light changes over the session (as painted at its start).
+  final LightJourney light;
 
   /// Where the world's own clock starts, in seconds: 0 when it appears. A render can begin later in the
   /// world's life (a flock passing, a fish rising) without waiting for it.
@@ -259,11 +264,21 @@ class _WorldSceneState extends State<WorldScene>
               ),
             ),
         ];
+        final stack = Stack(clipBehavior: Clip.none, children: children);
+        // The light of the session so far, with the visibility as its alpha: one layer, as the fade alone.
+        final light = LightJourney.progress(
+          _seconds,
+          (widget.timeline.visibility.length - 1).toDouble(),
+        );
         return ClipRect(
-          child: Opacity(
-            opacity: visibility,
-            child: Stack(clipBehavior: Clip.none, children: children),
-          ),
+          child: widget.light == LightJourney.none || light < 0.001
+              ? Opacity(opacity: visibility, child: stack)
+              : ColorFiltered(
+                  colorFilter: ColorFilter.matrix(
+                    widget.light.matrix(light, opacity: visibility),
+                  ),
+                  child: stack,
+                ),
         );
       },
     );

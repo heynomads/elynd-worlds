@@ -3,6 +3,7 @@
 /// (see the repository README).
 library;
 
+export 'src/light.dart';
 export 'src/living.dart';
 export 'src/manifest.dart';
 export 'src/motion.dart';
