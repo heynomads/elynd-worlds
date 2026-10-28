@@ -113,6 +113,11 @@ particular animal or object that matters to the listener, a particular person's 
   (45 s), a glow while their eyes are closed, more of it in long silences, all of it at the end. Sleep worlds
   stay dim and end dark. The phone's (Dart) and the browser's (JavaScript) timelines are tested frame by frame
   against the Python one.
+* **Time passes in the place too.** The light changes slowly over the session, so the listener sees it when
+  their eyes open at the end: a morning world's sun climbs, a golden-hour world's glow deepens, a sleep world
+  dims and keeps its light warm (low, warm light before sleep: Brown et al., PLoS Biology 2022). It starts
+  exactly as painted, and the picture is blended toward the light rather than brightened, so no highlight burns
+  out (`light.dart`; the browser uses the same numbers).
 * **Phones crop.** Each world has a focus point (where its subjects are); the painting is cropped around it,
   and subjects painted too low are lifted above the player's controls with a small zoom.
 * Reduce-motion is respected: the world then only fades.

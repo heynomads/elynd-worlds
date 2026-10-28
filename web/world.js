@@ -144,6 +144,46 @@ const WorldMotion = {
 };
 
 /** The painting's rect covering a box, cropped around `focus` (as on the phone). */
+// How a world's light changes over a meditation, as on the phone (flutter/elynd_worlds_scene/lib/src/light.dart,
+// the same numbers): as painted at the start, all the way by the end. The picture is blended toward the light's
+// colour, never scaled up, so nothing passes white.
+const LightJourney = {
+  end: {
+    sunrise: { mix: 0.16, r: 1.0, g: 0.86, b: 0.64, exposure: 1.0 },
+    deepen: { mix: 0.2, r: 0.95, g: 0.6, b: 0.32, exposure: 0.97 },
+    nightfall: { mix: 0.18, r: 0.3, g: 0.16, b: 0.06, exposure: 0.72 },
+  },
+  of(timeOfDay, sleep) {
+    if (sleep) return "nightfall";
+    const t = (timeOfDay || "").toLowerCase();
+    if (["dawn", "sunrise", "morning"].some((w) => t.includes(w))) return "sunrise";
+    if (["golden", "sunset", "dusk", "evening", "twilight", "afternoon"].some((w) => t.includes(w))) return "deepen";
+    return null;
+  },
+  progress(seconds, duration) {
+    if (duration <= 0) return 0;
+    const p = Math.min(1, Math.max(0, seconds / duration));
+    return p * p * (3 - 2 * p);
+  },
+  /** Over what is drawn on `ctx` (w x h pixels): darker by the exposure, then toward the light's colour. */
+  apply(ctx, journey, progress, w, h) {
+    const end = journey && LightJourney.end[journey];
+    if (!end || progress < 0.001) return;
+    const k = end.mix * progress, exposure = 1 + (end.exposure - 1) * progress;
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = "source-atop";
+    if (exposure < 1) {
+      ctx.fillStyle = `rgba(0, 0, 0, ${1 - exposure})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+    ctx.fillStyle = `rgba(${Math.round(end.r * 255)}, ${Math.round(end.g * 255)}, ${Math.round(end.b * 255)}, ${k})`;
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+  },
+};
+
 function coverRect(boxW, boxH, aspect, focus, highest = 0.62, maxZoom = 1.25) {
   let width = boxW / boxH > aspect ? boxW : boxH * aspect;
   let height = width / aspect;
@@ -535,6 +575,11 @@ class WorldView {
       ctx.translate(rect.left / dpr, rect.top / dpr);
       drawParticles(ctx, particles, clock, rect.width / dpr, rect.height / dpr);
       ctx.restore();
+    }
+    if (session) {
+      const world = this.world;
+      const journey = LightJourney.of(world.time_of_day || (world.design && world.design.time_of_day), world.sleep);
+      LightJourney.apply(ctx, journey, LightJourney.progress(session.t, session.timeline.visibility.length - 1), pw, ph);
     }
   }
 }
