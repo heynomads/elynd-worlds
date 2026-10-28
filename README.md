@@ -1,11 +1,12 @@
 # ELYND Worlds
 
-**Every meditation gets its own painted world, designed, painted, checked and brought to life with Meta's models.**
+**Every meditation opens on a living painted world: one of 459 that Meta's models painted for the library, or a new
+one painted live for a very personal meditation, designed, painted, checked and brought to life with Meta's models.**
 
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
 built during the Meta Global AI Developer Hackathon (Startup track, *Build for Your World*), gives each of those
-meditations a place you can see: a calm painting made from the meditation itself that lives as such a place
-would. Its water ripples, its clouds drift, its grass waves, a lantern flickers, and the objects in it move as such
+meditations a place you can see: a calm painting that fits the meditation and lives as such a place would.
+Its water ripples, its clouds drift, its grass waves, a lantern flickers, and the objects in it move as such
 things move. It greets you as you arrive, fades while your eyes are closed, returns in long silences and at the
 end, and stays with you afterwards as a card you can share.
 
@@ -13,6 +14,11 @@ end, and stays with you afterwards as a card you can share.
 > the hackathon. Earlier on the kickoff day we tried the Meta Model API in a separate private
 > prototype. This repository was started from scratch after the kickoff (26 Oct 2026, 12:00 ET) and
 > contains none of that prototype's code: everything here was written during the hackathon.
+>
+> **Open-source parts it uses** (installed, not copied here): the OpenAI Python SDK (Apache-2.0; Meta Model API
+> speaks its wire format), httpx (BSD-3-Clause), Pillow (MIT-CMU), NumPy (BSD-3-Clause), Meta's meta-sam-parser
+> (SAM License) for SAM 3.1's answers, pytest (MIT) and pytest-asyncio (Apache-2.0), Flutter (BSD-3-Clause), and
+> the Poppins font (SIL Open Font License 1.1, bundled).
 
 ## How a world is made
 
@@ -155,13 +161,23 @@ python -m http.server 8000          # then http://localhost:8000/web/  (web/pari
 
 ## Run it
 
+Without any account or key: the recorded worlds in the browser (each with the design, the critic's verdict,
+the layers, the time and the cost of how the agent made it), and the tests, which run the whole agent loop against
+a fake Meta Model API.
+
 ```bash
+python -m http.server 8000          # then http://localhost:8000/web/
 python -m venv .venv && .venv/bin/pip install -e ".[dev]"
+.venv/bin/pytest                    # no network, no key
+```
+
+With a Meta Model API key, the agent makes new worlds:
+
+```bash
 export MODEL_API_KEY=...            # a Meta Model API key
 export OPEN_MODEL_API_KEY=...       # optional: Muse Spark Open on Baseten as the critic
 .venv/bin/elynd-worlds make examples/lake_visualization.txt   # writes out/<time>/<name>/world.json + pictures
 .venv/bin/elynd-worlds sheet out/<time>                         # a contact sheet
-.venv/bin/pytest                                                # tests, no network
 ```
 
 To watch a world move without a phone:
