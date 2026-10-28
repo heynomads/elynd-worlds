@@ -34,9 +34,10 @@ class Settings:
     # Standard mode only. The "-contributor" variants cost less because Meta may
     # train on what they receive; a listener's meditation must never be used so.
     director_model: str = "muse-spark-1.3"
-    # How long Muse Spark thinks before it designs or revises a world (meta.reasoning). None: the model decides
-    # (a median 14.5 s a design on 28 Oct 2026, 20 meditations).
-    director_reasoning: str | None = None
+    # How long Muse Spark thinks before it designs or revises a world (meta.reasoning). Low: a median 6.4 s a
+    # design instead of 14.5 s when the model decides, with the same scores from both critics (20 meditations,
+    # 28 Oct 2026: +0.15 and +0.10 on average, every painting passed) and the same worlds by sight.
+    director_reasoning: str | None = "low"
     critic_model: str = "muse-spark-1.3"
     # When Meta Model API answers 404 for a Muse Spark model (27 Oct 2026: muse-spark-1.3 vanished from this
     # account's catalog for a while), this one answers instead (same prices, Standard mode).

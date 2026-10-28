@@ -177,7 +177,8 @@ async def test_when_the_open_model_cannot_design_muse_spark_does():
 
 
 async def test_muse_spark_designs_with_the_reasoning_it_is_given():
-    for setting, sent in ((None, None), ("low", "low")):
+    assert Settings().director_reasoning == "low"  # as fast and as good as letting the model decide (28 Oct 2026)
+    for setting, sent in ((None, None), ("low", "low"), ("medium", "medium")):
         meta = FakeClient()
         await art_director.design(meta, MEDITATION, Meter(), Settings(director_reasoning=setting))
         assert meta.requests[0].get("reasoning_effort") == sent

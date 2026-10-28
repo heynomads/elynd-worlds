@@ -160,10 +160,12 @@ revises it from the critic's note, so everything but the painting and the cuttin
 
 | Designer | Score from Muse Spark | Score from Muse Spark Open | Design time (median) | Designed |
 |---|---|---|---|---|
-| Muse Spark | 8.85 / 10 | 8.60 / 10 | 14.5 s | 20 of 20 |
-| Muse Spark Open | 8.94 / 10 | 8.78 / 10 | 4.8 s | 18 of 20 |
+| Muse Spark, the model decides how long it thinks | 8.85 / 10 | 8.60 / 10 | 14.5 s | 20 of 20 |
+| Muse Spark Open, reasoning low | 8.94 / 10 | 8.78 / 10 | 4.8 s | 18 of 20 |
+| Muse Spark, reasoning low (the default since) | 8.95 / 10 | 8.75 / 10 | 6.4 s | 20 of 20 |
 
-So the open model's worlds score as well with either judge, and it designs three times as fast. Its host
+So the open model's worlds score as well with either judge, and it designs three times as fast. The same test showed
+that Muse Spark needs no long thinking either: with reasoning low it designs as well, in less than half the time. Its host
 enforces no answer shape (one design came back without a title) and its filter refused one calm meditation (a
 desert under the stars), so the engine asks it once more when an answer is out of shape and lets Muse Spark
 design whenever it cannot. On the six example meditations a whole world cost $0.040 instead of $0.055.
