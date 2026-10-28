@@ -166,8 +166,13 @@ revises it from the critic's note, so everything but the painting and the cuttin
 So the open model's worlds score as well with either judge, and it designs three times as fast. Its host
 enforces no answer shape (one design came back without a title) and its filter refused one calm meditation (a
 desert under the stars), so the engine asks it once more when an answer is out of shape and lets Muse Spark
-design whenever it cannot. On the six example meditations a whole world cost $0.040 instead of $0.055. In the
-ELYND app it is off until the app's privacy text names the open model's host as a recipient of the meditation.
+design whenever it cannot. On the six example meditations a whole world cost $0.040 instead of $0.055.
+
+In the ELYND app the open model judges but does not design. A listener's meditation can carry what they shared
+about their health, and Baseten's standard data terms exclude health data unless a separate agreement covers it
+(its Data Processing Addendum, 15 Sep 2026, Annex A), so listeners' meditations go only to Meta, whose models they
+agreed to. Muse Spark Open sees only the painting and a short description of the place. Library worlds grow from
+our own short texts about a place, never from a listener's meditation, so the open model can design those.
 
 ## See it in a browser
 
