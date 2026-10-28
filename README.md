@@ -147,6 +147,22 @@ and a handful of SAM images. When Muse Spark Open judges, its share (half a cent
 the meter keeps the two bills apart. The command line refuses to run past a budget and stops asking the open
 model at a budget of its own; the ELYND backend stops making worlds at a total and a daily cap.
 
+## Open weights for the thinking, too
+
+The critic already runs on Muse Spark Open. With `--open-designer` the open model also designs each world and
+revises it from the critic's note, so everything but the painting and the cutting runs on open weights. On our six
+example meditations (28 Oct 2026), with the same critic judging every painting:
+
+| Designer | Critic's score (mean of 6) | Design time (median) | Painted again after the critic | Cost per world |
+|---|---|---|---|---|
+| Muse Spark | 8.7 / 10 | 13 s | 2 of 6 | $0.055 |
+| Muse Spark Open | 8.8 / 10 | 5 s | 1 of 6 | $0.040 |
+
+Six is a small test, and the critic is the open model itself. Looked at side by side, neither designer's worlds
+are worse; the open model's palettes are a little softer. In the ELYND app Muse Spark keeps designing: its privacy
+text says the meditation goes to Meta Model API alone, and the open model's host sees only a painting and its
+scenery design.
+
 ## See it in a browser
 
 `web/` is a gallery of worlds the agent made for the example meditations. They live as they do on the phone:
@@ -178,6 +194,7 @@ export MODEL_API_KEY=...            # a Meta Model API key
 export OPEN_MODEL_API_KEY=...       # optional: Muse Spark Open on Baseten as the critic
 .venv/bin/elynd-worlds make examples/lake_visualization.txt   # writes out/<time>/<name>/world.json + pictures
 .venv/bin/elynd-worlds sheet out/<time>                         # a contact sheet
+.venv/bin/elynd-worlds make examples/*.txt --open-designer   # Muse Spark Open designs too (needs its key)
 ```
 
 To watch a world move without a phone:
