@@ -199,4 +199,7 @@ examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
 ```
 
-© 2026 Comads OÜ.
+## Licence
+
+Apache License 2.0 (`LICENSE`), © 2026 Comads OÜ. The bundled Poppins fonts are under the SIL Open Font
+License 1.1 (`elynd_worlds/fonts/OFL.txt`).
