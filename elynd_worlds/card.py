@@ -50,7 +50,7 @@ def spaced(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, fnt, fill,
 
 
 def make_card(painting_png: bytes, line: str = "", *, title: str = "",
-              tagline: str = "A world painted for my meditation", max_chars: int = 140) -> bytes:
+              tagline: str = "Personalized Meditations", max_chars: int = 140) -> bytes:
     card = cover(Image.open(io.BytesIO(painting_png)).convert("RGB"), SIZE).convert("RGBA")
 
     shade = Image.new("RGBA", SIZE, (0, 0, 0, 0))
