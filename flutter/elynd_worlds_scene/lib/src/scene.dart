@@ -264,22 +264,25 @@ class _WorldSceneState extends State<WorldScene>
               ),
             ),
         ];
-        final stack = Stack(clipBehavior: Clip.none, children: children);
-        // The light of the session so far, with the visibility as its alpha: one layer, as the fade alone.
+        // The light of the session so far: two coats over the scene, inside the fade. Never a layer of its
+        // own: a ColorFiltered here cost an offscreen pass every frame the world was fully shown, and
+        // swapping the fade for it rebuilt the whole scene, the living shader included.
         final light = LightJourney.progress(
           _seconds,
           (widget.timeline.visibility.length - 1).toDouble(),
         );
-        return ClipRect(
-          child: widget.light == LightJourney.none || light < 0.001
-              ? Opacity(opacity: visibility, child: stack)
-              : ColorFiltered(
-                  colorFilter: ColorFilter.matrix(
-                    widget.light.matrix(light, opacity: visibility),
-                  ),
-                  child: stack,
-                ),
-        );
+        if (widget.light != LightJourney.none && light >= 0.001) {
+          final coats = widget.light.coats(light);
+          children.add(
+            Positioned.fill(
+              child: IgnorePointer(
+                child: CustomPaint(painter: _LightCoats(coats.shade, coats.add)),
+              ),
+            ),
+          );
+        }
+        final stack = Stack(clipBehavior: Clip.none, children: children);
+        return ClipRect(child: Opacity(opacity: visibility, child: stack));
       },
     );
   }
@@ -343,4 +346,23 @@ class _WorldSceneState extends State<WorldScene>
       child: image,
     );
   }
+}
+
+/// The light's two coats over the whole scene (LightJourney.coats).
+class _LightCoats extends CustomPainter {
+  const _LightCoats(this.shade, this.add);
+  final double shade;
+  final Color add;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final all = Offset.zero & size;
+    canvas.drawRect(all, Paint()..color = Color.from(alpha: shade, red: 0, green: 0, blue: 0));
+    canvas.drawRect(all, Paint()
+      ..color = add
+      ..blendMode = BlendMode.plus);
+  }
+
+  @override
+  bool shouldRepaint(_LightCoats old) => old.shade != shade || old.add != add;
 }

@@ -733,5 +733,37 @@ void main() {
         (layerBox.left, layerBox.top),
       ); // the camera stays put
     });
+
+    testWidgets('the light comes as two coats in the same scene: no layer of its own, nothing rebuilt', (
+      tester,
+    ) async {
+      bool coated() => find
+          .byWidgetPredicate((w) => w is CustomPaint && w.painter.runtimeType.toString() == '_LightCoats')
+          .evaluate()
+          .isNotEmpty;
+      var at = 0.0;
+      await tester.pumpWidget(
+        host(
+          WorldScene(
+            background: MemoryImage(_png),
+            aspect: 9 / 16,
+            living: const WorldLiving(trees: true),
+            timeline: WorldTimeline.build(durationSeconds: 600),
+            positionSeconds: () => at,
+            light: LightJourney.deepen,
+          ),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 40));
+      final shader = tester.state(find.byType(LivingBackground));
+      expect(coated(), isFalse); // as painted at the start
+      at = 30; // the light has begun
+      for (var i = 0; i < 3; i++) {
+        await tester.pump(const Duration(milliseconds: 40));
+      }
+      expect(coated(), isTrue);
+      expect(find.byType(ColorFiltered), findsNothing);
+      expect(tester.state(find.byType(LivingBackground)), same(shader)); // the living shader keeps running
+    });
   });
 }

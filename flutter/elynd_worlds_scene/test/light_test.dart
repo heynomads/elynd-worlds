@@ -43,4 +43,20 @@ void main() {
       }
     }
   });
+
+  test('two coats paint exactly the light of the matrix, with no layer of their own', () {
+    for (final light in LightJourney.values) {
+      for (final p in [0.0, 0.3, 1.0]) {
+        final m = light.matrix(p), c = light.coats(p);
+        final add = [c.add.r, c.add.g, c.add.b];
+        for (final grey in [0.0, 0.25, 0.8, 1.0]) {
+          for (var row = 0; row < 3; row++) {
+            // Through the matrix (its offsets 0 to 255), and through a black coat at `shade` with `add` summed in.
+            final viaMatrix = m[row * 5 + row] * grey + m[row * 5 + 4] / 255;
+            expect(grey * (1 - c.shade) + add[row], closeTo(viaMatrix, 1e-6), reason: '$light at $p');
+          }
+        }
+      }
+    }
+  });
 }

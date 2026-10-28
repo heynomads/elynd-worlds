@@ -1,3 +1,5 @@
+import 'dart:ui' show Color;
+
 import 'package:flutter/foundation.dart';
 
 /// How a world's light changes over a meditation. It starts exactly as painted
@@ -61,6 +63,17 @@ enum LightJourney {
       0, 0, gain, 0, end.b * k * 255, //
       0, 0, 0, opacity, 0,
     ];
+  }
+
+  /// The same light as two coats painted over the scene, so it needs no layer of its own: a black coat whose
+  /// alpha is [shade] brings the picture down to the light's gain, then [add], painted with BlendMode.plus,
+  /// adds the light's colour. Over the opaque scene this is exactly [matrix] (light_test.dart).
+  ({double shade, Color add}) coats(double progress) {
+    final p = progress.clamp(0.0, 1.0);
+    final end = _end;
+    final k = end.mix * p;
+    final gain = (1 + (end.exposure - 1) * p) * (1 - k);
+    return (shade: 1 - gain, add: Color.from(alpha: 1, red: end.r * k, green: end.g * k, blue: end.b * k));
   }
 
   @visibleForTesting
