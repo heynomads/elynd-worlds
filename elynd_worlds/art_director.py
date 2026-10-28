@@ -23,7 +23,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from .meta import Meter, cache_fields, privacy_fields, spark_chat
+from .meta import Meter, cache_fields, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
 # The parts of a place that move in nature, as the app animates them: open water
@@ -190,40 +190,48 @@ def _response_format() -> dict[str, Any]:
     return {"type": "json_schema", "json_schema": {"name": "scene", "schema": SCENE_SCHEMA, "strict": True}}
 
 
-async def design(client, meditation: Meditation, meter: Meter, settings: Settings = DEFAULT) -> dict[str, Any]:
-    """Muse Spark designs the world of one meditation."""
-    response, _ = await spark_chat(
-        client, (settings.director_model, settings.spark_fallback_model),
-        messages=[
-            {"role": "system", "content": DIRECTOR_INSTRUCTIONS},
-            {"role": "user", "content": meditation.as_message()},
-        ],
-        response_format=_response_format(),
-        extra_body={**privacy_fields(), **cache_fields("design")},
-        timeout=settings.design_timeout,
-    )
-    meter.spark(getattr(response, "usage", None), "design")
-    return check(json.loads(response.choices[0].message.content))
+async def design(client, meditation: Meditation, meter: Meter, settings: Settings = DEFAULT,
+                 open_client=None) -> dict[str, Any]:
+    """Muse Spark designs the world of one meditation (Muse Spark Open, with `Settings.open_designer`)."""
+    messages = [
+        {"role": "system", "content": DIRECTOR_INSTRUCTIONS},
+        {"role": "user", "content": meditation.as_message()},
+    ]
+    return await _ask(client, messages, "design", meter, settings, open_client)
 
 
 async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter: Meter,
-                 settings: Settings = DEFAULT) -> dict[str, Any]:
+                 settings: Settings = DEFAULT, open_client=None) -> dict[str, Any]:
     """The director rewrites its design from the critic's note on the painting."""
     note = critique.get("fix") or critique.get("reason") or "The painting did not pass."
+    messages = [
+        {"role": "system", "content": DIRECTOR_INSTRUCTIONS + "\n\n" + REVISE_INSTRUCTIONS},
+        {"role": "user", "content": (
+            f"Your design:\n{json.dumps(scene, ensure_ascii=False)}\n\n"
+            f"The critic's verdict on the painting:\n"
+            f"{json.dumps({k: v for k, v in critique.items() if k != 'judge'}, ensure_ascii=False)}\n\n"
+            f"What to change: {note}"
+        )},
+    ]
+    return await _ask(client, messages, "revise", meter, settings, open_client)
+
+
+async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, settings: Settings,
+               open_client) -> dict[str, Any]:
+    """A design (or its revision) from Muse Spark, or from Muse Spark Open with `Settings.open_designer`."""
+    if settings.open_designer and open_client is not None:
+        # No privacy fields: they are Meta's (critic.py does the same).
+        response = await open_client.chat.completions.create(
+            model=settings.open_designer_model, messages=messages, response_format=_response_format(),
+            timeout=settings.open_design_timeout, **reasoning(settings.open_designer_reasoning))
+        meter.spark_open(getattr(response, "usage", None), step)
+        return check(json.loads(response.choices[0].message.content))
     response, _ = await spark_chat(
         client, (settings.director_model, settings.spark_fallback_model),
-        messages=[
-            {"role": "system", "content": DIRECTOR_INSTRUCTIONS + "\n\n" + REVISE_INSTRUCTIONS},
-            {"role": "user", "content": (
-                f"Your design:\n{json.dumps(scene, ensure_ascii=False)}\n\n"
-                f"The critic's verdict on the painting:\n"
-                f"{json.dumps({k: v for k, v in critique.items() if k != 'judge'}, ensure_ascii=False)}\n\n"
-                f"What to change: {note}"
-            )},
-        ],
+        messages=messages,
         response_format=_response_format(),
         extra_body={**privacy_fields(), **cache_fields("design")},
         timeout=settings.design_timeout,
     )
-    meter.spark(getattr(response, "usage", None), "revise")
+    meter.spark(getattr(response, "usage", None), step)
     return check(json.loads(response.choices[0].message.content))

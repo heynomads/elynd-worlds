@@ -141,6 +141,26 @@ async def test_the_open_model_judges_and_never_sees_the_listener_or_the_meditati
     assert any(s.name == "critique 1" and "by meta-models/muse-spark-open-1026" in s.note for s in world.trace)
 
 
+async def test_the_open_model_designs_too_only_when_asked():
+    # Off by default: the ELYND app's privacy text says the meditation goes to Meta alone.
+    meta, open_model = FakeClient(), FakeClient(verdicts=[PASS])
+    await make_world(meta, MEDITATION, open_client=open_model)
+    assert "scene" in meta.calls and "scene" not in open_model.calls
+    # Asked: Muse Spark Open designs and judges, Meta Model API paints and cuts.
+    meta, open_model = FakeClient(), FakeClient(verdicts=[PASS])
+    world = await make_world(meta, MEDITATION, settings=Settings(open_designer=True),
+                             user="listener-7f3a", open_client=open_model)
+    assert open_model.calls == ["scene", "verdict"] and "scene" not in meta.calls and "paint" in meta.calls
+    request = open_model.requests[0]
+    assert request["model"] == "meta-models/muse-spark-open-1026" and request["reasoning_effort"] == "low"
+    assert "extra_body" not in request and "listener-7f3a" not in json.dumps(request)
+    assert world.meter.calls["design@open"] == 1 and "design" not in world.meter.calls
+    # Without an open-model client the setting changes nothing.
+    meta = FakeClient()
+    await make_world(meta, MEDITATION, settings=Settings(open_designer=True))
+    assert "scene" in meta.calls
+
+
 @pytest.mark.parametrize("broken, billed", [
     (FakeClient(fail_chat=True), 0),                          # an error or an outage
     (FakeClient(verdicts=['{"score": 9}']), 1),               # an answer without the checks

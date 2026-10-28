@@ -68,7 +68,7 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
         trace.append(Step(name, time.monotonic() - t0, note(result)))
         return result
 
-    scene = await step("design", art_director.design(client, meditation, meter, settings),
+    scene = await step("design", art_director.design(client, meditation, meter, settings, open_client=open_client),
                        lambda s: f"{s['title']}; subjects: {', '.join(x['name'] for x in s['subjects'])}")
     verdict: dict[str, Any] = {}
     painting = b""
@@ -105,7 +105,7 @@ async def make_world(client, meditation: Meditation, *, settings: Settings = DEF
         await asyncio.gather(cutting, removing, finding, return_exceptions=True)
         if attempt == settings.paintings:
             raise NoWorld(f"no painting passed the critic: {verdict.get('reason')}")
-        scene = await step(f"revise {attempt}", art_director.revise(client, scene, verdict, meter, settings),
+        scene = await step(f"revise {attempt}", art_director.revise(client, scene, verdict, meter, settings, open_client=open_client),
                            lambda s: verdict.get("fix") or "")
 
     if isinstance(layers, BaseException):

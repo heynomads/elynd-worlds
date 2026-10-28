@@ -96,9 +96,13 @@ async def _make(args: argparse.Namespace) -> int:
     client = connect(read_key(args.key_file))
     # Several worlds share one process here, so steps wait on each other more than on a server: the open
     # critic gets longer before Muse Spark takes over.
-    settings = dataclasses.replace(DEFAULT, open_critic_timeout=args.open_timeout)
+    settings = dataclasses.replace(DEFAULT, open_critic_timeout=args.open_timeout, open_designer=args.open_designer)
     open_client, why = open_critic(args)
     print(f"critic: {'Muse Spark Open' if open_client else 'Muse Spark'} ({why})", file=sys.stderr)
+    if args.open_designer and open_client is None:
+        print("refusing: --open-designer needs the open model (its key, and its ledger under budget)", file=sys.stderr)
+        return 2
+    print(f"designer: {'Muse Spark Open' if args.open_designer else 'Muse Spark'}", file=sys.stderr)
     out = Path(args.out) / time.strftime("%Y%m%d-%H%M%S")
     gate = asyncio.Semaphore(args.parallel)
 
@@ -117,6 +121,8 @@ async def _make(args: argparse.Namespace) -> int:
                     "meta_usd": meter.meta_usd, "open_usd": meter.open_usd,
                     "seconds": round(time.monotonic() - started, 1), "paintings": world.paintings,
                     "score": world.verdict.get("score"), "judge": world.verdict.get("judge"),
+                    "designer": settings.open_designer_model if args.open_designer else "muse-spark",
+                    "design_seconds": next((s.seconds for s in world.trace if s.name == "design"), None),
                     "plate": world.plate_source,
                     "layers": [layer.wording for layer in world.layers] if world.moving else [],
                     "wanted": [s["name"] for s in world.scene["subjects"]], "folder": str(folder)}
@@ -126,7 +132,8 @@ async def _make(args: argparse.Namespace) -> int:
     open_total = round(sum(r["open_usd"] for r in results), 5)
     record(ledger, "make", total, f"{len(results)} worlds -> {out}")
     if open_total:
-        record(Path(args.open_ledger).expanduser(), "make", open_total, f"critic of {len(results)} worlds -> {out}")
+        record(Path(args.open_ledger).expanduser(), "make", open_total,
+               f"{'design and critic' if args.open_designer else 'critic'} of {len(results)} worlds -> {out}")
     out.mkdir(parents=True, exist_ok=True)
     (out / "report.json").write_text(json.dumps(results, indent=2, ensure_ascii=False))
     for r in results:
@@ -226,6 +233,8 @@ def main(argv: list[str] | None = None) -> int:
     make.add_argument("--open-budget", type=float, default=DEFAULT.open_budget_usd)
     make.add_argument("--open-timeout", type=float, default=45.0,
                       help="seconds the open critic gets before Muse Spark judges (a batch shares one process)")
+    make.add_argument("--open-designer", action="store_true",
+                      help="Muse Spark Open designs each world too: everything but painting and cutting on open weights")
 
     pick = sub.add_parser("pick", help="the library world each meditation gets, or whether it needs its own")
     pick.add_argument("scripts", nargs="+")

@@ -50,6 +50,13 @@ class Settings:
     # Little reasoning: 4-6 s a painting instead of 12-18 s, at half the cost, with the same
     # verdicts on our test pictures (all four that must fail still fail). None: the model decides.
     open_critic_reasoning: str | None = "low"
+    # Muse Spark Open designs the world too (art_director.design and revise), when this is set and an open-model
+    # client is passed: the whole agent's thinking on open weights, only the painting and the cutting on Meta Model
+    # API. Off by default, and off in the ELYND app, whose privacy text says the meditation goes to Meta alone and
+    # the open model's host sees only a painting and its scenery design.
+    open_designer: bool = False
+    open_designer_model: str = "meta-models/muse-spark-open-1026"
+    open_designer_reasoning: str | None = "low"
     painter_model: str = "muse-image-1.0"
     cutter_model: str = "sam-3.1"
     voice_model: str = "muse-voice-transcribe-1.0"
@@ -79,6 +86,8 @@ class Settings:
 
     # Seconds. The meditation never waits for any of them.
     design_timeout: float = 25
+    # The open model always reasons first, and a design is a long answer.
+    open_design_timeout: float = 90
     paint_timeout: float = 45
     critic_timeout: float = 20
     open_critic_timeout: float = 18  # then Muse Spark judges instead
