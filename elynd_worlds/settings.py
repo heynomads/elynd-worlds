@@ -111,6 +111,16 @@ class Settings:
     # A SAM request that fails on the way is asked again (cutter.segment), after 2 s, then 4 s.
     sam_attempts: int = 3
     sam_retry_seconds: float = 2.0
+    # How SAM sends its masks: "lossless" (its default) or "one_bit", which Meta's docs call several times smaller
+    # and so faster to stream, decoding to the same masks (dev.meta.ai/docs/sam/segmenting). On 18 subjects of 12
+    # saved paintings (28 Oct 2026) one_bit gave the same masks (overlap 99.95 % or more) and no speed gain: a single
+    # object's mask is small either way.
+    sam_mask_encoding: str = "lossless"
+    # Ask SAM for a subject's name and its plural at once (cutter.wordings), or the name alone first. On the same 18
+    # subjects the name alone found all 18 (masks overlapping 99.8 % or more), in half the requests, and Meta's docs
+    # say plurals do not change what a prompt matches; but on 26 Oct only "smooth stones" found a pair of stones, so
+    # the plural stays: one more request ($0.0025) against a world that stands still.
+    sam_plurals: bool = True
     world_timeout: float = 120
 
     # USD. A deployment stops giving the critic the open model once its own ledger of open-model

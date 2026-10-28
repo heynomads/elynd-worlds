@@ -226,7 +226,7 @@ async def segment(client, image_url: str, phrase: str, meter: Meter,
                     {"type": "input_image", "image_url": image_url},
                     {"type": "input_text", "text": phrase},
                 ]}],
-                metadata={"include_confidence": "true"},
+                metadata={"include_confidence": "true", "mask_encoding": settings.sam_mask_encoding},
                 stream=True,
                 timeout=settings.cut_timeout,
                 **privacy_fields(),
@@ -249,6 +249,8 @@ async def find(client, image_url: str, name: str, meter: Meter,
                settings: Settings = DEFAULT) -> tuple[str, list[SegmentationMaskRecord]] | None:
     """(wording, records) for the first wording of `name` that SAM matches, else None."""
     first, fallback = wordings(name)
+    if not settings.sam_plurals:
+        first = first[:1]
     answers = await asyncio.gather(*(segment(client, image_url, w, meter, settings) for w in first),
                                    return_exceptions=True)
     for wording, records in zip(first, answers):
