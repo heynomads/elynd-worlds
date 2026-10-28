@@ -161,6 +161,21 @@ async def test_the_open_model_designs_too_only_when_asked():
     assert "scene" in meta.calls
 
 
+async def test_when_the_open_model_cannot_design_muse_spark_does():
+    untitled = {**SCENE, "title": ""}
+    # Out of shape once: asked again, its second answer is used.
+    meta, open_model = FakeClient(), FakeClient(scenes=[untitled, SCENE])
+    scene = await art_director.design(meta, MEDITATION, Meter(), Settings(open_designer=True), open_client=open_model)
+    assert open_model.calls == ["scene", "scene"] and "scene" not in meta.calls and scene["title"] == SCENE["title"]
+    # Out of shape twice, or refused (its host's filter, an outage): Muse Spark designs.
+    for open_model in (FakeClient(scenes=[untitled]), FakeClient(fail_chat=True)):
+        meta, meter = FakeClient(), Meter()
+        scene = await art_director.design(meta, MEDITATION, meter, Settings(open_designer=True), open_client=open_model)
+        assert meta.calls == ["scene"] and scene["title"] == SCENE["title"]
+        assert open_model.calls == (["scene", "scene"] if not open_model._fail_chat else ["scene"])
+        assert meter.calls["design"] == 1
+
+
 @pytest.mark.parametrize("broken, billed", [
     (FakeClient(fail_chat=True), 0),                          # an error or an outage
     (FakeClient(verdicts=['{"score": 9}']), 2),               # an answer without the checks, asked twice

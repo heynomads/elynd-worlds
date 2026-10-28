@@ -19,12 +19,15 @@ painting, the director revises its own design from the critic's note (`revise`).
 from __future__ import annotations
 
 import json
+import logging
 import re
 from dataclasses import dataclass
 from typing import Any
 
 from .meta import Meter, cache_fields, json_object, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
+
+log = logging.getLogger("elynd_worlds")
 
 # The parts of a place that move in nature, as the app animates them: open water
 # ripples, the sky drifts, grass waves in the wind, a stream flows, tree crowns sway.
@@ -220,12 +223,22 @@ async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, 
                open_client) -> dict[str, Any]:
     """A design (or its revision) from Muse Spark, or from Muse Spark Open with `Settings.open_designer`."""
     if settings.open_designer and open_client is not None:
-        # No privacy fields: they are Meta's (critic.py does the same).
-        response = await open_client.chat.completions.create(
-            model=settings.open_designer_model, messages=messages, response_format=_response_format(),
-            timeout=settings.open_design_timeout, **reasoning(settings.open_designer_reasoning))
-        meter.spark_open(getattr(response, "usage", None), step)
-        return check(json_object(response.choices[0].message.content))
+        # The open model's host enforces no answer shape, and its filter may refuse a calm meditation (a desert
+        # under the stars, a hand on the belly: 2 of 20 on 28 Oct 2026). So: once more when the answer is out of
+        # shape, and Muse Spark designs whenever the open model cannot.
+        for attempt in (1, 2):
+            try:
+                # No privacy fields: they are Meta's (critic.py does the same).
+                response = await open_client.chat.completions.create(
+                    model=settings.open_designer_model, messages=messages, response_format=_response_format(),
+                    timeout=settings.open_design_timeout, **reasoning(settings.open_designer_reasoning))
+                meter.spark_open(getattr(response, "usage", None), step)
+                return check(json_object(response.choices[0].message.content))
+            except ValueError as error:  # out of shape (a SceneError or a JSONDecodeError)
+                log.info("the open designer answered out of shape (attempt %d): %s", attempt, error)
+            except Exception as error:  # noqa: BLE001 - refused, failed or too slow: Muse Spark designs
+                log.info("the open designer failed, Muse Spark designs: %s: %s", type(error).__name__, error)
+                break
     response, _ = await spark_chat(
         client, (settings.director_model, settings.spark_fallback_model),
         messages=messages,

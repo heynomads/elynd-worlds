@@ -150,18 +150,19 @@ model at a budget of its own; the ELYND backend stops making worlds at a total a
 ## Open weights for the thinking, too
 
 The critic already runs on Muse Spark Open. With `--open-designer` the open model also designs each world and
-revises it from the critic's note, so everything but the painting and the cutting runs on open weights. On our six
-example meditations (28 Oct 2026), with the same critic judging every painting:
+revises it from the critic's note, so everything but the painting and the cutting runs on open weights. Tested on
+20 new meditations in four languages (28 Oct 2026), each painted by Muse Image and judged by both models:
 
-| Designer | Critic's score (mean of 6) | Design time (median) | Painted again after the critic | Cost per world |
+| Designer | Score from Muse Spark | Score from Muse Spark Open | Design time (median) | Designed |
 |---|---|---|---|---|
-| Muse Spark | 8.7 / 10 | 13 s | 2 of 6 | $0.055 |
-| Muse Spark Open | 8.8 / 10 | 5 s | 1 of 6 | $0.040 |
+| Muse Spark | 8.85 / 10 | 8.60 / 10 | 14.5 s | 20 of 20 |
+| Muse Spark Open | 8.94 / 10 | 8.78 / 10 | 4.8 s | 18 of 20 |
 
-Six is a small test, and the critic is the open model itself. Looked at side by side, neither designer's worlds
-are worse; the open model's palettes are a little softer. In the ELYND app Muse Spark keeps designing: its privacy
-text says the meditation goes to Meta Model API alone, and the open model's host sees only a painting and its
-scenery design.
+So the open model's worlds score as well with either judge, and it designs three times as fast. Its host
+enforces no answer shape (one design came back without a title) and its filter refused one calm meditation (a
+desert under the stars), so the engine asks it once more when an answer is out of shape and lets Muse Spark
+design whenever it cannot. On the six example meditations a whole world cost $0.040 instead of $0.055. In the
+ELYND app it is off until the app's privacy text names the open model's host as a recipient of the meditation.
 
 ## See it in a browser
 
