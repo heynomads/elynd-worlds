@@ -163,6 +163,29 @@ async def test_a_slow_open_model_is_not_waited_for():
     assert verdict["judge"] == "muse-spark-1.3" and time.monotonic() - started < 2  # the fake answers after 5 s
 
 
+@pytest.mark.parametrize("open_model", [
+    lambda: None,                                   # no key, or its budget is spent
+    lambda: FakeClient(fail_chat=True),             # an error or an outage
+    lambda: FakeClient(verdicts=["not json"]),      # an answer out of shape
+    lambda: FakeClient(chat_delay=5),               # too slow
+])
+async def test_when_only_the_open_model_may_judge_a_painting_it_cannot_judge_is_never_shown(open_model):
+    # A deployment that tells its users Muse Spark Open checks every new picture lets no other model judge.
+    settings, shown = Settings(open_critic_only=True, open_critic_timeout=0.05), []
+    meta = FakeClient()
+    with pytest.raises(critic.CriticUnavailable):
+        await critic.critique(meta, PAINTING, CHECKED, Meter(), settings, open_client=open_model())
+    assert "verdict" not in meta.calls   # Muse Spark is never asked
+
+    async def show(*_):
+        shown.append(1)
+
+    meta = FakeClient()
+    with pytest.raises(critic.CriticUnavailable):
+        await make_world(meta, MEDITATION, settings=settings, on_painting=show, open_client=open_model())
+    assert not shown and "verdict" not in meta.calls   # the painting never reached the listener
+
+
 @pytest.mark.parametrize("given, reason", [
     ({**PASS, "reason": " "}, "No fault found; score 9 of 10."),
     ({**FAIL, "reason": ""}, "The painting shows a person or an animal drawn wrong, or a face up close."),

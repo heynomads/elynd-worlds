@@ -43,6 +43,10 @@ class Settings:
     # The critic runs on Muse Spark Open when the deployment passes an open-model client
     # (critic.py); `critic_model` above takes over whenever it fails.
     open_critic_model: str = "meta-models/muse-spark-open-1026"
+    # True: Muse Spark Open is the only judge. When it cannot judge a painting (no open-model client,
+    # an error, too slow, an answer out of shape), the painting is never shown (critic.CriticUnavailable)
+    # instead of going to `critic_model`. For a deployment that promises its users who checks each picture.
+    open_critic_only: bool = False
     # Little reasoning: 4-6 s a painting instead of 12-18 s, at half the cost, with the same
     # verdicts on our test pictures (all four that must fail still fail). None: the model decides.
     open_critic_reasoning: str | None = "low"

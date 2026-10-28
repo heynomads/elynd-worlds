@@ -13,7 +13,9 @@ The critic is Muse Spark Open, Meta's open-weights model, when the deployment
 passes an open-model client (Baseten serves it). It sees only the painting and
 the scenery design, never the listener's words or id. When it fails, is slow or
 answers out of shape, Muse Spark on Meta Model API judges instead, so a world
-never waits on one provider. `verdict["judge"]` names the model that judged.
+never waits on one provider, unless `Settings.open_critic_only` says no other
+model may judge: then the painting is never shown (CriticUnavailable).
+`verdict["judge"]` names the model that judged.
 """
 from __future__ import annotations
 
@@ -69,9 +71,16 @@ def passes(verdict: dict[str, Any], settings: Settings = DEFAULT) -> bool:
             and int(verdict.get("score") or 0) >= settings.pass_score)
 
 
+class CriticUnavailable(RuntimeError):
+    """Muse Spark Open could not judge a painting, and no other model may (`Settings.open_critic_only`)."""
+
+
 async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
                    settings: Settings = DEFAULT, open_client=None) -> dict[str, Any]:
-    """The verdict on one painting: Muse Spark Open's when `open_client` is given and answers, else Muse Spark's."""
+    """The verdict on one painting: Muse Spark Open's when `open_client` is given and answers, else Muse Spark's
+    (or, with `settings.open_critic_only`, CriticUnavailable)."""
+    if open_client is None and settings.open_critic_only:
+        raise CriticUnavailable("no open model to judge the painting")
     design = {k: scene[k] for k in ("title", "place", "time_of_day", "light", "air", "subjects", "sleep")}
     request = {
         "messages": [
@@ -95,6 +104,8 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
             meter.spark_open(getattr(response, "usage", None), "critique")
             return _verdict(response, settings.open_critic_model)
         except Exception as error:  # noqa: BLE001 - Muse Spark judges instead
+            if settings.open_critic_only:
+                raise CriticUnavailable(f"the open critic failed: {type(error).__name__}") from error
             log.info("the open critic failed, Muse Spark judges: %s: %s", type(error).__name__, error)
     response, model = await spark_chat(client, (settings.critic_model, settings.spark_fallback_model),
                                        extra_body={**privacy_fields(), **cache_fields("critic")}, timeout=settings.critic_timeout,
