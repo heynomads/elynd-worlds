@@ -23,7 +23,7 @@ import re
 from dataclasses import dataclass
 from typing import Any
 
-from .meta import Meter, cache_fields, privacy_fields, reasoning, spark_chat
+from .meta import Meter, cache_fields, json_object, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
 # The parts of a place that move in nature, as the app animates them: open water
@@ -225,7 +225,7 @@ async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, 
             model=settings.open_designer_model, messages=messages, response_format=_response_format(),
             timeout=settings.open_design_timeout, **reasoning(settings.open_designer_reasoning))
         meter.spark_open(getattr(response, "usage", None), step)
-        return check(json.loads(response.choices[0].message.content))
+        return check(json_object(response.choices[0].message.content))
     response, _ = await spark_chat(
         client, (settings.director_model, settings.spark_fallback_model),
         messages=messages,

@@ -24,7 +24,7 @@ import json
 import logging
 from typing import Any
 
-from .meta import Meter, cache_fields, data_url, preview_jpeg, privacy_fields, reasoning, spark_chat
+from .meta import Meter, cache_fields, data_url, json_object, preview_jpeg, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
 log = logging.getLogger("elynd_worlds")
@@ -64,6 +64,14 @@ Return only the JSON object."""
 
 FLAGS = ("belongs", "calm", "figures_wrong", "text_or_symbols")
 
+# The answer's shape, first in the open model's instructions: its host ignores `response_format`, and Meta's guide
+# says Muse Spark Open "pays more attention to the beginning of the system prompt" (dev.meta.ai, Muse Spark Open,
+# prompting).
+OPEN_SHAPE = ('Answer with one JSON object and nothing else, with exactly these keys: {"belongs": true or false, '
+              '"calm": true or false, "figures_wrong": true or false, "text_or_symbols": true or false, '
+              '"subjects_seen": [design names], "score": an integer 0-10, "reason": "one sentence", '
+              '"fix": "one sentence, or empty"}.')
+
 
 def passes(verdict: dict[str, Any], settings: Settings = DEFAULT) -> bool:
     return (bool(verdict.get("belongs")) and bool(verdict.get("calm"))
@@ -95,18 +103,28 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
                             "json_schema": {"name": "verdict", "schema": VERDICT_SCHEMA, "strict": True}},
     }
     if open_client is not None:
-        try:
-            # No privacy fields: they are Meta's, and the listener's id never goes to the open model's host.
-            response = await asyncio.wait_for(open_client.chat.completions.create(
-                model=settings.open_critic_model, timeout=settings.open_critic_timeout,
-                **reasoning(settings.open_critic_reasoning), **request),
-                settings.open_critic_timeout)
-            meter.spark_open(getattr(response, "usage", None), "critique")
-            return _verdict(response, settings.open_critic_model)
-        except Exception as error:  # noqa: BLE001 - Muse Spark judges instead
-            if settings.open_critic_only:
-                raise CriticUnavailable(f"the open critic failed: {type(error).__name__}") from error
-            log.info("the open critic failed, Muse Spark judges: %s: %s", type(error).__name__, error)
+        open_request = {**request, "messages": [
+            {"role": "system", "content": OPEN_SHAPE + "\n\n" + CRITIC_INSTRUCTIONS}, *request["messages"][1:]]}
+        failure: Exception | None = None
+        for attempt in (1, 2):  # once more when an answer is out of shape; never after an error or a timeout
+            try:
+                # No privacy fields: they are Meta's, and the listener's id never goes to the open model's host.
+                response = await asyncio.wait_for(open_client.chat.completions.create(
+                    model=settings.open_critic_model, timeout=settings.open_critic_timeout,
+                    **reasoning(settings.open_critic_reasoning), **open_request),
+                    settings.open_critic_timeout)
+                meter.spark_open(getattr(response, "usage", None), "critique")
+                return _verdict(response, settings.open_critic_model)
+            except ValueError as error:  # out of shape (a JSONDecodeError too)
+                failure = error
+                log.info("the open critic answered out of shape (attempt %d): %s", attempt, error)
+            except Exception as error:  # noqa: BLE001 - an error or a timeout: Muse Spark judges instead
+                failure = error
+                break
+        if settings.open_critic_only:
+            raise CriticUnavailable(f"the open critic failed: {type(failure).__name__}: {str(failure)[:120]}") \
+                from failure
+        log.info("the open critic failed, Muse Spark judges: %s: %s", type(failure).__name__, failure)
     response, model = await spark_chat(client, (settings.critic_model, settings.spark_fallback_model),
                                        extra_body={**privacy_fields(), **cache_fields("critic")}, timeout=settings.critic_timeout,
                                        **request)
@@ -116,7 +134,7 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
 
 def _verdict(response: Any, judge: str) -> dict[str, Any]:
     """The verdict in a critic's answer, checked: a flag that is not true or false never passes a painting."""
-    verdict = json.loads(response.choices[0].message.content)
+    verdict = json_object(response.choices[0].message.content)
     for flag in FLAGS:
         if not isinstance(verdict.get(flag), bool):
             raise ValueError(f"the verdict's {flag!r} is not true or false")

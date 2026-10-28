@@ -292,6 +292,20 @@ async def spark_chat(client, models: tuple[str, ...], **request: Any) -> tuple[A
     raise error
 
 
+def json_object(text: str | None) -> dict[str, Any]:
+    """The JSON object in a model's answer: as it is, inside a ``` fence, or between the outermost braces of a longer
+    answer. Muse Spark Open's host does not enforce `response_format` (docs.baseten.co, Model APIs: "All except Muse
+    Spark Open support structured outputs and JSON mode"), so its answers are read this way. ValueError otherwise."""
+    text = (text or "").strip()
+    start, end = text.find("{"), text.rfind("}")
+    if start == -1 or end < start:
+        raise ValueError("no JSON object in the answer")
+    value = json.loads(text[start:end + 1])
+    if not isinstance(value, dict):
+        raise ValueError("the answer is not a JSON object")
+    return value
+
+
 def data_url(image_bytes: bytes, mime: str = "image/png") -> str:
     return f"data:{mime};base64,{base64.b64encode(image_bytes).decode()}"
 

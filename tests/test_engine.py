@@ -163,9 +163,9 @@ async def test_the_open_model_designs_too_only_when_asked():
 
 @pytest.mark.parametrize("broken, billed", [
     (FakeClient(fail_chat=True), 0),                          # an error or an outage
-    (FakeClient(verdicts=['{"score": 9}']), 1),               # an answer without the checks
-    (FakeClient(verdicts=[{**PASS, "calm": "yes"}]), 1),      # a check that is not true or false
-    (FakeClient(verdicts=["not json"]), 1),
+    (FakeClient(verdicts=['{"score": 9}']), 2),               # an answer without the checks, asked twice
+    (FakeClient(verdicts=[{**PASS, "calm": "yes"}]), 2),      # a check that is not true or false
+    (FakeClient(verdicts=["not json"]), 2),
 ])
 async def test_when_the_open_model_fails_muse_spark_judges(broken, billed):
     meta, meter = FakeClient(), Meter()
@@ -174,6 +174,26 @@ async def test_when_the_open_model_fails_muse_spark_judges(broken, billed):
     assert meta.requests[0]["extra_body"]["store"] is False
     assert "reasoning_effort" not in meta.requests[0]  # Muse Spark, the fallback, thinks as long as it likes
     assert meter.calls["critique@open"] == billed and meter.calls["critique"] == 1  # what was answered is paid
+
+
+async def test_the_open_models_answer_is_read_in_any_wrapping_and_asked_again_once_when_out_of_shape():
+    # Its host ignores response_format (docs.baseten.co): the answer's shape opens its instructions instead.
+    for answer in ("```json\n" + json.dumps(PASS) + "\n```", "Here is my verdict: " + json.dumps(PASS) + " Done."):
+        open_model = FakeClient(verdicts=[answer])
+        verdict = await critic.critique(FakeClient(), PAINTING, CHECKED, Meter(), open_client=open_model)
+        assert verdict["judge"] == "meta-models/muse-spark-open-1026" and verdict["score"] == 9
+        assert open_model.requests[0]["messages"][0]["content"].startswith(critic.OPEN_SHAPE)
+    meter, open_model = Meter(), FakeClient(verdicts=["not json", PASS])
+    verdict = await critic.critique(FakeClient(), PAINTING, CHECKED, meter, open_client=open_model)
+    assert verdict["judge"] == "meta-models/muse-spark-open-1026" and meter.calls["critique@open"] == 2
+    # Never again after an error: a broken host is not asked twice.
+    open_model = FakeClient(fail_chat=True)
+    await critic.critique(FakeClient(), PAINTING, CHECKED, Meter(), open_client=open_model)
+    assert open_model.calls == ["verdict"]
+    # When only the open model may judge, the reason travels with the refusal (the server stores it).
+    with pytest.raises(critic.CriticUnavailable, match="ValueError: no JSON object"):
+        await critic.critique(FakeClient(), PAINTING, CHECKED, Meter(), Settings(open_critic_only=True),
+                              open_client=FakeClient(verdicts=["not json"]))
 
 
 async def test_a_slow_open_model_is_not_waited_for():
