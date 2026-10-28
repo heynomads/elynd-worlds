@@ -876,6 +876,42 @@ def test_a_place_named_in_german_spanish_or_french_is_read_in_that_language():
     assert not library._named("Mañana será otro día. Que haya paz.", "es") and not library._named("J'ai été là.", "fr")
 
 
+def test_every_library_place_can_be_named_and_only_by_its_whole_word():
+    # 24 of the library's 103 places had no word, so a meditation by a lighthouse opened on a cottage; and a
+    # place was read inside another word: an alpine trail counted as a pine, a footbridge as a ridge.
+    worlds = json.loads((Path(__file__).parents[1] / "library" / "catalog.json").read_text())
+    fields = {f.name for f in dataclasses.fields(library.Entry)}
+    catalog = [library.Entry(**{**{k: v for k, v in w.items() if k in fields}, "moods": tuple(w["moods"])})
+               for w in worlds]
+    # Each place has its own word but a clearing ("clearing the mind" is no place, and a clearing is a forest),
+    # cherry blossom (by its cherry) and three a detail names (a bridge, a hammock).
+    assert {p for p in {w["id"].split("-")[0] for w in worlds} if not library._id_places(p)} == {
+        "blossom", "clearing", "footbridge", "hammock", "stonebridge"}
+    assert library._id_places("alpinetrail") == {"alpine"} and library._id_places("pineforest") == {"pine", "forest"}
+    assert not library._id_places("footbridge") and library._named("A steaming hot spring.") == {"hotspring": 1}
+
+    def opens_on(script, language="en", feeling="calm_ground"):
+        meditation = Meditation(script=script, language=language)
+        return library.local(meditation, catalog, moods=[feeling]).entry.id.split("-")[0]
+
+    # Each of these opened on another place before (a jetty, an autumn forest, a lake porch, the tea hills).
+    for script, language in (("You walk out to the old lighthouse.", "en"), ("Du stehst am Leuchtturm.", "de"),
+                             ("Caminas despacio hacia el faro.", "es"), ("Tu marches vers le phare.", "fr")):
+        assert opens_on(script, language) in {"lighthouse", "lighthousepath"}, script
+    for n in range(6):   # whichever world the tie-break picks among the equals (5 of 6 were alpine)
+        assert not opens_on(f"Walk slowly among the old pines. Breath {n}.").startswith("alpine")
+    # A stone bridge or a footbridge is no ridge.
+    assert opens_on("A quiet ridge.") == opens_on("Mist on the ridge.") == "ridge"
+    assert opens_on("Climb to the ridge.", feeling="energy_motivation") == "ridge"
+    assert opens_on("Tu marches dans une forêt de bambous.", "fr") == "bamboo"   # the rarer place of the two
+    assert opens_on("You sink into a hot spring while snow falls.") == "hotspring"
+    assert opens_on("Du sitzt am Steg, die Füße über dem Wasser.", "de") == "jetty"
+    assert opens_on("Un mar de nubes bajo tus pies.", "es") == "aboveclouds"
+    assert opens_on("Eine alte Trauerweide neigt sich über den Teich.", "de") == "willow"
+    # Never a place for what only sounds like one: the ear canal of a body scan, clearing the mind.
+    assert not library._named("Notice the air moving in your ear canal. Clearing your mind, let it go.")
+
+
 async def test_muse_spark_tags_each_library_world_with_the_feelings_it_suits():
     worlds = [(e.id, {"title": e.title, "place": e.place, "time_of_day": e.time_of_day}) for e in LIBRARY[:3]]
     client = FakeClient(moods=[{"worlds": [

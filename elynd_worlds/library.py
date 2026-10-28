@@ -166,13 +166,16 @@ async def pick(client, meditation: Meditation, entries: list[Entry], meter: Mete
 
 
 # What a meditation's place is made of, and its time and weather: the words that tell library worlds apart
-# (`local`). A synonym counts as its word; a library id's place may be a compound ("forestlake"). The details
-# of a place (a bench, a path) count less than the place itself: a river walk with a bench is a river.
+# (`local`). A synonym counts as its word; a library id's place may be a compound ("forestlake"), read by its
+# whole words only. The details of a place (a bench, a path) count less than the place itself: a river walk with
+# a bench is a river. Every place of the library has its word here (tests), except a clearing: "clearing the
+# mind" is no place, and a clearing is a forest too.
 PLACES = set("""beach sea shore coast cliff bay lagoon harbour island lake pond lilies river stream brook
 waterfall pool fjord loch marsh reeds forest pine beech birch oak redwoods bamboo grove orchard garden meadow
 field hills valley mountain peak ridge summit alpine glacier dunes desert canyon cabin chalet cottage barn
 village city rooftop temple courtyard greenhouse treehouse park wheat lavender tulips heather vineyard cherry
-rice tea""".split())
+rice tea lighthouse canal jetty oasis pavilion savanna steppe sunflowers wildflowers bluebells willow heath
+highlands countryside tuscany hotspring saltflat blacksand aboveclouds whitehouses""".split())
 DETAILS = set("pier bench bridge path window room fire lantern fountain porch hammock".split())
 TIMES = set("dawn morning midday golden dusk night stars moon mist rain snow autumn spring summer blossom aurora".split())
 SYNONYMS = {"ocean": "sea", "seaside": "sea", "sand": "beach", "sandy": "beach", "waves": "sea", "woods": "forest",
@@ -181,14 +184,19 @@ SYNONYMS = {"ocean": "sea", "seaside": "sea", "sand": "beach", "sandy": "beach",
             "sunrise": "dawn", "daybreak": "dawn", "noon": "midday", "afternoon": "golden", "sunset": "golden",
             "evening": "dusk", "twilight": "dusk", "starry": "stars", "starlight": "stars", "moonlight": "moon",
             "moonlit": "moon", "misty": "mist", "fog": "mist", "foggy": "mist", "rainy": "rain", "raindrops": "rain",
-            "snowy": "snow", "snowfall": "snow", "snowflakes": "snow", "winter": "snow", "flowers": "garden"}
+            "snowy": "snow", "snowfall": "snow", "snowflakes": "snow", "winter": "snow", "flowers": "garden",
+            "sunflower": "sunflowers", "wildflower": "wildflowers", "bluebell": "bluebells", "tuscan": "tuscany",
+            "savannah": "savanna", "grassland": "steppe", "grasslands": "steppe", "prairie": "steppe",
+            "highland": "highlands", "jetties": "jetty", "oases": "oasis", "onsen": "hotspring",
+            "moorland": "heath", "heathland": "heath"}
 NAMED = PLACES | DETAILS | TIMES
 
 # The same names in the app's other languages, by what they name. Read only in a meditation of that language:
 # "see" is a lake in German and a verb in English. Left out on purpose where a word means something else too:
 # Kiefer (pine, and the jaw of a body scan), morgen (tomorrow), Weg (away), Fluss in Einfluss (influence),
 # Regen in anregen (to stimulate), mañana (tomorrow), haya (a beech, and "there may be"), fuente (a source),
-# été (summer, and "been"), serre (a greenhouse, and "squeezes").
+# été (summer, and "been"), serre (a greenhouse, and "squeezes"), Weide (a willow, and a pasture), claro (a
+# clearing, and "of course").
 FOREIGN_NAMES = {
     "de": {
         "beach": "strand strände strandes", "sea": "meer meeres mittelmeer ozean ostsee nordsee", "shore": "ufer",
@@ -205,9 +213,9 @@ FOREIGN_NAMES = {
         "cabin": "hütte hütten", "cottage": "häuschen", "barn": "scheune", "village": "dorf dörfer",
         "city": "stadt", "rooftop": "dachterrasse", "temple": "tempel", "courtyard": "innenhof",
         "greenhouse": "gewächshaus", "treehouse": "baumhaus", "wheat": "weizen weizenfeld kornfeld",
-        "lavender": "lavendel lavendelfeld", "tulips": "tulpen", "heather": "heide heidekraut",
+        "lavender": "lavendel lavendelfeld", "tulips": "tulpen", "heather": "heidekraut",
         "vineyard": "weinberg weinberge", "cherry": "kirschbaum kirschbäume kirschblüte kirschblüten",
-        "rice": "reisfeld reisfelder reisterrassen", "pier": "steg", "bench": "bank", "bridge": "brücke",
+        "rice": "reisfeld reisfelder reisterrassen", "pier": "seebrücke", "bench": "bank", "bridge": "brücke",
         "path": "pfad wanderweg waldweg feldweg", "window": "fenster", "room": "zimmer",
         "fire": "feuer kamin lagerfeuer", "lantern": "laterne laternen", "fountain": "brunnen",
         "porch": "veranda", "hammock": "hängematte", "dawn": "sonnenaufgang morgendämmerung morgenröte",
@@ -217,6 +225,13 @@ FOREIGN_NAMES = {
         "mist": "nebel neblig", "rain": "regen regentropfen", "snow": "schnee verschneit winter",
         "autumn": "herbst", "spring": "frühling", "summer": "sommer", "blossom": "blüte blüten",
         "aurora": "polarlicht polarlichter nordlicht nordlichter",
+        "lighthouse": "leuchtturm leuchttürme", "canal": "kanal kanäle gracht grachten",
+        "jetty": "steg stege bootssteg holzsteg anlegesteg", "oasis": "oase oasen", "pavilion": "pavillon",
+        "savanna": "savanne", "sunflowers": "sonnenblume sonnenblumen sonnenblumenfeld",
+        "wildflowers": "wildblumen wildblumenwiese", "bluebells": "hasenglöckchen",
+        "willow": "trauerweide weidenbaum weidenbäume", "heath": "heide heidelandschaft", "highlands": "hochland",
+        "tuscany": "toskana", "hotspring": "thermalquelle thermalquellen", "saltflat": "salzwüste salzpfanne",
+        "aboveclouds": "wolkenmeer",
     },
     "es": {
         "beach": "playa playas arena", "sea": "mar océano olas", "shore": "orilla orillas", "coast": "costa",
@@ -240,6 +255,10 @@ FOREIGN_NAMES = {
         "golden": "atardecer", "dusk": "anochecer crepúsculo", "night": "noche", "stars": "estrellas estrellado",
         "moon": "luna", "mist": "niebla bruma neblina", "rain": "lluvia", "snow": "nieve nevado invierno",
         "autumn": "otoño", "spring": "primavera", "summer": "verano", "aurora": "boreal",
+        "lighthouse": "faro faros", "jetty": "embarcadero embarcaderos", "pavilion": "pabellón",
+        "savanna": "sabana sabanas", "steppe": "estepa estepas", "sunflowers": "girasol girasoles",
+        "willow": "sauce sauces", "heath": "brezal brezales", "countryside": "campiña", "tuscany": "toscana",
+        "hotspring": "termas", "saltflat": "salar salares",
     },
     "fr": {
         "beach": "plage plages sable", "sea": "mer océan vagues", "shore": "rivage rive", "coast": "côte",
@@ -254,13 +273,16 @@ FOREIGN_NAMES = {
         "desert": "désert", "cabin": "cabane", "cottage": "chaumière", "barn": "grange", "city": "ville",
         "courtyard": "cour", "park": "parc", "wheat": "blé", "lavender": "lavande",
         "tulips": "tulipes", "heather": "bruyère", "vineyard": "vigne vignes vignoble",
-        "cherry": "cerisier cerisiers", "rice": "rizière rizières", "pier": "ponton jetée", "bench": "banc",
+        "cherry": "cerisier cerisiers", "rice": "rizière rizières", "pier": "jetée", "bench": "banc",
         "bridge": "pont", "path": "sentier chemin", "window": "fenêtre", "room": "chambre pièce",
         "fire": "feu cheminée", "lantern": "lanterne", "fountain": "fontaine", "porch": "véranda",
         "hammock": "hamac", "dawn": "aube aurore", "morning": "matin matinée", "midday": "midi",
         "dusk": "soir soirée crépuscule", "night": "nuit", "stars": "étoiles étoilé", "moon": "lune",
         "mist": "brume brouillard", "rain": "pluie", "snow": "neige enneigé hiver", "autumn": "automne",
         "spring": "printemps", "aurora": "boréale",
+        "lighthouse": "phare phares", "canal": "canaux", "jetty": "ponton pontons", "pavilion": "pavillon",
+        "savanna": "savane savanes", "sunflowers": "tournesol tournesols", "willow": "saule saules",
+        "heath": "lande landes", "countryside": "campagne", "tuscany": "toscane", "bluebells": "jacinthes",
     },
 }
 FOREIGN = {language: {word: name for name, words in names.items() for word in words.split()}
@@ -279,6 +301,28 @@ GERMAN_ENDINGS = sorted(
     key=lambda pair: -len(pair[0]))
 assert all(name in NAMED for names in FOREIGN_NAMES.values() for name in names), "a foreign word names nothing"
 assert all(name in NAMED for _, name in GERMAN_ENDINGS), "a German ending names nothing"
+# Places named in more than one word, joined before the words are read: a hot spring is no spring (the season).
+# English ones in every language, as English words are. "" takes apart what only sounds like a place: the ear
+# canal of a body scan.
+PHRASES = {
+    "en": {"hot spring": "hotspring", "hot springs": "hotspring", "salt flat": "saltflat",
+           "salt flats": "saltflat", "black sand": "blacksand", "sea of clouds": "aboveclouds",
+           "above the clouds": "aboveclouds", "white houses": "whitehouses", "ear canal": "", "ear canals": ""},
+    "de": {"heiße quelle": "hotspring", "heißen quelle": "hotspring", "heiße quellen": "hotspring",
+           "heißen quellen": "hotspring", "über den wolken": "aboveclouds", "schwarzer sand": "blacksand",
+           "schwarzen sand": "blacksand", "weiße häuser": "whitehouses", "weißen häuser": "whitehouses",
+           "weißen häusern": "whitehouses"},
+    "es": {"aguas termales": "hotspring", "mar de nubes": "aboveclouds", "sobre las nubes": "aboveclouds",
+           "arena negra": "blacksand", "tierras altas": "highlands", "flores silvestres": "wildflowers",
+           "casas blancas": "whitehouses", "canal auditivo": ""},
+    "fr": {"source chaude": "hotspring", "sources chaudes": "hotspring", "mer de nuages": "aboveclouds",
+           "au-dessus des nuages": "aboveclouds", "sable noir": "blacksand", "fleurs sauvages": "wildflowers",
+           "désert de sel": "saltflat", "maisons blanches": "whitehouses"},
+}
+_PHRASES = {language: [(re.compile(rf"\b{re.escape(phrase)}\b"), joined or " ") for phrase, joined in
+                       sorted({**PHRASES["en"], **phrases}.items(), key=lambda pair: -len(pair[0]))]
+            for language, phrases in PHRASES.items()}
+assert all(joined in NAMED or not joined for phrases in PHRASES.values() for joined in phrases.values())
 
 
 def _plain(word: str) -> str:
@@ -308,8 +352,18 @@ def _named(text: str, language: str = "en") -> Counter:
     """How often a text names each place, detail, time and weather, in English or in its own language
     (`language`: the meditation's, en, de, es or fr)."""
     language = (language or "en")[:2].lower()
-    words = (_name(w, language) for w in re.findall(r"[^\W\d_]+", text.lower()))
+    text = text.lower()
+    for phrase, joined in _PHRASES.get(language, _PHRASES["en"]):
+        text = phrase.sub(joined, text)
+    words = (_name(w, language) for w in re.findall(r"[^\W\d_]+", text))
     return Counter(w for w in words if w in NAMED)
+
+
+def _id_places(place: str) -> set[str]:
+    """The places a library id's place ("pineforest", "alpinetrail") names, by whole words only: an alpine trail
+    is no pine, a footbridge no ridge."""
+    found = {w for w in NAMED if w in place}
+    return {w for w in found & PLACES if not any(w != other and w in other for other in found)}
 
 
 def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = (),
@@ -331,12 +385,19 @@ def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = 
     names_place = any(w in PLACES for w in said)
 
     weight = {**dict.fromkeys(PLACES, 3), **dict.fromkeys(DETAILS, 1), **dict.fromkeys(TIMES, 2)}
+    mains = {e.id: _id_places(e.id.split("-")[0]) for e in candidates}
+    how_many = Counter(w for main in mains.values() for w in main)
 
     def score(entry: Entry) -> int:
         # What the world is (its id's place: "cabin", "zengarden" a garden) counts twice; what it shows besides once.
-        main = {w for w in PLACES if w in entry.id.split("-")[0]}
+        main = mains[entry.id]
         its = set(_named(f"{entry.id.replace('-', ' ')} {entry.title} {entry.place} {entry.time_of_day}")) | main
         return sum(weight[w] * min(said[w], 3) for w in its if w in said) + sum(3 for w in main if w in said)
+
+    def rare(entry: Entry) -> float:
+        """Among worlds that fit as well, the rarer place the meditation names: a bamboo grove is a forest too,
+        so "a forest of bamboo" opens on the bamboo, not on any forest."""
+        return sum(1 / how_many[w] for w in mains[entry.id] if w in said)
 
     def feeling(entry: Entry) -> int:
         """How well the world suits the session's feelings, 0 best. As the music's tiers: every world with the
@@ -347,7 +408,7 @@ def local(meditation: Meditation, entries: list[Entry], recent: Iterable[str] = 
                    default=3 * len(moods))
 
     # The place first when the meditation names one, else the feeling first.
-    key = ((lambda e: (score(e), -feeling(e))) if names_place else (lambda e: (-feeling(e), score(e))))
+    key = ((lambda e: (score(e), rare(e), -feeling(e))) if names_place else (lambda e: (-feeling(e), score(e))))
     seen = set(recent)
     fresh = [e for e in candidates if e.id not in seen] or candidates
     best = max(key(e) for e in fresh)
