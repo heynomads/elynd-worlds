@@ -13,7 +13,7 @@ from pathlib import Path
 import httpx
 import numpy as np
 import pytest
-from PIL import Image
+from PIL import Image, ImageFilter
 
 from elynd_worlds import (Meditation, Meter, Settings, art_director, cli, critic, cutter, library, life, painter,
                           plate, timeline)
@@ -282,6 +282,15 @@ def test_masks_land_where_sam_says_and_holes_are_filled():
     ring[8:12, 8:12] = 0  # the tea in the cup
     assert cutter.solid(ring)[10, 10] == 1 and cutter.solid(ring)[2, 2] == 0
     assert cutter.box_of(np.pad(np.ones((10, 20), np.uint8), ((90, 100), (40, 40)))) == (0.4, 0.45, 0.6, 0.5)
+
+
+@pytest.mark.parametrize("px", [1, 2, 12, 24])
+def test_grown_is_exactly_what_pils_max_filter_gives_even_at_the_edges(px):
+    # grown() replaced MaxFilter (seconds per subject at 24 px) with a summed-area count: same pixels.
+    mask = (np.random.default_rng(px).random((97, 61)) > 0.985).astype(np.uint8)
+    mask[0, 30] = mask[96, 0] = mask[50, 60] = 1  # on the edges and in a corner
+    by_pil = np.asarray(Image.fromarray(mask * 255).filter(ImageFilter.MaxFilter(2 * px + 1))) > 127
+    assert np.array_equal(cutter.grown(mask, px), by_pil.astype(np.uint8))
 
 
 def test_anchor_follows_how_the_subject_is_attached():

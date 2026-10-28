@@ -55,8 +55,7 @@ def tone_match(edit: Image.Image, painting: Image.Image, mask01: np.ndarray, rin
     those pixels are outliers and do not count. (Matching the ring's mean and contrast instead once
     turned a clean repaint of water into a pale boat-shaped patch, which SAM then took for the boat.)
     """
-    region = Image.fromarray(mask01.astype(np.uint8) * 255)
-    ring = (np.asarray(region.filter(ImageFilter.MaxFilter(ring_px * 2 + 1))) > 127) & (mask01 == 0)
+    ring = grown(mask01, ring_px).astype(bool) & (mask01 == 0)
     if ring.sum() < 50:
         return edit
     e = np.asarray(edit.convert("RGB"), dtype=np.float32)
@@ -117,8 +116,7 @@ def fill(painting: Image.Image, mask01: np.ndarray, grow_px: int = 12, keep_px: 
     never bleeds into it) but kept only inside the mask grown by `keep_px`
     (one pixel soft, on the inside): beyond that the painting stays as painted.
     """
-    hole = np.asarray(Image.fromarray(mask01.astype(np.uint8) * 255).filter(
-        ImageFilter.MaxFilter(grow_px * 2 + 1))) > 127
+    hole = grown(mask01, grow_px).astype(bool)
     known = (~hole).astype(np.float32)
     rgb = np.asarray(painting.convert("RGB"), dtype=np.float32) * known[..., None]
     for r in radii:
@@ -131,15 +129,16 @@ def fill(painting: Image.Image, mask01: np.ndarray, grow_px: int = 12, keep_px: 
         known[reach] = 1.0
     keep = mask01
     if keep_px > 0:
-        keep = (np.asarray(Image.fromarray(mask01.astype(np.uint8) * 255).filter(
-            ImageFilter.MaxFilter(keep_px * 2 + 1))) > 127).astype(np.uint8)
+        keep = grown(mask01, keep_px)
     weight = _inside(keep)
     out = rgb * weight + np.asarray(painting.convert("RGB"), dtype=np.float32) * (1.0 - weight)
     return Image.fromarray(np.clip(np.rint(out), 0, 255).astype(np.uint8))
 
 
 def to_png(image: Image.Image) -> bytes:
-    return encode(image, "PNG", optimize=True)
+    # zlib's default level: optimize=True took 2.2 s per plate for a 5% smaller file (28 Oct 2026),
+    # and no phone gets this PNG (the server sends WebP).
+    return encode(image, "PNG")
 
 
 async def is_clean(client, plate_png: bytes, layers: list[Layer], meter: Meter,

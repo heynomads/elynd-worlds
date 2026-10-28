@@ -188,11 +188,14 @@ EDGE_PX = 2
 
 
 def grown(mask01: np.ndarray, px: int = EDGE_PX) -> np.ndarray:
-    """The mask grown by `px` pixels on every side."""
+    """The mask grown by `px` pixels on every side.
+
+    Exactly what PIL's MaxFilter(2*px+1) gives, counted from a summed-area table: MaxFilter
+    compares every pixel with all (2*px+1)^2 around it, 5.7 s per subject for the plate's
+    24-pixel ring on a 1152x2048 painting (28 Oct 2026); this takes milliseconds at any width."""
     if px <= 0:
         return mask01.astype(np.uint8)
-    region = Image.fromarray(mask01.astype(np.uint8) * 255).filter(ImageFilter.MaxFilter(px * 2 + 1))
-    return (np.asarray(region) > 127).astype(np.uint8)
+    return (_count(mask01, px) > 0).astype(np.uint8)
 
 
 def cutout(painting: Image.Image, mask01: np.ndarray, feather_px: float = 2.0) -> bytes:
@@ -206,7 +209,9 @@ def cutout(painting: Image.Image, mask01: np.ndarray, feather_px: float = 2.0) -
     alpha = np.maximum(np.asarray(hard), soft).astype(np.uint8)
     rgba = painting.convert("RGBA")
     rgba.putalpha(Image.fromarray(alpha))
-    return encode(rgba, "PNG", optimize=True)
+    # zlib's default level: optimize=True took 3 s per layer for a 7% smaller file (28 Oct 2026),
+    # and no phone gets this PNG (the server sends WebP).
+    return encode(rgba, "PNG")
 
 
 async def segment(client, image_url: str, phrase: str, meter: Meter,
