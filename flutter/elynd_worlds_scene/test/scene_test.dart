@@ -534,6 +534,49 @@ void main() {
       },
     );
 
+    testWidgets(
+      'and asks for no other frames: none between its redraws, whatever the display',
+      (tester) async {
+        // A running ticker asked for a frame at every vsync (60 or 120 a second), each drawn again on the GPU.
+        Future<int> frames(List<double> visibility, Duration vsync) async {
+          await tester.pumpWidget(
+            host(
+              WorldScene(
+                key: UniqueKey(),
+                background: MemoryImage(_png),
+                aspect: 9 / 16,
+                timeline: WorldTimeline(
+                  breath: const [0, 0, 0, 0],
+                  visibility: visibility,
+                ),
+                positionSeconds: () => 0,
+              ),
+            ),
+          );
+          await tester.pump(const Duration(milliseconds: 100));
+          var asked = 0;
+          for (
+            var t = Duration.zero;
+            t < const Duration(seconds: 1);
+            t += vsync
+          ) {
+            // Time passes until the vsync (its timers run), then the frame: an engine draws one only when asked,
+            // and the scene asks while its ticker waits.
+            await tester.binding.delayed(vsync);
+            if (tester.binding.transientCallbackCount > 0) asked++;
+            await tester.pump();
+          }
+          return asked;
+        }
+
+        const hz120 = Duration(microseconds: 8333),
+            hz60 = Duration(microseconds: 16667);
+        expect(await frames(const [1, 1, 1, 1], hz120), inInclusiveRange(29, 32));
+        expect(await frames(const [1, 1, 1, 1], hz60), inInclusiveRange(29, 32));
+        expect(await frames(const [0.25, 0.25, 0.25, 0.25], hz120), inInclusiveRange(14, 17));
+      },
+    );
+
     testWidgets('a paused session stops breathing ahead after one second', (
       tester,
     ) async {

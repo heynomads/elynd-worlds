@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/scheduler.dart';
@@ -155,6 +156,8 @@ class WorldScene extends StatefulWidget {
 class _WorldSceneState extends State<WorldScene>
     with SingleTickerProviderStateMixin {
   late final Ticker _ticker;
+  Timer? _wake;
+  Duration? _started;
   Duration _clock = Duration.zero;
   double _position = 0;
   Duration _positionChangedAt = Duration.zero;
@@ -166,7 +169,11 @@ class _WorldSceneState extends State<WorldScene>
     _ticker = createTicker(_tick)..start();
   }
 
-  void _tick(Duration elapsed) {
+  void _tick(Duration _) {
+    // Time since the first frame, from the frames' own time stamps: the ticker is stopped between frames
+    // (below), so its own elapsed time starts again each time.
+    final now = SchedulerBinding.instance.currentFrameTimeStamp;
+    final elapsed = now - (_started ??= now);
     final position = widget.positionSeconds();
     if (position != _position) {
       _position = position;
@@ -184,6 +191,15 @@ class _WorldSceneState extends State<WorldScene>
     if (elapsed - _clock < due && _clock != Duration.zero) return;
     WorldScene.debugRedraws++;
     setState(() => _clock = elapsed);
+    // Then no frame at all until the next one is due. A running ticker asks the engine for a frame at every
+    // vsync, 60 or 120 a second, and each of those frames is drawn again on the GPU though nothing changed
+    // (measured on an emulator, 28 Oct 2026: 60 frames a second for 30 redraws, for 15 in the glow). A
+    // locked screen draws no frames, so no tick restarts the timer either.
+    _ticker.stop();
+    _wake?.cancel();
+    _wake = Timer(due, () {
+      if (mounted && !_ticker.isActive) _ticker.start();
+    });
   }
 
   /// Session seconds now: the last position plus the time since it changed,
@@ -195,6 +211,7 @@ class _WorldSceneState extends State<WorldScene>
 
   @override
   void dispose() {
+    _wake?.cancel();
     _ticker.dispose();
     super.dispose();
   }
