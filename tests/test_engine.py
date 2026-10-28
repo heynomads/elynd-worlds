@@ -176,6 +176,15 @@ async def test_when_the_open_model_cannot_design_muse_spark_does():
         assert meter.calls["design"] == 1
 
 
+async def test_muse_spark_designs_with_the_reasoning_it_is_given():
+    for setting, sent in ((None, None), ("low", "low")):
+        meta = FakeClient()
+        await art_director.design(meta, MEDITATION, Meter(), Settings(director_reasoning=setting))
+        assert meta.requests[0].get("reasoning_effort") == sent
+        await art_director.revise(meta, SCENE, {"fix": "softer light"}, Meter(), Settings(director_reasoning=setting))
+        assert meta.requests[1].get("reasoning_effort") == sent
+
+
 @pytest.mark.parametrize("broken, billed", [
     (FakeClient(fail_chat=True), 0),                          # an error or an outage
     (FakeClient(verdicts=['{"score": 9}']), 2),               # an answer without the checks, asked twice

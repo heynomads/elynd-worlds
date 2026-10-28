@@ -245,6 +245,7 @@ async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, 
         response_format=_response_format(),
         extra_body={**privacy_fields(), **cache_fields("design")},
         timeout=settings.design_timeout,
+        **reasoning(settings.director_reasoning),
     )
     meter.spark(getattr(response, "usage", None), step)
     return check(json.loads(response.choices[0].message.content))

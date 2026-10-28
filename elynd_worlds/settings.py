@@ -34,6 +34,9 @@ class Settings:
     # Standard mode only. The "-contributor" variants cost less because Meta may
     # train on what they receive; a listener's meditation must never be used so.
     director_model: str = "muse-spark-1.3"
+    # How long Muse Spark thinks before it designs or revises a world (meta.reasoning). None: the model decides
+    # (a median 14.5 s a design on 28 Oct 2026, 20 meditations).
+    director_reasoning: str | None = None
     critic_model: str = "muse-spark-1.3"
     # When Meta Model API answers 404 for a Muse Spark model (27 Oct 2026: muse-spark-1.3 vanished from this
     # account's catalog for a while), this one answers instead (same prices, Standard mode).
@@ -52,8 +55,10 @@ class Settings:
     open_critic_reasoning: str | None = "low"
     # Muse Spark Open designs the world too (art_director.design and revise), when this is set and an open-model
     # client is passed: the whole agent's thinking on open weights, only the painting and the cutting on Meta Model
-    # API. Off by default, and off in the ELYND app, whose privacy text says the meditation goes to Meta alone and
-    # the open model's host sees only a painting and its scenery design.
+    # API. Off by default, and off in the ELYND app: a listener's meditation can carry what they shared about their
+    # health, which the open model's host takes only under a separate agreement (Baseten's Data Processing
+    # Addendum, 15 Sep 2026, Annex A), so the app's privacy text sends the meditation to Meta alone and the host
+    # sees only a painting and its scenery design.
     open_designer: bool = False
     open_designer_model: str = "meta-models/muse-spark-open-1026"
     open_designer_reasoning: str | None = "low"
