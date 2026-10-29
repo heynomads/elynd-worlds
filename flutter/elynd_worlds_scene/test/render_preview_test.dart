@@ -6,6 +6,7 @@
 //     [--dart-define=RATIO=2] (pixels per point: 1.4 gives 546 x 1182, the review videos' width, about twice as fast)
 //     [--dart-define=LIGHT=sunrise|deepen|nightfall] [--dart-define=DURATION=600] (the session, in seconds)
 //     [--dart-define=TIMELAPSE=true] (the whole session's light within the clip, the world fully shown)
+//     [--dart-define=SIZE=360x640] (the screen in points: 390x844 a phone, 360x640 the share card's 9:16)
 //   ffmpeg -framerate 30 -i /abs/frames/%04d.png -pix_fmt yuv420p preview.mp4
 //
 // Skipped unless WORLD_DIR and FRAMES_DIR are given.
@@ -28,6 +29,13 @@ const _silent = bool.fromEnvironment('SILENT');
 final _ratio = double.tryParse(const String.fromEnvironment('RATIO')) ?? 2;
 const _lightName = String.fromEnvironment('LIGHT');
 const _duration = int.fromEnvironment('DURATION', defaultValue: 600);
+final _size = (() {
+  final wh = const String.fromEnvironment(
+    'SIZE',
+    defaultValue: '390x844',
+  ).split('x');
+  return Size(double.parse(wh[0]), double.parse(wh[1]));
+})();
 const _timelapse = bool.fromEnvironment('TIMELAPSE');
 
 void main() {
@@ -55,7 +63,7 @@ void main() {
         : <WorldLayer>[];
     final living = manifest.living?.resolve((source) => load(source));
 
-    tester.view.physicalSize = const Size(780, 1688);
+    tester.view.physicalSize = _size * 2;
     tester.view.devicePixelRatio = 2;
     addTearDown(tester.view.reset);
     final shot = GlobalKey();
@@ -70,7 +78,7 @@ void main() {
       RepaintBoundary(
         key: shot,
         child: MediaQuery(
-          data: const MediaQueryData(size: Size(390, 844)),
+          data: MediaQueryData(size: _size),
           child: Directionality(
             textDirection: TextDirection.ltr,
             child: ColoredBox(

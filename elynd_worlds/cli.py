@@ -204,6 +204,19 @@ def _sheet(args: argparse.Namespace) -> int:
     return 0
 
 
+def _loop(args: argparse.Namespace) -> int:
+    from . import loop
+    w, h = (int(v) for v in args.size.split("x"))
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for folder in map(Path, args.worlds):
+        made = loop.make_loop(folder, out_dir / f"{folder.name}.mp4", size=(w, h), ratio=args.ratio,
+                              bitrate=args.bitrate, music=Path(args.music) if args.music else None,
+                              music_from=args.music_from, flutter=args.flutter)
+        print(json.dumps(made))
+    return 0
+
+
 def _timeline(args: argparse.Namespace) -> int:
     silences = [timeline.Silence(*map(float, s.split(":"))) for s in args.silence]
     cues = [timeline.Cue(float(c.split(":")[1]), c.split(":")[0]) for c in args.cue]
@@ -251,6 +264,16 @@ def main(argv: list[str] | None = None) -> int:
     sheet.add_argument("folders", nargs="+")
     sheet.add_argument("--output", default="out/sheet.jpg")
 
+    lp = sub.add_parser("loop", help="each world's shared clip: 12 s that loop without a seam (MP4, marked as made by AI)")
+    lp.add_argument("worlds", nargs="+", help="saved world folders (world.json and its pictures)")
+    lp.add_argument("--out-dir", default="out/loops")
+    lp.add_argument("--size", default="360x640", help="the screen in points; times --ratio in pixels (1080 x 1920)")
+    lp.add_argument("--ratio", type=float, default=3.0)
+    lp.add_argument("--bitrate", default="3M")
+    lp.add_argument("--music", help="a bed of our own music, looped like the picture")
+    lp.add_argument("--music-from", type=float, default=60.0, help="where in the music the bed starts (s)")
+    lp.add_argument("--flutter", default=os.environ.get("FLUTTER", "flutter"))
+
     tl = sub.add_parser("timeline", help="print the breathing timeline as JSON")
     tl.add_argument("--duration", type=float, required=True)
     tl.add_argument("--silence", action="append", default=[], help="start:end in seconds")
@@ -266,6 +289,8 @@ def main(argv: list[str] | None = None) -> int:
         return asyncio.run(_pick(args))
     if args.command == "sheet":
         return _sheet(args)
+    if args.command == "loop":
+        return _loop(args)
     return _timeline(args)
 
 
