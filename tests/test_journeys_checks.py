@@ -341,3 +341,79 @@ def test_the_finishing_say_keeps_their_words_and_loses_the_guides_own_closing():
     theirs = ("Calm", "Weekday mornings, my inbox.", "I'd deal with one thing at a time.")
     llama = FakeLlama([finish(say="One thing at a time.")])
     assert guide.next_turn(llama, "ENG", turns(*theirs), today=TODAY).say == "One thing at a time."
+
+
+# ═══ The guide, round two of the gate ════════════════════════════════════
+
+def test_asked_whether_it_is_a_person_the_guide_says_plainly_it_is_an_ai():
+    human = ask(say="Yes, I'm a real person. What would you like to feel more of?")
+    honest = ask(say="No, I'm an AI guide, here to listen for a minute. What would you like to feel more of?")
+    llama = FakeLlama([human, honest])
+    turn = guide.next_turn(llama, "ENG", turns("Are you a real person?"), today=TODAY)
+    assert turn.say == json.loads(honest)["say"]
+    assert "never say or suggest that you are a person" in llama.calls[1][1]
+    assert "say it back simply, then ask what they would like to feel" in llama.calls[0][1]
+    assert "If they ask whether you are a person, say plainly and warmly that you are an AI guide" in llama.calls[0][0]
+    # Silent on it three times: the guide's own plain sentence comes first.
+    dodge = ask(say="I'm here to listen. What would you like to feel more of in your days?")
+    turn = guide.next_turn(FakeLlama([dodge] * 3), "ENG", turns("Are you a real person?"), today=TODAY)
+    assert turn.say.startswith("I'm an AI guide, not a person. ") and turn.say.endswith("in your days?")
+    # Asked mid-conversation, also in a finishing turn.
+    finish_honest = finish(say="I'm an AI guide, not a person. Reading your book, like you used to.")
+    turn = guide.next_turn(FakeLlama([finish(), finish_honest]), "ENG",
+                           turns(*ANSWERS[:2], "Reading my book on the train. Are you a bot?"), today=TODAY)
+    assert turn.done and turn.say.startswith("I'm an AI guide")
+
+
+@pytest.mark.parametrize("claim", ["I'm a real person, and I hear you.", "As a person, I am human too.",
+                                   "I'm a meditation teacher, not a machine.", "I'm not an AI."])
+def test_a_say_that_claims_to_be_a_person_is_asked_again(claim):
+    llama = FakeLlama([ask(say=f"{claim} When does it show up most?"), ask()])
+    assert guide.next_turn(llama, "ENG", turns("Calmer mornings"), today=TODAY).say == GOOD_ASK["say"]
+    assert "never say or suggest that you are a person" in llama.calls[1][1]
+
+
+@pytest.mark.parametrize("text, lang", [("Ich bin ein Mensch, wie du.", "GER"), ("Soy una persona real.", "ES"),
+                                        ("Je suis une vraie personne.", "FR"), ("I am human.", "ENG")])
+def test_human_claims_in_four_languages(text, lang):
+    assert guide.HUMAN.search(text)
+    assert not guide.HUMAN.search(guide.HONEST[lang])
+
+
+def test_with_nothing_usable_and_asked_the_fallback_is_honest_too():
+    turn = guide.next_turn(FakeLlama(["a poem"] * 3), "ENG", turns("Are you human?"), today=TODAY)
+    assert turn.say == "I'm an AI guide, not a person. What would you like to feel more of in your days?"
+
+
+def test_the_summary_says_what_they_want_never_the_apps_question_back():
+    echo = finish(summary="You want to grow in the next 30 days. On the packed tube your heart races and you get off "
+                          "early. A good day is reading your book all the way to work.")
+    llama = FakeLlama([echo, finish()])
+    assert guide.next_turn(llama, "ENG", turns(*ANSWERS), today=TODAY).summary == GOOD_FINISH["summary"]
+    assert "the summary repeats the app's question" in llama.calls[1][1]
+    turn = guide.next_turn(FakeLlama([echo] * 3), "ENG", turns(*ANSWERS), today=TODAY)
+    assert turn.summary.startswith("On the packed tube")
+
+
+def test_chips_say_what_is_there_on_a_good_day():
+    gone = ask(chips=["No shaking hands", "Steady hands", "Less anxious"])
+    llama = FakeLlama([gone, ask()])
+    assert guide.next_turn(llama, "ENG", turns(*ANSWERS[:2]), today=TODAY).chips == GOOD_ASK["chips"]
+    assert 'a chip says what would be gone ("No shaking hands")' in llama.calls[1][1]
+    assert guide.next_turn(FakeLlama([gone] * 3), "ENG", turns(*ANSWERS[:2])).chips == ["Steady hands"]
+
+
+@pytest.mark.parametrize("little", ["test", "idk", "ok", "?"])
+def test_an_answer_that_says_little_is_met_by_asking_what_they_would_like_to_feel(little):
+    llama = FakeLlama([ask()])
+    guide.next_turn(llama, "ENG", turns(little), today=TODAY)
+    assert "Their last answer says little" in llama.calls[0][1]
+    llama = FakeLlama([ask()])
+    guide.next_turn(llama, "ENG", turns("Calm"), today=TODAY)
+    assert "says little" not in llama.calls[0][1]
+
+
+def test_a_finishing_fragment_becomes_a_sentence():
+    llama = FakeLlama([finish(say="just saying okay", summary=GOOD_FINISH["summary"].rstrip("."))])
+    turn = guide.next_turn(llama, "ENG", turns(*ANSWERS[:2], "Just saying okay and carrying on"), today=TODAY)
+    assert turn.say == "Just saying okay." and turn.summary.endswith("book.")
