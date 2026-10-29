@@ -561,3 +561,15 @@ def test_an_answer_that_is_no_turn_at_all_gets_the_guides_own_question():
     assert turn.say == guide.FALLBACK_QUESTIONS["ENG"][0] and not turn.done and len(llama.calls) == 3
     with pytest.raises(GuideError):
         guide.next_turn(FakeLlama([poem] * 3), "ENG", turns("Calm", "Mornings", "One thing at a time"), today=TODAY)
+
+
+def test_a_field_that_breaks_a_rule_is_shown_blank_when_asked_again():
+    # Shown its whole last answer, the model once sent "as you help the kids" back three times and failed the plan.
+    helping = {20: {"focus": "You breathe steadily as you help the kids with their morning routine."}}
+    plan, llama = make(Script(weeks={15: [helping, {}]}))
+    again = [u for _, u in llama.calls if "plan days 15" in u][1]
+    shown = again.split("Your last answer was:\n")[1]
+    day20 = json.loads(shown)["days"][5]
+    assert (day20["n"], day20["focus"], day20["try_today"]) == (20, "REWRITE", GOOD_TRY)
+    assert 'a word ELYND never uses, in any form ("help"): say it another way' in again
+    assert "write anew every field marked REWRITE" in again and plan.day(20).focus == "Today you notice your hands."

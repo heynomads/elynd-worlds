@@ -239,7 +239,7 @@ def test_a_plan_that_never_comes_right_is_a_plan_error():
     with pytest.raises(PlanError):
         planner.make_plan(llama, "ENG", "Steady", "You want to feel confident.")
     assert [round(t, 1) for t in llama.temperatures] == [0.6, 0.4, 0.3]
-    assert 'the promise: a word it may not use ("heal")' in llama.calls[1][1]
+    assert 'the promise: a word ELYND never uses, in any form ("heal")' in llama.calls[1][1]
 
 
 # ─── The day's block for the writer ──────────────────────────────────────

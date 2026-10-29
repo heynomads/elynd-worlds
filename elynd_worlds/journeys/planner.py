@@ -301,7 +301,7 @@ def _words_problem(text: str, ctx: _Context) -> str | None:
     """The rules every field of the plan keeps: the house words, condition names, "nervous system", coaching."""
     word = forbidden_word(text, ctx.language)
     if word:
-        return f'a word it may not use ("{word}")'
+        return f'a word ELYND never uses, in any form ("{word}"): say it another way'
     word = condition_word(text, ctx.language)
     if word:
         return f'it names a condition ("{word}"): write about their situation and practice instead'
@@ -445,8 +445,8 @@ def _ask(llama: Llama, prompt: str, parse: Callable[[str, bool], tuple], max_tok
             soft_asked = True
         reasons = "; ".join(hard + ([] if soft_asked and hard else soft))
         problem = (f"\n\nYour last answer could not be used ({reasons}). Answer again: one JSON object only. Keep "
-                   f"what was right and change what these reasons name. Your last answer was:\n"
-                   f"{_compact(reply.text)}")
+                   f"what was right and write anew every field marked REWRITE. Your last answer was:\n"
+                   f"{_compact(reply.text, hard)}")
     if best is not None:
         return best, spent
     raise _plan_error("no usable answer", spent)
@@ -458,11 +458,33 @@ def _plan_error(reason: str, usd: float) -> PlanError:
     return error
 
 
-def _compact(text: str) -> str:
+_DAY_FIELD = re.compile(r"^day (\d+) (title|focus|aim|try_today)\b")
+_WEEK_FIELD = re.compile(r"^week (\d)'s (theme|line)\b")
+REWRITE = "REWRITE"
+
+
+def _compact(text: str, hard: list[str] = ()) -> str:
+    """The last answer as it is shown when asked again, every field a hard reason names replaced by REWRITE: shown
+    whole, a model tends to send the same field back unchanged."""
     try:
-        return json.dumps(first_json(text), ensure_ascii=False)
+        data = first_json(text)
     except ValueError:
         return text[:4000]
+    for reason in hard:
+        day, week = _DAY_FIELD.match(reason), _WEEK_FIELD.match(reason)
+        if day:
+            for item in data.get("days") or []:
+                if isinstance(item, dict) and item.get("n") == int(day.group(1)):
+                    item[day.group(2)] = REWRITE
+        elif week and isinstance(data.get("weeks"), list) and int(week.group(1)) <= len(data["weeks"]):
+            target = data["weeks"][int(week.group(1)) - 1]
+            if isinstance(target, dict):
+                target[week.group(2)] = REWRITE
+        elif reason.startswith("the promise"):
+            data["promise"] = REWRITE
+        elif reason.startswith("the check-in question"):
+            data["checkin_question"] = REWRITE
+    return json.dumps(data, ensure_ascii=False)
 
 
 def make_plan(llama: Llama, language: str, title: str, summary: str, minutes: int = 10,
