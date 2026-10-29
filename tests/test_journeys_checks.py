@@ -488,3 +488,18 @@ def test_a_moment_label_starts_with_a_capital():
     turn = guide.next_turn(FakeLlama([lower]), "ENG", turns("My driving test next Friday, the 6th", "b", "c"),
                            today=TODAY)
     assert turn.moment == guide.Moment("Driving test", "2026-11-06")
+
+
+def test_a_question_that_lost_its_mark_gets_it_back_without_asking_again():
+    lost = ask(say="test. What would you like to feel more of in your days", chips=["calmness", "energy"])
+    llama = FakeLlama([lost])
+    turn = guide.next_turn(llama, "ENG", turns("test"), today=TODAY)
+    assert turn.say == "Test. What would you like to feel more of in your days?" and len(llama.calls) == 1
+    assert turn.chips == ["Calmness", "Energy"]
+    french = ask(say="Au boulot. Qu’est-ce qui rendrait une journée bonne pour toi")
+    assert guide.next_turn(FakeLlama([french]), "FR", turns("Moins stressé", "Au boulot")).say.endswith("pour toi ?")
+    # A statement without a question is still no question: asked again.
+    statement = ask(say="A full inbox before breakfast.")
+    llama = FakeLlama([statement, ask()])
+    guide.next_turn(llama, "ENG", turns("Calm"), today=TODAY)
+    assert "a question ends with a question mark" in llama.calls[1][1]

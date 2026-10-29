@@ -186,6 +186,11 @@ _CONDITIONS = {lang: re.compile(rf"\b(?:{pattern})\b", re.I) for lang, pattern i
 COMPARE = re.compile(r"\b(?:normal\w*|like every(?:one|body)|like other people|wie alle anderen|wie jeder|"
                      r"como (?:todos|todo el mundo|los demás)|comme tout le monde|comme les autres)\b", re.I)
 THIRTY = re.compile(r"\b(?:thirty|30|dreißig|treinta|trente)\b", re.I)
+# A sentence that begins as a question (EN, DE, ES, FR): when the model drops the question mark, code puts it back.
+QUESTION_WORD = re.compile(
+    r"(?i)^[¿\"'«“]*\s*(?:what|when|where|how|who|which|why|would|could|do|does|did|is|are|can|will|have|has|"
+    r"and what|and when|and how|was|wann|wo|wie|welche\w*|warum|wer|kannst|bist|hast|möchtest|qué|cuándo|dónde|cómo|"
+    r"cuál|quién|por qué|te gustaría|qu['’]|quand|où|comment|quel\w*|est-ce|pourquoi|à quoi)\b")
 # The guide never claims or suggests that it is a person (EN, DE, ES, FR).
 HUMAN = re.compile(
     r"\bI(?:'m|’m| am)\s+(?:just\s+)?(?:a\s+|an\s+)?(?:real\s+|actual\s+)?(?:person|human(?:\s+being)?|man|woman)\b|"
@@ -476,8 +481,11 @@ def parse(text: str, language: str, today: dt.date, *, must_finish: bool, theirs
         chips = chips[:3]
     if done and theirs:
         say = _their_sentences(say, theirs)
-    if done and say:
+    if say:
         say = say[:1].upper() + say[1:]
+    if not done and say and "?" not in say and QUESTION_WORD.match((sentences(say) or [""])[-1]):
+        say = say.rstrip(" .…") + (" ?" if language == "FR" else "?")   # a question that lost its mark, not re-asked
+    if done and say:
         say = say if say[-1] in ".?!…\"'»”" else say + "."
     turn = Turn(say=say, chips=chips, done=done)
     if done:
