@@ -43,11 +43,12 @@ def turns(*answers):
 
 ASK = json.dumps({"say": "Confidence when you speak up. When do you notice it slipping the most?",
                   "chips": ["In meetings", "With new people", "When I'm criticised"], "done": False})
-FINISH = json.dumps({"say": "Thank you, I have what I need to shape your thirty days.", "chips": [], "done": True,
+FINISH = json.dumps({"say": "Saying what you think, without rehearsing it.", "chips": [], "done": True,
                      "title": "Steady in my own voice",
                      "summary": "You want to feel confident when you speak up at work, especially in meetings with "
                                 "your manager. A good day is one where you say what you think without rehearsing it.",
                      "moment": {"label": "My presentation", "date": "2026-11-12"}})
+ANSWERS = ("More confident", "In meetings with my manager, and my presentation on the 12th", "Saying what I think")
 
 
 # ─── The guide ────────────────────────────────────────────────────────────
@@ -60,6 +61,7 @@ def test_the_guide_asks_one_question_with_answers_to_tap():
     system, user = llama.calls[0]
     assert "Write in English" in system and "Today is 2026-10-31 (Saturday)" in system
     assert "Them: More confident" in user and "Teacher: What would you like" in user
+    assert "your first question" in user
 
 
 def test_words_that_need_care_go_to_care_before_anything_is_sent():
@@ -71,33 +73,57 @@ def test_words_that_need_care_go_to_care_before_anything_is_sent():
 def test_the_conversation_must_be_well_formed():
     llama = FakeLlama([ASK] * 9)
     for bad in ([], [{"role": "you", "text": "hi"}], turns("a") + [{"role": "guide", "text": "q"}],
-                turns("a", "b", "c", "d", "e"), [{"role": "guide", "text": "q"}, {"role": "you", "text": "x" * 601}]):
+                turns("a", "b", "c", "d", "e", "f"), [{"role": "guide", "text": "q"}, {"role": "you", "text": "x" * 601}]):
         with pytest.raises(ValueError):
             guide.next_turn(llama, "ENG", bad)
 
 
-def test_after_the_third_answer_it_is_told_to_finish_and_after_the_fourth_it_must():
-    llama = FakeLlama([FINISH])
-    turn = guide.next_turn(llama, "ENG", turns("More confident", "In meetings", "Saying what I think"), today=TODAY)
+def test_two_questions_then_it_finishes_after_the_third_answer():
+    # The second answer is followed by the second and last question, even when the model would finish.
+    early = json.dumps(dict(json.loads(FINISH), say="Saying what you think. And a good day, what is it like?"))
+    llama = FakeLlama([early])
+    turn = guide.next_turn(llama, "ENG", turns(*ANSWERS[:2]), today=TODAY)
+    assert not turn.done and turn.title is None and "second and last question" in llama.calls[0][1]
+    # After the third answer it finishes, whatever the model says about "done".
+    llama = FakeLlama([json.dumps(dict(json.loads(FINISH), done=False))])
+    turn = guide.next_turn(llama, "ENG", turns(*ANSWERS), today=TODAY)
     assert "finish now" in llama.calls[0][1]
     assert (turn.done, turn.title, turn.moment) == (True, "Steady in my own voice",
                                                    Moment("My presentation", "2026-11-12"))
-    assert turn.summary.startswith("You want to feel confident")
-    # A fourth answer finishes even when the model forgets to say so; without a title it is asked again.
-    no_title = json.dumps({"say": "Thank you.", "done": False, "chips": ["x"]})
+    assert turn.summary.startswith("You want to feel confident") and turn.chips == []
+    # Without a title it is asked again.
+    no_title = json.dumps({"say": "Saying what you think.", "done": True, "chips": ["x"]})
     llama = FakeLlama([no_title, FINISH])
-    turn = guide.next_turn(llama, "ENG", turns("a", "b", "c", "d"), today=TODAY)
+    turn = guide.next_turn(llama, "ENG", turns(*ANSWERS), today=TODAY)
     assert turn.done and turn.chips == [] and len(llama.calls) == 2
+    assert "needs a title and a summary" in llama.calls[1][1]
 
 
-def test_words_it_may_never_use_are_asked_again_then_refused():
+def test_they_may_change_something_twice_and_each_change_finishes_again():
+    conversation = turns(*ANSWERS) + [{"role": "guide", "text": "Saying what you think."},
+                                      {"role": "you", "text": "Not only meetings, also calls"}]
+    llama = FakeLlama([FINISH])
+    turn = guide.next_turn(llama, "ENG", conversation, today=TODAY)
+    assert turn.done and "they changed something" in llama.calls[0][1]
+    conversation += [{"role": "guide", "text": "Also calls."}, {"role": "you", "text": "And with my sister"}]
+    assert guide.next_turn(FakeLlama([FINISH]), "ENG", conversation, today=TODAY).done
+    with pytest.raises(ValueError):   # a third change is not a conversation the app sends
+        guide.next_turn(FakeLlama([FINISH]), "ENG", conversation + [{"role": "guide", "text": "x"},
+                                                                    {"role": "you", "text": "y"}])
+
+
+def test_words_it_may_never_use_are_asked_again_then_left_out_or_refused():
     helping = json.dumps({"say": "I can help you with that. When does it happen?", "chips": ["At work"], "done": False})
-    healing = json.dumps({"say": "Lass uns an deiner Heilung arbeiten. Wann passiert es?", "chips": [], "done": False})
     llama = FakeLlama([helping, ASK])
     assert guide.next_turn(llama, "ENG", turns("More confident")).say.startswith("Confidence")
-    assert "could not be used (a word it may not use: help)" in llama.calls[1][1]
+    assert 'could not be used (say: a word it may not use: "help")' in llama.calls[1][1]
+    # On the last attempt the sentence that breaks the rule is left out when the question stays.
+    healing = json.dumps({"say": "Lass uns an deiner Heilung arbeiten. Wann passiert es?", "chips": [], "done": False})
+    assert guide.next_turn(FakeLlama([healing] * 3), "GER", turns("Mehr Selbstvertrauen")).say == "Wann passiert es?"
+    # A title that breaks it cannot be left out: no finishing turn.
+    cure = json.dumps(dict(json.loads(FINISH), title="Cure my nerves"))
     with pytest.raises(GuideError):
-        guide.next_turn(FakeLlama([healing, healing]), "GER", turns("Mehr Selbstvertrauen"))
+        guide.next_turn(FakeLlama([cure] * 3), "ENG", turns(*ANSWERS), today=TODAY)
 
 
 def test_no_emoji_no_exclamation_and_a_date_only_when_real():
@@ -105,8 +131,19 @@ def test_no_emoji_no_exclamation_and_a_date_only_when_real():
     turn = guide.next_turn(FakeLlama([cheerful]), "ENG", turns("Sleep better"))
     assert (turn.say, turn.chips) == ("Wonderful. When does it show up?", ["Mornings"])
     far = dict(json.loads(FINISH), moment={"label": "Wedding", "date": "2027-06-01"})
-    turn = guide.next_turn(FakeLlama([json.dumps(far)]), "ENG", turns("a", "b", "c"), today=TODAY)
+    turn = guide.next_turn(FakeLlama([json.dumps(far)]), "ENG", turns("Calm", "At my wedding next June", "c"),
+                           today=TODAY)
     assert turn.moment == Moment("Wedding", None)
+
+
+def test_a_moment_is_only_one_they_named_and_dated_only_from_their_words():
+    invented = dict(json.loads(FINISH), moment={"label": "Job interview", "date": "2026-11-12"})
+    turn = guide.next_turn(FakeLlama([json.dumps(invented)]), "ENG", turns(*ANSWERS), today=TODAY)
+    assert turn.moment is None
+    undated = dict(json.loads(FINISH), moment={"label": "My presentation", "date": "2026-11-12"})
+    turn = guide.next_turn(FakeLlama([json.dumps(undated)]), "ENG",
+                           turns("More confident", "My presentation", "Saying what I think"), today=TODAY)
+    assert turn.moment == Moment("My presentation", None)
 
 
 def test_json_is_found_inside_prose_or_a_code_fence():
