@@ -256,9 +256,27 @@ void main() {
       ('drift', 'air'),
     ];
 
+    test('a meditation\'s world never repeats every 12 s: the live periods (29b9366) are the default', () {
+      expect(WorldMotion.periods, same(WorldPeriods.live));
+      const live = WorldPeriods.live;
+      expect([live.swell, live.swellShort, live.roll, live.hoverX, live.hoverY, live.wing, live.sway, live.swayShort,
+          live.drift], [4.3, 2.7, 5.1, 7.9, 5.3, 4.2, 4.6, 1.9, 14]);
+      for (final (motion, attached) in kinds) {
+        var differs = false;
+        for (var t = 0.0; t < 24 && !differs; t += 0.37) {
+          final a = WorldMotion.layer(motion: motion, attached: attached, clockSeconds: t);
+          final b = WorldMotion.layer(motion: motion, attached: attached, clockSeconds: t + WorldMotion.loopSeconds);
+          differs = (a.dx - b.dx).abs() + (a.dy - b.dy).abs() + (a.rotation - b.rotation).abs() > 1e-6;
+        }
+        expect(differs, isTrue, reason: '$motion/$attached would loop every 12 s in a meditation');
+      }
+    });
+
     test(
-      'every motion repeats every 12 s: a 12-second clip of a world loops without a seam',
+      'the shared clip\'s periods: every motion repeats every 12 s, so a 12-second clip loops without a seam',
       () {
+        WorldMotion.periods = WorldPeriods.clip;
+        addTearDown(() => WorldMotion.periods = WorldPeriods.live);
         for (final (motion, attached) in [...kinds, ('still', 'ground')]) {
           for (var index = 0; index < 3; index++) {
             for (var t = 0.0; t < 24; t += 0.37) {

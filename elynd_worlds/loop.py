@@ -114,6 +114,7 @@ def render(world_dir: Path, frames_dir: Path, clock: int, seconds: float, size: 
         f"--dart-define=WORLD_DIR={Path(world_dir).resolve()}", f"--dart-define=FRAMES_DIR={frames_dir.resolve()}",
         f"--dart-define=SECONDS={math.ceil(seconds)}", f"--dart-define=CLOCK={int(clock)}",
         f"--dart-define=RATIO={ratio}", "--dart-define=SILENT=true", f"--dart-define=SIZE={size[0]}x{size[1]}",
+        "--dart-define=LOOP=true",
     ]
     subprocess.run(command, cwd=package or SCENE_PACKAGE, check=True, capture_output=True, stdin=subprocess.DEVNULL)
     return sorted(frames_dir.glob("*.png"))

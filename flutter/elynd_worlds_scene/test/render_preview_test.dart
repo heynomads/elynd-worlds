@@ -26,6 +26,8 @@ const _start = int.fromEnvironment('START', defaultValue: 5);
 // The world's own clock at the first frame, to start when a flock passes or a fish rises.
 const _clock = int.fromEnvironment('CLOCK');
 const _silent = bool.fromEnvironment('SILENT');
+// LOOP=true: the shared clip's periods (every motion repeats every 12 s); a meditation's world never uses them.
+const _loop = bool.fromEnvironment('LOOP');
 final _ratio = double.tryParse(const String.fromEnvironment('RATIO')) ?? 2;
 const _lightName = String.fromEnvironment('LIGHT');
 const _duration = int.fromEnvironment('DURATION', defaultValue: 600);
@@ -40,6 +42,8 @@ const _timelapse = bool.fromEnvironment('TIMELAPSE');
 
 void main() {
   testWidgets('render a world to frames', (tester) async {
+    if (_loop) WorldMotion.periods = WorldPeriods.clip;
+    addTearDown(() => WorldMotion.periods = WorldPeriods.live);
     final manifest = WorldManifest.fromJson(
       jsonDecode(File('$_world/world.json').readAsStringSync()),
     )!;

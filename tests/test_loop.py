@@ -129,3 +129,14 @@ def test_a_world_becomes_a_marked_12_s_clip_through_the_cli(tmp_path, monkeypatc
     assert abs(float(probe["format"]["duration"]) - loop.LOOP_SECONDS) < 0.05
     assert {s["codec_name"] for s in probe["streams"]} == {"h264", "aac"}
     assert [k for k, _ in boxes(clip.read_bytes())][-1] == "uuid" and is_marked(clip.read_bytes())
+
+
+def test_the_clip_renders_with_the_clip_periods_and_only_the_clip(tmp_path, monkeypatch):
+    # A meditation's world never repeats (the live periods, the scene's default); only the shared clip's renderer
+    # asks for the 12-s periods (a product decision, 29 Oct 2026: the world during a session must not loop).
+    seen = []
+    monkeypatch.setattr(loop.subprocess, "run", lambda command, **kw: seen.append(command))
+    loop.render(tmp_path / "world", tmp_path / "frames", clock=4, seconds=13.5, flutter="flutter")
+    assert "--dart-define=LOOP=true" in seen[0]
+    motion = (Path(loop.SCENE_PACKAGE) / "lib/src/motion.dart").read_text()
+    assert "static WorldPeriods periods = WorldPeriods.live;" in motion
