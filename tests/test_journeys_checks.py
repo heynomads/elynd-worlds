@@ -169,3 +169,155 @@ def test_an_english_title_is_written_in_sentence_case():
     assert guide.sentence_case("Driving Like On Sundays With Dad", {"dad"}) == "Driving like on Sundays with Dad"
     assert guide.sentence_case("Steady Before Friday's Test") == "Steady before Friday's test"
     assert guide.cut("…and to trust in your ability to remain grounded", 30) == "…and to trust in your ability"
+
+
+# ═══ The planner ════════════════════════════════════════════════════════
+
+from elynd_worlds.journeys import planner                       # noqa: E402
+from elynd_worlds.journeys.guide import Moment                  # noqa: E402
+from elynd_worlds.journeys.planner import PlanError             # noqa: E402
+from tests.test_journeys import ARC                             # noqa: E402
+
+SUMMARY = ("You want to stay calm for your driving test. Your mind goes blank at big roundabouts and your hands shake. "
+           "A calm test is driving like you do with your dad on Sundays: relaxed, checking your mirrors.")
+GOOD_TRY = "At a red light, feel your hands soften on the wheel, like on Sundays with your dad."
+
+
+class Script:
+    """A fake planner model: the arc answers in turn (the last repeats); each week's days are good unless `weeks`
+    holds, for the week's first day, a list of {day: {field: text}} to use in turn (the last repeats)."""
+
+    def __init__(self, arcs=(ARC,), weeks=None):
+        self.arcs, self.weeks, self.seen = list(arcs), weeks or {}, {}
+
+    def __call__(self, system, user):
+        if "plan days" not in user:
+            k = self.seen["arc"] = self.seen.get("arc", -1) + 1
+            return json.dumps(self.arcs[min(k, len(self.arcs) - 1)])
+        first = int(user.split("plan days ")[1].split(" ")[0])
+        last = int(user.split(" to ")[1].split(" ")[0])
+        k = self.seen[first] = self.seen.get(first, -1) + 1
+        turns_ = self.weeks.get(first, [{}])
+        changes = turns_[min(k, len(turns_) - 1)]
+        return json.dumps({"days": [dict({"n": n, "title": f"Day {n} step", "focus": "Today you notice your hands.",
+                                          "technique": "body_scan", "aim": "Steadier hands.", "try_today": GOOD_TRY},
+                                         **changes.get(n, {})) for n in range(first, last + 1)]})
+
+
+def make(script, moment=None, summary=SUMMARY, title="Calm driving test"):
+    llama = FakeLlama(script)
+    return planner.make_plan(llama, "ENG", title, summary, moment=moment, today=TODAY), llama
+
+
+def reasons(llama):
+    return " | ".join(u.split("could not be used (")[1].split("). Answer again")[0]
+                      for _, u in llama.calls if "could not be used (" in u)
+
+
+def test_p1_the_moment_and_days_around_it_are_never_written_into_a_day():
+    bad = {29: {"title": "Final Preparations", "focus": "Today you picture the evening before it."},
+           28: {"aim": "You feel ready for your driving test."},
+           24: {"try_today": "Tomorrow, breathe slowly before you start the engine."}}
+    plan, llama = make(Script(weeks={22: [bad, {}]}), moment=Moment("My driving test", "2026-11-06"))
+    assert plan.day(29).title == "Day 29 step"
+    why = reasons(llama)
+    assert 'day 29 title: "final preparations"' in why.lower() and 'day 28 aim: "driving test"' in why
+    assert 'day 24 try_today: "Tomorrow"' in why and 'day 29 focus: "the evening before"' in why
+    # Its single words are theirs: "your test", "driving" stay.
+    fine = {9: {"focus": "Today you picture your test route, steady in your hands, while parked."}}
+    plan, llama = make(Script(weeks={8: [fine]}), moment=Moment("My driving test", "2026-11-06"))
+    assert "parked" in plan.day(9).focus and reasons(llama) == ""
+    week = next(u for _, u in llama.calls if "plan days 8" in u)
+    assert 'Their "My driving test" is on 2026-11-06, in 4 days.' in week and "never write it into a day" in week.lower()
+
+
+def test_p2_no_condition_no_triggers_no_nervous_system_in_any_field():
+    bad = {4: {"title": "Recognizing Triggers"},
+           3: {"focus": "Today you reflect on how your daily routine may contribute to your panic attacks."},
+           6: {"try_today": "Breathe to calm your nervous system as you sit at your desk."}}
+    plan, llama = make(Script(weeks={1: [bad, {}]}))
+    why = reasons(llama)
+    assert '("trigger")' in why and 'it names a condition ("panic")' in why and '"nervous system"' in why
+    assert plan.day(4).title == "Day 4 step"
+    with pytest.raises(PlanError):
+        make(Script(weeks={1: [bad]}))
+
+
+def test_p3_coaching_and_productivity_are_asked_again_and_writing_once_a_week():
+    bad = {18: {"focus": "Today you learn to divide large tasks into smaller, manageable parts."},
+           16: {"try_today": "You work on a task without any distractions and turn off notifications."}}
+    plan, llama = make(Script(weeks={15: [bad, {}]}))
+    why = reasons(llama)
+    assert '("manageable")' in why and 'coaching or productivity advice ("notifications")' in why
+    # A word of their own goal is theirs to hear.
+    deadline = {16: {"try_today": "When a deadline lands, one slow breath before you open it."}}
+    plan, llama = make(Script(weeks={15: [deadline]}), summary=SUMMARY + " Deadlines at work make it worse.")
+    assert reasons(llama) == ""
+    # Writing twice in a week is asked again once, never failed.
+    writing = {9: {"try_today": "Write down three things you noticed at the roundabouts."},
+               12: {"try_today": "Journal about your hands on the wheel tonight, like on Sundays."}}
+    plan, llama = make(Script(weeks={8: [writing]}))
+    assert "days 9, 12 each ask them to write" in reasons(llama) and plan.day(9).try_today.startswith("Write")
+
+
+@pytest.mark.parametrize("step", ["Trust your instincts when navigating unfamiliar roads.",
+                                  "Notice the different sounds you hear while driving, like the engine or the wind.",
+                                  "Ride one extra stop past your usual exit before stepping off.",
+                                  "Pay attention to your grip on the steering wheel as you drive to work."])
+def test_p4_no_attention_exercise_while_driving_and_no_push_into_fear(step):
+    plan, llama = make(Script(weeks={22: [{27: {"try_today": step}}, {}]}))
+    assert "never an attention exercise while driving" in reasons(llama) and plan.day(27).try_today == GOOD_TRY
+
+
+def test_p4_practice_stays_when_it_is_practice():
+    plan, llama = make(Script(weeks={22: [{27: {"try_today": "Stay a little longer with the breath at a red light."}}]}))
+    assert reasons(llama) == ""
+
+
+def test_p5_no_promise_and_no_presumed_pass():
+    promising = dict(ARC, promise="In thirty days you will drive with ease and confidence.")
+    plan, llama = make(Script(arcs=[promising, ARC]))
+    assert '"you will" promises a result' in reasons(llama) and plan.promise == ARC["promise"]
+    passing = {4: {"try_today": "Write down three things you're looking forward to after passing your test."}}
+    plan, llama = make(Script(weeks={1: [passing, {}]}))
+    assert 'presumes how their moment will go ("after passing")' in reasons(llama)
+
+
+def test_p6_day_titles_are_never_repeated_and_their_words_are_asked_for():
+    breathing = {10: {"title": "Breathing into calm"}}
+    later = {17: {"title": "Breathing Into Calm"}}
+    plan, llama = make(Script(weeks={8: [breathing], 15: [later, {}]}))
+    titles = [d.title.lower() for d in plan.days]
+    assert len(set(titles)) == 30 and titles.count("breathing into calm") == 1
+    again = [u for _, u in llama.calls if "plan days 15" in u][-1]
+    assert 'never use them again: ' in again and '"Breathing into calm"' in again
+    assert "Their own words: driving, test, blank, roundabouts, hands, shake, dad, sundays, relaxed, checking." in again
+    # Small things to try that use none of their words are asked again once, then kept.
+    generic = {n: {"try_today": "Take three deep breaths and smile."} for n in range(1, 8)}
+    plan, llama = make(Script(weeks={1: [generic]}))
+    assert "fewer than two of their own words" in reasons(llama) and plan.day(2).try_today.startswith("Take three")
+
+
+def test_p7_the_check_in_asks_about_the_time_since_the_last_meditation():
+    yesterday = dict(ARC, checkin_question="Since yesterday, how calm did you feel?")
+    plan, llama = make(Script(arcs=[yesterday]))
+    assert plan.checkin_question == "Since your last meditation, how calm have you felt?" and len(
+        [u for _, u in llama.calls if "plan days" not in u]) == 3
+    symptom = dict(ARC, checkin_question="Since your last meditation, how anxious have you felt?")
+    good = dict(ARC, checkin_question="Since your last meditation, how relaxed have you felt?")
+    plan, llama = make(Script(arcs=[symptom, good]))
+    assert plan.checkin_question == good["checkin_question"] and "not in the form" in reasons(llama)
+
+
+def test_p8_lengths_are_asked_for_and_never_cut_inside_a_word_and_titles_in_sentence_case():
+    long_line = ("This week is for you to integrate the sense of calm and clarity into your daily activities, including "
+                 "your tube rides, and to trust in your ability to remain grounded.")
+    long_arc = dict(ARC, weeks=[dict(ARC["weeks"][0], line=long_line, theme="Noticing Patterns")] + ARC["weeks"][1:])
+    plan, llama = make(Script(arcs=[long_arc]))
+    assert "week 1's line is longer than 140 characters" in reasons(llama)
+    line = plan.weeks[0]["line"]
+    assert len(line) <= 141 and not line.endswith("gr.") and line.endswith("tube rides.")
+    assert plan.weeks[0]["theme"] == "Noticing patterns"
+    cased = {2: {"title": "Calm Workday Mind"}, 3: {"title": "Sunday Drive With Dad"}}
+    plan, llama = make(Script(weeks={1: [cased]}))
+    assert (plan.day(2).title, plan.day(3).title) == ("Calm workday mind", "Sunday drive with dad")

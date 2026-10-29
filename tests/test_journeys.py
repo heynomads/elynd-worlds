@@ -21,11 +21,13 @@ class FakeLlama:
     def __init__(self, answers):
         self.answers = answers
         self.calls = []
+        self.temperatures = []
         self.lock = threading.Lock()
 
     def chat(self, system, user, max_tokens=600, temperature=0.6):
         with self.lock:
             self.calls.append((system, user))
+            self.temperatures.append(temperature)
             text = self.answers(system, user) if callable(self.answers) else self.answers.pop(0)
         if isinstance(text, Exception):
             raise text
@@ -182,56 +184,62 @@ def test_the_bedrock_client_sends_one_message_and_counts_its_cost():
 
 # ─── The plan ─────────────────────────────────────────────────────────────
 
-ARC = {"title": "Steady in my own voice", "promise": "Thirty days to feel steady when you speak up.",
-       "checkin_question": "Since yesterday, how confident did you feel?",
+ARC = {"promise": "Thirty days to feel steady when you speak up.",
+       "checkin_question": "Since your last meditation, how confident have you felt?",
        "weeks": [{"theme": "Noticing", "line": "See when your voice tightens."},
                  {"theme": "Kindness", "line": "Meet the inner critic gently."},
                  {"theme": "Rehearsal", "line": "Practise the moment itself."},
-                 {"theme": "Carrying it", "line": "Take it into your days."}],
-       "world": {"scene": "A mountain path through pine woods toward a summit above a valley.",
-                 "stages": ["Before dawn at the foot of the path", "Early morning on the lower slopes",
-                            "Mid-morning above the trees", "Late morning near the ridge",
-                            "Full light at the summit"]}}
+                 {"theme": "Carrying it", "line": "Take it into your days."}]}
 
 
-def week_answer(system, user):
-    if "plan days" not in user:
-        return json.dumps(ARC)
+def days_of(user):
     first = int(user.split("plan days ")[1].split(" ")[0])
     last = int(user.split(" to ")[1].split(" ")[0])
-    return json.dumps({"days": [{"n": n, "title": f"Day {n} step", "focus": "A short practice.",
-                                 "technique": "visualization" if n % 2 else "made_up_technique",
-                                 "aim": "A little steadier.", "try_today": "Pause before you speak."}
-                                for n in range(first, last + 1)]})
+    return range(first, last + 1)
+
+
+def week_answer(system, user, **day):
+    if "plan days" not in user:
+        return json.dumps(ARC)
+    return json.dumps({"days": [dict({"n": n, "title": f"Day {n} step", "focus": "A short practice",
+                                      "technique": "visualization" if n % 2 else "made_up_technique",
+                                      "aim": "A little steadier.",
+                                      "try_today": "In a meeting, feel your steady voice before you speak up."},
+                                     **(day.get(n) or {})) for n in days_of(user)]})
 
 
 def test_a_plan_has_thirty_days_and_their_kinds_are_fixed_in_code():
     llama = FakeLlama(week_answer)
     plan = planner.make_plan(llama, "ENG", "Steady in my own voice", "You want to feel confident in meetings.",
-                             minutes=10, moment=Moment("My presentation", "2026-11-12"))
+                             minutes=10, moment=Moment("My presentation", "2026-11-12"), today=TODAY)
     assert [d.n for d in plan.days] == list(range(1, 31))
     assert {d.n: d.kind for d in plan.days if d.kind != "practice"} == {1: "begin", 7: "look_back", 14: "look_back",
                                                                         21: "look_back", 30: "arrive"}
     assert plan.day(2).technique == "mindfulness" and plan.day(3).technique == "visualization"   # unknown: fallback
     assert plan.day(14).technique == "reflection"   # a look-back day's fallback
+    assert plan.day(2).focus == "A short practice."   # a sentence ends with a full stop
     assert len(llama.calls) == 5 and round(plan.usd, 6) == round(5 * 1100 * 0.72 / 1e6, 6)
-    assert "My presentation on 2026-11-12" in llama.calls[1][1] or "My presentation on 2026-11-12" in llama.calls[2][1]
+    weeks = [user for _, user in llama.calls if "plan days" in user]
+    assert all('Their "My presentation" is on 2026-11-12, in 12 days.' in u for u in weeks)
+    assert all("a day number is not a date" in u and "Today is 2026-10-31 (Saturday)" in u for u in weeks)
+    assert "Their own words: steady, voice, confident, meetings." in weeks[0]
     assert Plan.from_json(json.loads(json.dumps(plan.to_json()))).to_json() == plan.to_json()
 
 
-def test_the_world_never_carries_the_listeners_words_and_is_asked_again():
-    personal = dict(ARC, world=dict(ARC["world"], scene="A meeting room where my manager listens."))
-    answers = iter([json.dumps(personal), json.dumps(ARC)])
-    llama = FakeLlama(lambda s, u: next(answers) if "plan days" not in u else week_answer(s, u))
-    plan = planner.make_plan(llama, "ENG", "Steady", "You want to feel confident with your manager in meetings.")
-    assert plan.world["scene"].startswith("A mountain path")
-    assert "the world repeats the listener's words" in llama.calls[1][1]
+def test_the_plan_writes_no_title_and_no_world():
+    plan = planner.make_plan(FakeLlama(week_answer), "ENG", "Steady in my own voice", "You want to feel confident.")
+    assert plan.title == "Steady in my own voice" and plan.world is None and plan.to_json()["world"] is None
+    old = dict(plan.to_json(), title="Calm Workday Mind", world={"scene": "A path.", "stages": ["a"] * 5})
+    assert Plan.from_json(old).world == {"scene": "A path.", "stages": ["a"] * 5}   # plans made before still load
 
 
 def test_a_plan_that_never_comes_right_is_a_plan_error():
     bad = dict(ARC, promise="Thirty days to heal your fear.")
+    llama = FakeLlama(lambda s, u: json.dumps(bad))
     with pytest.raises(PlanError):
-        planner.make_plan(FakeLlama(lambda s, u: json.dumps(bad)), "ENG", "Steady", "You want to feel confident.")
+        planner.make_plan(llama, "ENG", "Steady", "You want to feel confident.")
+    assert [round(t, 1) for t in llama.temperatures] == [0.6, 0.4, 0.3]
+    assert 'the promise: a word it may not use ("heal")' in llama.calls[1][1]
 
 
 # ─── The day's block for the writer ──────────────────────────────────────
@@ -256,7 +264,7 @@ def test_a_practice_day_picks_up_from_the_last_session_and_what_they_said():
             brief.Past(3, TODAY, 3, "The meeting went a bit better", done=False)]
     text = brief.day_block(plan(), 3, TODAY, SUMMARY, past)
     assert 'Last time (day 2, yesterday): "Day 2 step"' in text
-    assert ('asked "Since yesterday, how confident did you feel?" and answered "somewhat" (on day 2 they answered '
+    assert ('asked "Since your last meditation, how confident have you felt?" and answered "somewhat" (on day 2 they answered '
             '"not at all")') in text
     assert 'They added: "The meeting went a bit better"' in text
     assert "greeting them on day three" in text and "never as a rating" in text
