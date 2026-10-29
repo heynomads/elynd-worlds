@@ -10,9 +10,10 @@ The journey's title is the guide's (the plan writes none), and the plan describe
 there is one, is given by hand (stages.py). What the plan may never say is checked in code and asked again with the
 exact reason, a week at a time: no word of healing, therapy, help or illness, no condition's name, no coaching or
 productivity advice, no attention exercise while driving and no push into what they fear, no promise of a result, no
-moment and no "tomorrow" in a day, no day title twice. Lengths are asked for and, on the last attempt, cut at a
-sentence end or a word boundary, never inside a word; English titles are in sentence case; sentences end with a full
-stop. The listener's own words are never checked by these lists.
+moment and no "tomorrow" in a day. A day title that repeats another is replaced by one small call for new titles (a
+repeated title never fails a plan). Lengths are asked for and, on the last attempt, cut at a sentence end or a word
+boundary, never inside a word; English titles are in sentence case; sentences end with a full stop. The listener's own
+words are never checked by these lists.
 """
 from __future__ import annotations
 
@@ -71,6 +72,12 @@ UNSAFE = re.compile(r"\b(?:(?:while|whilst|as|when)\s+(?:you(?:'re|\s+are)?\s+)?
                     r"during (?:your|the) drive|navigat\w*\s+(?:\w+\s+){0,2}(?:roads?|streets?|traffic|roundabouts?|"
                     r"junctions?|intersections?|motorways?|lanes?)|unfamiliar roads?|trust your instincts|"
                     r"(?:one|an) extra stop|push (?:through|yourself)|face your fears?|test yourself)\b", re.I)
+# Something to try in a car, on the move: only before setting off, when parked or stopped, or after arriving.
+IN_CAR = re.compile(r"\b(?:mirrors?|roundabouts?|steering|the wheel|pedals?|indicators?|junctions?|gearstick|gears|"
+                    r"overtak\w*|motorways?)\b", re.I)
+STILL = re.compile(r"\b(?:before|after|parked|park|stopped|stationary|red lights?|traffic lights?|car park|when you sit|"
+                   r"sitting|picture|imagine|visuali[sz]\w*|think(?:ing)? (?:of|about)|remember\w*|recall\w*|arriv\w*|"
+                   r"engine off|noticed|write|writing|journal\w*|at home)\b", re.I)
 # A result promised, or how their moment will go presumed.
 PROMISE = re.compile(r"\b(?:you will|you'll|you're going to|you are going to)\b", re.I)
 PASSING = re.compile(r"\b(?:after|when|once)\s+(?:you\s+)?pass(?:ing|es)?\b", re.I)
@@ -148,6 +155,7 @@ ARC = """You plan a 30-day meditation journey at ELYND for one person, toward th
 them a {minutes}-minute guided meditation from your plan. Write in {language}.
 
 Their journey: "{title}". Their goal, in their own words: {summary}{moment}
+Their own words: {words}.
 
 The weeks build: first noticing (when and how it shows up, without judging), then kindness toward themselves, then \
 practising the moment itself (rehearsal, steadiness, the body's part), then carrying it into their life. Shape the \
@@ -157,10 +165,11 @@ themes to their goal and their own situations; do not copy these words.
 will go.
 
 Answer with one JSON object and nothing else:
-{{"promise": "<one sentence to them, second person, under 200 characters: what these thirty days are for>",
+{{"promise": "<one sentence to them, second person, 80 to 200 characters: what these thirty days are for, in their \
+own words and situations>",
  "checkin_question": "<{checkin}>",
- "weeks": [{{"theme": "<1 to 3 words>", "line": "<one sentence to them, under 140 characters: what this week is \
-for>"}}, (four in all)]}}"""
+ "weeks": [{{"theme": "<1 to 3 words>", "line": "<one sentence to them, 60 to 140 characters, in one of their \
+situations: what this week is for>"}}, (four in all)]}}"""
 
 WEEK = """You plan days {first} to {last} of a 30-day meditation journey at ELYND for one person. Each day ELYND writes \
 them a {minutes}-minute guided meditation from your plan. Write in {language}.
@@ -181,17 +190,30 @@ is one step of this week's theme; "look_back" looks back on the week that ends a
 Each day's small thing to try is a moment of attention, breath or kindness inside one of the situations they named, \
 different every day. Never a task, a list, a tool, a timer, a notification setting, work or productivity advice, or a \
 rule for others. Writing at most once a week.
-Never ask for attention exercises while driving or doing anything that needs full attention: practise before, after, \
-or when stopped. Never ask them to stay longer in, go further into, or test themselves against what they fear: invite \
-noticing and small comforts.
+Never ask for attention exercises while driving or doing anything that needs full attention: anything to try in a car \
+is only before setting off, when parked or stopped, or after arriving (a meditation may picture the drive). Never ask \
+them to stay longer in, go further into, or test themselves against what they fear: invite noticing and small \
+comforts. With a loss, never ask them to smile about, let go of or move on from the person: remembering has its place.
 Vary the techniques; use sleep_journey only for a goal about sleep. A title names this day's own step, never a \
-general one.{taken}
+general one.
 
 Answer with one JSON object and nothing else:
 {{"days": [{{"n": <day>, "title": "<2 to 6 words, sentence case>", "focus": "<one sentence to them, second person, \
-present tense, under 200 characters: what today's meditation is about, e.g. 'Today you notice what your body does when \
+present tense, 50 to 200 characters: what today's meditation is about, e.g. 'Today you notice what your body does when \
 you hold back.'>", "technique": "<one of {techniques}>", "aim": "<one sentence: what they take from it>", \
-"try_today": "<one sentence to them, under 180 characters: one small thing to try today>"}}, ...]}}"""
+"try_today": "<one sentence to them, 40 to 180 characters: one small thing to try today, in one of their \
+situations>"}}, ...]}}"""
+
+RETITLE = """Some days of a 30-day meditation journey at ELYND need a new title: each repeats another day's title. Write in \
+{language}.
+
+Titles in use (never use one of them again): {taken}
+
+The days that need a new title:
+{days}
+
+Each new title: 2 to 6 words, sentence case, about that day's own step, different from every other title. {rules}
+Answer with one JSON object and nothing else: {{"titles": {{"<day number>": "<new title>"}}}}"""
 
 
 @dataclass
@@ -318,15 +340,25 @@ def parse_arc(text: str, ctx: _Context, last: bool = False) -> tuple[dict, list[
             hard.append(f"{name}: {problem}")
     if PROMISE.search(promise):
         hard.append(f'the promise: "{PROMISE.search(promise).group(0)}" promises a result; say what the days are for')
-    return {"promise": promise, "checkin_question": checkin, "weeks": out}, hard, []
+    soft = []
+    if _uses(ctx, [promise] + [w["line"] for w in out]) < 2 <= len({_stem(w) for w in ctx.words}):
+        soft.append("the promise and the week lines use fewer than two of their own words: write them in the "
+                    f"situations they named ({', '.join(ctx.words)})")
+    return {"promise": promise, "checkin_question": checkin, "weeks": out}, hard, soft
 
 
 def _title_key(title: str) -> str:
     return " ".join(re.findall(r"\w+", title.lower()))
 
 
-def parse_week(text: str, ctx: _Context, first: int, last_n: int, last: bool = False,
-               taken: frozenset[str] = frozenset()) -> tuple[list[Day], list[str], list[str]]:
+def _uses(ctx: _Context, texts: list[str]) -> int:
+    """How many of their distinctive words (by stem) the texts use."""
+    stems = {_stem(w) for w in ctx.words}
+    return len({s for s in stems for text in texts for w in words_of(text) if w.startswith(s)})
+
+
+def parse_week(text: str, ctx: _Context, first: int, last_n: int,
+               last: bool = False) -> tuple[list[Day], list[str], list[str]]:
     """(the week's days, hard problems, soft problems). ValueError when it is no week at all."""
     data = first_json(text)
     by_n = {}
@@ -361,21 +393,16 @@ def parse_week(text: str, ctx: _Context, first: int, last_n: int, last: bool = F
             if name in ("focus", "try_today") and UNSAFE.search(value):
                 hard.append(f'day {n} {name}: "{UNSAFE.search(value).group(0)}": never an attention exercise while '
                             f"driving, never a push into what they fear")
+            elif name == "try_today" and IN_CAR.search(value) and not STILL.search(value):
+                hard.append(f'day {n} try_today: "{IN_CAR.search(value).group(0)}" while driving: anything in a car is '
+                            f"only before setting off, when parked or stopped, or after arriving")
         days.append(day)
-    keys = [_title_key(d.title) for d in days]
-    for day, key in zip(days, keys):
-        if keys.count(key) > 1 and day is next(d for d, k in zip(days, keys) if k == key):
-            soft.append(f'day titles repeat ("{day.title}"): every day has its own title')
-        elif key in taken:
-            soft.append(f'day {day.n} title "{day.title}" is already another day\'s title: give it a new one')
     if not WRITING.search(ctx.summary):
         writing = [d.n for d in days if WRITING.search(d.try_today) or WRITING.search(d.focus)]
         if len(writing) > 1:
             soft.append(f"days {', '.join(map(str, writing))} each ask them to write: writing at most once a week")
-    stems = {_stem(w) for w in ctx.words}
-    if len(stems) >= 2:
-        used = {s for s in stems for d in days for w in words_of(d.try_today) if w.startswith(s)}
-        if len(used) < 2:
+    if len({_stem(w) for w in ctx.words}) >= 2:
+        if _uses(ctx, [d.try_today for d in days]) < 2:
             soft.append("the small things to try use fewer than two of their own words: place them in the "
                         f"situations they named ({', '.join(ctx.words)})")
     return days, hard, soft
@@ -390,7 +417,7 @@ def _ask(llama: Llama, prompt: str, parse: Callable[[str, bool], tuple], max_tok
         try:
             reply = llama.chat(SYSTEM, prompt + problem, max_tokens=max_tokens, temperature=TEMPERATURES[attempt])
         except LlamaError as exc:
-            raise PlanError(str(exc)) from None
+            raise _plan_error(str(exc), spent) from None
         spent += reply.usd
         try:
             value, hard, soft = parse(reply.text, last)
@@ -408,7 +435,13 @@ def _ask(llama: Llama, prompt: str, parse: Callable[[str, bool], tuple], max_tok
                    f"{_compact(reply.text)}")
     if best is not None:
         return best, spent
-    raise PlanError("no usable answer")
+    raise _plan_error("no usable answer", spent)
+
+
+def _plan_error(reason: str, usd: float) -> PlanError:
+    error = PlanError(reason)
+    error.usd = usd   # what the calls cost before it
+    return error
 
 
 def _compact(text: str) -> str:
@@ -430,50 +463,80 @@ def make_plan(llama: Llama, language: str, title: str, summary: str, minutes: in
     ctx = _Context(language=language, title=title, summary=summary, keep=capitalised(summary) | capitalised(title),
                    words=their_words(summary, title), label=_label_pattern(moment))
     rules = RULES.format(language=lang_name)
+    words = ", ".join(ctx.words) or "(few: use the situations in their goal)"
     arc, spent = _ask(llama, ARC.format(minutes=minutes, language=lang_name, title=title, summary=summary,
-                                        moment=_moment_line(moment, today, weeks=True), rules=rules,
+                                        moment=_moment_line(moment, today, weeks=True), words=words, rules=rules,
                                         checkin=CHECKIN[language][2]),
                       lambda text, last: parse_arc(text, ctx, last), max_tokens=700)
     weeks_line = "; ".join(f'week {w["n"]}: {w["theme"]} ({w["line"]})' for w in arc["weeks"])
 
-    def plan_week(index: int, taken: frozenset[str] = frozenset(), titles: tuple[str, ...] = ()):
+    def plan_week(index: int):
         first, last_n = WEEKS[index]
         week = arc["weeks"][index]
         prompt = WEEK.format(first=first, last=last_n, minutes=minutes, language=lang_name, summary=summary,
                              title=title, promise=arc["promise"], weeks=weeks_line, week=week["n"],
                              theme=week["theme"], line=week["line"], moment=_moment_line(moment, today, weeks=False),
-                             words=", ".join(ctx.words) or "(few: use the situations in their goal)",
-                             days="\n".join(f"- day {n}: {kind(n)}" for n in range(first, last_n + 1)),
-                             rules=rules, techniques=", ".join(TECHNIQUES),
-                             taken=("\nThese titles belong to other days already, never use them again: " +
-                                    "; ".join(f'"{t}"' for t in titles)) if titles else "")
-        return _ask(llama, prompt, lambda text, last: parse_week(text, ctx, first, last_n, last, taken),
-                    max_tokens=2600)
+                             words=words, days="\n".join(f"- day {n}: {kind(n)}" for n in range(first, last_n + 1)),
+                             rules=rules, techniques=", ".join(TECHNIQUES))
+        return _ask(llama, prompt, lambda text, last: parse_week(text, ctx, first, last_n, last), max_tokens=2600)
 
     with ThreadPoolExecutor(max_workers=4) as pool:
         results = list(pool.map(plan_week, range(4)))
     spent += sum(usd for _, usd in results)
-    weeks = [list(days) for days, _ in results]
-    # A day title used in an earlier week: the later week is asked again with the titles taken (never fails).
-    again = []
-    for index in range(1, 4):
-        earlier = {_title_key(d.title) for week in weeks[:index] for d in week}
-        if any(_title_key(d.title) in earlier for d in weeks[index]):
-            again.append(index)
-    if again:
-        def redo(index: int):
-            others = [d.title for i, week in enumerate(weeks) if i != index for d in week]
-            try:
-                return plan_week(index, frozenset(_title_key(t) for t in others), tuple(others))
-            except PlanError:
-                return None, 0.0
-        with ThreadPoolExecutor(max_workers=3) as pool:
-            for index, (days, usd) in zip(again, pool.map(redo, again)):
-                spent += usd
-                if days is not None:
-                    weeks[index] = list(days)
+    days = [day for week_days, _ in results for day in week_days]
+    spent += _retitle(llama, ctx, days, lang_name, rules)
     return Plan(title=title, promise=arc["promise"], checkin_question=arc["checkin_question"], weeks=arc["weeks"],
-                world=None, days=[day for week in weeks for day in week], usd=spent)
+                world=None, days=days, usd=spent)
+
+
+def parse_titles(text: str, ctx: _Context, need: list[Day], taken: set[str],
+                 last: bool = False) -> tuple[dict[int, str], list[str], list[str]]:
+    """({day: new title}, hard problems, no soft ones) for the days whose titles repeat another's."""
+    data = first_json(text)
+    given = data.get("titles") if isinstance(data.get("titles"), dict) else {}
+    out, hard, used = {}, [], set(taken)
+    for day in need:
+        new = _plain(given.get(str(day.n)) or given.get(day.n), LIMITS["title"]).rstrip(".")
+        if not new:
+            raise ValueError(f"day {day.n} has no new title")
+        if ctx.language == "ENG":
+            new = sentence_case(new, ctx.keep)
+        key = _title_key(new)
+        if key in used:
+            hard.append(f'day {day.n}: "{new}" is already a title')
+        problem = _words_problem(new, ctx)
+        found = DAY_RELATIVE.search(new) or (ctx.label.search(new) if ctx.label else None)
+        if problem:
+            hard.append(f"day {day.n}: {problem}")
+        elif found:
+            hard.append(f'day {day.n}: "{found.group(0)}": a day is a meditation, not a date')
+        used.add(key)
+        out[day.n] = new
+    return out, hard, []
+
+
+def _retitle(llama: Llama, ctx: _Context, days: list[Day], lang_name: str, rules: str) -> float:
+    """Days whose title repeats an earlier day's get new titles from one small call (in place). Returns its cost; a
+    repeated title never fails a plan, so when no new titles come the repeats stay."""
+    taken, need = set(), []
+    for day in days:
+        key = _title_key(day.title)
+        if key in taken:
+            need.append(day)
+        else:
+            taken.add(key)
+    if not need:
+        return 0.0
+    in_use = "; ".join(f'"{d.title}"' for d in days if d not in need)
+    lines = "\n".join(f'- day {d.n} (now "{d.title}"): {d.focus} Try: {d.try_today}' for d in need)
+    try:
+        titles, usd = _ask(llama, RETITLE.format(language=lang_name, taken=in_use, days=lines, rules=rules),
+                           lambda text, last: parse_titles(text, ctx, need, taken, last), max_tokens=400)
+    except PlanError as exc:
+        return getattr(exc, "usd", 0.0)
+    for day in need:
+        day.title = titles[day.n]
+    return usd
 
 
 def today_iso() -> str:

@@ -187,16 +187,23 @@ from tests.test_journeys import ARC                             # noqa: E402
 SUMMARY = ("You want to stay calm for your driving test. Your mind goes blank at big roundabouts and your hands shake. "
            "A calm test is driving like you do with your dad on Sundays: relaxed, checking your mirrors.")
 GOOD_TRY = "At a red light, feel your hands soften on the wheel, like on Sundays with your dad."
+ARC2 = dict(ARC, promise="Thirty days to keep your hands steady at the roundabouts, like on Sundays with your dad.",
+            weeks=[dict(w, line=f"{w['line'][:-1]}, at the roundabouts.") for w in ARC["weeks"]])
 
 
 class Script:
     """A fake planner model: the arc answers in turn (the last repeats); each week's days are good unless `weeks`
     holds, for the week's first day, a list of {day: {field: text}} to use in turn (the last repeats)."""
 
-    def __init__(self, arcs=(ARC,), weeks=None):
-        self.arcs, self.weeks, self.seen = list(arcs), weeks or {}, {}
+    def __init__(self, arcs=(ARC2,), weeks=None, titles=None):
+        self.arcs, self.weeks, self.seen, self.titles = list(arcs), weeks or {}, {}, titles
 
     def __call__(self, system, user):
+        if "need a new title" in user:
+            days = [int(x) for x in __import__("re").findall(r"^- day (\d+) \(now", user, flags=8)]
+            if self.titles is not None:
+                return json.dumps({"titles": {str(n): self.titles(n) for n in days}})
+            return json.dumps({"titles": {str(n): f"New title {n}" for n in days}})
         if "plan days" not in user:
             k = self.seen["arc"] = self.seen.get("arc", -1) + 1
             return json.dumps(self.arcs[min(k, len(self.arcs) - 1)])
@@ -276,6 +283,14 @@ def test_p4_no_attention_exercise_while_driving_and_no_push_into_fear(step):
     assert "never an attention exercise while driving" in reasons(llama) and plan.day(27).try_today == GOOD_TRY
 
 
+@pytest.mark.parametrize("step", ["Say 'relaxed' to yourself at each roundabout.",
+                                  "Breathe calmly when checking your mirrors.",
+                                  "Notice the sensation of your hands on the wheel."])
+def test_p4_anything_in_a_car_is_only_before_setting_off_or_when_stopped(step):
+    plan, llama = make(Script(weeks={22: [{25: {"try_today": step}}, {}]}))
+    assert "only before setting off, when parked or stopped" in reasons(llama) and plan.day(25).try_today == GOOD_TRY
+
+
 @pytest.mark.parametrize("step", ["Stay a little longer with the breath at a red light.",
                                   "Observe your thoughts as you navigate a challenging moment at work.",
                                   "Before you start the engine, three slow breaths with your hands on your lap."])
@@ -285,23 +300,29 @@ def test_p4_practice_stays_when_it_is_practice(step):
 
 
 def test_p5_no_promise_and_no_presumed_pass():
-    promising = dict(ARC, promise="In thirty days you will drive with ease and confidence.")
-    plan, llama = make(Script(arcs=[promising, ARC]))
-    assert '"you will" promises a result' in reasons(llama) and plan.promise == ARC["promise"]
+    promising = dict(ARC2, promise="In thirty days you will drive with ease and confidence.")
+    plan, llama = make(Script(arcs=[promising, ARC2]))
+    assert '"you will" promises a result' in reasons(llama) and plan.promise == ARC2["promise"]
     passing = {4: {"try_today": "Write down three things you're looking forward to after passing your test."}}
     plan, llama = make(Script(weeks={1: [passing, {}]}))
     assert 'presumes how their moment will go ("after passing")' in reasons(llama)
 
 
 def test_p6_day_titles_are_never_repeated_and_their_words_are_asked_for():
-    breathing = {10: {"title": "Breathing into calm"}}
-    later = {17: {"title": "Breathing Into Calm"}}
-    plan, llama = make(Script(weeks={8: [breathing], 15: [later, {}]}))
+    breathing = {10: {"title": "Breathing into calm"}, 12: {"title": "Looking back"}}
+    later = {17: {"title": "Breathing Into Calm"}, 21: {"title": "Looking back"}}
+    plan, llama = make(Script(weeks={8: [breathing], 15: [later]}))
     titles = [d.title.lower() for d in plan.days]
     assert len(set(titles)) == 30 and titles.count("breathing into calm") == 1
-    again = [u for _, u in llama.calls if "plan days 15" in u][-1]
-    assert 'never use them again: ' in again and '"Breathing into calm"' in again
-    assert "Their own words: driving, test, blank, roundabouts, hands, shake, dad, sundays, relaxed, checking." in again
+    assert (plan.day(17).title, plan.day(21).title) == ("New title 17", "New title 21")
+    retitle = [u for _, u in llama.calls if "need a new title" in u]
+    assert len(retitle) == 1 and '"Breathing into calm"' in retitle[0] and "- day 17 (now" in retitle[0]
+    week = [u for _, u in llama.calls if "plan days 15" in u][-1]
+    assert "Their own words: driving, test, blank, roundabouts, hands, shake, dad, sundays, relaxed, checking." in week
+    # A new title that repeats one in use is asked again; when none comes right the repeat stays, the plan stands.
+    plan, llama = make(Script(weeks={8: [breathing], 15: [later]}, titles=lambda n: "Breathing into calm"))
+    assert [d.title.lower() for d in plan.days].count("breathing into calm") == 2
+    assert len([u for _, u in llama.calls if "need a new title" in u]) == 3
     # Small things to try that use none of their words are asked again once, then kept.
     generic = {n: {"try_today": "Take three deep breaths and smile."} for n in range(1, 8)}
     plan, llama = make(Script(weeks={1: [generic]}))
@@ -322,7 +343,7 @@ def test_p7_the_check_in_asks_about_the_time_since_the_last_meditation():
 def test_p8_lengths_are_asked_for_and_never_cut_inside_a_word_and_titles_in_sentence_case():
     long_line = ("This week is for you to integrate the sense of calm and clarity into your daily activities, including "
                  "your tube rides, and to trust in your ability to remain grounded.")
-    long_arc = dict(ARC, weeks=[dict(ARC["weeks"][0], line=long_line, theme="Noticing Patterns")] + ARC["weeks"][1:])
+    long_arc = dict(ARC2, weeks=[dict(ARC2["weeks"][0], line=long_line, theme="Noticing Patterns")] + ARC2["weeks"][1:])
     plan, llama = make(Script(arcs=[long_arc]))
     assert "week 1's line is longer than 140 characters" in reasons(llama)
     line = plan.weeks[0]["line"]
