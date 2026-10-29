@@ -142,6 +142,14 @@ class Meter:
         self.calls[step] += 1
         self.voice_seconds += int(seconds)  # billed in whole seconds, rounded down
 
+    def add(self, other: "Meter") -> "Meter":
+        """Count here what another meter counted too (a journey's five stages, one bill)."""
+        for name in ("spark_input_tokens", "spark_cached_tokens", "spark_output_tokens", "open_input_tokens",
+                     "open_cached_tokens", "open_output_tokens", "images", "sam_images", "voice_seconds"):
+            setattr(self, name, getattr(self, name) + getattr(other, name))
+        self.calls.update(other.calls)
+        return self
+
     @property
     def meta_usd(self) -> float:
         """Meta Model API's bill."""

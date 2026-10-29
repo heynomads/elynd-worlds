@@ -5,6 +5,10 @@ a subject breathes, the few pixels it uncovers must show what lies behind it,
 not a copy of the subject. Muse Image's edit endpoint repaints the scene with
 the subjects removed; `plate.py` then keeps that repaint only where the subjects
 were, so the rest of the picture stays exactly as painted.
+
+A journey's world grows (journeys/stages.py): each later stage is the same edit
+endpoint on the first stage's painting, told to keep the viewpoint and the
+composition and to change only the light, the season and what has grown.
 """
 from __future__ import annotations
 
@@ -13,7 +17,8 @@ from typing import Any
 
 from PIL import Image
 
-from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listener
+from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listener, png_size
+from .plate import fit
 from .settings import DEFAULT, Settings
 
 STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
@@ -43,6 +48,38 @@ def plate_prompt(scene: dict[str, Any]) -> str:
             "No new objects, no people or animals, no text.")
 
 
+STAGE_STYLE = "Painterly, soft, calm and believable, in the same brushwork; no text, no letters, no logos, no symbols."
+
+
+def _the(names: list[str]) -> str:
+    """["stone cairn", "paper lantern"] -> "the stone cairn and the paper lantern"."""
+    named = [f"the {name}" for name in names]
+    return named[0] if len(named) == 1 else ", ".join(named[:-1]) + " and " + named[-1]
+
+
+def clause(text: str) -> str:
+    """A stage's words to follow "now:" ("Full light at the summit." -> "full light at the summit")."""
+    text = " ".join(text.split()).rstrip(".")
+    return text[0].lower() + text[1:] if text[1:2].islower() else text
+
+
+def stage_prompt(scene: dict[str, Any], stage: str, fix: str = "") -> str:
+    """The edit that turns a journey's first painting into a later stage: the same view, another light and season.
+
+    `scene` is the stage's design (art_director.stage): its light, air and palette, and `change`, the art director's
+    sentence on what changes in the picture. `fix`, after a rejected edit: the critic's note."""
+    palette = ", ".join(scene.get("palette") or [])
+    change = " ".join(str(scene.get("change") or "").split())
+    return (f"The same place, painted again from exactly the same viewpoint, with the same framing and composition; "
+            f"now: {clause(stage)}. {change + ' ' if change else ''}"
+            f"Keep the land, the water, every landmark and {_the([s['name'] for s in scene['subjects']])} where "
+            "they are and as large as they are; "
+            "change only the light, the sky, the air, the season and how far plants have grown. "
+            f"Time of day: {scene['time_of_day']}. Light: {scene['light']}. Air: {scene['air']}. "
+            f"Palette: {palette}. Add nothing that is not already there: no new objects, buildings, people, "
+            f"animals or text. {'Mind this: ' + fix.strip() + ' ' if fix.strip() else ''}{STAGE_STYLE}")
+
+
 def _for_the_listener(user: str | None = None) -> dict[str, Any]:
     who = user or listener.get()
     return {"user": who} if who else {}
@@ -70,13 +107,12 @@ async def paint(client, scene: dict[str, Any], meter: Meter, settings: Settings 
     return _marked(first_image(response))
 
 
-async def paint_without_subjects(client, scene: dict[str, Any], painting: bytes, meter: Meter,
-                                 settings: Settings = DEFAULT) -> bytes:
-    """The same painting with every subject removed (Muse Image edit), as PNG bytes."""
+async def _edit(client, painting: bytes, prompt: str, meter: Meter, step: str, settings: Settings) -> bytes:
+    """One Muse Image edit of a painting, as PNG bytes."""
     response = await client.images.edit(
         model=settings.painter_model,
         image=("painting.png", painting, "image/png"),
-        prompt=plate_prompt(scene),
+        prompt=prompt,
         n=1,
         size=settings.image_size,
         response_format="b64_json",
@@ -84,5 +120,22 @@ async def paint_without_subjects(client, scene: dict[str, Any], painting: bytes,
         timeout=settings.paint_timeout,
         **_for_the_listener(),
     )
-    meter.image("plate_edit")
+    meter.image(step)
     return first_image(response)
+
+
+async def paint_without_subjects(client, scene: dict[str, Any], painting: bytes, meter: Meter,
+                                 settings: Settings = DEFAULT) -> bytes:
+    """The same painting with every subject removed (Muse Image edit), as PNG bytes."""
+    return await _edit(client, painting, plate_prompt(scene), meter, "plate_edit", settings)
+
+
+async def paint_stage(client, scene: dict[str, Any], first: bytes, stage: str, meter: Meter,
+                      settings: Settings = DEFAULT, fix: str = "") -> bytes:
+    """A later stage of a journey's world: the first stage's painting edited by Muse Image (`stage_prompt`), as PNG
+    bytes at the first painting's exact size (so the stages lie on one another) and marked as made by AI."""
+    picture = await _edit(client, first, stage_prompt(scene, stage, fix), meter, "stage_edit", settings)
+    size = png_size(first)
+    if png_size(picture) != size:
+        return encode(fit(picture, size), "PNG")
+    return _marked(picture)

@@ -2,6 +2,8 @@
 
 The painting is a plain background with one coloured block per subject; SAM
 answers with the blocks it is told about; the critic answers from a queue.
+A journey's later stage (a repaint of the first painting) is the same blocks in
+another light; an answer in a queue may be a function of the request.
 """
 from __future__ import annotations
 
@@ -59,6 +61,15 @@ def png(width: int = W, height: int = H, colour=BACKGROUND, blocks=()) -> bytes:
 
 PAINTING = png(blocks=[(STONE_BOX, (200, 190, 170)), (BRANCH_BOX, (40, 90, 50))])
 EDIT = png(colour=(80, 118, 155))  # a repaint: no subjects, slightly different colours everywhere
+# A journey's later stage: the same place and subjects in a warmer, brighter light.
+STAGE_PAINTING = png(colour=(150, 160, 120), blocks=[(STONE_BOX, (220, 205, 175)), (BRANCH_BOX, (70, 120, 60))])
+
+
+def stage_design(request: dict) -> dict:
+    """The art director's design of the stage a request names ("Design stage 3: ..."): the lake at noon."""
+    n = int(request["messages"][1]["content"].split("Design stage ")[1].split(":")[0])
+    return {**SCENE, "title": f"Stage {n}", "time_of_day": "midday", "light": "bright noon light from above",
+            "change": f"The lake in bright noon light, stage {n}."}
 
 
 def sam_record(index: int, box: tuple[int, int, int, int], conf: float = 0.9) -> str:
@@ -87,7 +98,7 @@ class FakeClient:
 
     def __init__(self, scenes=None, verdicts=None, sam=None, sam_on_plate=None, painting=PAINTING, edit=EDIT,
                  fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None, missing=(),
-                 sam_timeouts=0, moods=None):
+                 sam_timeouts=0, moods=None, stages=None, stage_painting=STAGE_PAINTING, fail_repaint=False):
         self.calls: list[str] = []
         self.requests: list[dict] = []
         self.sam_requests: list[dict] = []
@@ -98,6 +109,10 @@ class FakeClient:
         self._sam_on_plate = sam_on_plate or {}
         self._painting, self._edit = painting, edit
         self._painting_url = sam_image_url(painting)
+        # A later stage of a journey's world is a painting too: SAM answers on it as on the painting.
+        self._stages, self._stage_painting = list(stages or [stage_design]), stage_painting
+        self._paintings = {self._painting_url, sam_image_url(stage_painting)}
+        self._fail_repaint = fail_repaint
         self._fail_edit, self._fail_sam = fail_edit, fail_sam
         self._fail_chat, self._chat_delay = fail_chat, chat_delay
         self._picks = list(picks or [{"choices": []}])
@@ -124,8 +139,11 @@ class FakeClient:
             await asyncio.sleep(self._chat_delay)
         if self._fail_chat:
             raise RuntimeError("chat failed")
-        queue = {"scene": self._scenes, "pick": self._picks, "moods": self._moods}.get(name, self._verdicts)
+        queue = {"scene": self._scenes, "pick": self._picks, "moods": self._moods,
+                 "stage": self._stages}.get(name, self._verdicts)
         payload = self._pop(queue)
+        if callable(payload):
+            payload = payload(kwargs)
         message = SimpleNamespace(content=payload if isinstance(payload, str) else json.dumps(payload))
         return SimpleNamespace(choices=[SimpleNamespace(message=message)], usage=USAGE)
 
@@ -135,6 +153,12 @@ class FakeClient:
         return SimpleNamespace(data=[SimpleNamespace(b64_json=base64.b64encode(self._painting).decode())])
 
     async def _edit_image(self, **kwargs):
+        if kwargs["prompt"].startswith("The same place"):  # a journey's later stage (painter.stage_prompt)
+            self.calls.append("repaint")
+            self.requests.append(kwargs)
+            if self._fail_repaint:
+                raise RuntimeError("repaint failed")
+            return SimpleNamespace(data=[SimpleNamespace(b64_json=base64.b64encode(self._stage_painting).decode())])
         self.calls.append("edit")
         self.requests.append(kwargs)
         if self._fail_edit:
@@ -146,7 +170,7 @@ class FakeClient:
         content = kwargs["input"][0]["content"]
         phrase = next(c["text"] for c in content if c["type"] == "input_text")
         url = next(c["image_url"] for c in content if c["type"] == "input_image")
-        on_plate = url != self._painting_url
+        on_plate = url not in self._paintings
         self.calls.append(f"sam{'@plate' if on_plate else ''}:{phrase}")
         if self._fail_sam:
             raise RuntimeError("sam failed")

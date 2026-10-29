@@ -122,6 +122,9 @@ class Settings:
     # the plural stays: one more request ($0.0025) against a world that stands still.
     sam_plurals: bool = True
     world_timeout: float = 120
+    # A journey's later stage (journeys/stages.py): its design, at most `paintings` edits and their checks, all four
+    # stages at once. Past this it shows the stage before it.
+    stage_timeout: float = 240
 
     # USD. A deployment stops giving the critic the open model once its own ledger of open-model
     # spend reaches this (the Baseten credits are $100; the rest covers worlds in flight).

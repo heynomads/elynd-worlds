@@ -18,6 +18,10 @@ answers out of shape, Muse Spark on Meta Model API judges instead, so a world
 never waits on one provider, unless `Settings.open_critic_only` says no other
 model may judge: then the painting is never shown (CriticUnavailable).
 `verdict["judge"]` names the model that judged.
+
+A journey's later stages (journeys/stages.py) are judged next to the first stage's painting (`reference`): the
+critic then also says whether the stage shows the same place from the same viewpoint (`same_place`), and a stage
+that does not never passes.
 """
 from __future__ import annotations
 
@@ -68,6 +72,23 @@ Return only the JSON object."""
 
 FLAGS = ("belongs", "calm", "figures_wrong", "text_or_symbols")
 
+# A journey's later stage, judged next to its first stage: the same checks, and whether it is the same place.
+STAGE_VERDICT_SCHEMA: dict[str, Any] = {
+    **VERDICT_SCHEMA,
+    "properties": {**VERDICT_SCHEMA["properties"], "same_place": {
+        "type": "boolean",
+        "description": "The painting shows the first picture's place from the same viewpoint, only at another stage"}},
+    "required": [*VERDICT_SCHEMA["required"], "same_place"],
+}
+STAGE_FLAGS = (*FLAGS, "same_place")
+STAGE_INSTRUCTIONS = """This painting is a later stage of a world that grows: the place of the first picture you are
+shown, at another time. Judge the painting named as the one you judge; the first picture is only for comparing.
+- same_place: true if the painting shows the same place as the first picture, from the same viewpoint: the same
+  landforms, path, water and landmarks and the same designed subjects, in about the same places and at about the
+  same sizes. The light, the sky, the season, snow or blossom, and plants that have grown may all differ. False if
+  the view moved or turned, if it is another place, or if something was added that was not there (a building, an
+  object, a figure, text)."""
+
 # The answer's shape, first in the open model's instructions: its host ignores `response_format`, and Meta's guide
 # says Muse Spark Open "pays more attention to the beginning of the system prompt" (dev.meta.ai, Muse Spark Open,
 # prompting).
@@ -75,11 +96,13 @@ OPEN_SHAPE = ('Answer with one JSON object and nothing else, with exactly these 
               '"calm": true or false, "figures_wrong": true or false, "text_or_symbols": true or false, '
               '"subjects_seen": [design names], "score": an integer 0-10, "reason": "one sentence", '
               '"fix": "one sentence, or empty"}.')
+OPEN_STAGE_SHAPE = OPEN_SHAPE.replace('"subjects_seen"', '"same_place": true or false, "subjects_seen"')
 
 
 def passes(verdict: dict[str, Any], settings: Settings = DEFAULT) -> bool:
     return (bool(verdict.get("belongs")) and bool(verdict.get("calm"))
             and not verdict.get("figures_wrong") and not verdict.get("text_or_symbols")
+            and verdict.get("same_place") is not False  # a journey's later stage only (`reference`)
             and int(verdict.get("score") or 0) >= settings.pass_score)
 
 
@@ -88,27 +111,41 @@ class CriticUnavailable(RuntimeError):
 
 
 async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
-                   settings: Settings = DEFAULT, open_client=None) -> dict[str, Any]:
+                   settings: Settings = DEFAULT, open_client=None, *, reference: bytes | None = None) -> dict[str, Any]:
     """The verdict on one painting: Muse Spark Open's when `open_client` is given and answers, else Muse Spark's
-    (or, with `settings.open_critic_only`, CriticUnavailable)."""
+    (or, with `settings.open_critic_only`, CriticUnavailable). With `reference`, the first stage of a journey's world,
+    the painting is a later stage of it, and the verdict also says whether it is the same place (`same_place`)."""
     if open_client is None and settings.open_critic_only:
         raise CriticUnavailable("no open model to judge the painting")
     design = {k: scene[k] for k in ("title", "place", "time_of_day", "light", "air", "subjects", "sleep")}
+
+    async def picture(png: bytes) -> dict[str, Any]:
+        return {"type": "image_url", "image_url": {"url": data_url(
+            await asyncio.to_thread(preview_jpeg, png, settings.critic_image_width), "image/jpeg")}}
+
+    instructions, schema, shape, flags = CRITIC_INSTRUCTIONS, VERDICT_SCHEMA, OPEN_SHAPE, FLAGS
+    pictures = [await picture(painting)]
+    if reference is not None:
+        instructions, schema = CRITIC_INSTRUCTIONS + "\n\n" + STAGE_INSTRUCTIONS, STAGE_VERDICT_SCHEMA
+        shape, flags = OPEN_STAGE_SHAPE, STAGE_FLAGS
+        pictures = [{"type": "text", "text": "The first picture: the place as first painted."},
+                    await picture(reference),
+                    {"type": "text", "text": "The painting you judge: a later stage of the same place."},
+                    *pictures]
     request = {
         "messages": [
-            {"role": "system", "content": CRITIC_INSTRUCTIONS},
+            {"role": "system", "content": instructions},
             {"role": "user", "content": [
                 {"type": "text", "text": "The design:\n" + json.dumps(design, ensure_ascii=False)},
-                {"type": "image_url", "image_url": {"url": data_url(
-                    await asyncio.to_thread(preview_jpeg, painting, settings.critic_image_width), "image/jpeg")}},
+                *pictures,
             ]},
         ],
         "response_format": {"type": "json_schema",
-                            "json_schema": {"name": "verdict", "schema": VERDICT_SCHEMA, "strict": True}},
+                            "json_schema": {"name": "verdict", "schema": schema, "strict": True}},
     }
     if open_client is not None:
         open_request = {**request, "messages": [
-            {"role": "system", "content": OPEN_SHAPE + "\n\n" + CRITIC_INSTRUCTIONS}, *request["messages"][1:]]}
+            {"role": "system", "content": shape + "\n\n" + instructions}, *request["messages"][1:]]}
         failure: Exception | None = None
         for attempt in (1, 2):  # once more when an answer is out of shape; never after an error or a timeout
             try:
@@ -118,7 +155,7 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
                     **reasoning(settings.open_critic_reasoning), **open_request),
                     settings.open_critic_timeout)
                 meter.spark_open(getattr(response, "usage", None), "critique")
-                return _verdict(response, settings.open_critic_model)
+                return _verdict(response, settings.open_critic_model, flags)
             except ValueError as error:  # out of shape (a JSONDecodeError too)
                 failure = error
                 log.info("the open critic answered out of shape (attempt %d): %s", attempt, error)
@@ -133,13 +170,15 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
                                        extra_body={**privacy_fields(), **cache_fields("critic")}, timeout=settings.critic_timeout,
                                        **request)
     meter.spark(getattr(response, "usage", None), "critique")
-    return _verdict(response, model)
+    return _verdict(response, model, flags)
 
 
-def _verdict(response: Any, judge: str) -> dict[str, Any]:
+def _verdict(response: Any, judge: str, flags: tuple[str, ...] = FLAGS) -> dict[str, Any]:
     """The verdict in a critic's answer, checked: a flag that is not true or false never passes a painting."""
     verdict = json_object(response.choices[0].message.content)
-    for flag in FLAGS:
+    if "same_place" not in flags:
+        verdict.pop("same_place", None)  # only a journey's later stage is judged on it
+    for flag in flags:
         if not isinstance(verdict.get(flag), bool):
             raise ValueError(f"the verdict's {flag!r} is not true or false")
     verdict["score"] = max(0, min(10, int(verdict.get("score") or 0)))
@@ -156,7 +195,8 @@ def reason_from_checks(verdict: dict[str, Any]) -> str:
         ("text_or_symbols", True, "shows letters or symbols"),
         ("calm", False, "is not calm"),
         ("belongs", False, "does not show the designed place and mood"),
-    ) if bool(verdict.get(flag)) is fault]
+        ("same_place", False, "is not the same place as the first stage"),
+    ) if flag in verdict and bool(verdict.get(flag)) is fault]
     if faults:
         return f"The painting {', '.join(faults)}."
     return f"No fault found; score {verdict.get('score')} of 10."

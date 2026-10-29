@@ -5,8 +5,9 @@
     elynd-worlds sheet out/batch-*/                          # one contact sheet
     elynd-worlds pick examples/*.txt --library library/worlds  # which library world, or its own?
     elynd-worlds timeline --duration 600 --silence 120:180   # the breathing timeline
+    elynd-worlds stages plan.json --out out/journey          # a journey's world: five stages of one place
 
-`make` refuses to start when the spend ledger (a CSV of every run's cost) is
+`make` and `stages` refuse to start when the spend ledger (a CSV of every run's cost) is
 already at the budget. The key comes from $MODEL_API_KEY or --key-file.
 
 With an open-model key ($OPEN_MODEL_API_KEY or --open-key-file), Muse Spark Open
@@ -35,6 +36,8 @@ from .settings import DEFAULT
 
 # The most one world's critic can cost on the open model: two paintings, about 1.2 cents each at most.
 OPEN_ESTIMATE_USD = 0.03
+# What one world may add to the Meta ledger (a world costs about 6 cents).
+WORLD_ESTIMATE_USD = 0.07
 
 
 def read_key(path: str | None, env: str = "MODEL_API_KEY") -> str | None:
@@ -74,13 +77,13 @@ def meditation_for(path: Path, args: argparse.Namespace) -> Meditation:
     return Meditation(script=text, **meta)
 
 
-def open_critic(args: argparse.Namespace):
+def open_critic(args: argparse.Namespace, worlds: int | None = None):
     """(the open-model client for the critic, or None; and why): None without a key or at the budget."""
     key = read_key(args.open_key_file, "OPEN_MODEL_API_KEY")
     if not key:
         return None, "no open-model key"
     already = spent(Path(args.open_ledger).expanduser())
-    if already + OPEN_ESTIMATE_USD * len(args.scripts) > args.open_budget:
+    if already + OPEN_ESTIMATE_USD * (len(args.scripts) if worlds is None else worlds) > args.open_budget:
         return None, f"the open-model ledger shows ${already:.2f} of its ${args.open_budget:.2f} budget"
     return connect_open(key), f"${already:.2f} of ${args.open_budget:.2f} spent"
 
@@ -88,7 +91,7 @@ def open_critic(args: argparse.Namespace):
 async def _make(args: argparse.Namespace) -> int:
     ledger = Path(args.ledger).expanduser()
     already = spent(ledger)
-    estimate = 0.07 * len(args.scripts)
+    estimate = WORLD_ESTIMATE_USD * len(args.scripts)
     if already + estimate > args.budget:
         print(f"refusing: the ledger shows ${already:.2f} spent; this run may add ~${estimate:.2f}, "
               f"over the ${args.budget:.2f} budget", file=sys.stderr)
@@ -140,6 +143,50 @@ async def _make(args: argparse.Namespace) -> int:
         print(json.dumps(r, ensure_ascii=False))
     print(f"{sum(r['ok'] for r in results)}/{len(results)} worlds, ${total:.4f} Meta + ${open_total:.4f} open model "
           f"this run, ${already + total:.4f} in the Meta ledger -> {out}")
+    return 0
+
+
+async def _stages(args: argparse.Namespace) -> int:
+    from .journeys import stages
+    try:
+        world = stages.journey_world(json.loads(Path(args.plan).read_text()))
+    except (OSError, ValueError) as error:
+        print(f"no journey world in {args.plan}: {error}", file=sys.stderr)
+        return 1
+    ledger = Path(args.ledger).expanduser()
+    already = spent(ledger)
+    # Five worlds; an edit the critic turns away is made once more.
+    estimate = WORLD_ESTIMATE_USD * stages.STAGES * 1.3
+    if already + estimate > args.budget:
+        print(f"refusing: the ledger shows ${already:.2f} spent; a journey's five stages may add ~${estimate:.2f}, "
+              f"over the ${args.budget:.2f} budget", file=sys.stderr)
+        return 2
+    client = connect(read_key(args.key_file))
+    settings = dataclasses.replace(DEFAULT, open_critic_timeout=args.open_timeout, open_designer=args.open_designer)
+    open_client, why = open_critic(args, worlds=stages.STAGES)
+    print(f"critic: {'Muse Spark Open' if open_client else 'Muse Spark'} ({why})", file=sys.stderr)
+    if args.open_designer and open_client is None:
+        print("refusing: --open-designer needs the open model (its key, and its ledger under budget)", file=sys.stderr)
+        return 2
+    out = Path(args.out) if args.out else Path("out") / "stages" / time.strftime("%Y%m%d-%H%M%S")
+    meter = Meter()
+    try:
+        made = await stages.make_stages(client, world, settings=settings, meter=meter, open_client=open_client)
+    except Exception as error:  # noqa: BLE001 - what was spent is recorded all the same
+        made = None
+        print(f"no stage 1, so no journey world: {type(error).__name__}: {error}"[:400], file=sys.stderr)
+    record(ledger, "stages", meter.meta_usd, f"a journey's world, {stages.STAGES} stages -> {out}")
+    if meter.open_usd:
+        record(Path(args.open_ledger).expanduser(), "stages", meter.open_usd,
+               f"{'design and critic' if args.open_designer else 'critic'} of a journey's world -> {out}")
+    if made is None:
+        return 1
+    made.save(out)
+    for stage in made.summary()["stages"]:
+        print(json.dumps({k: v for k, v in stage.items() if k != "trace"}, ensure_ascii=False))
+    print(f"{sum(s.made for s in made.stages)}/{stages.STAGES} stages made in {made.seconds:.0f} s, "
+          f"${meter.meta_usd:.4f} Meta + ${meter.open_usd:.4f} open model, "
+          f"${already + meter.meta_usd:.4f} in the Meta ledger -> {out}")
     return 0
 
 
@@ -250,6 +297,22 @@ def main(argv: list[str] | None = None) -> int:
     make.add_argument("--open-designer", action="store_true",
                       help="Muse Spark Open designs each world too: everything but painting and cutting on open weights")
 
+    st = sub.add_parser("stages", help="a journey's world: five stages of one place, the first painted, the others "
+                                       "repainted from it (a plan's JSON, or its world: a scene and five stages)")
+    st.add_argument("plan", help="a plan's JSON (its \"world\") or a JSON object with \"scene\" and \"stages\"")
+    st.add_argument("--out", help="where stage1 ... stage5 and stages.json go (default out/stages/<time>)")
+    st.add_argument("--key-file", default=os.environ.get("MODEL_API_KEY_FILE"))
+    st.add_argument("--ledger", default=os.environ.get("ELYND_WORLDS_LEDGER", "out/spend.csv"))
+    st.add_argument("--budget", type=float, default=float(os.environ.get("ELYND_WORLDS_BUDGET", "25")))
+    st.add_argument("--open-key-file", default=os.environ.get("OPEN_MODEL_API_KEY_FILE"),
+                    help="Muse Spark Open (Baseten) as the critic; without a key, Muse Spark judges")
+    st.add_argument("--open-ledger", default=os.environ.get("ELYND_WORLDS_OPEN_LEDGER", "out/open_spend.csv"))
+    st.add_argument("--open-budget", type=float, default=DEFAULT.open_budget_usd)
+    st.add_argument("--open-timeout", type=float, default=45.0,
+                    help="seconds the open critic gets before Muse Spark judges (four stages share one process)")
+    st.add_argument("--open-designer", action="store_true",
+                    help="Muse Spark Open designs the stages too (the journey's world holds no listener's words)")
+
     pick = sub.add_parser("pick", help="the library world each meditation gets, or whether it needs its own")
     pick.add_argument("scripts", nargs="+")
     pick.add_argument("--library", nargs="+", required=True, help="folders of saved library worlds")
@@ -287,6 +350,8 @@ def main(argv: list[str] | None = None) -> int:
     logging.getLogger("elynd_worlds").setLevel(logging.INFO)  # e.g. why Muse Spark judged instead
     if args.command == "make":
         return asyncio.run(_make(args))
+    if args.command == "stages":
+        return asyncio.run(_stages(args))
     if args.command == "pick":
         return asyncio.run(_pick(args))
     if args.command == "sheet":

@@ -11,4 +11,7 @@ for its hosted API (Meta Global Processor Terms 2.2) bar health-related data, an
 so the listener's words never reach Meta. (Llama 4 is multimodal, and its licence grants no rights to companies based
 in the European Union; ELYND is one.) Only the non-personal description of the journey's world goes to Meta's API, to
 paint it with Muse Image and check it with Muse Spark Open, as every world is.
+
+The journey's world grows with it (`stages`): five living worlds of one place, the first painted, the other four
+repainted from it in another light and season, from the same viewpoint.
 """

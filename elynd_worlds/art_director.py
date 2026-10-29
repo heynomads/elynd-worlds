@@ -15,6 +15,10 @@ The design ("scene") is strict JSON. Two parts of it drive everything after:
 The listener's own words never reach the image model: the director turns the
 meditation into scenery, and only scenery goes on. When the critic rejects a
 painting, the director revises its own design from the critic's note (`revise`).
+
+A journey's world grows (journeys/stages.py): for each later stage the director
+re-lights its own first design (`stage`): another time of day, light, air,
+palette or season, the same place, subjects and viewpoint.
 """
 from __future__ import annotations
 
@@ -131,6 +135,25 @@ The painting made from the design below was rejected by the critic. Change what 
 asks for and nothing else: keep the place, the palette and the subjects unless the note names them as
 the problem. All rules of the original brief still apply. Return the complete design as JSON."""
 
+STAGE_INSTRUCTIONS = """You are the art director of ELYND, designing one stage of a world that grows.
+A listener's 30-day journey has one world: the place below, painted once at the journey's start. Over the thirty
+days the same place passes through the stages listed, one a week and the last on day thirty. Design the stage named:
+the same place, seen from exactly the same viewpoint, with the same landforms, path, water and landmarks and the
+same subjects in the same places. Change only what this stage changes: the time of day and the light, the sky, the
+air, the season, and how far plants have grown or bloomed. A stage that names a part of the place (the ridge, the
+summit, the far shore) means the light or the season has reached it, seen from the same viewpoint: the viewpoint
+never moves. Keep `place`, `subjects` and `nature` as they are; a subject that glows (a lantern) may be unlit in
+daylight. `title`: 2-4 plain words for this stage. `prompt`: the painting of this stage. `change`: one sentence for
+the painter who repaints the first painting into this stage, on what changes in the picture (never the viewpoint).
+All rules of the original brief still apply. Return the complete design as JSON."""
+
+STAGE_SCHEMA: dict[str, Any] = {
+    **SCENE_SCHEMA,
+    "properties": {**SCENE_SCHEMA["properties"], "change": {
+        "type": "string", "description": "One sentence for the painter: what changes in the first painting"}},
+    "required": [*SCENE_SCHEMA["required"], "change"],
+}
+
 HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 DEFAULT_PALETTE = ("#2E4A52", "#9DB7B0", "#E8D9C0")
 
@@ -191,8 +214,8 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
     return {**scene, "palette": palette[:5], "subjects": subjects, "nature": nature, "particles": particles}
 
 
-def _response_format() -> dict[str, Any]:
-    return {"type": "json_schema", "json_schema": {"name": "scene", "schema": SCENE_SCHEMA, "strict": True}}
+def _response_format(name: str = "scene", schema: dict[str, Any] = SCENE_SCHEMA) -> dict[str, Any]:
+    return {"type": "json_schema", "json_schema": {"name": name, "schema": schema, "strict": True}}
 
 
 async def design(client, meditation: Meditation, meter: Meter, settings: Settings = DEFAULT,
@@ -221,9 +244,45 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
     return await _ask(client, messages, "revise", meter, settings, open_client)
 
 
+def keep_place(first: dict[str, Any], designed: dict[str, Any]) -> dict[str, Any]:
+    """A later stage's design on the first stage's ground: its place, its subjects (each where and as it was, only
+    its glow may follow the light) and what moves in nature, whatever the answer said of them."""
+    glows = {" ".join(str(s.get("name") or "").split()).lower(): s.get("glows")
+             for s in designed.get("subjects") or [] if isinstance(s, dict)}
+    subjects = [{**s, "glows": glows.get(s["name"], s.get("glows")) is True} for s in first["subjects"]]
+    return {**designed, "place": first["place"], "subjects": subjects, "nature": list(first.get("nature") or [])}
+
+
+async def stage(client, first: dict[str, Any], stages: list[str], n: int, meter: Meter,
+                settings: Settings = DEFAULT, open_client=None) -> dict[str, Any]:
+    """The director's design of a journey's stage `n` (2-5): its first design re-lit, with `change`, its sentence on
+    what changes in the picture, for the painter's edit (painter.stage_prompt)."""
+    first = {k: v for k, v in first.items() if k != "change"}
+    listed = "\n".join(f"{i}. {text}" for i, text in enumerate(stages, 1))
+    messages = [
+        {"role": "system", "content": DIRECTOR_INSTRUCTIONS + "\n\n" + STAGE_INSTRUCTIONS},
+        {"role": "user", "content": (
+            f"The world as painted at the journey's start (stage 1):\n{json.dumps(first, ensure_ascii=False)}\n\n"
+            f"The journey's stages:\n{listed}\n\nDesign stage {n}: {stages[n - 1]}"
+        )},
+    ]
+    designed = await _ask(client, messages, "stage", meter, settings, open_client,
+                          response_format=_response_format("stage", STAGE_SCHEMA),
+                          keep=lambda data: keep_place(first, data))
+    designed["change"] = " ".join(str(designed.get("change") or "").split())
+    return designed
+
+
 async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, settings: Settings,
-               open_client) -> dict[str, Any]:
-    """A design (or its revision) from Muse Spark, or from Muse Spark Open with `Settings.open_designer`."""
+               open_client, *, response_format: dict[str, Any] | None = None,
+               keep=None) -> dict[str, Any]:
+    """A design (or its revision, or a stage of it) from Muse Spark, or from Muse Spark Open with
+    `Settings.open_designer`. `keep` sets what the answer may not change before the design is checked."""
+    response_format = response_format or _response_format()
+
+    def checked(data: dict[str, Any]) -> dict[str, Any]:
+        return check(keep(data) if keep else data)
+
     if settings.open_designer and open_client is not None:
         # The open model's host enforces no answer shape, and its filter may refuse a calm meditation (a desert
         # under the stars, a hand on the belly: 2 of 20 on 28 Oct 2026). So: once more when the answer is out of
@@ -232,10 +291,10 @@ async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, 
             try:
                 # No privacy fields: they are Meta's (critic.py does the same).
                 response = await open_client.chat.completions.create(
-                    model=settings.open_designer_model, messages=messages, response_format=_response_format(),
+                    model=settings.open_designer_model, messages=messages, response_format=response_format,
                     timeout=settings.open_design_timeout, **reasoning(settings.open_designer_reasoning))
                 meter.spark_open(getattr(response, "usage", None), step)
-                return check(json_object(response.choices[0].message.content))
+                return checked(json_object(response.choices[0].message.content))
             except ValueError as error:  # out of shape (a SceneError or a JSONDecodeError)
                 log.info("the open designer answered out of shape (attempt %d): %s", attempt, error)
             except Exception as error:  # noqa: BLE001 - refused, failed or too slow: Muse Spark designs
@@ -244,10 +303,10 @@ async def _ask(client, messages: list[dict[str, Any]], step: str, meter: Meter, 
     response, _ = await spark_chat(
         client, (settings.director_model, settings.spark_fallback_model),
         messages=messages,
-        response_format=_response_format(),
+        response_format=response_format,
         extra_body={**privacy_fields(), **cache_fields("design")},
         timeout=settings.design_timeout,
         **reasoning(settings.director_reasoning),
     )
     meter.spark(getattr(response, "usage", None), step)
-    return check(json.loads(response.choices[0].message.content))
+    return checked(json.loads(response.choices[0].message.content))
