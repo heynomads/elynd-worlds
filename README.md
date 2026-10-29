@@ -181,7 +181,8 @@ our own short texts about a place, never from a listener's meditation, so the op
 `web/` is a gallery of worlds the agent made for the example meditations. They live as they do on the phone:
 the page compiles the phone's own shader for WebGL 2 and uses the same motion. **Play as a meditation** runs a
 session sped up (arriving, eyes closed, a long silence, the end), and each world shows how the agent made it: the
-design, the critic's score, the layers, what moves, the time and the cost. Serve the repository and open `/web/`:
+design, the critic's score, the layers, what moves, the time and the cost. **Open it at
+https://heynomads.github.io/elynd-worlds/web/**, nothing to install; or serve the repository and open `/web/`:
 
 ```bash
 python -m http.server 8000          # then http://localhost:8000/web/  (web/parity.html: the timeline check)
@@ -190,7 +191,8 @@ python -m http.server 8000          # then http://localhost:8000/web/  (web/pari
 
 ## Run it
 
-Without any account or key: the recorded worlds in the browser (each with the design, the critic's verdict,
+Without any account or key: the recorded worlds in the browser (https://heynomads.github.io/elynd-worlds/web/,
+or locally as below; each with the design, the critic's verdict,
 the layers, the time and the cost of how the agent made it), and the tests, which run the whole agent loop against
 a fake Meta Model API.
 
