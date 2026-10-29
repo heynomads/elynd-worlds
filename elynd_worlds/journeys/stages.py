@@ -17,7 +17,8 @@ a path, then first light on the lower slopes, ... full light at the summit. It n
   light, air, palette, season; the place, the subjects and what moves in nature are kept in code), and Muse Image's
   edit repaints stage 1's painting into it (painter.paint_stage). The critic judges each next to stage 1's painting
   and also checks that it shows the same place from the same viewpoint (critic.critique, `reference`). Each stage
-  gets its own layers, region map and plate, of the same subjects, so the same things move in every stage.
+  gets its own layers, region map and plate, of the same subjects, so the same things move in every stage, and
+  the first stage's life seed, so its birds cross at the same moments.
 * An edit the critic turns away is made once more with the critic's note; a stage turned away twice, or that fails
   in any other way or takes longer than `Settings.stage_timeout`, shows the stage before it. The journey always
   shows its last good stage: one stage never loses the set.
@@ -39,6 +40,7 @@ from typing import Any
 from .. import art_director, painter
 from ..art_director import Meditation
 from ..director import NoWorld, OnPainting, Run, finish, look, make_world
+from ..life import seed
 from ..meta import Meter, listener as listener_id
 from ..settings import DEFAULT, Settings
 from ..world import Step, World
@@ -147,7 +149,9 @@ async def _later(client, first: World, world: dict[str, Any], n: int, run: Run, 
         verdict, parts = await look(client, run, painting, scene, attempt, settings=settings,
                                     open_client=open_client, reference=first.painting)
         if parts is not None:
-            return await finish(client, run, painting, scene, verdict, parts, attempt, settings)
+            world = await finish(client, run, painting, scene, verdict, parts, attempt, settings)
+            world.life_seed = seed(first.scene)  # its birds come when the first stage's do
+            return world
         fix = verdict.get("fix") or verdict.get("reason") or ""
     raise NoWorld(f"no edit passed the critic: {verdict.get('reason')}")
 

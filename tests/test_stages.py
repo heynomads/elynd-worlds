@@ -9,7 +9,7 @@ import json
 import pytest
 from PIL import Image
 
-from elynd_worlds import Meter, Settings, art_director, cli, critic, painter
+from elynd_worlds import Meter, Settings, art_director, cli, critic, life, painter
 from elynd_worlds.director import NoWorld
 from elynd_worlds.journeys import stages
 from elynd_worlds.meta import NO_IMAGE_TOOLS, is_marked, png_size
@@ -271,6 +271,9 @@ async def test_the_stages_are_saved_like_any_world(tmp_path):
     assert summary["stages"][3]["title"] is None and summary["stages"][3]["error"].startswith("NoWorld")
     assert summary["stages"][1]["title"] == "Stage 2" and summary["stages"][1]["layers"] == ["smooth stone", "pine branch"]
     assert summary["cost_usd"] == made.meter.usd == pytest.approx(sum(s["usd"] for s in summary["stages"]), abs=1e-4)
+    # One place, one life: every stage's birds come when the first stage's do (its titles differ).
+    seeds = {json.loads((folder / f"stage{n}" / "world.json").read_text())["living"]["seed"] for n in range(1, 6)}
+    assert seeds == {life.seed(made.worlds[0].scene)}
 
 
 async def test_every_request_of_the_five_keeps_no_copy_and_names_the_listener_by_a_pseudonym():

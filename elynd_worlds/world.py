@@ -78,6 +78,9 @@ class World:
     seconds: float = 0.0
     regions: Regions = field(default_factory=Regions)
     lights: list[dict[str, float]] = field(default_factory=list)
+    # When its birds and shooting stars come (life.seed); None: its own, from its design. A journey's later stages
+    # keep the first stage's (journeys/stages.py): one place, the same life at the same moments.
+    life_seed: float | None = None
 
     def focus(self) -> tuple[float, float]:
         """Where the subjects are (fractions of the painting), so a screen narrower than the
@@ -129,7 +132,7 @@ class World:
                 "lights": list(self.lights) if self.moving else [],
                 # birds, night, fish, shadows, and particles (rain or petals where they belong): life.py
                 **life(self.scene, self.regions.present),
-                "seed": seed(self.scene),
+                "seed": seed(self.scene) if self.life_seed is None else self.life_seed,
             },
             "cost_usd": self.meter.usd,
             "seconds": round(self.seconds, 2),
