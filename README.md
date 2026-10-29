@@ -1,5 +1,7 @@
 # ELYND Worlds
 
+<img src="docs/quiet_sunset_harbour.webp" width="260" align="right" alt="Quiet Sunset Harbour, one of the example worlds, alive: the water ripples and glints, the clouds drift, gulls pass. Twelve seconds that loop without a seam.">
+
 **Every meditation opens on a living painted world: one of 459 that Meta's models painted for the library, or a new
 one painted live for a very personal meditation, designed, painted, checked and brought to life with Meta's models.**
 
@@ -237,6 +239,7 @@ elynd_worlds/          the engine (Python)
   director.py          the agent loop
   timeline.py          how much of the world shows over the session
   card.py              the share card
+  loop.py              a world's 12 s that loop without a seam (the shared clip), music bed and AI mark
   meta.py              the clients, privacy fields, cost meter
 flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living painting's shader)
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
@@ -245,6 +248,7 @@ scripts/               the gallery builder; replate.py rebuilds saved worlds' pl
 library/briefs/        the library's 520 themes (the pictures are kept out of git; catalog.json lists the 459)
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
+docs/                  the picture at the top of this page
 ```
 
 ## Licence
