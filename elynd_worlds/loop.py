@@ -192,13 +192,13 @@ def encode(frames: Iterable[np.ndarray], size: tuple[int, int], out: Path, fps: 
 
 def make_loop(world_dir: Path, out: Path, size: tuple[int, int] = (360, 640), ratio: float = 3.0,
               bitrate: str = "3M", music: Path | None = None, music_from: float = 60.0, flutter: str | None = None,
-              renderer=None) -> dict[str, Any]:
+              package: Path | None = None, renderer=None) -> dict[str, Any]:
     """`world_dir`'s shared clip at `out`; what was made, for the log."""
     manifest = json.loads((Path(world_dir) / "world.json").read_text())
     clock = quiet_window(manifest.get("living"))
     with tempfile.TemporaryDirectory(prefix="elynd-loop-") as tmp:
         frames = (renderer or render)(Path(world_dir), Path(tmp) / "frames", clock, LOOP_SECONDS + BLEND_SECONDS + 0.5,
-                          size=size, ratio=ratio, flutter=flutter)
+                          size=size, ratio=ratio, flutter=flutter, package=package)
         first = Image.open(frames[0])
         sound = looped_music(music, music_from, Path(tmp) / "bed.wav") if music else None
         encode(loop_frames(frames), first.size, out, bitrate=bitrate, sound=sound)

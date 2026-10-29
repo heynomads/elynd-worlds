@@ -114,15 +114,16 @@ def test_a_world_becomes_a_marked_12_s_clip_through_the_cli(tmp_path, monkeypatc
     (world / "world.json").write_text(json.dumps({"title": "Quiet Lake", "living": {"birds": "gulls", "seed": 0.7192}}))
     seen = {}
 
-    def fake_render(world_dir, frames_dir, clock, seconds, size, ratio, flutter):
-        seen.update(clock=clock, seconds=seconds, size=size, ratio=ratio)
+    def fake_render(world_dir, frames_dir, clock, seconds, size, ratio, flutter, package):
+        seen.update(clock=clock, seconds=seconds, size=size, ratio=ratio, package=package)
         return write_frames(frames_dir, math.ceil(seconds) * loop.FPS, (72, 128))
 
     monkeypatch.setattr(loop, "render", fake_render)
     music = sine(tmp_path / "music.wav", 80)
-    assert cli.main(["loop", str(world), "--out-dir", str(tmp_path / "loops"), "--music", str(music)]) == 0
+    assert cli.main(["loop", str(world), "--out-dir", str(tmp_path / "loops"), "--music", str(music),
+                     "--package", str(tmp_path / "pkg")]) == 0
     clip = tmp_path / "loops" / "quiet_lake.mp4"
-    assert seen == {"clock": 4, "seconds": 14.0, "size": (360, 640), "ratio": 3.0}
+    assert seen == {"clock": 4, "seconds": 14.0, "size": (360, 640), "ratio": 3.0, "package": tmp_path / "pkg"}
     probe = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration:stream=codec_name,width,height",
                                        "-of", "json", str(clip)], capture_output=True, text=True, check=True).stdout)
     assert abs(float(probe["format"]["duration"]) - loop.LOOP_SECONDS) < 0.05

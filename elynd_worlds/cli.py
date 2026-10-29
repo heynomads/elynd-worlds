@@ -212,7 +212,8 @@ def _loop(args: argparse.Namespace) -> int:
     for folder in map(Path, args.worlds):
         made = loop.make_loop(folder, out_dir / f"{folder.name}.mp4", size=(w, h), ratio=args.ratio,
                               bitrate=args.bitrate, music=Path(args.music) if args.music else None,
-                              music_from=args.music_from, flutter=args.flutter)
+                              music_from=args.music_from, flutter=args.flutter,
+                              package=Path(args.package) if args.package else None)
         print(json.dumps(made))
     return 0
 
@@ -273,6 +274,7 @@ def main(argv: list[str] | None = None) -> int:
     lp.add_argument("--music", help="a bed of our own music, looped like the picture")
     lp.add_argument("--music-from", type=float, default=60.0, help="where in the music the bed starts (s)")
     lp.add_argument("--flutter", default=os.environ.get("FLUTTER", "flutter"))
+    lp.add_argument("--package", help="a copy of flutter/elynd_worlds_scene to render in (one per parallel run)")
 
     tl = sub.add_parser("timeline", help="print the breathing timeline as JSON")
     tl.add_argument("--duration", type=float, required=True)
