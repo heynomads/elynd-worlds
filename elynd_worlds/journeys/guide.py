@@ -157,6 +157,11 @@ most less least much many some any each every all both few other such own same a
 wanted feel feels felt feeling get gets got make makes made go goes going went one two thing things way day days
 really quite rather lot lots bit good little now today time times them i'm i'd i've i'll you're you'd you've it's
 that's there's don't doesn't didn't can't won't""".split())
+# Words that only hold a sentence together: a sentence of the guide's made of none of their other words is its own.
+_FUNCTION = set("""a an the and or but to of in on at for with by from up about into over after before your you yours
+yourself i me my we us our it its is are was were be been being this that these those what when where how who which
+would could should will can do does did have has had not no so as if then than there here just all some any each very
+too also them they their he she her his him i'm you're it's that's let's lets let now more much""".split())
 _TIME_WORDS = re.compile(
     r"\d|\b(?:today|tonight|tomorrow|weekend|week|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday|"
     r"january|february|march|april|may|june|july|august|september|october|november|december|heute|morgen|"
@@ -360,6 +365,15 @@ def _content_words(text: str) -> set[str]:
     return {w[:5] for w in words_of(text) if len(w) >= 3 and w not in STOP}
 
 
+def _their_sentences(say: str, theirs: str) -> str:
+    """The finishing say without the guide's own closing: its sentences that hold none of their words go (as long as
+    one stays). "Reading your book, like you used to. Your thirty days begin." → "Reading your book, like you used
+    to." """
+    theirs_ = {w[:4] for w in words_of(theirs) if w not in _FUNCTION}
+    kept = [s for s in sentences(say) if {w[:4] for w in words_of(s) if w not in _FUNCTION} & theirs_]
+    return " ".join(kept) if kept else say
+
+
 def _moment(value: object, today: dt.date, theirs: str) -> Moment | None:
     """The moment they named: its label shares a word with their answers (a model never invents one), and its date is
     kept only when their answers hold a time (a number, a weekday, "next week") and it falls within 30 days."""
@@ -392,6 +406,8 @@ def parse(text: str, language: str, today: dt.date, *, must_finish: bool, theirs
             if chip and chip.lower() not in {c.lower() for c in chips}:
                 chips.append(chip)
         chips = chips[:3]
+    if done and theirs:
+        say = _their_sentences(say, theirs)
     turn = Turn(say=say, chips=chips, done=done)
     if done:
         title = _plain(data.get("title"), 60).rstrip(".")

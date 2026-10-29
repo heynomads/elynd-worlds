@@ -67,8 +67,9 @@ COACHING = re.compile(r"\b(?:productiv\w*|prioriti\w*|multitask\w*|to-dos?|to-do
                       r"notifications?|pomodoro|actionable)\b", re.I)
 NERVOUS = re.compile(r"\bnervous system\b", re.I)
 # An attention exercise while driving or doing anything that needs full attention, or a push into what they fear.
-UNSAFE = re.compile(r"\b(?:(?:while|whilst|as|when)\s+(?:you(?:'re|\s+are)?\s+)?(?:driv|navigat)\w*|behind the wheel|"
-                    r"at the wheel|during (?:your|the) drive|unfamiliar roads?|trust your instincts|"
+UNSAFE = re.compile(r"\b(?:(?:while|whilst|as|when)\s+(?:you(?:'re|\s+are)?\s+)?driv\w*|behind the wheel|at the wheel|"
+                    r"during (?:your|the) drive|navigat\w*\s+(?:\w+\s+){0,2}(?:roads?|streets?|traffic|roundabouts?|"
+                    r"junctions?|intersections?|motorways?|lanes?)|unfamiliar roads?|trust your instincts|"
                     r"(?:one|an) extra stop|push (?:through|yourself)|face your fears?|test yourself)\b", re.I)
 # A result promised, or how their moment will go presumed.
 PROMISE = re.compile(r"\b(?:you will|you'll|you're going to|you are going to)\b", re.I)

@@ -94,16 +94,22 @@ def test_a_normal_tube_ride_is_asked_again():
 # ─── G2: no copied closing, no closing about the thirty days ─────────────
 
 def test_the_old_closing_line_and_the_examples_words_are_asked_again():
+    # The old example's closing holds none of their words: it is left out, nothing is asked again.
     old = finish(say="Reading your book, like you used to. I can see what these thirty days are for.")
+    llama = FakeLlama([old])
+    turn = guide.next_turn(llama, "ENG", turns(*ANSWERS), today=TODAY)
+    assert turn.say == "Reading your book, like you used to." and len(llama.calls) == 1
+    # A closing about the thirty days made with their words is asked again; so is a summary in the example's words.
+    thirty = finish(say="Reading your book, like you used to. Thirty days of the train.")
     copied = finish(summary="You want to be more present with your partner. In the evenings you are still answering "
                             "messages in your head. A good evening is one where you actually hear her.")
-    llama = FakeLlama([old, copied, finish()])
+    llama = FakeLlama([thirty, copied, finish()])
     turn = guide.next_turn(llama, "ENG", turns(*ANSWERS), today=TODAY)
     assert turn.say == "Reading your book, like you used to."
     assert "the closing speaks of the thirty days" in llama.calls[1][1]
     assert "the summary copies the example's words" in llama.calls[2][1]
     # On the last attempt the closing sentence is left out and their words stay.
-    turn = guide.next_turn(FakeLlama([old] * 3), "ENG", turns(*ANSWERS), today=TODAY)
+    turn = guide.next_turn(FakeLlama([thirty] * 3), "ENG", turns(*ANSWERS), today=TODAY)
     assert turn.say == "Reading your book, like you used to."
 
 
@@ -263,14 +269,18 @@ def test_p3_coaching_and_productivity_are_asked_again_and_writing_once_a_week():
 @pytest.mark.parametrize("step", ["Trust your instincts when navigating unfamiliar roads.",
                                   "Notice the different sounds you hear while driving, like the engine or the wind.",
                                   "Ride one extra stop past your usual exit before stepping off.",
-                                  "Pay attention to your grip on the steering wheel as you drive to work."])
+                                  "Pay attention to your grip on the steering wheel as you drive to work.",
+                                  "Breathe slowly as you navigate the big roundabouts."])
 def test_p4_no_attention_exercise_while_driving_and_no_push_into_fear(step):
     plan, llama = make(Script(weeks={22: [{27: {"try_today": step}}, {}]}))
     assert "never an attention exercise while driving" in reasons(llama) and plan.day(27).try_today == GOOD_TRY
 
 
-def test_p4_practice_stays_when_it_is_practice():
-    plan, llama = make(Script(weeks={22: [{27: {"try_today": "Stay a little longer with the breath at a red light."}}]}))
+@pytest.mark.parametrize("step", ["Stay a little longer with the breath at a red light.",
+                                  "Observe your thoughts as you navigate a challenging moment at work.",
+                                  "Before you start the engine, three slow breaths with your hands on your lap."])
+def test_p4_practice_stays_when_it_is_practice(step):
+    plan, llama = make(Script(weeks={22: [{27: {"try_today": step}}]}))
     assert reasons(llama) == ""
 
 
@@ -321,3 +331,13 @@ def test_p8_lengths_are_asked_for_and_never_cut_inside_a_word_and_titles_in_sent
     cased = {2: {"title": "Calm Workday Mind"}, 3: {"title": "Sunday Drive With Dad"}}
     plan, llama = make(Script(weeks={1: [cased]}))
     assert (plan.day(2).title, plan.day(3).title) == ("Calm workday mind", "Sunday drive with dad")
+
+
+def test_the_finishing_say_keeps_their_words_and_loses_the_guides_own_closing():
+    for closing in ("Let's begin.", "Your journey starts now.", "I have what I need."):
+        llama = FakeLlama([finish(say=f"Reading your book, like you used to. {closing}")])
+        assert guide.next_turn(llama, "ENG", turns(*ANSWERS), today=TODAY).say == "Reading your book, like you used to."
+    # Their own common words count: "one thing at a time" is theirs.
+    theirs = ("Calm", "Weekday mornings, my inbox.", "I'd deal with one thing at a time.")
+    llama = FakeLlama([finish(say="One thing at a time.")])
+    assert guide.next_turn(llama, "ENG", turns(*theirs), today=TODAY).say == "One thing at a time."
