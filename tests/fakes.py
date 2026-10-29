@@ -14,7 +14,7 @@ import json
 from types import SimpleNamespace
 
 import httpx
-from openai import APITimeoutError, NotFoundError
+from openai import APITimeoutError, BadRequestError, NotFoundError
 
 from meta_sam_parser._mask_codec import _encode_raster
 from PIL import Image, ImageDraw
@@ -98,7 +98,8 @@ class FakeClient:
 
     def __init__(self, scenes=None, verdicts=None, sam=None, sam_on_plate=None, painting=PAINTING, edit=EDIT,
                  fail_edit=False, fail_sam=False, fail_chat=False, chat_delay=0.0, picks=None, missing=(),
-                 sam_timeouts=0, moods=None, stages=None, stage_painting=STAGE_PAINTING, fail_repaint=False):
+                 sam_timeouts=0, moods=None, stages=None, stage_painting=STAGE_PAINTING, fail_repaint=False,
+                 refused_paintings=0):
         self.calls: list[str] = []
         self.requests: list[dict] = []
         self.sam_requests: list[dict] = []
@@ -113,6 +114,7 @@ class FakeClient:
         self._stages, self._stage_painting = list(stages or [stage_design]), stage_painting
         self._paintings = {self._painting_url, sam_image_url(stage_painting)}
         self._fail_repaint = fail_repaint
+        self._refused_paintings = refused_paintings  # the first paintings are refused, as Muse Image's filter may
         self._fail_edit, self._fail_sam = fail_edit, fail_sam
         self._fail_chat, self._chat_delay = fail_chat, chat_delay
         self._picks = list(picks or [{"choices": []}])
@@ -150,6 +152,11 @@ class FakeClient:
     async def _generate(self, **kwargs):
         self.calls.append("paint")
         self.requests.append(kwargs)
+        if self._refused_paintings:
+            self._refused_paintings -= 1
+            request = httpx.Request("POST", "https://api.meta.ai/v1/images/generations")
+            raise BadRequestError("The response was filtered due to the prompt triggering our content management "
+                                  "policy.", response=httpx.Response(400, request=request), body=None)
         return SimpleNamespace(data=[SimpleNamespace(b64_json=base64.b64encode(self._painting).decode())])
 
     async def _edit_image(self, **kwargs):

@@ -7,7 +7,9 @@ a path, then first light on the lower slopes, ... full light at the summit. It n
 
 * Stage 1 is a world like any other (director.make_world): the art director designs it from a short text made of
   the place and its first stage only (`first_text`), Muse Image paints it, the critic checks it, SAM 3.1 cuts its
-  subjects and finds what moves, and the plate is made behind the moving ones.
+  subjects and finds what moves, and the plate is made behind the moving ones. When no world comes of it (two
+  paintings turned away, or a request refused: on 29 Oct Muse Image's filter refused one design's painting of a
+  path before dawn), it is made once more from a fresh design; only then is there no journey world.
 * Stages 2-5 keep stage 1's composition: the same viewpoint, landmarks and subjects; only the light, the season and
   what has grown change. The art director re-lights its own first design for each (art_director.stage: time of day,
   light, air, palette, season; the place, the subjects and what moves in nature are kept in code), and Muse Image's
@@ -63,7 +65,7 @@ def first_text(world: dict[str, Any]) -> str:
     """What the art director designs stage 1 from, in place of a meditation: the place and its first stage."""
     return (f"{world['scene'].rstrip('.')}. Now: {painter.clause(world['stages'][0])}. This is the first of five "
             "stages of one place: later the same view is painted again as the light, the season and what grows "
-            "there change, so show the whole place in one calm view.")
+            "there change, so show the whole place in one calm view. Only the place: no people and no animals.")
 
 
 @dataclass
@@ -151,8 +153,8 @@ async def make_stages(client, world: dict[str, Any], *, settings: Settings = DEF
                       open_client=None, user: str | None = None,
                       on_painting: OnPainting | None = None) -> Stages:
     """The five stages of a journey's world (`journey_world`). `meter`, if given, counts all of it, also when stage 1
-    fails; `on_painting` fires when stage 1's painting is accepted (director.make_world). Without stage 1 there is
-    no place to grow: NoWorld (or the first world's own error), and the journey keeps the world it has."""
+    fails; `on_painting` fires when stage 1's painting is accepted (director.make_world). Without stage 1 (twice)
+    there is no place to grow: NoWorld or the first world's own error, and the journey keeps the world it has."""
     world = journey_world(world)
     started = time.monotonic()
     total = meter or Meter(settings.prices)
@@ -160,8 +162,15 @@ async def make_stages(client, world: dict[str, Any], *, settings: Settings = DEF
     if user:
         listener_id.set(user)  # every request of the five carries it (meta.privacy_fields)
     try:
-        first = await make_world(client, Meditation(script=first_text(world)), settings=settings, meter=meters[0],
-                                 on_painting=on_painting, open_client=open_client)
+        for attempt in (1, 2):
+            try:
+                first = await make_world(client, Meditation(script=first_text(world)), settings=settings,
+                                         meter=meters[0], on_painting=on_painting, open_client=open_client)
+                break
+            except Exception as error:  # noqa: BLE001 - once more from a fresh design, then the caller hears it
+                if attempt == 2:
+                    raise
+                log.warning("stage 1 once more: %s: %s", type(error).__name__, error)
         runs = {n: Run(meters[n - 1]) for n in range(2, STAGES + 1)}
 
         async def later(n: int) -> World | Exception:

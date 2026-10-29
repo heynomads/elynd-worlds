@@ -69,6 +69,7 @@ def test_the_journeys_world_is_read_from_a_plan_or_on_its_own_and_nothing_else_i
 def test_stage_one_is_designed_from_the_place_and_its_first_stage_only():
     text = stages.first_text(WORLD)
     assert text.startswith(WORLD["scene"]) and "Now: before dawn at the foot of the path." in text
+    assert text.endswith("Only the place: no people and no animals.")
     assert not any(later.lower() in text.lower() for later in WORLD["stages"][1:])
 
 
@@ -238,11 +239,19 @@ async def test_a_stage_that_takes_too_long_shows_the_stage_before():
     assert all(s.error.startswith("TimeoutError") for s in made.stages[1:])
 
 
+async def test_stage_one_is_made_once_more_from_a_fresh_design_when_no_world_comes_of_it():
+    # 29 Oct: Muse Image's filter refused one design's painting of a path before dawn.
+    client = FakeClient(verdicts=[SAME], refused_paintings=1)
+    made = await stages.make_stages(client, WORLD)
+    assert client.calls.count("scene") == 2 and client.calls.count("paint") == 2
+    assert all(s.made for s in made.stages) and made.stages[0].meter.calls["design"] == 2
+
+
 async def test_without_stage_one_there_is_no_place_to_grow_and_the_spend_is_still_counted():
     meter = Meter()
     with pytest.raises(NoWorld):
         await stages.make_stages(FakeClient(verdicts=[FAIL]), WORLD, meter=meter)
-    assert meter.calls["paint"] == 2 and meter.usd > 0   # two paintings, both turned away
+    assert meter.calls["paint"] == 4 and meter.usd > 0   # twice two paintings, all turned away
 
 
 # ─── saved like any world ───────────────────────────────────────────────
