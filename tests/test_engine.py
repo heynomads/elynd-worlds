@@ -997,9 +997,9 @@ def test_every_library_place_can_be_named_and_only_by_its_whole_word():
     catalog = [library.Entry(**{**{k: v for k, v in w.items() if k in fields}, "moods": tuple(w["moods"])})
                for w in worlds]
     # Each place has its own word but a clearing ("clearing the mind" is no place, and a clearing is a forest),
-    # cherry blossom (by its cherry) and three a detail names (a bridge, a hammock).
+    # cherry blossom (by its cherry) and two a detail names (a bridge, a hammock).
     assert {p for p in {w["id"].split("-")[0] for w in worlds} if not library._id_places(p)} == {
-        "blossom", "clearing", "footbridge", "hammock", "stonebridge"}
+        "blossom", "clearing", "hammock", "stonebridge"}
     assert library._id_places("alpinetrail") == {"alpine"} and library._id_places("pineforest") == {"pine", "forest"}
     assert not library._id_places("footbridge") and library._named("A steaming hot spring.") == {"hotspring": 1}
 

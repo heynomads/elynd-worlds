@@ -2,7 +2,7 @@
 
 <img src="docs/quiet_sunset_harbour.webp" width="260" align="right" alt="Quiet Sunset Harbour, one of the example worlds, alive: the water ripples and glints, the clouds drift, gulls pass. Twelve seconds that loop without a seam.">
 
-**Every meditation opens on a living painted world: one of 451 that Meta's models painted for the library, or a new
+**Every meditation opens on a living painted world: one of 445 that Meta's models painted for the library, or a new
 one painted live for a very personal meditation, designed, painted, checked and brought to life with Meta's models.**
 
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
@@ -12,6 +12,10 @@ Its water ripples, its clouds drift, its grass waves, a lantern flickers, and th
 things move. It greets you as you arrive, fades while your eyes are closed, returns in long silences and at the
 end, and stays with you afterwards as a card you can share.
 
+**ELYND Journeys**, built during the same hackathon and also in this repository, turns thirty days into one story:
+a meditation for each day of a listener's journey that remembers the ones before ([below](#elynd-journeys-built-with-llama)).
+Its guide and its plan run on Meta's open-weights Llama 3.3 70B. **Built with Llama.**
+
 > **What existed before, what is new.** ELYND, the meditation app (writing, voices, player), existed before
 > the hackathon. Earlier on the kickoff day we tried the Meta Model API in a separate private
 > prototype. This repository was started from scratch after the kickoff (26 Oct 2026, 12:00 ET) and
@@ -19,8 +23,8 @@ end, and stays with you afterwards as a card you can share.
 >
 > **Open-source parts it uses** (installed, not copied here): the OpenAI Python SDK (Apache-2.0; Meta Model API
 > speaks its wire format), httpx (BSD-3-Clause), Pillow (MIT-CMU), NumPy (BSD-3-Clause), Meta's meta-sam-parser
-> (SAM License) for SAM 3.1's answers, pytest (MIT) and pytest-asyncio (Apache-2.0), Flutter (BSD-3-Clause), and
-> the Poppins font (SIL Open Font License 1.1, bundled).
+> (SAM License) for SAM 3.1's answers, pytest (MIT) and pytest-asyncio (Apache-2.0), Flutter (BSD-3-Clause), boto3
+> (Apache-2.0) for Amazon Bedrock in Journeys, and the Poppins font (SIL Open Font License 1.1, bundled).
 
 ## How a world is made
 
@@ -60,13 +64,12 @@ after the script is written in our runs; the slower ones were made six at a time
 ## A world from the first second: the library
 
 A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
-places a library can hold. So the same agent painted a **library** in advance: 500 worlds of the 90 places guided
-meditations visit most, each at several times of day, seasons or weathers, 75 of them dark worlds for falling
-asleep, and 20 more that give an unmotivated listener a push (a path leading on, steps toward the light, a pass
-at sunrise), all from `scripts/library_briefs.py` and each checked by the critic like any other. Only worlds that
-look alive stay (`library.looks_dead`: water, a stream, a field, swaying crowns, rain, snow, leaves or petals, a
-moving subject, or a sky wide or starry enough to carry the world; `scripts/library_audit.py`), and every figure
-and post was looked at up close: **451 worlds**, 70 for sleep (`library/catalog.json` lists them).
+places a library can hold. So the same agent painted a **library** in advance: **445 worlds** of the places guided
+meditations visit most, each at several times of day, seasons or weathers, 70 of them dark worlds for falling
+asleep, all from `scripts/library_briefs.py` and each checked by the critic like any other
+(`library/catalog.json` lists them). Every library world looks alive (`library.looks_dead`: water, a stream, a
+field, swaying crowns, rain, snow, leaves or petals, a moving subject, or a sky wide or starry enough to carry the
+world; `scripts/library_audit.py`), and every figure and post was looked at up close.
 
 **What each world helps with.** Muse Spark looked at every painting (`library.tag_moods`, 384 px, one world a
 request) and named the one to three feelings it helps with, best first: calm, letting go, warmth, rest, a push,
@@ -91,7 +94,7 @@ particular animal or object that matters to the listener, a particular person's 
 * **Muse Spark cannot or must not answer:** the server's own choice. There is always a world.
 
 ```bash
-.venv/bin/python scripts/library_briefs.py                     # library/briefs/*.txt (500 themes)
+.venv/bin/python scripts/library_briefs.py                     # the themes, library/briefs/*.txt
 .venv/bin/elynd-worlds make library/briefs/*.txt --out library/worlds --parallel 4
 .venv/bin/elynd-worlds pick my_meditation.txt --library library/catalog   # what a meditation would get
 .venv/bin/python scripts/library_audit.py                      # which library worlds would look dead
@@ -143,6 +146,8 @@ particular animal or object that matters to the listener, a particular person's 
   never a face up close or a figure looking at the viewer. The critic checks every painting and turns away any
   other figure; no picture contains text.
 * The critic on Baseten receives the painting and its scenery design only: no meditation, no listener id.
+* In ELYND Journeys the guide and the plan read a listener's own words with Llama 3.3 70B on Amazon Bedrock, in
+  ELYND's own AWS account, and send nothing to Meta's hosted API ([below](#elynd-journeys-built-with-llama)).
 * Every picture a listener sees or shares is marked as made by AI in its metadata (the IPTC digital source
   type `trainedAlgorithmicMedia` that Muse Image puts on its paintings). The plate, the layers and the share
   card keep the mark (EU AI Act, Art. 50).
@@ -178,6 +183,37 @@ about their health, and Baseten's standard data terms exclude health data unless
 (its Data Processing Addendum, 15 Sep 2026, Annex A), so listeners' meditations go only to Meta, whose models they
 agreed to. Muse Spark Open sees only the painting and a short description of the place. Library worlds grow from
 our own short texts about a place, never from a listener's meditation, so the open model can design those.
+
+## ELYND Journeys: built with Llama
+
+A journey is thirty days of meditations toward something that matters to the listener, each one remembering the
+ones before (`elynd_worlds/journeys/`, in English, German, Spanish and French):
+
+* **The guide** (`guide.py`) talks with them for a minute, like a meditation teacher: after the app's opening
+  question it asks two more, one at a time, with answers to tap or their own words, and closes with a few of their
+  words said back, a title, a summary in their words and, when they named one, a moment coming up (a talk, an
+  exam) with its date.
+* **The plan** (`planner.py`): what the thirty days are for, a check-in question and four weeks (noticing,
+  kindness, practising the moment, carrying it into their life), then each day's step, technique and one small
+  thing to try. Which day opens the journey, looks back on its week (7, 14, 21) or closes it (30) is fixed in code.
+* **The day's block** (`brief.py`: code, no model call) is what makes thirty meditations one story; ELYND's writer
+  gets it each day. A practice day picks up from the last one and from how they said it went, every seventh day
+  looks back on the week, the day before their moment rehearses it, and day thirty reads back the words they wrote to
+  themselves on day one.
+* **A journey's world grows** (`stages.py`, `elynd-worlds stages`): five living worlds of one place, the first
+  painted, the other four repainted from it in another light and season from the same viewpoint, each checked by
+  the critic next to the first. It is made from a description given by hand, never from a listener's words, and
+  shows the place alone.
+
+The guide and the plan run on **Llama 3.3 70B**, Meta's open-weights model, on Amazon Bedrock in ELYND's own AWS
+account (`llama.py`). A journey's goal and the notes a listener adds can carry health-related data, which Meta's
+processor terms for its hosted API (Meta Global Processor Terms 2.2) do not allow, so these steps run on the open
+weights in our own cloud and send nothing to Meta; Bedrock keeps no prompt or answer and shares none with the
+model's maker. Not Llama 4: its licence grants no rights in its multimodal models to companies based in the
+European Union, and ELYND's company is one. What the guide and the plan may never say (words of healing or
+illness, a condition's name, a promise of a result, an attention exercise while driving) is checked in code, and an
+answer that says it is asked again with the reason. The tests run all of it against a fake Llama: no network, no
+key.
 
 ## See it in a browser
 
@@ -242,17 +278,21 @@ elynd_worlds/          the engine (Python)
   card.py              the share card
   loop.py              a world's 12 s that loop without a seam (the shared clip), music bed and AI mark
   meta.py              the clients, privacy fields, cost meter
+  journeys/            ELYND Journeys: the guide, the plan and the day's block (Llama 3.3 70B on Amazon
+                       Bedrock, llama.py), and a journey's world that grows (stages.py)
 flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living painting's shader)
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
 scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline;
                        library_briefs.py writes the library's themes
-library/briefs/        the library's 520 themes (the pictures are kept out of git; catalog.json lists the 451)
+library/briefs/        the library's themes (the pictures are kept out of git; catalog.json lists the 445 worlds)
 examples/              example meditations written for this repository
-tests/                 against a fake Meta Model API
+tests/                 against a fake Meta Model API and a fake Llama
 docs/                  the picture at the top of this page
 ```
 
 ## Licence
 
 Apache License 2.0 (`LICENSE`), © 2026 Comads OÜ. The bundled Poppins fonts are under the SIL Open Font
-License 1.1 (`elynd_worlds/fonts/OFL.txt`).
+License 1.1 (`elynd_worlds/fonts/OFL.txt`). ELYND Journeys calls Llama 3.3 70B on Amazon Bedrock; this repository
+contains none of its weights. Llama 3.3 is licensed under the Llama 3.3 Community License, Copyright © Meta
+Platforms, Inc. All Rights Reserved.

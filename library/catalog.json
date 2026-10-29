@@ -1002,37 +1002,6 @@
   "cost_usd": 0.0369
  },
  {
-  "id": "bigwaterfall-morning",
-  "title": "Bright Falling Water",
-  "place": "A high cascade drops over sunlit cliffs into a quiet clear basin.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "moods": [
-   "energy_motivation",
-   "joy",
-   "calm_ground"
-  ],
-  "subjects": [
-   "smooth stone",
-   "white butterfly"
-  ],
-  "moving": [
-   "smooth stone",
-   "white butterfly"
-  ],
-  "nature": [
-   "water",
-   "sky",
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.06198
- },
- {
   "id": "birch-mist",
   "title": "Birch Morning Mist",
   "place": "A bright birch forest clearing with white trunks in soft morning light.",
@@ -3130,33 +3099,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.03778
- },
- {
-  "id": "footbridge-morning",
-  "title": "Bright Bridge Morning",
-  "place": "A small wooden bridge crosses a clear rushing stream with a sunny path winding into soft green hills.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "calm_ground"
-  ],
-  "subjects": [
-   "wooden footbridge"
-  ],
-  "moving": [],
-  "nature": [
-   "sky",
-   "grass",
-   "stream"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.04026
  },
  {
   "id": "forestlake-dusk",
@@ -5923,33 +5865,6 @@
   "cost_usd": 0.03745
  },
  {
-  "id": "lighthousepath-morning",
-  "title": "Bright Lighthouse Morning",
-  "place": "A white lighthouse stands on a green headland above waves breaking on rocks.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "confidence_strength"
-  ],
-  "subjects": [
-   "white lighthouse"
-  ],
-  "moving": [],
-  "nature": [
-   "water",
-   "sky",
-   "grass"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.03671
- },
- {
   "id": "lilypond-dusk",
   "title": "Lily Pond Dusk",
   "place": "A still pond covered with round lily leaves and pale flowers at dusk.",
@@ -6877,33 +6792,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.0406
- },
- {
-  "id": "mountainpass-dawn",
-  "title": "Sunlit Mountain Pass",
-  "place": "A high mountain pass between two peaks opening onto a wide sunlit valley at sunrise.",
-  "time_of_day": "dawn",
-  "sleep": false,
-  "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "confidence_strength"
-  ],
-  "subjects": [
-   "stone cairn"
-  ],
-  "moving": [],
-  "nature": [
-   "sky",
-   "grass",
-   "trees"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.03598
  },
  {
   "id": "nightfield-aurora",
@@ -10641,33 +10529,6 @@
   "cost_usd": 0.05851
  },
  {
-  "id": "surfcoast-dawn",
-  "title": "Sunrise Over Rocky Shore",
-  "place": "A rocky shore looking out over the open sea at sunrise.",
-  "time_of_day": "dawn",
-  "sleep": false,
-  "moods": [
-   "confidence_strength",
-   "energy_motivation",
-   "focus_clarity"
-  ],
-  "subjects": [
-   "tall rock",
-   "flat rock"
-  ],
-  "moving": [],
-  "nature": [
-   "water",
-   "sky"
-  ],
-  "particles": "none",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.04412
- },
- {
   "id": "teahills-dusk",
   "title": "Dusky Tea Hills",
   "place": "Rows of tea bushes curving over gentle hills beneath a lilac dusk sky.",
@@ -11397,34 +11258,6 @@
    "judge": "meta-models/muse-spark-open-1026"
   },
   "cost_usd": 0.0692
- },
- {
-  "id": "valleytrail-morning",
-  "title": "Bright Valley Morning",
-  "place": "A grassy trail overlooks a wide sunlit valley with a winding river below and bright distant hills.",
-  "time_of_day": "morning",
-  "sleep": false,
-  "moods": [
-   "energy_motivation",
-   "focus_clarity",
-   "joy"
-  ],
-  "subjects": [
-   "smooth stone",
-   "rounded boulder"
-  ],
-  "moving": [],
-  "nature": [
-   "sky",
-   "grass",
-   "stream"
-  ],
-  "particles": "pollen",
-  "critic": {
-   "score": 9,
-   "judge": "muse-spark-1.3"
-  },
-  "cost_usd": 0.04646
  },
  {
   "id": "vineyard-autumn",
