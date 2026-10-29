@@ -75,9 +75,9 @@ UNSAFE = re.compile(r"\b(?:(?:while|whilst|as|when)\s+(?:you(?:'re|\s+are)?\s+)?
 # Something to try in a car, on the move: only before setting off, when parked or stopped, or after arriving.
 IN_CAR = re.compile(r"\b(?:mirrors?|roundabouts?|steering|the wheel|pedals?|indicators?|junctions?|gearstick|gears|"
                     r"overtak\w*|motorways?)\b", re.I)
-STILL = re.compile(r"\b(?:before|after|parked|park|stopped|stationary|red lights?|traffic lights?|car park|when you sit|"
-                   r"sitting|picture|imagine|visuali[sz]\w*|think(?:ing)? (?:of|about)|remember\w*|recall\w*|arriv\w*|"
-                   r"engine off|noticed|write|writing|journal\w*|at home)\b", re.I)
+STILL = re.compile(r"\b(?:before|after|parked|park|car park|engine off|picture|imagine|visuali[sz]\w*|"
+                   r"think(?:ing)? (?:of|about)|remember\w*|recall\w*|arriv\w*|noticed|write|writing|journal\w*|"
+                   r"at home)\b", re.I)
 # A result promised, or how their moment will go presumed.
 PROMISE = re.compile(r"\b(?:you will|you'll|you're going to|you are going to)\b", re.I)
 PASSING = re.compile(r"\b(?:after|when|once)\s+(?:you\s+)?pass(?:ing|es)?\b", re.I)
@@ -90,7 +90,10 @@ _DETERMINERS = re.compile(r"^(?:(?:my|your|our|the|a|an|his|her|their|mein|meine
 _GENERIC = set("""calm calmer calmly calmness mind life goal journey meditation used usually mostly always never often
 sometimes something everything anything nothing someone everyone able start starts right less better best full leave
 leaves sit sits deal keep keeps take takes come comes around instead whole end ends part even though thing kind sort
-moment moments stay stays big small""".split())
+moment moments stay stays big small said say says saying sure unsure okay yes know idea something anything
+though although thought tell told answer answered test testing idk maybe actually""".split())
+# The particle that makes a phrasal verb: "wound up" is tense, a "wound" is an injury.
+_PARTICLES = {"up", "down", "out", "off", "away", "back", "through", "over"}
 
 
 class PlanError(Exception):
@@ -178,22 +181,25 @@ Their journey: "{title}". Their goal, in their own words: {summary}
 What the thirty days are for: {promise}
 The four weeks: {weeks}
 This is week {week}: "{theme}" ({line}).{moment}
-Their own words: {words}. Shape most days around these situations, in their words.
+Their own words: {words}. Shape most days around these situations, in their words, and vary them: a different \
+moment and a different practice each day.
 
 The days of this week and what each is:
 {days}
 
 Kinds: "begin" opens the journey (their goal said back, the thirty days sketched, a first small practice); "practice" \
 is one step of this week's theme; "look_back" looks back on the week that ends and opens the next week's theme; \
-"arrive" closes the thirty days.
+"arrive" closes the thirty days: it honours what they practised, never says the goal is reached or how things went.
 {rules}
 Each day's small thing to try is a moment of attention, breath or kindness inside one of the situations they named, \
 different every day. Never a task, a list, a tool, a timer, a notification setting, work or productivity advice, or a \
 rule for others. Writing at most once a week.
 Never ask for attention exercises while driving or doing anything that needs full attention: anything to try in a car \
-is only before setting off, when parked or stopped, or after arriving (a meditation may picture the drive). Never ask \
-them to stay longer in, go further into, or test themselves against what they fear: invite noticing and small \
-comforts. With a loss, never ask them to smile about, let go of or move on from the person: remembering has its place.
+is only before setting off, when parked, or after arriving (a meditation may picture the drive). Never ask them to \
+stay longer in, go further into, or test themselves against what they fear: invite noticing and small comforts, and \
+anchor attention in what steadies (feet, breath, hands, something they enjoy), never in a racing heart or the feeling \
+they fear. With a loss, never ask them to smile about, let go of or move on from the person: remembering has its \
+place.
 Vary the techniques; use sleep_journey only for a goal about sleep. A title names this day's own step, never a \
 general one.
 
@@ -227,17 +233,25 @@ class _Context:
 
 
 def their_words(summary: str, title: str = "", limit: int = 10) -> list[str]:
-    """Up to `limit` of the listener's distinctive words (not the common ones), in the order they come."""
+    """Up to `limit` of the listener's distinctive words (not the common ones, not the filler of someone who said
+    little), in the order they come; a verb keeps its particle ("wound up", "switch off")."""
     out, seen = [], set()
-    for word in words_of(f"{title} . {summary}"):
-        if len(word) < 3 or word in STOP or word in _GENERIC or word in seen:
-            continue
-        seen.add(word)
-        out.append(word)
+    for text in (title, summary):
+        for sentence in re.split(r"[.?!;:,]", text or ""):
+            tokens = words_of(sentence)
+            for i, word in enumerate(tokens):
+                if len(word) < 3 or word in STOP or word in _GENERIC:
+                    continue
+                if i + 1 < len(tokens) and tokens[i + 1] in _PARTICLES:
+                    word = f"{word} {tokens[i + 1]}"
+                if word not in seen:
+                    seen.add(word)
+                    out.append(word)
     return out[:limit]
 
 
 def _stem(word: str) -> str:
+    word = word.split()[0]
     return word[:max(4, len(word) - 3)]
 
 
@@ -395,7 +409,7 @@ def parse_week(text: str, ctx: _Context, first: int, last_n: int,
                             f"driving, never a push into what they fear")
             elif name == "try_today" and IN_CAR.search(value) and not STILL.search(value):
                 hard.append(f'day {n} try_today: "{IN_CAR.search(value).group(0)}" while driving: anything in a car is '
-                            f"only before setting off, when parked or stopped, or after arriving")
+                            f"only before setting off, when parked, or after arriving")
         days.append(day)
     if not WRITING.search(ctx.summary):
         writing = [d.n for d in days if WRITING.search(d.try_today) or WRITING.search(d.focus)]
