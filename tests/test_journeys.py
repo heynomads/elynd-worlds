@@ -289,7 +289,7 @@ def test_a_light_note_without_an_answer_is_read_for_its_tone_not_made_gentler():
 
 @pytest.mark.parametrize("days, says", [
     (1, 'Make room to rehearse their "My presentation"'),
-    (0, 'Let this meditation steady them for their "My presentation" today.'),
+    (0, 'You do not know whether their "My presentation" is behind or ahead of them today: follow their note'),
     (-1, 'Ask gently how their "My presentation" went'),
     (5, 'You may mention their "My presentation" once, lightly'),
     (12, None),
@@ -312,7 +312,7 @@ def test_every_seventh_day_looks_back_on_the_week_and_opens_the_next():
     assert 'This is the last day of week 2.' in text and '("Kindness")' in text
     assert 'how their answers rose this week (from "a little" to "quite")' in text
     assert '"Hard morning" / "Spoke up once"' in text
-    assert 'Then open next week: "Rehearsal": Practise the moment itself.' in text
+    assert 'Then open the next part: "Rehearsal": Practise the moment itself.' in text
     assert "moved on" not in text   # no journey world yet (B1)
     assert "has moved on a little, like them" in brief.day_block(plan(), 14, TODAY, SUMMARY, past, world_changed=True)
     # Answers that did not rise are never compared: they kept coming back (B3).
@@ -336,3 +336,35 @@ def test_day_thirty_closes_the_circle_with_their_first_words_and_their_note():
     text = brief.day_block(plan(), 30, TODAY, SUMMARY, past, letter=letter)
     assert f'"{letter}"' in text and len(letter) == 400 and "…" not in text
     assert "what changed" not in text and "they kept coming back" in text
+
+
+def test_every_session_but_the_last_points_to_the_next_and_the_next_begins_there():
+    past = [brief.Past(4, TODAY - dt.timedelta(days=1), 3), brief.Past(5, TODAY, None, done=False)]
+    text = brief.day_block(plan(), 5, TODAY, SUMMARY, past)
+    assert 'one sentence that points to the next meditation, beginning "Next time, …": its step is "Day 6 step"' in text
+    assert 'Never say "tomorrow"' in text and "begin where it pointed" in text   # B7
+    assert "Next time" not in brief.day_block(plan(), 30, TODAY, SUMMARY, past)
+    assert "begin where it pointed" not in brief.day_block(plan(), 1, TODAY, SUMMARY, [])
+
+
+def test_a_look_back_says_this_week_only_when_its_sessions_fell_within_ten_days():
+    start = TODAY - dt.timedelta(days=20)
+    past = [brief.Past(n, start + dt.timedelta(days=2 * (n - 8)), 2 + (n > 10), None) for n in range(8, 14)]
+    past.append(brief.Past(14, TODAY, 4, None, done=False))
+    text = brief.day_block(plan(), 14, TODAY, SUMMARY, past)
+    assert "whose sessions took more than a week: never call it \"this week\"" in text   # B8
+    assert "looking back on these sessions" in text and "how their answers rose over these sessions" in text
+    assert "This is the last day of week 2" not in text
+
+
+@pytest.mark.parametrize("moment_days, session_days, asks", [(-3, None, True), (-3, -2, False), (-13, None, True),
+                                                            (-20, None, False), (-1, None, True)])
+def test_after_the_moment_the_first_session_since_asks_how_it_went(moment_days, session_days, asks):
+    moment = Moment("My presentation", (TODAY + dt.timedelta(days=moment_days)).isoformat())
+    past = [brief.Past(8, TODAY + dt.timedelta(days=min(moment_days, -1) - 1))]
+    if session_days is not None:
+        past.append(brief.Past(9, TODAY + dt.timedelta(days=session_days)))
+    past.append(brief.Past(len(past) + 8, TODAY, None, done=False))
+    text = brief.day_block(plan(), past[-1].n, TODAY, SUMMARY, past, moment)
+    assert ('Ask gently how their "My presentation" went' in text) is asks   # B9
+    assert ("This is the first meditation since." in text) is asks

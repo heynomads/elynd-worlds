@@ -5,8 +5,9 @@ Built in code from the plan, the days done, the listener's answers before each s
 session and from what they said since, the way a teacher who knows them would; every seventh day looks back on the
 week and opens the next; day thirty closes the circle with their first words and the note they wrote to themselves.
 After a gap the session welcomes them back without judging and without counting the days; a hard day makes it
-gentler, and a note is read for its tone; the day before a moment they named it rehearses it, the day after it asks
-how it went. Their answers are compared only on the look-back days and day thirty, and only when they rose. The plan
+gentler, and a note is read for its tone; the day before a moment they named it rehearses it, on its day the session
+follows their note (it may be behind or ahead of them), and the first session after it asks how it went. Every session
+but the last closes by pointing to the next one ("Next time, …"), and the next one begins there. Their answers are compared only on the look-back days and day thirty, and only when they rose. The plan
 is a sketch made on day one by a smaller model: the writer keeps its step and technique and makes the meditation
 about their life, in their own words.
 
@@ -23,6 +24,7 @@ from .planner import DAYS, Plan, kind, week_of
 
 ANSWER_WORDS = {1: "not at all", 2: "a little", 3: "somewhat", 4: "quite", 5: "very"}
 MAX_LETTER = 400   # their words for day thirty: at most 400 characters on every side, read whole
+WEEK_SPAN = 10     # days: a part's sessions within this many days are "this week", else "these sessions"
 KEPT_COMING = "name, simply, that they kept coming back and one thing they practised"
 NUMBER_WORDS = ("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen "
                 "seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five "
@@ -55,23 +57,30 @@ def _quote(text: str, limit: int = 220) -> str:
     return text if len(text) <= limit else text[:limit].rsplit(" ", 1)[0] + "…"
 
 
-def _moment_line(moment: Moment | None, today: dt.date) -> tuple[str, str]:
-    """(the fact, the instruction) for a moment in their life, by its date."""
+AFTER_WITHIN = 14   # days: the first session after their moment asks how it went, within this many days of it
+
+
+def _moment_line(moment: Moment | None, today: dt.date, past: list[Past] = ()) -> tuple[str, str]:
+    """(the fact, the instruction) for a moment in their life, by its date and by the sessions since: "after" is the
+    first session on a date after it (within AFTER_WITHIN days), however many days were skipped."""
     if not moment or not moment.date:
         return "", ""
     try:
-        days = (dt.date.fromisoformat(moment.date) - today).days
+        when = dt.date.fromisoformat(moment.date)
     except ValueError:
         return "", ""
+    days = (when - today).days
     label = moment.label
     if days == 1:
         return (f'Their "{label}" is tomorrow.',
                 f'Make room to rehearse their "{label}": let them picture it going well, step by step, steady in '
                 f"the body, and leave them ready for it.")
     if days == 0:
-        return f'Today is their "{label}".', f'Let this meditation steady them for their "{label}" today.'
-    if days in (-1, -2):
-        return (f'Their "{label}" was {_when(-days)}.',
+        return (f'Today is their "{label}".',
+                f'You do not know whether their "{label}" is behind or ahead of them today: follow their note if they '
+                f"left one; otherwise let this meditation steady them for it, whenever it is.")
+    if -AFTER_WITHIN <= days < 0 and not any(p.done and when < p.date < today for p in past):
+        return (f'Their "{label}" was {_when(-days)}. This is the first meditation since.',
                 f'Ask gently how their "{label}" went, without judging how it went; let them keep what went well and '
                 f"set down the rest.")
     if 2 <= days <= 7:
@@ -104,13 +113,13 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
     if last is not None:
         previous = plan.day(last.n)
         lines.append(f'Last time (day {last.n}, {_when((today - last.date).days)}): "{previous.title}": '
-                     f"{_sentence(previous.focus)}")
+                     f"{_sentence(previous.focus)} It closed by pointing to today's step: begin where it pointed.")
     if now is not None and now.answer in ANSWER_WORDS:
         lines.append(f'Before this meditation they were asked "{plan.checkin_question}" and answered '
                      f'"{ANSWER_WORDS[now.answer]}".')
     if now is not None and now.note:
         lines.append(f'They added: "{_quote(now.note)}"')
-    fact, moment_rule = _moment_line(moment, today)
+    fact, moment_rule = _moment_line(moment, today, past)
     if fact:
         lines.append(fact)
 
@@ -124,18 +133,24 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
                      f"without listing, how the thirty days will go: {names}. Then the first practice.")
     elif k == "look_back":
         week_answers = [p for p in answered if plan_week_of(p.n) == week]
+        dates = [p.date for p in past if plan_week_of(p.n) == week] + [today]
+        a_week = (today - min(dates)).days <= WEEK_SPAN
+        span = "this week" if a_week else "over these sessions"
         moved = f"; {KEPT_COMING}"
         if len(week_answers) >= 2 and week_answers[-1].answer > week_answers[0].answer:
-            moved = (f', how their answers rose this week (from "{ANSWER_WORDS[week_answers[0].answer]}" to '
+            moved = (f', how their answers rose {span} (from "{ANSWER_WORDS[week_answers[0].answer]}" to '
                      f'"{ANSWER_WORDS[week_answers[-1].answer]}")')
         notes = [p.note for p in past if p.note and plan_week_of(p.n) == week][-3:]
         heard = ""
         if notes:
-            heard = ", and a few of their own words this week: " + " / ".join(f'"{_quote(t, 120)}"' for t in notes)
+            heard = f", and a few of their own words {span}: " + " / ".join(f'"{_quote(t, 120)}"' for t in notes)
         upcoming = plan.weeks[week] if week < 4 else None
-        rules.append(f'This is the last day of week {week}. Open by looking back on the week with them: what it was '
-                     f'about ("{theme["theme"]}"){moved}{heard}. Name one small win, honestly. '
-                     + (f'Then open next week: "{upcoming["theme"]}": {upcoming["line"]} ' if upcoming else "")
+        opening = (f"This is the last day of week {week}. Open by looking back on the week with them" if a_week else
+                   f"This is the last meditation of part {week} of 4, whose sessions took more than a week: never "
+                   f'call it "this week". Open by looking back on these sessions with them')
+        rules.append(f'{opening}: what it was about ("{theme["theme"]}"){moved}{heard}. Name one small win, '
+                     f"honestly. "
+                     + (f'Then open the next part: "{upcoming["theme"]}": {upcoming["line"]} ' if upcoming else "")
                      + "Then today's practice."
                      + (" Mention that the place they are in has moved on a little, like them." if world_changed
                         else ""))
@@ -170,7 +185,10 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
     if moment_rule:
         rules.append(moment_rule)
     if k != "arrive":
-        rules.append("Close with today's one small thing to try, said simply.")
+        upcoming_day = plan.day(n + 1)
+        rules.append(f'Close with today\'s one small thing to try, said simply, then one sentence that points to the '
+                     f'next meditation, beginning "Next time, …": its step is "{upcoming_day.title}": '
+                     f'{_sentence(upcoming_day.focus)} Never say "tomorrow": the next meditation may be days away.')
     rules += [
         "The plan above is a sketch made on day one. Keep its step and technique; make the meditation about their "
         "life, using the situations in their own words. Meditation, never advice.",
