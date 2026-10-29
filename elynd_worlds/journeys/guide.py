@@ -121,6 +121,18 @@ SAYS_LITTLE = set("""test testing tests idk dunno ok okay k kk hi hello hey yo n
 hmm hm ? ... . nope yeah sure fine""".split()) | {"i don't know", "no idea", "not sure", "nothing really",
                                                   "i dont know", "don't know", "dont know"}
 # When no usable question comes in time, the guide asks one of its own: the conversation never stops.
+LITTLE_FINISH = "They said little: the summary says simply what they told you and invents nothing."
+# When every answer said little and no finishing turn comes right: a plain one, inventing nothing about them.
+FALLBACK_FINISH = {
+    "ENG": ("A few quiet minutes", "You are not sure yet what you would like to grow. For now, the days begin with a "
+                                   "few quiet minutes for yourself."),
+    "GER": ("Ein paar ruhige Minuten", "Du bist dir noch nicht sicher, was du wachsen lassen möchtest. Für den Anfang "
+                                       "beginnen die Tage mit ein paar ruhigen Minuten für dich."),
+    "ES": ("Unos minutos tranquilos", "Todavía no sabes bien qué te gustaría hacer crecer. Para empezar, los días "
+                                      "comienzan con unos minutos tranquilos para ti."),
+    "FR": ("Quelques minutes calmes", "Tu ne sais pas encore bien ce que tu aimerais faire grandir. Pour commencer, les "
+                                      "journées s’ouvrent sur quelques minutes calmes pour toi."),
+}
 FALLBACK_FEEL = {
     "ENG": "What would you like to feel more of in your days?",
     "GER": "Was möchtest du in deinen Tagen mehr spüren?",
@@ -582,9 +594,12 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
     transcript = "\n".join(f"{'Teacher' if role == 'guide' else 'Them'}: {text}" for role, text in conversation)
     last_answer = conversation[-1][1]
     person = bool(ASKS_IF_PERSON.search(last_answer))
-    little = not must_finish and " ".join(words_of(last_answer)) in SAYS_LITTLE | {""}
+    said_little = [" ".join(words_of(text)) in SAYS_LITTLE | {""} for role, text in conversation if role == "you"]
+    little = not must_finish and said_little[-1]
     ask = ASK.get(answers, CHANGED) + (f" {LITTLE}" if little or (person and answers == 1
                                                                  and len(words_of(last_answer)) <= 8) else "")
+    if must_finish and all(said_little):
+        ask += f" {LITTLE_FINISH}"
     user = f"The conversation so far:\n{transcript}\n\n{ask} Only the JSON object."
     start, longest, spent, problem = time.monotonic(), 0.0, 0.0, ""
     for attempt in range(ATTEMPTS):
@@ -616,4 +631,8 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
         question = (FALLBACK_FEEL[language] if little or person else
                     FALLBACK_QUESTIONS[language][min(answers, QUESTIONS) - 1])
         return Turn(say=(f"{HONEST[language]} " if person else "") + question, chips=[], usd=spent)
+    if all(said_little):
+        title, summary = FALLBACK_FINISH[language]
+        say = last_answer[:1].upper() + last_answer[1:].rstrip(" .") + "."
+        return Turn(say=say, done=True, title=title, summary=summary, usd=spent)
     raise GuideError("no usable turn")
