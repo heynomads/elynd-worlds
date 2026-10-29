@@ -2,7 +2,7 @@
 
 <img src="docs/quiet_sunset_harbour.webp" width="260" align="right" alt="Quiet Sunset Harbour, one of the example worlds, alive: the water ripples and glints, the clouds drift, gulls pass. Twelve seconds that loop without a seam.">
 
-**Every meditation opens on a living painted world: one of 459 that Meta's models painted for the library, or a new
+**Every meditation opens on a living painted world: one of 451 that Meta's models painted for the library, or a new
 one painted live for a very personal meditation, designed, painted, checked and brought to life with Meta's models.**
 
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
@@ -66,7 +66,7 @@ asleep, and 20 more that give an unmotivated listener a push (a path leading on,
 at sunrise), all from `scripts/library_briefs.py` and each checked by the critic like any other. Only worlds that
 look alive stay (`library.looks_dead`: water, a stream, a field, swaying crowns, rain, snow, leaves or petals, a
 moving subject, or a sky wide or starry enough to carry the world; `scripts/library_audit.py`), and every figure
-and post was looked at up close: **459 worlds**, 70 for sleep (`library/catalog.json` lists them).
+and post was looked at up close: **451 worlds**, 70 for sleep (`library/catalog.json` lists them).
 
 **What each world helps with.** Muse Spark looked at every painting (`library.tag_moods`, 384 px, one world a
 request) and named the one to three feelings it helps with, best first: calm, letting go, warmth, rest, a push,
@@ -246,7 +246,7 @@ flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living paint
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
 scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline;
                        library_briefs.py writes the library's themes
-library/briefs/        the library's 520 themes (the pictures are kept out of git; catalog.json lists the 459)
+library/briefs/        the library's 520 themes (the pictures are kept out of git; catalog.json lists the 451)
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API
 docs/                  the picture at the top of this page
