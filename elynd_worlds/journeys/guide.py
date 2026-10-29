@@ -454,8 +454,8 @@ def parse(text: str, language: str, today: dt.date, *, must_finish: bool, theirs
         for chip in data.get("chips") or []:
             chip = _plain(chip, 40).rstrip(".")
             chip = chip[:1].upper() + chip[1:]
-            if chip and chip.lower() not in {c.lower() for c in chips}:
-                chips.append(chip)
+            if chip and chip.lower() not in {c.lower() for c in chips} and not ABSENCE.search(chip):
+                chips.append(chip)   # a chip of what would be gone ("No shaking hands") is left out, never shown
         chips = chips[:3]
     if done and theirs:
         say = _their_sentences(say, theirs)
@@ -505,9 +505,6 @@ def problems(turn: Turn, language: str, theirs: str = "", asked: bool = False) -
         found.append(f'say: "{HUMAN.search(turn.say).group(0)}": never say or suggest that you are a person')
     if asked and not AI_SAYS.search(turn.say):
         found.append("they asked whether you are a person: say plainly and warmly that you are an AI guide, then go on")
-    for chip in turn.chips:
-        if ABSENCE.search(chip):
-            found.append(f'a chip says what would be gone ("{chip}"): say what is there on a good day')
     if turn.done and ECHO.search(turn.summary or ""):
         found.append("the summary repeats the app's question: say what they want to feel or do, in their words")
     parts = [("say", turn.say)] + [("a chip", c) for c in turn.chips]

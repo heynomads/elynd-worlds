@@ -79,9 +79,12 @@ def test_chips_of_absence_and_comparison_are_asked_again_then_left_out():
               chips=["No anxiety", "I can breathe", "Like everyone else"])
     llama = FakeLlama([bad, bad, bad])
     turn = guide.next_turn(llama, "ENG", turns(*ANSWERS[:2]), today=TODAY)
-    assert turn.chips == ["I can breathe"]
-    assert 'a chip: it names a condition ("anxiety")' in llama.calls[1][1]
+    assert turn.chips == ["I can breathe"]   # "No anxiety" never shown; "Like everyone else" asked again, then out
     assert 'a chip says "like everyone"' in llama.calls[1][1]
+    panic = ask(chips=["Panic on the tube", "Reading my book"])
+    llama = FakeLlama([panic, ask()])
+    guide.next_turn(llama, "ENG", turns(*ANSWERS[:2]), today=TODAY)
+    assert 'a chip: it names a condition ("panic")' in llama.calls[1][1]
 
 
 def test_a_normal_tube_ride_is_asked_again():
@@ -418,10 +421,9 @@ def test_the_summary_says_what_they_want_never_the_apps_question_back():
 
 def test_chips_say_what_is_there_on_a_good_day():
     gone = ask(chips=["No shaking hands", "Steady hands", "Less anxious"])
-    llama = FakeLlama([gone, ask()])
-    assert guide.next_turn(llama, "ENG", turns(*ANSWERS[:2]), today=TODAY).chips == GOOD_ASK["chips"]
-    assert 'a chip says what would be gone ("No shaking hands")' in llama.calls[1][1]
-    assert guide.next_turn(FakeLlama([gone] * 3), "ENG", turns(*ANSWERS[:2])).chips == ["Steady hands"]
+    llama = FakeLlama([gone])
+    assert guide.next_turn(llama, "ENG", turns(*ANSWERS[:2]), today=TODAY).chips == ["Steady hands"]
+    assert len(llama.calls) == 1   # left out, never asked again: chips are only suggestions
 
 
 @pytest.mark.parametrize("little", ["test", "idk", "ok", "?"])
