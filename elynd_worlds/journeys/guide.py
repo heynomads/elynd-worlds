@@ -256,19 +256,18 @@ def sentences(text: str) -> list[str]:
 
 def cut(text: str, limit: int) -> str:
     """`text` within `limit` characters, never cut inside a word: at the last sentence end that keeps most of it, else
-    at the last space."""
+    at the last clause break that does, else at the last space."""
     text = " ".join(str(text or "").split())
     if len(text) <= limit:
         return text
-    head = text[:limit + 1]
-    ends = [m.end() for m in re.finditer(r"[.?!…](?=\s|$)", head)]
+    ends = [m.end() for m in re.finditer(r"[.?!…](?=\s|$)", text) if m.end() <= limit]
     if ends and ends[-1] >= limit * 0.6:
-        return head[:ends[-1]].strip()
-    clauses = [m.start() for m in re.finditer(r"[,;:–—](?=\s)", head)]
+        return text[:ends[-1]]
+    clauses = [m.start() for m in re.finditer(r"[,;:–—](?=\s)", text) if m.start() <= limit]
     if clauses and clauses[-1] >= limit * 0.6:
-        return head[:clauses[-1]].strip()
-    head = head[:limit]
-    if " " in head:
+        return text[:clauses[-1]]
+    head = text[:limit]
+    if text[limit] != " " and " " in head:
         head = head[:head.rfind(" ")]
     return head.rstrip(" ,;:–—-")
 
