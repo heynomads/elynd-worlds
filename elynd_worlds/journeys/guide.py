@@ -15,6 +15,12 @@ with other people, never the words of the prompt's example and no closing line a
 mark, no emoji. The listener's own words are never checked by these lists: only by the server's own check, before
 any model call. A re-ask is made only while the turn's time budget allows (`next_turn(..., budget_s=)`); a question
 that never comes right is replaced by a plain one of the guide's own, so the conversation never stops.
+
+Built in code, never by the model: an answer that says nothing about them ("test", "idk", "ok", keyboard mash, in
+four languages) is never said back nor shown to the model; the guide asks once more in its own warm words, and when
+every answer said nothing it finishes with a kind, general goal (from the start chip they chose, if any). Asked
+whether it is a person, it says "I'm an AI guide, not a person." and goes on. Its finishing say is a few of their
+words and one short closing of its own.
 """
 from __future__ import annotations
 
@@ -22,6 +28,7 @@ import datetime as dt
 import json
 import re
 import time
+import zlib
 from dataclasses import dataclass, field
 from typing import Callable
 
@@ -116,32 +123,119 @@ ASK = {
 CHANGED = ("After your summary they changed something: finish again now (done true), with the title and the summary "
            "revised to include their change.")
 
-LITTLE = ("Their last answer says little: say it back simply, then ask what they would like to feel more of in their "
-          "days.")
-PERSON = ("They asked whether you are a person: begin with a plain, warm answer that you are an AI guide (not their "
-          "words back), then go on.")
-# Answers that say nothing of a goal (a reviewer typing anything): the guide asks what they would like to feel.
-SAYS_LITTLE = set("""test testing tests idk dunno ok okay k kk hi hello hey yo nothing no yes maybe whatever asdf x lol
-hmm hm ? ... . nope yeah sure fine""".split()) | {"i don't know", "no idea", "not sure", "nothing really",
-                                                  "i dont know", "don't know", "dont know"}
-# When no usable question comes in time, the guide asks one of its own: the conversation never stops.
-LITTLE_FINISH = "They said little: the summary says simply what they told you and invents nothing."
-# When every answer said little and no finishing turn comes right: a plain one, inventing nothing about them.
-FALLBACK_FINISH = {
-    "ENG": ("A few quiet minutes", "You are not sure yet what you would like to grow. For now, the days begin with a "
-                                   "few quiet minutes for yourself."),
-    "GER": ("Ein paar ruhige Minuten", "Du bist dir noch nicht sicher, was du wachsen lassen möchtest. Für den Anfang "
-                                       "beginnen die Tage mit ein paar ruhigen Minuten für dich."),
-    "ES": ("Unos minutos tranquilos", "Todavía no sabes bien qué te gustaría hacer crecer. Para empezar, los días "
-                                      "comienzan con unos minutos tranquilos para ti."),
-    "FR": ("Quelques minutes calmes", "Tu ne sais pas encore bien ce que tu aimerais faire grandir. Pour commencer, les "
-                                      "journées s’ouvrent sur quelques minutes calmes pour toi."),
+PERSON = ("They asked whether you are a person: ELYND answers that for you, so give only your question (or your "
+          "finish), never their question back.")
+NOTHING = "(an answer that says nothing about them)"
+ONLY_PERSON = "(they asked whether you are a person)"
+EMPTY_FINISH = ("Some of their answers said nothing about them: never repeat those, and invent nothing; the summary says "
+                "simply what they did tell you.")
+
+# Answers that say nothing about them (a reviewer typing anything): filler, greetings, "I don't know", keyboard mash,
+# single letters, punctuation. They are never said back, never shown to the model and never reach a text.
+FILLER = set("""test tests testing tester asdf asdfg asdfgh asdfghjkl qwer qwert qwerty qwertz azerty xyz abc abcd idk
+dunno ok okay okey kk hi hey hello hallo hola salut bonjour coucou yo sup lol lmao hm hmm hmmm nothing nada nichts rien
+none nope yes yeah yep no nah maybe vielleicht quizás quizas peut-être whatever egal bof blah bla blabla ja nein sí si
+oui non vale fine sure dunno nö jo""".split())
+FILLER_PHRASES = {"i don't know", "i dont know", "don't know", "dont know", "no idea", "not sure", "nothing really",
+                  "no clue", "i have no idea", "weiß nicht", "weiss nicht", "keine ahnung", "ich weiß nicht",
+                  "ich weiss nicht", "no sé", "no se", "ni idea", "no lo sé", "da igual", "je sais pas",
+                  "je ne sais pas", "sais pas", "aucune idée", "j'sais pas", "chais pas"}
+_MASH = ("qwer", "asdf", "zxcv", "sdfg", "dfgh", "fghj", "ghjk", "hjkl", "xcvb", "cvbn", "vbnm", "uiop", "yuio", "tyui",
+         "yxcv", "wxcv", "azer", "qsdf")
+_VOWEL = re.compile(r"[aeiouyäöüáéíóúàèìòùâêîôûœæ]")
+
+
+def says_nothing(text: str) -> bool:
+    """True when an answer says nothing about them: filler ("test", "idk", "ok", "hi"), punctuation alone, a single
+    letter, keyboard mash, in English, German, Spanish or French."""
+    words = words_of(text)
+    if not words:
+        return True
+    if " ".join(words) in FILLER_PHRASES or all(w in FILLER for w in words):
+        return True
+    if len(words) == 1:
+        word = words[0]
+        return (len(word) <= 2 or not _VOWEL.search(word) or bool(re.search(r"(.)\1\1", word))
+                or any(row in word for row in _MASH))
+    return False
+
+
+def only_asks_if_person(text: str) -> bool:
+    """True when an answer only asks whether the guide is a person (nothing about them besides)."""
+    if not ASKS_IF_PERSON.search(text):
+        return False
+    rest = words_of(ASKS_IF_PERSON.sub(" ", text))
+    return all(w in FILLER or w in STOP for w in rest)
+
+
+# The app's six start chips ("More confident", ...): a chip they chose, followed by nothing more, is still a goal.
+START_CHIPS = {
+    "ENG": ("More confident", "Sleep better", "Calmer at work", "Kinder to myself", "Less overthinking", "More focused"),
+    "GER": ("Selbstsicherer", "Besser schlafen", "Ruhiger bei der Arbeit", "Freundlicher zu mir", "Weniger grübeln",
+            "Konzentrierter"),
+    "ES": ("Más seguridad", "Dormir mejor", "Más calma en el trabajo", "Más amable conmigo", "Darle menos vueltas",
+           "Más concentración"),
+    "FR": ("Plus d’assurance", "Mieux dormir", "Plus calme au travail", "Plus de douceur envers moi",
+           "Moins ruminer", "Plus de concentration"),
 }
-FALLBACK_FEEL = {
-    "ENG": "What would you like to feel more of in your days?",
-    "GER": "Was möchtest du in deinen Tagen mehr spüren?",
-    "ES": "¿Qué te gustaría sentir más en tus días?",
-    "FR": "Qu’aimerais-tu ressentir davantage dans tes journées ?",
+# When every answer said nothing: a kind, general goal, from the chip they chose (in START_CHIPS order) or the default.
+PLAIN_GOALS = {
+    "ENG": (("A calmer month", "You would like a calmer month, one day at a time."),
+            ("You would like to feel more confident, one day at a time.", "You would like to sleep better, one night "
+             "at a time.", "You would like to feel calmer at work, one day at a time.", "You would like to be kinder "
+             "to yourself, one day at a time.", "You would like a quieter mind, one day at a time.",
+             "You would like to feel more focused, one day at a time."),
+            "A good day has a few quiet minutes that are yours."),
+    "GER": (("Ein ruhigerer Monat", "Du wünschst dir einen ruhigeren Monat, einen Tag nach dem anderen."),
+            ("Du möchtest dich selbstsicherer fühlen, einen Tag nach dem anderen.", "Du möchtest besser schlafen, "
+             "eine Nacht nach der anderen.", "Du möchtest bei der Arbeit ruhiger sein, einen Tag nach dem anderen.",
+             "Du möchtest freundlicher zu dir sein, einen Tag nach dem anderen.", "Du wünschst dir einen ruhigeren "
+             "Kopf, einen Tag nach dem anderen.", "Du möchtest konzentrierter sein, einen Tag nach dem anderen."),
+            "Ein guter Tag hat ein paar ruhige Minuten, die nur dir gehören."),
+    "ES": (("Un mes más tranquilo", "Te gustaría un mes más tranquilo, día a día."),
+           ("Te gustaría sentir más seguridad en ti, día a día.", "Te gustaría dormir mejor, noche a noche.",
+            "Te gustaría sentir más calma en el trabajo, día a día.", "Te gustaría ser más amable contigo, día a día.",
+            "Te gustaría una mente más tranquila, día a día.", "Te gustaría tener más concentración, día a día."),
+           "Un buen día tiene unos minutos de calma que son solo tuyos."),
+    "FR": (("Un mois plus calme", "Tu aimerais un mois plus calme, un jour après l’autre."),
+           ("Tu aimerais avoir plus d’assurance, un jour après l’autre.", "Tu aimerais mieux dormir, une nuit après "
+            "l’autre.", "Tu aimerais plus de calme au travail, un jour après l’autre.", "Tu aimerais plus de douceur "
+            "envers toi, un jour après l’autre.", "Tu aimerais un esprit plus tranquille, un jour après l’autre.",
+            "Tu aimerais plus de concentration, un jour après l’autre."),
+           "Une bonne journée a quelques minutes de calme rien qu’à toi."),
+}
+PLAIN_CLOSING = {
+    "ENG": "Then let's begin simply, one day at a time.",
+    "GER": "Dann fangen wir einfach an, einen Tag nach dem anderen.",
+    "ES": "Entonces empecemos con calma, día a día.",
+    "FR": "Alors commençons simplement, un jour après l’autre.",
+}
+# After an answer that said nothing: the guide asks once more, warmly, in its own words, with chips of its own.
+WARM_ASK = {
+    "ENG": (("Let's start simply. What would you like to feel more of in your days?",
+             ("More calm", "Better sleep", "Kinder to myself")),
+            ("Maybe something small, then. When in your day would you like a few quieter minutes?",
+             ("In the morning", "At work", "Before sleep"))),
+    "GER": (("Fangen wir einfach an. Was möchtest du in deinen Tagen mehr spüren?",
+             ("Mehr Ruhe", "Besser schlafen", "Freundlicher zu mir")),
+            ("Vielleicht etwas Kleines. Wann in deinem Tag hättest du gern ein paar ruhigere Minuten?",
+             ("Am Morgen", "Bei der Arbeit", "Vor dem Schlafen"))),
+    "ES": (("Empecemos con calma. ¿Qué te gustaría sentir más en tus días?",
+            ("Más calma", "Dormir mejor", "Más amable conmigo")),
+           ("Quizá algo pequeño. ¿En qué momento del día te gustarían unos minutos más tranquilos?",
+            ("Por la mañana", "En el trabajo", "Antes de dormir"))),
+    "FR": (("Commençons simplement. Qu’aimerais-tu ressentir davantage dans tes journées ?",
+            ("Plus de calme", "Mieux dormir", "Plus de douceur envers moi")),
+           ("Peut-être quelque chose de petit. À quel moment de ta journée aimerais-tu quelques minutes plus calmes ?",
+            ("Le matin", "Au travail", "Avant de dormir"))),
+}
+# The finishing say: a few of their words, then one short, warm closing of the guide's own, chosen in code (never the
+# thirty days, never a copied line).
+CLOSINGS = {
+    "ENG": ("That's where we'll begin.", "Let's start from there.", "We'll begin there, gently."),
+    "GER": ("Dort fangen wir an.", "Von dort aus beginnen wir.", "Da setzen wir an, ganz in Ruhe."),
+    "ES": ("Empezaremos por ahí.", "Desde ahí comenzamos.", "Por ahí empezamos, con calma."),
+    "FR": ("C’est là que nous commencerons.", "Nous partirons de là.", "On commence par là, tout doucement."),
 }
 # Asked whether it is a person, the guide says plainly that it is an AI (Llama's and Muse's use policies; EU AI Act,
 # Art. 50): the sentence code puts first when a model's answer does not say it.
@@ -522,14 +616,23 @@ def _text_problem(text: str, language: str) -> str | None:
     return None
 
 
-def problems(turn: Turn, language: str, theirs: str = "", asked: bool = False) -> list[str]:
+def _filler_in(text: str, filler: frozenset[str]) -> str | None:
+    return next((w for w in words_of(text) if w in filler), None)
+
+
+def problems(turn: Turn, language: str, theirs: str = "", asked: bool = False,
+             filler: frozenset[str] = frozenset()) -> list[str]:
     """What is wrong with a turn that parsed, as reasons the model is told when it is asked again. `asked`: their last
-    answer asks whether the guide is a person."""
+    answer asks whether the guide is a person (code says that it is an AI). `filler`: the words of their answers that
+    said nothing about them, never to be said back."""
     found = []
     if HUMAN.search(turn.say):
         found.append(f'say: "{HUMAN.search(turn.say).group(0)}": never say or suggest that you are a person')
-    if asked and not AI_SAYS.search(turn.say):
-        found.append("they asked whether you are a person: say plainly and warmly that you are an AI guide, then go on")
+    for name, text in [("say", turn.say), ("the title", turn.title or ""), ("the summary", turn.summary or "")] + \
+            [("a chip", c) for c in turn.chips] + ([("the moment", turn.moment.label)] if turn.moment else []):
+        word = _filler_in(text, filler)
+        if word:
+            found.append(f'{name} repeats "{word}", an answer that says nothing about them: never say it back')
     if turn.done and ECHO.search(turn.summary or ""):
         found.append("the summary repeats the app's question: say what they want to feel or do, in their words")
     parts = [("say", turn.say)] + [("a chip", c) for c in turn.chips]
@@ -556,20 +659,20 @@ def problems(turn: Turn, language: str, theirs: str = "", asked: bool = False) -
     return found
 
 
-def _sentence_ok(sentence: str, language: str, theirs: str, done: bool) -> bool:
+def _sentence_ok(sentence: str, language: str, theirs: str, done: bool, filler: frozenset[str] = frozenset()) -> bool:
     return not (_text_problem(sentence, language) or compares(sentence) or HUMAN.search(sentence)
+                or _filler_in(sentence, filler)
                 or (done and (THIRTY.search(sentence) or copies_example(sentence, theirs) or ECHO.search(sentence))))
 
 
-def repair(turn: Turn, language: str, theirs: str = "", asked: bool = False) -> Turn | None:
+def repair(turn: Turn, language: str, theirs: str = "", asked: bool = False,
+           filler: frozenset[str] = frozenset()) -> Turn | None:
     """The last answer, made usable by leaving out what is wrong: chips that break a rule, a sentence of the say or
-    of the summary that breaks one (when enough is left), a moment whose label breaks one, a long question; asked
-    whether it is a person and silent on it, the guide's own plain sentence first. None when the title, the question
-    or too much of the rest would go."""
-    chips = [c for c in turn.chips if not (_text_problem(c, language) or compares(c) or ABSENCE.search(c))]
-    kept = [s for s in sentences(turn.say) if _sentence_ok(s, language, theirs, turn.done)]
-    if asked and kept and not any(AI_SAYS.search(s) for s in kept):
-        kept.insert(0, HONEST[language])
+    of the summary that breaks one (when enough is left), a moment whose label breaks one, a long question. None when
+    the title, the question or too much of the rest would go."""
+    chips = [c for c in turn.chips if not (_text_problem(c, language) or compares(c) or ABSENCE.search(c)
+                                           or _filler_in(c, filler))]
+    kept = [s for s in sentences(turn.say) if _sentence_ok(s, language, theirs, turn.done, filler)]
     if not kept or (not turn.done and not any("?" in s for s in kept)):
         return None
     if not turn.done and kept[-1] != _question(turn.say):
@@ -577,14 +680,39 @@ def repair(turn: Turn, language: str, theirs: str = "", asked: bool = False) -> 
     fixed = Turn(say=" ".join(kept), chips=chips, done=turn.done, title=turn.title, summary=turn.summary,
                  moment=turn.moment, usd=turn.usd)
     if turn.done:
-        summary = [s for s in sentences(turn.summary or "") if _sentence_ok(s, language, theirs, True)]
-        if len(summary) < 2 or _text_problem(turn.title or "", language):
+        summary = [s for s in sentences(turn.summary or "") if _sentence_ok(s, language, theirs, True, filler)]
+        if len(summary) < 2 or _text_problem(turn.title or "", language) or _filler_in(turn.title or "", filler):
             return None
         fixed.summary = " ".join(summary)
-        if fixed.moment and _text_problem(fixed.moment.label, language):
+        if fixed.moment and (_text_problem(fixed.moment.label, language) or _filler_in(fixed.moment.label, filler)):
             fixed.moment = None
-    rest = [p for p in problems(fixed, language, theirs, asked) if "longer than" not in p]
+    rest = [p for p in problems(fixed, language, theirs, asked, filler) if "longer than" not in p]
     return None if rest else fixed
+
+
+def _start_chip(answer: str, language: str) -> int | None:
+    """The index of the app's start chip their first answer is (in START_CHIPS order), or None."""
+    key = " ".join(words_of(answer))
+    for lang in dict.fromkeys((language, "ENG")):
+        for i, chip in enumerate(START_CHIPS[lang]):
+            if " ".join(words_of(chip)) == key:
+                return i
+    return None
+
+
+def _closing(language: str, theirs: str) -> str:
+    """One of the guide's short closings, the same for the same conversation."""
+    options = CLOSINGS[language]
+    return options[zlib.crc32(theirs.encode("utf-8")) % len(options)]
+
+
+def _plain_finish(language: str, chip: int | None, person: bool) -> Turn:
+    """Every answer said nothing about them: a kind, general goal from the chip they chose, or the default."""
+    (title, first), by_chip, second = PLAIN_GOALS[language]
+    if chip is not None:
+        title, first = START_CHIPS[language][chip], by_chip[chip]
+    say = (f"{HONEST[language]} " if person else "") + PLAIN_CLOSING[language]
+    return Turn(say=say, done=True, title=title, summary=f"{first} {second}")
 
 
 def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | None = None,
@@ -592,6 +720,12 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
     """The guide's next turn. `care_check`: the server's own check, asked before any model call: a match
     answers `care` and nothing is sent anywhere. `budget_s`: the seconds the turn may take; an answer that breaks a
     rule is asked again only while a call as long as the longest so far still fits (None: up to ATTEMPTS calls).
+
+    Built in code, with no model call: after an answer that says nothing about them, the guide's own warm question
+    (WARM_ASK); when every answer said nothing, a kind, general goal (PLAIN_GOALS, from the start chip they chose).
+    Asked whether it is a person, the say is HONEST and then the model's question (or the closing). A finishing say
+    is a few of their words and one of CLOSINGS.
+
     Raises GuideError when the model cannot be reached, or when no finishing turn comes right; a question that never
     comes right is the guide's own plain question."""
     language = language if language in LANGUAGES else "ENG"
@@ -599,20 +733,26 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
     if care_check is not None and any(care_check(text) for role, text in conversation if role == "you"):
         return Turn(care=True)
     today = today or dt.date.today()
-    answers = sum(1 for role, _ in conversation if role == "you")
-    theirs = " . ".join(text for role, text in conversation if role == "you")
+    answers_text = [text for role, text in conversation if role == "you"]
+    answers = len(answers_text)
     must_finish = answers >= FINISH_AT
+    person = bool(ASKS_IF_PERSON.search(answers_text[-1]))
+    empty = [says_nothing(t) or only_asks_if_person(t) for t in answers_text]
+    chip = _start_chip(answers_text[0], language)
+    if not must_finish and empty[-1]:
+        question, chips = WARM_ASK[language][0 if answers == 1 else 1]
+        return Turn(say=(f"{HONEST[language]} " if person else "") + question, chips=list(chips))
+    if must_finish and all(e or (i == 0 and chip is not None) for i, e in enumerate(empty)):
+        return _plain_finish(language, chip, person)
+    filler = frozenset(w for t in answers_text if says_nothing(t) for w in words_of(t) if w not in STOP)
+    theirs = " . ".join(t for t, e in zip(answers_text, empty) if not e)
+    shown = iter(NOTHING if says_nothing(t) else ONLY_PERSON if only_asks_if_person(t) else t for t in answers_text)
+    transcript = "\n".join(f"Teacher: {text}" if role == "guide" else f"Them: {next(shown)}"
+                           for role, text in conversation)
     system = SYSTEM.format(language=LANGUAGES[language], today=today.isoformat(), weekday=today.strftime("%A"),
                            example=_example())
-    transcript = "\n".join(f"{'Teacher' if role == 'guide' else 'Them'}: {text}" for role, text in conversation)
-    last_answer = conversation[-1][1]
-    person = bool(ASKS_IF_PERSON.search(last_answer))
-    said_little = [" ".join(words_of(text)) in SAYS_LITTLE | {""} for role, text in conversation if role == "you"]
-    little = not must_finish and said_little[-1]
-    ask = ASK.get(answers, CHANGED) + (f" {PERSON}" if person else "") + (
-        f" {LITTLE}" if little or (person and answers == 1 and len(words_of(last_answer)) <= 8) else "")
-    if must_finish and all(said_little):
-        ask += f" {LITTLE_FINISH}"
+    ask = ASK.get(answers, CHANGED) + (f" {PERSON}" if person else "") + (f" {EMPTY_FINISH}"
+                                                                        if must_finish and any(empty) else "")
     user = f"The conversation so far:\n{transcript}\n\n{ask} Only the JSON object."
     start, longest, spent, problem = time.monotonic(), 0.0, 0.0, ""
     for attempt in range(ATTEMPTS):
@@ -631,21 +771,32 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
         except ValueError as exc:
             problem = f"\n\nYour last answer could not be used ({exc}). Answer again: one JSON object only."
             continue
-        found = problems(turn, language, theirs, person)
+        found = problems(turn, language, theirs, person, filler)
         if found and last:
-            turn = repair(turn, language, theirs, person)
+            turn = repair(turn, language, theirs, person, filler)
             found = [] if turn else found
         if not found and turn is not None:
             turn.usd = spent
-            return turn
+            return _finished_say(turn, language, theirs, person)
         problem = (f"\n\nYour last answer could not be used ({'; '.join(found)}). Answer again: one JSON object "
                    f"only.")
     if not must_finish:
-        question = (FALLBACK_FEEL[language] if little or person else
-                    FALLBACK_QUESTIONS[language][min(answers, QUESTIONS) - 1])
+        question = FALLBACK_QUESTIONS[language][min(answers, QUESTIONS) - 1]
         return Turn(say=(f"{HONEST[language]} " if person else "") + question, chips=[], usd=spent)
-    if all(said_little):
-        title, summary = FALLBACK_FINISH[language]
-        say = last_answer[:1].upper() + last_answer[1:].rstrip(" .") + "."
-        return Turn(say=say, done=True, title=title, summary=summary, usd=spent)
     raise GuideError("no usable turn")
+
+
+def _finished_say(turn: Turn, language: str, theirs: str, person: bool) -> Turn:
+    """The say as the listener sees it. Asked whether it is a person: HONEST, then the model's question (or the
+    closing), never their question back. A finishing say: a few of their words, then one of CLOSINGS."""
+    if not turn.done:
+        if person:
+            question = _question(turn.say)
+            if not question or ASKS_IF_PERSON.search(question) or HUMAN.search(question):
+                question = WARM_ASK[language][0][0].split(". ", 1)[-1]
+            turn.say = f"{HONEST[language]} {question}"
+        return turn
+    reflection = "" if person else " ".join(s for s in sentences(turn.say) if not AI_SAYS.search(s))
+    lead = HONEST[language] if person else reflection
+    turn.say = f"{lead} {_closing(language, theirs)}".strip()
+    return turn

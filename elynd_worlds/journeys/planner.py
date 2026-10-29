@@ -24,8 +24,8 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass, field
 from typing import Callable
 
-from .guide import (LANGUAGES, STOP, Moment, _plain, capitalised, condition_word, cut, first_json, forbidden_word,
-                    sentence_case, words_of)
+from .guide import (FILLER, LANGUAGES, STOP, Moment, _plain, capitalised, condition_word, cut, first_json,
+                    forbidden_word, sentence_case, words_of)
 from .llama import Llama, LlamaError
 
 DAYS = 30
@@ -240,7 +240,7 @@ def their_words(summary: str, title: str = "", limit: int = 10) -> list[str]:
         for sentence in re.split(r"[.?!;:,]", text or ""):
             tokens = words_of(sentence)
             for i, word in enumerate(tokens):
-                if len(word) < 3 or word in STOP or word in _GENERIC:
+                if len(word) < 3 or word in STOP or word in _GENERIC or word in FILLER:
                     continue
                 if i + 1 < len(tokens) and tokens[i + 1] in _PARTICLES:
                     word = f"{word} {tokens[i + 1]}"
