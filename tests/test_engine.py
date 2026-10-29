@@ -253,7 +253,7 @@ async def test_when_only_the_open_model_may_judge_a_painting_it_cannot_judge_is_
 
 @pytest.mark.parametrize("given, reason", [
     ({**PASS, "reason": " "}, "No fault found; score 9 of 10."),
-    ({**FAIL, "reason": ""}, "The painting shows a person or an animal drawn wrong, or a face up close."),
+    ({**FAIL, "reason": ""}, "The painting shows a person or an animal drawn wrong, awake and upright, or a face up close."),
     ({**PASS, "calm": False, "belongs": False, "reason": ""},
      "The painting is not calm, does not show the designed place and mood."),
 ])
@@ -656,6 +656,19 @@ def test_animals_and_people_may_be_in_a_world_at_rest_and_painted_naturally():
     assert "drawn wrong" in critic.reason_from_checks({**PASS, "figures_wrong": True})
     # Never new figures in the plate: only what was cut out is painted over.
     assert "no people or animals" in painter.plate_prompt(SCENE)
+
+
+def test_animals_and_people_only_asleep_or_lying_at_rest():
+    # 29 Oct 2026: a cut-out cannot turn its head or walk, and an awake figure that never moves reads as a
+    # still picture, so the designer, the painter and the critic all keep figures asleep or lying down.
+    rules = art_director.DIRECTOR_INSTRUCTIONS
+    assert "only ASLEEP or LYING DOWN AT REST" in rules
+    assert "Never\n   standing, sitting up, looking out, walking, running or jumping" in rules
+    assert "someone sitting on a bench" not in rules and "looking out, asleep" not in rules
+    assert "never standing, sitting up or walking" in painter.painting_prompt(art_director.check(json.loads(json.dumps(SCENE))))
+    assert "awake and upright" in critic.CRITIC_INSTRUCTIONS
+    assert "awake and upright" in critic.VERDICT_SCHEMA["properties"]["figures_wrong"]["description"]
+    assert "awake and upright" in critic.reason_from_checks({**PASS, "figures_wrong": True})
 
 
 def test_a_field_is_asked_for_by_its_plants():

@@ -17,7 +17,8 @@ from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listene
 from .settings import DEFAULT, Settings
 
 STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
-         "any animal or person at rest and painted naturally, a person small or seen from behind, "
+         "any animal asleep or person lying at rest, eyes closed or turned away, painted naturally (never "
+         "standing, sitting up or walking), a person small or seen from behind, "
          "no face up close; no text, no letters, no logos, no symbols.")
 
 

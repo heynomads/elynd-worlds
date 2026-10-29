@@ -1,9 +1,11 @@
 """The critic: it looks at each painting before a listener does.
 
 Image models sometimes slip: a dog with five legs, a face in the clouds, letters on a
-boat, a sky that turned stormy. Animals and people may be in a world, at rest and painted
-naturally; the
-critic turns away only one drawn wrong, a face up close, or a figure looking at the viewer. The critic sees the painting next to the design it was made from
+boat, a sky that turned stormy. Animals and people may be in a world, asleep or lying at rest and
+painted naturally; the
+critic turns away one drawn wrong, a face up close, a figure looking at the viewer, and (29 Oct) one
+awake and upright: a cut-out cannot turn its head or walk, and an awake figure that never moves reads
+as a still picture. The critic sees the painting next to the design it was made from
 and answers in strict JSON. A painting is shown only if it is safe, calm,
 belongs to the meditation and scores at least `Settings.pass_score`. When it
 fails, the critic says in one sentence what to change, and the art director
@@ -36,7 +38,7 @@ VERDICT_SCHEMA: dict[str, Any] = {
         "belongs": {"type": "boolean", "description": "The painting shows the designed place and mood"},
         "calm": {"type": "boolean", "description": "Calm and inviting; nothing threatening or busy"},
         "figures_wrong": {"type": "boolean",
-                          "description": "A person or animal drawn wrong, a face up close, or a figure looking at the viewer"},
+                          "description": "A person or animal drawn wrong, awake and upright, a face up close, or a figure looking at the viewer"},
         "text_or_symbols": {"type": "boolean", "description": "Any letters, numbers, logos or symbols"},
         "subjects_seen": {"type": "array", "items": {"type": "string"},
                           "description": "The designed subjects that are clearly visible and separate"},
@@ -51,7 +53,9 @@ CRITIC_INSTRUCTIONS = """You are the critic of a meditation app. Before a listen
 you check it against the design it was made from. Be strict about safety and calm, fair about art.
 - figures_wrong: true if a person or an animal is drawn wrong (an extra or missing limb, a twisted or
   melted body, odd eyes, a figure that is half there), if a face is seen up close, if a hand fills the
-  foreground, or if a figure looks at the viewer. People and animals at rest, painted naturally, are fine.
+  foreground, if a figure looks at the viewer, or if a person or an animal is awake and upright (standing,
+  sitting up, walking, looking out). Animals asleep and people lying at rest, painted naturally, are fine;
+  so are birds floating on water.
 - text_or_symbols: true if you see any letters, numbers, logos, signs or symbols.
 - calm: false if anything feels threatening, chaotic, sad or busy.
 - belongs: false if the painting does not show the designed place, time of day and mood.
@@ -148,7 +152,7 @@ def _verdict(response: Any, judge: str) -> dict[str, Any]:
 def reason_from_checks(verdict: dict[str, Any]) -> str:
     """A reason built from the verdict's own checks, for a critic that left its sentence out."""
     faults = [text for flag, fault, text in (
-        ("figures_wrong", True, "shows a person or an animal drawn wrong, or a face up close"),
+        ("figures_wrong", True, "shows a person or an animal drawn wrong, awake and upright, or a face up close"),
         ("text_or_symbols", True, "shows letters or symbols"),
         ("calm", False, "is not calm"),
         ("belongs", False, "does not show the designed place and mood"),
