@@ -264,18 +264,27 @@ def test_a_practice_day_picks_up_from_the_last_session_and_what_they_said():
             brief.Past(3, TODAY, 3, "The meeting went a bit better", done=False)]
     text = brief.day_block(plan(), 3, TODAY, SUMMARY, past)
     assert 'Last time (day 2, yesterday): "Day 2 step"' in text
-    assert ('asked "Since your last meditation, how confident have you felt?" and answered "somewhat" (on day 2 they answered '
-            '"not at all")') in text
+    assert 'asked "Since your last meditation, how confident have you felt?" and answered "somewhat".' in text
+    assert "on day 2 they answered" not in text   # a practice day never compares answers (B3)
     assert 'They added: "The meeting went a bit better"' in text
     assert "greeting them on day three" in text and "never as a rating" in text
     assert "welcome them back" not in text and "harder day" not in text
+    assert "Read the tone of what they added" in text
+    assert "The plan above is a sketch made on day one. Keep its step and technique" in text   # B6
 
 
 def test_a_gap_is_welcomed_back_and_a_hard_day_is_gentler():
     past = [brief.Past(4, TODAY - dt.timedelta(days=5), 3), brief.Past(5, TODAY, 2, done=False)]
     text = brief.day_block(plan(), 5, TODAY, SUMMARY, past)
-    assert "It has been 5 days since their last meditation: welcome them back warmly" in text
+    assert "Some days have passed since their last meditation: welcome them back warmly" in text
+    assert "never say how many days" in text and "5 days" not in text and "(day 4, some days ago)" in text
     assert "Today may be a harder day: be gentler" in text
+
+
+def test_a_light_note_without_an_answer_is_read_for_its_tone_not_made_gentler():
+    past = [brief.Past(4, TODAY - dt.timedelta(days=1), 3), brief.Past(5, TODAY, None, "It went really well", done=False)]
+    text = brief.day_block(plan(), 5, TODAY, SUMMARY, past)
+    assert "harder day" not in text and "if it sounds heavy, be gentler" in text
 
 
 @pytest.mark.parametrize("days, says", [
@@ -301,9 +310,15 @@ def test_every_seventh_day_looks_back_on_the_week_and_opens_the_next():
     past.append(brief.Past(14, TODAY, 4, None, done=False))
     text = brief.day_block(plan(), 14, TODAY, SUMMARY, past)
     assert 'This is the last day of week 2.' in text and '("Kindness")' in text
-    assert 'how their answers moved this week (from "a little" to "quite")' in text
+    assert 'how their answers rose this week (from "a little" to "quite")' in text
     assert '"Hard morning" / "Spoke up once"' in text
     assert 'Then open next week: "Rehearsal": Practise the moment itself.' in text
+    assert "moved on" not in text   # no journey world yet (B1)
+    assert "has moved on a little, like them" in brief.day_block(plan(), 14, TODAY, SUMMARY, past, world_changed=True)
+    # Answers that did not rise are never compared: they kept coming back (B3).
+    fell = [brief.Past(p.n, p.date, 5 if p.n == 8 else 2, p.note, p.done) for p in past]
+    text = brief.day_block(plan(), 14, TODAY, SUMMARY, fell)
+    assert "answers rose" not in text and "they kept coming back and one thing they practised" in text
 
 
 def test_day_thirty_closes_the_circle_with_their_first_words_and_their_note():
@@ -313,5 +328,11 @@ def test_day_thirty_closes_the_circle_with_their_first_words_and_their_note():
     text = brief.day_block(plan(), 30, TODAY, SUMMARY, past, letter="You were braver than you thought.")
     assert "This is the last day of the thirty." in text
     assert 'on day 2 they answered "not at all", today "very"' in text
-    assert 'Read them aloud, word for word, as a quiet moment of their own: "You were braver than you thought."' in text
+    assert 'Read them aloud, word for word and whole, as a quiet moment of their own: "You were braver than you thought."' in text
     assert "Close with today's one small thing" not in text
+    # A letter of 400 characters is read whole (B5); answers that fell are never compared (B3).
+    letter = ("You kept going. " * 30)[:brief.MAX_LETTER - 1] + "."
+    past[-1] = brief.Past(30, TODAY, 1, done=False)
+    text = brief.day_block(plan(), 30, TODAY, SUMMARY, past, letter=letter)
+    assert f'"{letter}"' in text and len(letter) == 400 and "…" not in text
+    assert "what changed" not in text and "they kept coming back" in text

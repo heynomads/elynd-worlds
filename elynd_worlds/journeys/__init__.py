@@ -9,9 +9,10 @@ Whose model reads what. Everything that reads a listener's own words (the conver
 runs on Meta's open-weights Llama 3.3 70B inside ELYND's own cloud (Amazon Bedrock, `llama`): Meta's processor terms
 for its hosted API (Meta Global Processor Terms 2.2) bar health-related data, and a goal and its notes can carry it,
 so the listener's words never reach Meta. (Llama 4 is multimodal, and its licence grants no rights to companies based
-in the European Union; ELYND is one.) Only the non-personal description of the journey's world goes to Meta's API, to
-paint it with Muse Image and check it with Muse Spark Open, as every world is.
+in the European Union; ELYND is one.)
 
-The journey's world grows with it (`stages`): five living worlds of one place, the first painted, the other four
-repainted from it in another light and season, from the same viewpoint.
+A journey's world (`stages`): five living worlds of one place, the first painted, the other four repainted from it in
+another light and season, from the same viewpoint. The plan describes none: a world is made from a description given
+by hand, never from a listener's words, and only that description goes to Meta's API, to paint it with Muse Image and
+check it with Muse Spark Open, as every world is.
 """
