@@ -7,9 +7,16 @@ week and opens the next; day thirty closes the circle with their first words and
 After a gap the session welcomes them back without judging and without counting the days; a hard day makes it
 gentler, and a note is read for its tone; the day before a moment they named it rehearses it, on its day the session
 follows their note (it may be behind or ahead of them), and the first session after it asks how it went. Every session
-but the last closes by pointing to the next one ("Next time, …"), and the next one begins there. Their answers are compared only on the look-back days and day thirty, and only when they rose. The plan
-is a sketch made on day one by a smaller model: the writer keeps its step and technique and makes the meditation
-about their life, in their own words.
+but the last closes by pointing to the next one ("Next time, …"), and the next one begins there. Their answers are
+compared only on the look-back days and day thirty, and only when they rose. The plan is a sketch made on day one by a
+smaller model: the writer keeps its step and technique and makes the meditation about their life, in their own words.
+
+What the server knows besides comes as keyword arguments, each off by default (the block is then exactly as before):
+what they heard last time (`heard`: the session's own title and closing line, and whether it was played: one made
+but never played is never called heard), last time's small thing to try and the last titles (`last_try`,
+`recent_titles`: never repeated), four openings in turn on practice days (`rotate_openings`), a light word at the
+halfway day (`halfway`), the step held after two hard answers in a row (`hold_hard_days`), and the part of their day
+(`local_hour`: from 21:00 to 05:00 nothing is "for today").
 
 The block is in English, like the rest of the writer's prompt; the listener's words are quoted as they wrote them,
 and the writer writes in the session's language.
@@ -18,6 +25,7 @@ from __future__ import annotations
 
 import datetime as dt
 from dataclasses import dataclass
+from typing import Sequence
 
 from .guide import Moment
 from .planner import DAYS, Plan, kind, week_of
@@ -29,6 +37,20 @@ KEPT_COMING = "name, simply, that they kept coming back and one thing they pract
 NUMBER_WORDS = ("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen "
                 "seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five "
                 "twenty-six twenty-seven twenty-eight twenty-nine thirty").split()
+
+
+HALFWAY = 15       # the day that marks the middle of the thirty (with `halfway`)
+NIGHT_FROM, NIGHT_UNTIL = 21, 5   # local hours: from 21:00 and before 05:00 nothing is "for today" (with `local_hour`)
+OPENINGS = ("body", "their words", "theme", "thread")   # practice days in turn, by day number (with `rotate_openings`)
+
+
+@dataclass
+class Heard:
+    """The last journey session as it was made: its own title and closing line (the writer's), and whether it was
+    actually played. One made but never played is never called heard."""
+    title: str
+    closing: str | None = None
+    played: bool = False
 
 
 @dataclass
@@ -89,11 +111,40 @@ def _moment_line(moment: Moment | None, today: dt.date, past: list[Past] = ()) -
     return "", ""
 
 
+def _said(text: str, limit: int) -> str:
+    """Their or the writer's words in quotes, as one sentence: "…words." (never "…words.".)."""
+    quoted = _quote(text, limit).strip()
+    return f'"{quoted}"' + ("" if quoted[-1:] in ".?!…" else ".")
+
+
+def _moment_today(moment: Moment | None, today: dt.date, past: list[Past]) -> bool:
+    """Today is a moment day: the day before it, its day, or the first session after it (they keep their own
+    opening)."""
+    fact, _ = _moment_line(moment, today, past)
+    return bool(fact) and not fact.endswith(" days.")
+
+
+def _hard_in_a_row(past: list[Past], n: int) -> bool:
+    """Today's answer and the one before it (by session) are both hard ("not at all" or "a little")."""
+    answers = sorted((p for p in past if p.answer in ANSWER_WORDS and p.n <= n), key=lambda p: p.n)
+    return len(answers) >= 2 and answers[-1].n == n and all(p.answer <= 2 for p in answers[-2:])
+
+
 def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past], moment: Moment | None = None,
-              letter: str | None = None, world_changed: bool = False) -> str:
+              letter: str | None = None, world_changed: bool = False, *, heard: Heard | None = None,
+              last_try: str | None = None, recent_titles: Sequence[str] = (), rotate_openings: bool = False,
+              halfway: bool = False, hold_hard_days: bool = False, local_hour: int | None = None) -> str:
     """The block for day `n` (1 to 30). `past`: every day so far, today's included when they answered before it.
     `world_changed`: the journey's own place has moved on since the last look-back (False while no journey has a
-    world of its own: the block then never speaks of one)."""
+    world of its own: the block then never speaks of one).
+
+    Each of the rest is off by default, and the block is then the same, byte for byte:
+    `heard`: the last session as made (Heard: its own title, closing line, played or not); `last_try`: last time's
+    small thing to try; `recent_titles`: the last titles (up to three); `rotate_openings`: practice days open in turn
+    with the body and breath, their words from today's check-in, the week's theme, last time's thread (look-backs,
+    day one, day thirty and the moment days keep their own); `halfway`: day 15 is marked in one warm sentence;
+    `hold_hard_days`: after two hard answers in a row a practice day holds the step; `local_hour`: their hour now
+    (0-23), from 21:00 and before 05:00 the small thing to try is for tonight or tomorrow."""
     day = plan.day(n)
     week = week_of(n)
     theme = plan.weeks[week - 1]
@@ -110,10 +161,34 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
         f'Today, day {n}: "{day.title}". {_sentence(day.focus)} What they take from it: {_sentence(day.aim)} One '
         f"small thing to try today: {_sentence(day.try_today)}",
     ]
-    if last is not None:
+    night = local_hour is not None and (local_hour >= NIGHT_FROM or local_hour < NIGHT_UNTIL)
+    if night:
+        lines[-1] = lines[-1].replace(" One small thing to try today: ", " One small thing to try (it is late in "
+                                      "their day: for tonight before sleep, or for tomorrow): ")
+    unheard = heard is not None and not heard.played
+    if last is not None and heard is None:
         previous = plan.day(last.n)
         lines.append(f'Last time (day {last.n}, {_when((today - last.date).days)}): "{previous.title}": '
                      f"{_sentence(previous.focus)} It closed by pointing to today's step: begin where it pointed.")
+    elif last is not None and heard.played:
+        previous = plan.day(last.n)
+        said = (f'"{heard.title}", which closed with: {_said(heard.closing, 200)}'
+                if heard.closing and heard.closing.strip() else _said(heard.title, 120))
+        lines.append(f'Last time (day {last.n}, {_when((today - last.date).days)}) they heard {said} Its step: '
+                     f'"{previous.title}": {_sentence(previous.focus)} Pick up from it '
+                     f'naturally, as a teacher who was there would ("Last time we stayed with the breath before you '
+                     f'speak"), never quoting it word for word; it pointed to today\'s step: begin where it pointed.')
+    elif last is not None:
+        lines.append(f'The last meditation (day {last.n}, made {_when((today - last.date).days)}), "{heard.title}", '
+                     f"was never played: they have not heard it. Never say or suggest that they heard it, practised "
+                     f"it or know what it said; begin from today's step as it is.")
+    if last_try and last_try.strip():
+        lines.append(f"Last time's small thing to try: {_said(last_try, 180)} Never offer it again, nor in other "
+                     f"words.")
+    titles = [t.strip() for t in recent_titles if t and t.strip()][-3:]
+    if titles:
+        lines.append("The last meditations were called " + ", ".join(f'"{t}"' for t in titles) + ": give this one a "
+                     "title of its own, never one of these nor close to them.")
     if now is not None and now.answer in ANSWER_WORDS:
         lines.append(f'Before this meditation they were asked "{plan.checkin_question}" and answered '
                      f'"{ANSWER_WORDS[now.answer]}".')
@@ -168,12 +243,51 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
             rules.append(f"On the first day they wrote a few words to themselves for today. Read them aloud, word "
                          f'for word and whole, as a quiet moment of their own: "{" ".join(letter.split())}"')
     else:
-        picked_up = "what they practised"
-        if now is not None and (now.answer in ANSWER_WORDS or now.note):
-            picked_up += " and what they told you before this meditation, said as a teacher would (\"you said it " \
-                         "felt a little easier\"), never as a rating"
-        rules.append(f"Open by greeting them on day {words} and, in one or two natural sentences, pick up from last "
-                     f"time: {picked_up}. Then today's practice, as a step of this week's theme.")
+        told = now is not None and (now.answer in ANSWER_WORDS or bool(now.note))
+        opening = None
+        if rotate_openings and not _moment_today(moment, today, past):
+            opening = OPENINGS[(n - 2) % len(OPENINGS)]
+            if opening == "their words" and not told:
+                opening = "body"
+            if opening == "thread" and (last is None or unheard):
+                opening = "theme"
+        thread = "what they practised last time" if last is not None and not unheard else ""
+        if opening == "body":
+            rules.append(f"Open with the body and the breath, before any word about the journey; greet them on day "
+                         f"{words} a little later, within the first minute"
+                         + (f", and say in a sentence {thread}" if thread else "")
+                         + ". Then today's practice, as a step of this week's theme.")
+        elif opening == "their words":
+            rules.append(f"Open with what they told you before this meditation, said back as a teacher would (\"you "
+                         f"said it felt a little easier\"), never as a rating; greet them on day {words} within the "
+                         f"first minute. Then today's practice, as a step of this week's theme.")
+        elif opening == "theme":
+            rules.append(f'Open with this week\'s theme, "{theme["theme"]}", and where today\'s step sits in it; greet '
+                         f"them on day {words} within the first minute. Then today's practice.")
+        elif opening == "thread":
+            rules.append(f"Open by picking up the thread of last time in one or two natural sentences ({thread}), "
+                         f"then greet them on day {words}. Then today's practice, as a step of this week's theme.")
+        elif unheard:
+            rules.append(f"Open by greeting them on day {words} and begin today's practice, as a step of this week's "
+                         f"theme" + (", with what they told you before this meditation, said as a teacher would "
+                                     "(\"you said it felt a little easier\"), never as a rating" if told else "")
+                         + ".")
+        else:
+            picked_up = "what they practised"
+            if told:
+                picked_up += " and what they told you before this meditation, said as a teacher would (\"you said " \
+                             "it felt a little easier\"), never as a rating"
+            rules.append(f"Open by greeting them on day {words} and, in one or two natural sentences, pick up from "
+                         f"last time: {picked_up}. Then today's practice, as a step of this week's theme.")
+        if halfway and n == HALFWAY:
+            rules.append("They are halfway through the thirty: mark it in one light, warm sentence, never as a score, "
+                         "a count or a percentage.")
+        if hold_hard_days and last is not None and _hard_in_a_row(past, n):
+            held = plan.day(last.n)
+            rules.append(f'Hold the step today: instead of moving on, return to the gentler practice of last time '
+                         f'("{held.title}": {_sentence(held.focus)}), slower and kinder, and leave today\'s new step '
+                         f"for another day. Never name what is hard in clinical words and never mention their "
+                         f"answers.")
     if last is not None and (today - last.date).days >= 3:
         rules.append("Some days have passed since their last meditation: welcome them back warmly, without any "
                      "judgment, and never say how many days. Simply go on from where they were.")
@@ -186,9 +300,13 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
         rules.append(moment_rule)
     if k != "arrive":
         upcoming_day = plan.day(n + 1)
-        rules.append(f'Close with today\'s one small thing to try, said simply, then one sentence that points to the '
+        offer = ("the one small thing to try, offered for tonight before sleep or for tomorrow, never as something "
+                 "for today" if night else "today's one small thing to try")
+        never = ('Never call the next meditation "tomorrow": it may be days away.' if night else
+                 'Never say "tomorrow": the next meditation may be days away.')
+        rules.append(f'Close with {offer}, said simply, then one sentence that points to the '
                      f'next meditation, beginning "Next time, …": its step is "{upcoming_day.title}": '
-                     f'{_sentence(upcoming_day.focus)} Never say "tomorrow": the next meditation may be days away.')
+                     f'{_sentence(upcoming_day.focus)} {never}')
     rules += [
         "The plan above is a sketch made on day one. Keep its step and technique; make the meditation about their "
         "life, using the situations in their own words. Meditation, never advice.",
