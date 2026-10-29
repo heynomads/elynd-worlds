@@ -23,7 +23,8 @@ from elynd_worlds.director import NoWorld, make_world, make_world_or_none
 from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
 from elynd_worlds.settings import Prices
 
-from .fakes import BRANCH_BOX, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, WATER_BOX, FakeClient, png
+from .fakes import (BRANCH_BOX, DOG, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, WATER_BOX, WOMAN,
+                    FakeClient, png)
 
 @pytest.fixture(autouse=True)
 def _every_model_offered():
@@ -253,7 +254,8 @@ async def test_when_only_the_open_model_may_judge_a_painting_it_cannot_judge_is_
 
 @pytest.mark.parametrize("given, reason", [
     ({**PASS, "reason": " "}, "No fault found; score 9 of 10."),
-    ({**FAIL, "reason": ""}, "The painting shows a person or an animal drawn wrong, awake and upright, or a face up close."),
+    ({**FAIL, "reason": ""}, "The painting shows a person or an animal that does not belong, drawn wrong, awake and "
+                             "upright, or a face up close."),
     ({**PASS, "calm": False, "belongs": False, "reason": ""},
      "The painting is not calm, does not show the designed place and mood."),
 ])
@@ -647,9 +649,9 @@ def test_only_worlds_that_look_alive_stay_in_the_library():
 
 
 def test_animals_and_people_may_be_in_a_world_at_rest_and_painted_naturally():
-    # Animals and people belong in a world when the meditation brings them.
-    prompt = painter.painting_prompt(art_director.check(json.loads(json.dumps(SCENE))))
-    assert "no people" not in prompt and "no face up close" in prompt and "no text" in prompt
+    # Animals and people belong in a world when the meditation brings them (tests/test_figures.py: only then).
+    prompt = painter.painting_prompt(art_director.check(json.loads(json.dumps({**SCENE, "subjects": [WOMAN]}))))
+    assert "no other people" in prompt and "no face up close" in prompt and "no text" in prompt
     assert "figures_wrong" in critic.VERDICT_SCHEMA["required"]
     assert "people_or_faces" not in critic.VERDICT_SCHEMA["properties"]
     assert critic.passes(PASS) and not critic.passes({**PASS, "figures_wrong": True})
@@ -661,11 +663,12 @@ def test_animals_and_people_may_be_in_a_world_at_rest_and_painted_naturally():
 def test_animals_and_people_only_asleep_or_lying_at_rest():
     # 29 Oct 2026: a cut-out cannot turn its head or walk, and an awake figure that never moves reads as a
     # still picture, so the designer, the painter and the critic all keep figures asleep or lying down.
-    rules = art_director.DIRECTOR_INSTRUCTIONS
+    rules = " ".join(art_director.DIRECTOR_INSTRUCTIONS.split())
     assert "only ASLEEP or LYING DOWN AT REST" in rules
-    assert "Never\n   standing, sitting up, looking out, walking, running or jumping" in rules
+    assert "Never standing, sitting up, looking out, walking, running or jumping" in rules
     assert "someone sitting on a bench" not in rules and "looking out, asleep" not in rules
-    assert "never standing, sitting up or walking" in painter.painting_prompt(art_director.check(json.loads(json.dumps(SCENE))))
+    scene = art_director.check(json.loads(json.dumps({**SCENE, "subjects": [DOG]})))
+    assert "never standing, sitting up or walking" in painter.painting_prompt(scene)
     assert "awake and upright" in critic.CRITIC_INSTRUCTIONS
     assert "awake and upright" in critic.VERDICT_SCHEMA["properties"]["figures_wrong"]["description"]
     assert "awake and upright" in critic.reason_from_checks({**PASS, "figures_wrong": True})

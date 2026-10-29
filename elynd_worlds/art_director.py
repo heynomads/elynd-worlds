@@ -8,6 +8,9 @@ The design ("scene") is strict JSON. Two parts of it drive everything after:
   make them solid, clearly outlined objects, because only those cut out cleanly.
   It also says how each one is attached (resting on the ground, growing in from
   an edge, or floating), how it moves, and whether it glows (a lantern flickers).
+  Each has a kind: a thing, or an animal or a person, and an animal or a person
+  only when the meditation itself brings one (the listener's dog, asleep). Every
+  other world is the place alone (`figures_in`; 29 Oct 2026).
 * `nature` and `particles`: the parts of the place that move in nature (water,
   sky, grass, a stream, tree crowns), which SAM 3.1 then finds in the painting
   (regions.py), and what floats in the air (leaves, snow, pollen, fireflies).
@@ -37,12 +40,18 @@ log = logging.getLogger("elynd_worlds")
 # ripples, the sky drifts, grass waves in the wind, a stream flows, tree crowns sway.
 NATURE = ["water", "sky", "grass", "stream", "trees"]
 PARTICLES = ["none", "leaves", "snow", "pollen", "fireflies"]
+# What a subject is. An animal or a person only when the meditation itself brings one (DIRECTOR_INSTRUCTIONS, 3).
+KINDS = ["thing", "animal", "person"]
+FIGURE_KINDS = ("animal", "person")
 
 SUBJECT_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
     "properties": {
         "name": {"type": "string", "description": "Singular noun phrase, 1-3 words, e.g. 'smooth stone'"},
+        "kind": {"type": "string", "enum": KINDS,
+                 "description": "animal or person: only one the meditation itself brings (it names or describes "
+                                "it); thing: everything else"},
         "depth": {"type": "string", "enum": ["near", "mid"]},
         "attached": {"type": "string", "enum": ["ground", "edge", "air"],
                      "description": "ground: rests on ground or water; edge: grows in from a picture edge; air: floats"},
@@ -54,7 +63,7 @@ SUBJECT_SCHEMA: dict[str, Any] = {
         "where": {"type": "string", "enum": ["left", "centre", "right"],
                   "description": "Across the picture; every subject sits in its middle band (35-60% down)"},
     },
-    "required": ["name", "depth", "attached", "motion", "glows", "where"],
+    "required": ["name", "kind", "depth", "attached", "motion", "glows", "where"],
 }
 
 SCENE_SCHEMA: dict[str, Any] = {
@@ -90,35 +99,43 @@ Rules:
    The phone shows its title over the top 15% of the picture and its words and controls over the
    bottom 35%, under a soft shade: keep both calm and simple (open sky; still water, soft ground or
    sand), and put everything that matters in the middle band, 35-60% down the picture.
-3. Animals and people belong in a world when the meditation brings them (a dog asleep on its beach, a
-   monkey curled up asleep on its blanket, swans floating on the lake, someone lying in the grass), but
-   only ASLEEP or LYING DOWN AT REST, eyes closed or turned away; birds may float on water. Never
-   standing, sitting up, looking out, walking, running or jumping, even when the meditation tells of
-   them that way: on the phone they never move, and an awake animal or person that never moves reads
-   as a still picture, not a living place. An animal never looks at the viewer; a person is small, at
-   a distance or seen from behind, never a face up close. Paint what the meditation says of them (a
-   golden retriever, a small monkey, a grey-haired woman), never a name.
+3. The world is the place alone, as the listener sees it (they are never in it). An animal or a person
+   is in it only when the meditation itself brings one: it names or describes it (their dog, a child,
+   swans on the lake they picture). Never add one of your own, not even small or far away. Each one it
+   brings is a subject of kind "animal" or "person" (rule 5), shown only ASLEEP or LYING DOWN AT REST,
+   eyes closed or turned away (a dog asleep on its beach, a monkey curled up asleep on its blanket); a
+   bird it brings may float on water. Never standing, sitting up, looking out, walking, running or
+   jumping, even when the meditation tells of them that way: on the phone they never move, and an awake
+   animal or person that never moves reads as a still picture, not a living place. An animal never
+   looks at the viewer. A person is small, at a distance or seen from behind, never a face up close,
+   asleep where people rest (in a hammock, on a blanket or a beach towel), never lying on bare ground
+   or in water. Paint what the meditation says of them (a golden retriever, a small monkey, a
+   grey-haired woman), never a name. Birds in flight are added by the app: the painting never has
+   birds in the sky.
    Never: text, letters, numbers, logos, symbols, flags, religious icons, weapons.
 4. Nothing unsettling: no storms, threatening darkness, falling, deep water seen from below,
    enclosed spaces, ruins, decay.
 5. subjects: 1-3 foreground objects that will be cut out of the painting and move gently, the way
-   such things move (a boat rides the ripples, a butterfly flutters, a lantern flickers, a stone
-   stays still). Each must be ONE solid, free-standing object with a clear outline ("smooth
-   stone", "wooden rowboat", "paper lantern", "seashell", "ceramic teacup", "white butterfly"), never
-   a texture, mass or substance (grass, waves, water, mist, clouds, sand, a field of flowers, a
-   forest). An animal or a person is one subject too ("sleeping dog", "sleeping monkey", "white swan"). Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
+   such things move (a boat rides the ripples, a lantern flickers, a stone stays still). Each must be
+   ONE solid, free-standing object with a clear outline ("smooth stone", "wooden rowboat", "paper
+   lantern", "seashell", "ceramic teacup"), never a texture, mass or substance (grass, waves, water,
+   mist, clouds, sand, a field of flowers, a forest). An animal or a person the meditation brings
+   (rule 3) is one subject too ("sleeping dog", "sleeping monkey", "white swan", "white butterfly").
+   Avoid branches and plants: they cannot be cut out cleanly. Name each with a singular
    noun phrase of 1-3 words. Make each large enough to notice on a phone (at least a tenth of the
    picture's width). Keep them apart from each other, fully in view, clearly separated from
    what is behind them, inside the middle band (35-60% down the picture), never at the bottom, and
    within the middle 70% of the width (phones crop the sides).
+   kind: "animal" or "person" only for one the meditation brings (rule 3), "thing" for every other.
    attached: "ground" if it rests on the ground or on water, "edge" if it grows into the picture from
    an edge (a branch), "air" if it floats or hangs free. motion: how it moves in nature (a boat on
-   water floats, a butterfly flutters, a stone, a lantern, a sleeping animal or a person lying at rest is
+   water floats, a butterfly flutters, a stone, a lantern, a sleeping animal or a person asleep is
    still: it stays as painted while the world moves around it; a swan or a duck on the water floats). glows: true only for a light
    that glows by itself (a lantern, a candle, a campfire).
 6. prompt: one paragraph of 60-120 words for the image model, in English: the place, the light, the
    palette, the air, and every subject by exactly its name and with its position in the middle of the
-   picture. Say that the bottom of the picture is calm and simple.
+   picture. Say that the bottom of the picture is calm and simple. Name no animal or person in it that
+   is not a subject.
 7. Never copy the listener's words or anyone's name into any field: describe the place, its things,
    animals and people in your own words.
 8. A meditation for falling asleep gets a dark, warm, quiet world (night or late dusk, low contrast)
@@ -133,7 +150,9 @@ Return only the JSON object."""
 REVISE_INSTRUCTIONS = """You are the art director of ELYND, revising your own design.
 The painting made from the design below was rejected by the critic. Change what the critic's note
 asks for and nothing else: keep the place, the palette and the subjects unless the note names them as
-the problem. All rules of the original brief still apply. Return the complete design as JSON."""
+the problem. Keep every subject's kind, and never add an animal or a person: only the meditation brings
+them, and you do not see it again. All rules of the original brief still apply. Return the complete
+design as JSON."""
 
 STAGE_INSTRUCTIONS = """You are the art director of ELYND, designing one stage of a world that grows.
 A listener's 30-day journey has one world: the place below, painted once at the journey's start. Over the thirty
@@ -209,9 +228,23 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
         raise SceneError("the scene has no title")
     for subject in subjects:
         subject["glows"] = subject.get("glows") is True
+        kind = str(subject.get("kind") or "").strip().lower()
+        subject["kind"] = kind if kind in KINDS else "thing"
     nature = [n for n in dict.fromkeys(scene.get("nature") or []) if n in NATURE]
     particles = scene.get("particles") if scene.get("particles") in PARTICLES else "none"
     return {**scene, "palette": palette[:5], "subjects": subjects, "nature": nature, "particles": particles}
+
+
+def figures_in(scene: dict[str, Any], kinds: tuple[str, ...] = FIGURE_KINDS) -> list[str]:
+    """The names of the animals and people a design brings: its subjects of kind "animal" or "person" (or only
+    `kinds`). A subject without a kind (a design from before 29 Oct 2026, a library world's stored one) is a thing."""
+    return [s["name"] for s in scene.get("subjects") or [] if isinstance(s, dict) and s.get("kind") in kinds]
+
+
+def the_names(names: list[str]) -> str:
+    """["stone cairn", "paper lantern"] -> "the stone cairn and the paper lantern"."""
+    named = [f"the {name}" for name in names]
+    return named[0] if len(named) == 1 else ", ".join(named[:-1]) + " and " + named[-1]
 
 
 def _response_format(name: str = "scene", schema: dict[str, Any] = SCENE_SCHEMA) -> dict[str, Any]:
@@ -241,7 +274,21 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
             f"What to change: {note}"
         )},
     ]
-    return await _ask(client, messages, "revise", meter, settings, open_client)
+    return await _ask(client, messages, "revise", meter, settings, open_client,
+                      keep=lambda data: keep_kinds(scene, data))
+
+
+def keep_kinds(scene: dict[str, Any], revised: dict[str, Any]) -> dict[str, Any]:
+    """A revision with each subject it kept of the kind it was: a thing never turns into an animal or a person, nor
+    one the meditation brings into a thing, whatever the answer said."""
+    subjects = revised.get("subjects")
+    if not isinstance(subjects, list):
+        return revised
+    kinds = {" ".join(str(s.get("name") or "").split()).lower(): s.get("kind")
+             for s in scene.get("subjects") or [] if isinstance(s, dict)}
+    return {**revised, "subjects": [
+        {**s, "kind": kinds.get(" ".join(str(s.get("name") or "").split()).lower(), s.get("kind"))}
+        if isinstance(s, dict) else s for s in subjects]}
 
 
 def keep_place(first: dict[str, Any], designed: dict[str, Any]) -> dict[str, Any]:

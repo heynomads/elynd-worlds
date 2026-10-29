@@ -75,10 +75,11 @@ class Settings:
     moods_image_width: int = 384
 
     paintings: int = 2               # the first painting plus at most one revision
-    # People and animals may be in a world when its meditation brings them, at rest, and the painter is told how to
-    # paint them. False: a world of the place alone (a journey's world): the painter is told no people and no
-    # animals, and the critic turns away any (29 Oct 2026: told how to paint figures at rest, Muse Image laid a
-    # sleeping figure on the empty mountain path of both first paintings of a journey's world).
+    # People and animals are in a world only when its meditation brings them (the design's subjects of kind animal
+    # or person, art_director.figures_in): the painter is told exactly those, at rest, and no others, and the critic
+    # turns away any other. Every other world is the place alone (29 Oct 2026: told how to paint figures at rest in
+    # any world, Muse Image added one nobody designed to every painting checked). False: the place alone even then,
+    # no people and no animals (a journey's world).
     figures: bool = True
     pass_score: int = 7              # the critic's score a painting needs, 0-10
 

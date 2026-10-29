@@ -43,6 +43,12 @@ SCENE = {
                "a pine branch entering from the upper left edge, soft pastel light, painterly."),
     "sleep": False,
 }
+# An animal and a person a meditation brings (the listener's dog, asleep): subjects of their own kind. SCENE's
+# subjects have no kind, as in a design from before 29 Oct 2026: they are things.
+DOG = {"name": "sleeping dog", "kind": "animal", "depth": "mid", "attached": "ground", "motion": "still",
+       "glows": False, "where": "right"}
+WOMAN = {"name": "sleeping woman", "kind": "person", "depth": "mid", "attached": "ground", "motion": "still",
+         "glows": False, "where": "centre"}
 PASS = {"belongs": True, "calm": True, "figures_wrong": False, "text_or_symbols": False,
         "subjects_seen": ["smooth stone", "pine branch"], "score": 9, "reason": "Calm and on brief.", "fix": ""}
 FAIL = {**PASS, "figures_wrong": True, "score": 4, "reason": "The dog on the shore has five legs.",

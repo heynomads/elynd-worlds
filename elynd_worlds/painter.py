@@ -9,6 +9,11 @@ were, so the rest of the picture stays exactly as painted.
 A journey's world grows (journeys/stages.py): each later stage is the same edit
 endpoint on the first stage's painting, told to keep the viewpoint and the
 composition and to change only the light, the season and what has grown.
+
+The painting's style line ends its prompt (`style`). It names the animals and
+people the design brings, asleep or lying at rest, and forbids any other; every
+other world is painted as the place alone. A line on figures in general makes
+Muse Image paint one nobody designed (29 Oct 2026, below).
 """
 from __future__ import annotations
 
@@ -17,25 +22,42 @@ from typing import Any
 
 from PIL import Image
 
+from .art_director import figures_in, the_names
 from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listener, png_size
 from .plate import fit
 from .settings import DEFAULT, Settings
 
-FIGURES = ("any animal asleep or person lying at rest, eyes closed or turned away, painted naturally (never "
-           "standing, sitting up or walking), a person small or seen from behind, no face up close; ")
-STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
-         + FIGURES + "no text, no letters, no logos, no symbols.")
-# A world of the place alone (Settings.figures off, a journey's world): told how to paint figures at rest, the
-# painter lays one down even where the design has none.
-PLACE_ALONE_STYLE = STYLE.replace(FIGURES, "no people and no animals; ")
+# 29 Oct 2026, designs with no animal and no person in them: told "any animal or person at rest", Muse Image painted a
+# sitting person into 3 of 3; told "any animal asleep or person lying at rest", a lying figure into 5 of 5, and it
+# refused 5 of 10 requests (a person lying in a landscape trips its filter); told "no people and no animals", no
+# figure and no refusal in 4 of 4. So no line on figures in general ever reaches it: only the ones a design brings.
+STYLE_START = "Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
+STYLE_END = "no text, no letters, no logos, no symbols."
+PLACE_ALONE_STYLE = STYLE_START + "no people and no animals; " + STYLE_END
+AT_REST = ("asleep or lying at rest, eyes closed or turned away, painted naturally (never standing, sitting up or "
+           "walking)")
+PERSON = ("small, at a distance or seen from behind, asleep where people rest (in a hammock, on a blanket or a beach "
+          "towel), never on bare ground or in water, no face up close")
+
+
+def style(scene: dict[str, Any], figures: bool = True) -> str:
+    """The painting's style line. With `figures` on and a design that brings animals or people
+    (art_director.figures_in), it names exactly those, at rest, and no others; otherwise the place alone."""
+    brought = figures_in(scene) if figures else []
+    if not brought:
+        return PLACE_ALONE_STYLE
+    people = figures_in(scene, ("person",))
+    animals = len(people) < len(brought)
+    return (f"{STYLE_START}{the_names(brought)} {AT_REST}; "
+            + (f"{the_names(people)} {PERSON}; " if people else "")
+            + f"no {'other ' if people else ''}people and no {'other ' if animals else ''}animals; {STYLE_END}")
 
 
 def painting_prompt(scene: dict[str, Any], figures: bool = True) -> str:
     palette = ", ".join(scene.get("palette") or [])
     return (f"{scene['prompt'].strip()} Time of day: {scene['time_of_day']}. Light: {scene['light']}. "
             f"Air: {scene['air']}. Palette: {palette}. Portrait 9:16 for a phone screen; the main subjects "
-            f"in the middle of the picture, the bottom third calm and simple. "
-            f"{STYLE if figures else PLACE_ALONE_STYLE}")
+            f"in the middle of the picture, the bottom third calm and simple. {style(scene, figures)}")
 
 
 def moving_subjects(scene: dict[str, Any]) -> list[dict[str, Any]]:
@@ -55,12 +77,6 @@ def plate_prompt(scene: dict[str, Any]) -> str:
 STAGE_STYLE = "Painterly, soft, calm and believable, in the same brushwork; no text, no letters, no logos, no symbols."
 
 
-def _the(names: list[str]) -> str:
-    """["stone cairn", "paper lantern"] -> "the stone cairn and the paper lantern"."""
-    named = [f"the {name}" for name in names]
-    return named[0] if len(named) == 1 else ", ".join(named[:-1]) + " and " + named[-1]
-
-
 def clause(text: str) -> str:
     """A stage's words to follow "now:" ("Full light at the summit." -> "full light at the summit")."""
     text = " ".join(text.split()).rstrip(".")
@@ -76,7 +92,7 @@ def stage_prompt(scene: dict[str, Any], stage: str, fix: str = "") -> str:
     change = " ".join(str(scene.get("change") or "").split())
     return (f"The same place, painted again from exactly the same viewpoint, with the same framing and composition; "
             f"now: {clause(stage)}. {change + ' ' if change else ''}"
-            f"Keep the land, the water, every landmark and {_the([s['name'] for s in scene['subjects']])} where "
+            f"Keep the land, the water, every landmark and {the_names([s['name'] for s in scene['subjects']])} where "
             "they are and as large as they are; "
             "change only the light, the sky, the air, the season and how far plants have grown. "
             f"Time of day: {scene['time_of_day']}. Light: {scene['light']}. Air: {scene['air']}. "

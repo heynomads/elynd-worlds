@@ -1,9 +1,10 @@
 """The critic: it looks at each painting before a listener does.
 
 Image models sometimes slip: a dog with five legs, a face in the clouds, letters on a
-boat, a sky that turned stormy. Animals and people may be in a world, asleep or lying at rest and
-painted naturally; the
-critic turns away one drawn wrong, a face up close, a figure looking at the viewer, and (29 Oct) one
+boat, a sky that turned stormy, a figure nobody designed. A world is the place alone unless its
+meditation brings an animal or a person (art_director.figures_in), and then holds only those, asleep or
+lying at rest and painted naturally. The critic is told which ones belong (`figures_rule`) and turns
+away any other (29 Oct 2026), one drawn wrong, a face up close, a figure looking at the viewer, and one
 awake and upright: a cut-out cannot turn its head or walk, and an awake figure that never moves reads
 as a still picture. The critic sees the painting next to the design it was made from
 and answers in strict JSON. A painting is shown only if it is safe, calm,
@@ -30,6 +31,7 @@ import json
 import logging
 from typing import Any
 
+from .art_director import figures_in, the_names
 from .meta import Meter, cache_fields, data_url, json_object, preview_jpeg, privacy_fields, reasoning, spark_chat
 from .settings import DEFAULT, Settings
 
@@ -42,7 +44,8 @@ VERDICT_SCHEMA: dict[str, Any] = {
         "belongs": {"type": "boolean", "description": "The painting shows the designed place and mood"},
         "calm": {"type": "boolean", "description": "Calm and inviting; nothing threatening or busy"},
         "figures_wrong": {"type": "boolean",
-                          "description": "A person or animal drawn wrong, awake and upright, a face up close, or a figure looking at the viewer"},
+                          "description": "A person or animal that does not belong, drawn wrong, awake and upright, a "
+                                         "face up close, or a figure looking at the viewer"},
         "text_or_symbols": {"type": "boolean", "description": "Any letters, numbers, logos or symbols"},
         "subjects_seen": {"type": "array", "items": {"type": "string"},
                           "description": "The designed subjects that are clearly visible and separate"},
@@ -58,8 +61,8 @@ you check it against the design it was made from. Be strict about safety and cal
 - figures_wrong: true if a person or an animal is drawn wrong (an extra or missing limb, a twisted or
   melted body, odd eyes, a figure that is half there), if a face is seen up close, if a hand fills the
   foreground, if a figure looks at the viewer, or if a person or an animal is awake and upright (standing,
-  sitting up, walking, looking out). Animals asleep and people lying at rest, painted naturally, are fine;
-  so are birds floating on water.
+  sitting up, walking, looking out). Animals asleep and people lying at rest, painted naturally, are fine
+  where they belong in this world (below); so are birds floating on water there.
 - text_or_symbols: true if you see any letters, numbers, logos, signs or symbols.
 - calm: false if anything feels threatening, chaotic, sad or busy.
 - belongs: false if the painting does not show the designed place, time of day and mood.
@@ -81,9 +84,13 @@ STAGE_VERDICT_SCHEMA: dict[str, Any] = {
     "required": [*VERDICT_SCHEMA["required"], "same_place"],
 }
 STAGE_FLAGS = (*FLAGS, "same_place")
-# A world of the place alone (Settings.figures off, a journey's world).
+# A world of the place alone: its design brings no animal and no person, or `Settings.figures` is off (a journey's
+# world).
 PLACE_ALONE = ("This world is the place alone: any person or animal in the painting, at rest or not, makes "
                "figures_wrong true.")
+# A world whose meditation brings animals or people: those, and no others.
+ONLY_THESE = ("The only animals or people that belong in this world: {}. Any other person or animal, at rest or not, "
+              "makes figures_wrong true.")
 STAGE_INSTRUCTIONS = """This painting is a later stage of a world that grows: the place of the first picture you are
 shown, at another time. Judge the painting named as the one you judge; the first picture is only for comparing.
 - same_place: true if the painting shows the same place as the first picture, from the same viewpoint: the same
@@ -100,6 +107,13 @@ OPEN_SHAPE = ('Answer with one JSON object and nothing else, with exactly these 
               '"subjects_seen": [design names], "score": an integer 0-10, "reason": "one sentence", '
               '"fix": "one sentence, or empty"}.')
 OPEN_STAGE_SHAPE = OPEN_SHAPE.replace('"subjects_seen"', '"same_place": true or false, "subjects_seen"')
+
+
+def figures_rule(scene: dict[str, Any], settings: Settings = DEFAULT) -> str:
+    """What the critic is told of figures: the animals and people the design brings (`Settings.figures` on), the
+    only ones that belong, or else that the world is the place alone."""
+    brought = figures_in(scene) if settings.figures else []
+    return ONLY_THESE.format(the_names(brought)) if brought else PLACE_ALONE
 
 
 def passes(verdict: dict[str, Any], settings: Settings = DEFAULT) -> bool:
@@ -126,9 +140,8 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
         return {"type": "image_url", "image_url": {"url": data_url(
             await asyncio.to_thread(preview_jpeg, png, settings.critic_image_width), "image/jpeg")}}
 
-    instructions, schema, shape, flags = CRITIC_INSTRUCTIONS, VERDICT_SCHEMA, OPEN_SHAPE, FLAGS
-    if not settings.figures:
-        instructions += "\n" + PLACE_ALONE
+    instructions = CRITIC_INSTRUCTIONS + "\n" + figures_rule(scene, settings)
+    schema, shape, flags = VERDICT_SCHEMA, OPEN_SHAPE, FLAGS
     pictures = [await picture(painting)]
     if reference is not None:
         instructions, schema = instructions + "\n\n" + STAGE_INSTRUCTIONS, STAGE_VERDICT_SCHEMA
@@ -196,7 +209,8 @@ def _verdict(response: Any, judge: str, flags: tuple[str, ...] = FLAGS) -> dict[
 def reason_from_checks(verdict: dict[str, Any]) -> str:
     """A reason built from the verdict's own checks, for a critic that left its sentence out."""
     faults = [text for flag, fault, text in (
-        ("figures_wrong", True, "shows a person or an animal drawn wrong, awake and upright, or a face up close"),
+        ("figures_wrong", True, "shows a person or an animal that does not belong, drawn wrong, awake and upright, "
+                                "or a face up close"),
         ("text_or_symbols", True, "shows letters or symbols"),
         ("calm", False, "is not calm"),
         ("belongs", False, "does not show the designed place and mood"),
