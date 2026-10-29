@@ -61,7 +61,7 @@ class WorldMotion {
 
   /// A butterfly folds its wings to this share of their width, for a moment.
   static const wingsFolded = 0.45;
-  static const wingCycle = 4.2;
+  static const wingCycle = 4.0;
   static const wingFold = 0.55;
 
   /// A plant or a branch in gusts of wind, at most this far either way.
@@ -69,6 +69,9 @@ class WorldMotion {
 
   /// Mist or a cloud: this far either way.
   static const drift = 0.010;
+
+  /// Every period divides 12 s, so a 12-second clip of a world (the shared clip) loops without a seam.
+  static const loopSeconds = 12.0;
 
   /// A layer's motion at `clockSeconds`. `attached` is how the object rests
   /// ("ground" — on land or water, "edge", "air"); `index` staggers the layers
@@ -85,29 +88,29 @@ class WorldMotion {
         math.sin(2 * math.pi * t / period + phase + offset);
     switch (motion) {
       case 'float' when attached == 'ground':
-        final swell = 0.7 * wave(4.3) + 0.3 * math.sin(2 * math.pi * t / 2.7);
+        final swell = 0.7 * wave(4.0) + 0.3 * math.sin(2 * math.pi * t / 3.0);
         return LayerPose(
           dy: bob * (0.5 + 0.5 * swell),
-          rotation: bobRoll * wave(5.1, 0.8),
+          rotation: bobRoll * wave(6.0, 0.8),
         );
       case 'float':
-        return LayerPose(dx: hoverX * wave(7.9), dy: hoverY * wave(5.3));
+        return LayerPose(dx: hoverX * wave(6.0), dy: hoverY * wave(4.0));
       case 'flutter':
         final cycle = (t + phase) % wingCycle;
         final fold = cycle < wingFold
             ? math.pow(math.sin(math.pi * cycle / wingFold), 2).toDouble()
             : 0.0;
         return LayerPose(
-          dx: hoverX * wave(7.9),
-          dy: hoverY * wave(5.3),
+          dx: hoverX * wave(6.0),
+          dy: hoverY * wave(4.0),
           wings: 1 - (1 - wingsFolded) * fold,
         );
       case 'sway':
         return LayerPose(
-          rotation: sway * (0.65 * wave(4.6) + 0.35 * wave(1.9)),
+          rotation: sway * (0.65 * wave(4.0) + 0.35 * wave(2.0)),
         );
       case 'drift':
-        return LayerPose(dx: drift * wave(14));
+        return LayerPose(dx: drift * wave(12));
       default:
         return LayerPose.still;
     }

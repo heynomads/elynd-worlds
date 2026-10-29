@@ -97,7 +97,7 @@ const WorldMotion = {
   hoverX: 0.010,
   hoverY: 0.007,
   wingsFolded: 0.45,
-  wingCycle: 4.2,
+  wingCycle: 4.0,
   wingFold: 0.55,
   sway: (2.0 * Math.PI) / 180,
   drift: 0.010,
@@ -107,18 +107,18 @@ const WorldMotion = {
     const wave = (period, offset = 0) => Math.sin((2 * Math.PI * t) / period + phase + offset);
     const still = { dx: 0, dy: 0, rotation: 0, wings: 1 };
     if (motion === "float" && attached === "ground") {
-      const swell = 0.7 * wave(4.3) + 0.3 * Math.sin((2 * Math.PI * t) / 2.7);
-      return { ...still, dy: this.bob * (0.5 + 0.5 * swell), rotation: this.bobRoll * wave(5.1, 0.8) };
+      const swell = 0.7 * wave(4.0) + 0.3 * Math.sin((2 * Math.PI * t) / 3.0);
+      return { ...still, dy: this.bob * (0.5 + 0.5 * swell), rotation: this.bobRoll * wave(6.0, 0.8) };
     }
-    if (motion === "float") return { ...still, dx: this.hoverX * wave(7.9), dy: this.hoverY * wave(5.3) };
+    if (motion === "float") return { ...still, dx: this.hoverX * wave(6.0), dy: this.hoverY * wave(4.0) };
     if (motion === "flutter") {
       const cycle = (t + phase) % this.wingCycle;
       const fold = cycle < this.wingFold ? Math.sin((Math.PI * cycle) / this.wingFold) ** 2 : 0;
-      return { ...still, dx: this.hoverX * wave(7.9), dy: this.hoverY * wave(5.3),
+      return { ...still, dx: this.hoverX * wave(6.0), dy: this.hoverY * wave(4.0),
         wings: 1 - (1 - this.wingsFolded) * fold };
     }
-    if (motion === "sway") return { ...still, rotation: this.sway * (0.65 * wave(4.6) + 0.35 * wave(1.9)) };
-    if (motion === "drift") return { ...still, dx: this.drift * wave(14) };
+    if (motion === "sway") return { ...still, rotation: this.sway * (0.65 * wave(4.0) + 0.35 * wave(2.0)) };
+    if (motion === "drift") return { ...still, dx: this.drift * wave(12) };
     return still;
   },
 

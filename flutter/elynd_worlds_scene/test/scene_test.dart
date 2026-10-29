@@ -256,6 +256,38 @@ void main() {
       ('drift', 'air'),
     ];
 
+    test(
+      'every motion repeats every 12 s: a 12-second clip of a world loops without a seam',
+      () {
+        for (final (motion, attached) in [...kinds, ('still', 'ground')]) {
+          for (var index = 0; index < 3; index++) {
+            for (var t = 0.0; t < 24; t += 0.37) {
+              final a = WorldMotion.layer(
+                motion: motion,
+                attached: attached,
+                clockSeconds: t,
+                index: index,
+              );
+              final b = WorldMotion.layer(
+                motion: motion,
+                attached: attached,
+                clockSeconds: t + WorldMotion.loopSeconds,
+                index: index,
+              );
+              for (final (x, y) in [
+                (a.dx, b.dx),
+                (a.dy, b.dy),
+                (a.rotation, b.rotation),
+                (a.wings, b.wings),
+              ]) {
+                expect(y, closeTo(x, 1e-9), reason: '$motion/$attached at $t');
+              }
+            }
+          }
+        }
+      },
+    );
+
     test('still things stay still, always', () {
       for (var t = 0.0; t < 120; t += 0.7) {
         final pose = WorldMotion.layer(
@@ -571,9 +603,18 @@ void main() {
 
         const hz120 = Duration(microseconds: 8333),
             hz60 = Duration(microseconds: 16667);
-        expect(await frames(const [1, 1, 1, 1], hz120), inInclusiveRange(29, 32));
-        expect(await frames(const [1, 1, 1, 1], hz60), inInclusiveRange(29, 32));
-        expect(await frames(const [0.25, 0.25, 0.25, 0.25], hz120), inInclusiveRange(14, 17));
+        expect(
+          await frames(const [1, 1, 1, 1], hz120),
+          inInclusiveRange(29, 32),
+        );
+        expect(
+          await frames(const [1, 1, 1, 1], hz60),
+          inInclusiveRange(29, 32),
+        );
+        expect(
+          await frames(const [0.25, 0.25, 0.25, 0.25], hz120),
+          inInclusiveRange(14, 17),
+        );
       },
     );
 
@@ -777,36 +818,44 @@ void main() {
       ); // the camera stays put
     });
 
-    testWidgets('the light comes as two coats in the same scene: no layer of its own, nothing rebuilt', (
-      tester,
-    ) async {
-      bool coated() => find
-          .byWidgetPredicate((w) => w is CustomPaint && w.painter.runtimeType.toString() == '_LightCoats')
-          .evaluate()
-          .isNotEmpty;
-      var at = 0.0;
-      await tester.pumpWidget(
-        host(
-          WorldScene(
-            background: MemoryImage(_png),
-            aspect: 9 / 16,
-            living: const WorldLiving(trees: true),
-            timeline: WorldTimeline.build(durationSeconds: 600),
-            positionSeconds: () => at,
-            light: LightJourney.deepen,
+    testWidgets(
+      'the light comes as two coats in the same scene: no layer of its own, nothing rebuilt',
+      (tester) async {
+        bool coated() => find
+            .byWidgetPredicate(
+              (w) =>
+                  w is CustomPaint &&
+                  w.painter.runtimeType.toString() == '_LightCoats',
+            )
+            .evaluate()
+            .isNotEmpty;
+        var at = 0.0;
+        await tester.pumpWidget(
+          host(
+            WorldScene(
+              background: MemoryImage(_png),
+              aspect: 9 / 16,
+              living: const WorldLiving(trees: true),
+              timeline: WorldTimeline.build(durationSeconds: 600),
+              positionSeconds: () => at,
+              light: LightJourney.deepen,
+            ),
           ),
-        ),
-      );
-      await tester.pump(const Duration(milliseconds: 40));
-      final shader = tester.state(find.byType(LivingBackground));
-      expect(coated(), isFalse); // as painted at the start
-      at = 30; // the light has begun
-      for (var i = 0; i < 3; i++) {
+        );
         await tester.pump(const Duration(milliseconds: 40));
-      }
-      expect(coated(), isTrue);
-      expect(find.byType(ColorFiltered), findsNothing);
-      expect(tester.state(find.byType(LivingBackground)), same(shader)); // the living shader keeps running
-    });
+        final shader = tester.state(find.byType(LivingBackground));
+        expect(coated(), isFalse); // as painted at the start
+        at = 30; // the light has begun
+        for (var i = 0; i < 3; i++) {
+          await tester.pump(const Duration(milliseconds: 40));
+        }
+        expect(coated(), isTrue);
+        expect(find.byType(ColorFiltered), findsNothing);
+        expect(
+          tester.state(find.byType(LivingBackground)),
+          same(shader),
+        ); // the living shader keeps running
+      },
+    );
   });
 }
