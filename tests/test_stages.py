@@ -368,3 +368,13 @@ async def test_every_stage_is_the_place_alone():
               if "messages" in r and r["response_format"]["json_schema"]["name"] == "verdict"]
     assert len(judged) == 5 and all(critic.PLACE_ALONE in system for system in judged)
     assert all("people, animals or text" in r["prompt"] for r in repaints(client))
+
+
+async def test_the_later_stages_can_be_made_a_few_at_a_time():
+    for parallel, designs_first in ((4, True), (1, False)):
+        client = FakeClient(verdicts=[SAME], chat_delay=0.01)  # each answer takes a moment, as Meta's do
+        made = await stages.make_stages(client, WORLD, parallel=parallel)
+        order = [c for c in client.calls if c in ("stage", "repaint")]
+        assert (order[:4] == ["stage"] * 4) is designs_first          # all four begin at once, or one by one
+        assert parallel == 4 or order == ["stage", "repaint"] * 4
+        assert all(s.made for s in made.stages)

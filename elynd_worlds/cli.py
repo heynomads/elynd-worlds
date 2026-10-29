@@ -171,7 +171,8 @@ async def _stages(args: argparse.Namespace) -> int:
     out = Path(args.out) if args.out else Path("out") / "stages" / time.strftime("%Y%m%d-%H%M%S")
     meter = Meter()
     try:
-        made = await stages.make_stages(client, world, settings=settings, meter=meter, open_client=open_client)
+        made = await stages.make_stages(client, world, settings=settings, meter=meter, open_client=open_client,
+                                        parallel=args.parallel)
     except Exception as error:  # noqa: BLE001 - what was spent is recorded all the same
         made = None
         print(f"no stage 1, so no journey world: {type(error).__name__}: {error}"[:400], file=sys.stderr)
@@ -312,6 +313,7 @@ def main(argv: list[str] | None = None) -> int:
                     help="seconds the open critic gets before Muse Spark judges (four stages share one process)")
     st.add_argument("--open-designer", action="store_true",
                     help="Muse Spark Open designs the stages too (the journey's world holds no listener's words)")
+    st.add_argument("--parallel", type=int, default=4, help="later stages made at once (1-4)")
 
     pick = sub.add_parser("pick", help="the library world each meditation gets, or whether it needs its own")
     pick.add_argument("scripts", nargs="+")

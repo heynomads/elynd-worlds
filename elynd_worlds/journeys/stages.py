@@ -23,8 +23,10 @@ a path, then first light on the lower slopes, ... full light at the summit. It n
   in any other way or takes longer than `Settings.stage_timeout`, shows the stage before it. The journey always
   shows its last good stage: one stage never loses the set.
 
-Stages 2-5 are made at the same time, each from stage 1's painting, never from one another, so no stage drifts
-further from the place than one edit.
+Stages 2-5 are made at the same time (`parallel` at once), each from stage 1's painting, never from one another, so
+no stage drifts further from the place than one edit. Judged with two pictures and four at once, Muse Spark Open took
+9-32 s a stage and twice more than 45 s (29 Oct 2026); where only it may judge, two at a time keeps a stage from
+falling back for want of a verdict.
 """
 from __future__ import annotations
 
@@ -157,8 +159,8 @@ async def _later(client, first: World, world: dict[str, Any], n: int, run: Run, 
 
 
 async def make_stages(client, world: dict[str, Any], *, settings: Settings = DEFAULT, meter: Meter | None = None,
-                      open_client=None, user: str | None = None,
-                      on_painting: OnPainting | None = None) -> Stages:
+                      open_client=None, user: str | None = None, on_painting: OnPainting | None = None,
+                      parallel: int = 4) -> Stages:
     """The five stages of a journey's world (`journey_world`). `meter`, if given, counts all of it, also when stage 1
     fails; `on_painting` fires when stage 1's painting is accepted (director.make_world). Without stage 1 (twice)
     there is no place to grow: NoWorld or the first world's own error, and the journey keeps the world it has."""
@@ -181,14 +183,17 @@ async def make_stages(client, world: dict[str, Any], *, settings: Settings = DEF
                     raise
                 log.warning("stage 1 once more: %s: %s", type(error).__name__, error)
         runs = {n: Run(meters[n - 1]) for n in range(2, STAGES + 1)}
+        gate = asyncio.Semaphore(max(1, parallel))
 
         async def later(n: int) -> World | Exception:
-            try:
-                return await asyncio.wait_for(_later(client, first, world, n, runs[n], settings, open_client),
-                                              settings.stage_timeout)
-            except Exception as error:  # noqa: BLE001 - this stage shows the one before
-                log.warning("stage %d shows the stage before: %s: %s", n, type(error).__name__, error)
-                return error
+            async with gate:
+                runs[n].started = time.monotonic()
+                try:
+                    return await asyncio.wait_for(_later(client, first, world, n, runs[n], settings, open_client),
+                                                  settings.stage_timeout)
+                except Exception as error:  # noqa: BLE001 - this stage shows the one before
+                    log.warning("stage %d shows the stage before: %s: %s", n, type(error).__name__, error)
+                    return error
 
         results = await asyncio.gather(*(later(n) for n in range(2, STAGES + 1)))
         stages = [Stage(1, world["stages"][0], first, 1, meters[0], first.trace)]
