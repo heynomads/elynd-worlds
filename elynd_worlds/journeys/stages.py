@@ -7,7 +7,9 @@ a path, then first light on the lower slopes, ... full light at the summit. It n
 
 * Stage 1 is a world like any other (director.make_world): the art director designs it from a short text made of
   the place and its first stage only (`first_text`), Muse Image paints it, the critic checks it, SAM 3.1 cuts its
-  subjects and finds what moves, and the plate is made behind the moving ones. When no world comes of it (two
+  subjects and finds what moves, and the plate is made behind the moving ones. It is a world of the place alone
+  (`Settings.figures` off): the painter is told no people and no animals, and the critic turns away any. When no
+  world comes of it (two
   paintings turned away, or a request refused: on 29 Oct Muse Image's filter refused one design's painting of a
   path before dawn), it is made once more from a fresh design; only then is there no journey world.
 * Stages 2-5 keep stage 1's composition: the same viewpoint, landmarks and subjects; only the light, the season and
@@ -26,6 +28,7 @@ further from the place than one edit.
 from __future__ import annotations
 
 import asyncio
+import dataclasses
 import json
 import logging
 import time
@@ -156,6 +159,8 @@ async def make_stages(client, world: dict[str, Any], *, settings: Settings = DEF
     fails; `on_painting` fires when stage 1's painting is accepted (director.make_world). Without stage 1 (twice)
     there is no place to grow: NoWorld or the first world's own error, and the journey keeps the world it has."""
     world = journey_world(world)
+    # The place alone, in every stage: the plan's world never holds people or animals.
+    settings = dataclasses.replace(settings, figures=False)
     started = time.monotonic()
     total = meter or Meter(settings.prices)
     meters = [Meter(settings.prices) for _ in range(STAGES)]

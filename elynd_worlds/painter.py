@@ -21,17 +21,21 @@ from .meta import NO_IMAGE_TOOLS, Meter, encode, first_image, is_marked, listene
 from .plate import fit
 from .settings import DEFAULT, Settings
 
+FIGURES = ("any animal asleep or person lying at rest, eyes closed or turned away, painted naturally (never "
+           "standing, sitting up or walking), a person small or seen from behind, no face up close; ")
 STYLE = ("Painterly, soft, calm and believable; gentle light; a quiet, spacious composition; "
-         "any animal asleep or person lying at rest, eyes closed or turned away, painted naturally (never "
-         "standing, sitting up or walking), a person small or seen from behind, "
-         "no face up close; no text, no letters, no logos, no symbols.")
+         + FIGURES + "no text, no letters, no logos, no symbols.")
+# A world of the place alone (Settings.figures off, a journey's world): told how to paint figures at rest, the
+# painter lays one down even where the design has none.
+PLACE_ALONE_STYLE = STYLE.replace(FIGURES, "no people and no animals; ")
 
 
-def painting_prompt(scene: dict[str, Any]) -> str:
+def painting_prompt(scene: dict[str, Any], figures: bool = True) -> str:
     palette = ", ".join(scene.get("palette") or [])
     return (f"{scene['prompt'].strip()} Time of day: {scene['time_of_day']}. Light: {scene['light']}. "
             f"Air: {scene['air']}. Palette: {palette}. Portrait 9:16 for a phone screen; the main subjects "
-            f"in the middle of the picture, the bottom third calm and simple. {STYLE}")
+            f"in the middle of the picture, the bottom third calm and simple. "
+            f"{STYLE if figures else PLACE_ALONE_STYLE}")
 
 
 def moving_subjects(scene: dict[str, Any]) -> list[dict[str, Any]]:
@@ -95,7 +99,7 @@ async def paint(client, scene: dict[str, Any], meter: Meter, settings: Settings 
     """The painting of one scene, as PNG bytes."""
     response = await client.images.generate(
         model=settings.painter_model,
-        prompt=painting_prompt(scene),
+        prompt=painting_prompt(scene, settings.figures),
         n=1,
         size=settings.image_size,
         response_format="b64_json",

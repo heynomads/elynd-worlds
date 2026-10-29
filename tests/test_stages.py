@@ -335,3 +335,33 @@ async def test_a_world_that_is_not_a_stage_is_never_judged_on_the_same_place():
     verdict = await critic.critique(FakeClient(), PAINTING, scene, Meter(), open_client=open_model)
     assert critic.passes(verdict) and "same_place" not in verdict
     assert len(open_model.requests[0]["messages"][1]["content"]) == 2  # the design and the one painting
+
+
+# ─── the place alone ────────────────────────────────────────────────────
+
+def test_a_world_of_the_place_alone_tells_the_painter_no_people_and_no_animals():
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    assert painter.FIGURES in painter.STYLE and painter.painting_prompt(scene).endswith(painter.STYLE)  # as before
+    alone = painter.painting_prompt(scene, figures=False)
+    assert alone.endswith(painter.PLACE_ALONE_STYLE) and "no people and no animals" in alone
+    assert "lying at rest" not in alone and "no text, no letters" in alone
+
+
+async def test_the_critic_turns_away_any_figure_in_a_world_of_the_place_alone():
+    scene = art_director.check(json.loads(json.dumps(SCENE)))
+    client = FakeClient()
+    await critic.critique(client, PAINTING, scene, Meter())
+    await critic.critique(client, PAINTING, scene, Meter(), Settings(figures=False))
+    before, alone = (r["messages"][0]["content"] for r in client.requests)
+    assert before == critic.CRITIC_INSTRUCTIONS and alone == critic.CRITIC_INSTRUCTIONS + "\n" + critic.PLACE_ALONE
+
+
+async def test_every_stage_is_the_place_alone():
+    client = FakeClient(verdicts=[SAME])
+    await stages.make_stages(client, WORLD)
+    paintings = [r["prompt"] for r in client.requests if "prompt" in r and "image" not in r and "messages" not in r]
+    assert len(paintings) == 1 and paintings[0].endswith(painter.PLACE_ALONE_STYLE)
+    judged = [r["messages"][0]["content"] for r in client.requests
+              if "messages" in r and r["response_format"]["json_schema"]["name"] == "verdict"]
+    assert len(judged) == 5 and all(critic.PLACE_ALONE in system for system in judged)
+    assert all("people, animals or text" in r["prompt"] for r in repaints(client))

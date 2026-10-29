@@ -81,6 +81,9 @@ STAGE_VERDICT_SCHEMA: dict[str, Any] = {
     "required": [*VERDICT_SCHEMA["required"], "same_place"],
 }
 STAGE_FLAGS = (*FLAGS, "same_place")
+# A world of the place alone (Settings.figures off, a journey's world).
+PLACE_ALONE = ("This world is the place alone: any person or animal in the painting, at rest or not, makes "
+               "figures_wrong true.")
 STAGE_INSTRUCTIONS = """This painting is a later stage of a world that grows: the place of the first picture you are
 shown, at another time. Judge the painting named as the one you judge; the first picture is only for comparing.
 - same_place: true if the painting shows the same place as the first picture, from the same viewpoint: the same
@@ -124,9 +127,11 @@ async def critique(client, painting: bytes, scene: dict[str, Any], meter: Meter,
             await asyncio.to_thread(preview_jpeg, png, settings.critic_image_width), "image/jpeg")}}
 
     instructions, schema, shape, flags = CRITIC_INSTRUCTIONS, VERDICT_SCHEMA, OPEN_SHAPE, FLAGS
+    if not settings.figures:
+        instructions += "\n" + PLACE_ALONE
     pictures = [await picture(painting)]
     if reference is not None:
-        instructions, schema = CRITIC_INSTRUCTIONS + "\n\n" + STAGE_INSTRUCTIONS, STAGE_VERDICT_SCHEMA
+        instructions, schema = instructions + "\n\n" + STAGE_INSTRUCTIONS, STAGE_VERDICT_SCHEMA
         shape, flags = OPEN_STAGE_SHAPE, STAGE_FLAGS
         pictures = [{"type": "text", "text": "The first picture: the place as first painted."},
                     await picture(reference),
