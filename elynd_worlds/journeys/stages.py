@@ -9,9 +9,9 @@ a path, then first light on the lower slopes, ... full light at the summit. It n
   the place and its first stage only (`first_text`), Muse Image paints it, the critic checks it, SAM 3.1 cuts its
   subjects and finds what moves, and the plate is made behind the moving ones. It is a world of the place alone
   (`Settings.figures` off): the painter is told no people and no animals, and the critic turns away any. When no
-  world comes of it (two
-  paintings turned away, or a request refused: on 29 Oct Muse Image's filter refused one design's painting of a
-  path before dawn), it is made once more from a fresh design; only then is there no journey world.
+  world comes of it (two paintings turned away, or a request refused: on 29 Oct Muse Image's filter twice refused
+  a design's painting of a path before dawn), it is made once more from a fresh design; only then is there no
+  journey world.
 * Stages 2-5 keep stage 1's composition: the same viewpoint, landmarks and subjects; only the light, the season and
   what has grown change. The art director re-lights its own first design for each (art_director.stage: time of day,
   light, air, palette, season; the place, the subjects and what moves in nature are kept in code), and Muse Image's
