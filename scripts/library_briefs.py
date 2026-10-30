@@ -307,6 +307,10 @@ def push_brief(id: str) -> str:
             f"Breathe in the fresh air and feel your energy rising, ready for the way ahead.\n")
 
 
+# The push worlds once more (30 Oct 2026), for the place-alone painter: the same briefs under new ids, <id>-v2.
+AGAIN = "-v2"
+
+
 def main(out: str = "library/briefs") -> int:
     folder = Path(out)
     folder.mkdir(parents=True, exist_ok=True)
@@ -320,7 +324,8 @@ def main(out: str = "library/briefs") -> int:
     for id in PUSH:
         assert f"{id.split('-')[0]}" not in LIBRARY, id
         (folder / f"{id}.txt").write_text(push_brief(id))
-    print(f"{count} briefs and {len(PUSH)} push briefs -> {folder}")
+        (folder / f"{id}{AGAIN}.txt").write_text(push_brief(id))
+    print(f"{count} briefs and {len(PUSH)} push briefs (each also as <id>{AGAIN}) -> {folder}")
     return 0
 
 
