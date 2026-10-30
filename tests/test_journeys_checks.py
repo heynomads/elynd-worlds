@@ -610,7 +610,7 @@ def test_the_guide_gets_a_note_in_german_french_and_spanish_and_none_in_english(
 def test_their_ich_said_back_is_asked_again_and_du_comes_back():
     llama = FakeLlama([finish(say="Sage, was ich denke."), finish(say="Sagen, was du denkst.")])
     turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS), today=TODAY)
-    assert turn.say.startswith("Sagen, was du denkst.") and len(llama.calls) == 2
+    assert turn.say.startswith("Sagen, was du denkst.") and len(llama.calls) == 3   # the third: proofreading
     assert 'say their words back to them as "du", never as "ich"' in llama.calls[1][1]
 
 
@@ -664,3 +664,35 @@ def test_a_failed_proofreading_call_leaves_the_plan_and_english_is_never_proofre
     assert plan.weeks[0]["line"] == DE_ARC["weeks"][0]["line"] and len(plan.days) == 30
     plan, llama = make(Script())
     assert not any("You check the" in u for _, u in llama.calls)
+
+
+def _checked(changes):
+    """A proofreading answer: the texts it was given, with `changes`."""
+    def answer(system, user):
+        texts = json.loads(user.split("The texts, as JSON:\n")[1].split("\n\nAnswer with")[0])
+        return json.dumps(dict(texts, **changes))
+    return answer
+
+
+def test_a_german_question_is_proofread_and_a_correction_that_breaks_a_rule_is_refused():
+    wrong = ask(say="Im Teammeeting. Was sieht ein guter Tag für dich aus?", chips=["Ruhig sprechen", "Klar sein"])
+    script = [wrong]
+    llama = FakeLlama(lambda s, u: script.pop(0) if script else _checked({"say": "Im Teammeeting. Wie sieht ein guter "
+                                                                                 "Tag für dich aus?"})(s, u))
+    turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS[:2]), today=TODAY)
+    assert turn.say == "Im Teammeeting. Wie sieht ein guter Tag für dich aus?"
+    script = [wrong]
+    llama = FakeLlama(lambda s, u: script.pop(0) if script else _checked({"say": "Im Teammeeting. Was heilt dich an "
+                                                                                 "einem guten Tag?"})(s, u))
+    turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS[:2]), today=TODAY)
+    assert turn.say == "Im Teammeeting. Was sieht ein guter Tag für dich aus?"
+
+
+def test_english_turns_are_never_proofread_and_a_failed_proofreading_keeps_the_turn():
+    llama = FakeLlama([ask()])
+    guide.next_turn(llama, "ENG", turns("I want calmer mornings"), today=TODAY)
+    assert len(llama.calls) == 1
+    script = [ask(say="Im Teammeeting. Wann ist das am schwersten?", chips=["Montags", "Im Meeting"])]
+    llama = FakeLlama(lambda s, u: script.pop(0) if script else LlamaError("down"))
+    turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS[:2]), today=TODAY)
+    assert turn.say == "Im Teammeeting. Wann ist das am schwersten?" and len(llama.calls) == 2

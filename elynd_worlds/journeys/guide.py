@@ -265,6 +265,7 @@ FIRST_PERSON = {
     "ES": re.compile(r"\b(?:yo|mi|mis|me|conmigo)\b|\b\w+(?:ar|er|ir)me\b", re.I),
 }
 YOU_NOT_I = {"GER": ('"du"', '"ich"'), "FR": ('"tu"', '"je"'), "ES": ('"tú"', '"yo"')}
+PROOFREAD_SYSTEM = "You correct texts. You answer with one JSON object only."
 
 
 def first_person(text: str, language: str) -> str | None:
@@ -834,6 +835,8 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
             found = [] if turn else found
         if not found and turn is not None:
             turn.usd = spent
+            if language != "ENG" and (budget_s is None or time.monotonic() - start + 2.0 < budget_s):
+                turn = _proofread(llama, turn, language, theirs, person, filler)
             return _finished_say(turn, language, theirs, person)
         problem = (f"\n\nYour last answer could not be used ({'; '.join(found)}). Answer again: one JSON object "
                    f"only.")
@@ -841,6 +844,45 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
         question = FALLBACK_QUESTIONS[language][min(answers, QUESTIONS) - 1]
         return Turn(say=(f"{HONEST[language]} " if person else "") + question, chips=[], usd=spent)
     raise GuideError("no usable turn")
+
+
+PROOFREAD = """You check the {language} of short texts a meditation guide says to one person as "{you}". Fix only \
+spelling mistakes, grammar mistakes and wording a native speaker would never use. Keep the meaning, the "{you}" form and \
+the length; leave every text that is already correct exactly as it is.
+
+The texts, as JSON:
+{texts}
+
+Answer with one JSON object with exactly the same keys and the checked texts, and nothing else."""
+YOU_FORM = {"GER": "du", "ES": "tú", "FR": "tu"}
+
+
+def _proofread(llama: Llama, turn: Turn, language: str, theirs: str, person: bool, filler: frozenset[str]) -> Turn:
+    """German, French and Spanish: one small call checks what the listener reads of this turn (the say; the title
+    and the summary when it finishes) for spelling and grammar. The checked turn is kept only when it still keeps
+    every rule, its length and its question; otherwise, or when the call fails, the turn stays as it was."""
+    texts = {"say": turn.say}
+    if turn.done:
+        texts.update(title=turn.title or "", summary=turn.summary or "")
+    try:
+        reply = llama.chat(PROOFREAD_SYSTEM, PROOFREAD.format(language=LANGUAGES[language], you=YOU_FORM[language],
+                                                              texts=json.dumps(texts, ensure_ascii=False)),
+                           max_tokens=500, temperature=0.2)
+        checked = first_json(reply.text)
+    except Exception:              # a proofreading call never stops a conversation
+        return turn
+    new = Turn(say=turn.say, chips=list(turn.chips), done=turn.done, title=turn.title, summary=turn.summary,
+               moment=turn.moment, usd=turn.usd + reply.usd)
+    for key, old in texts.items():
+        value = " ".join(str(checked.get(key) or "").split())
+        if value and value != old and 0.6 <= len(value) / max(1, len(old)) <= 1.5:
+            setattr(new, key, value)
+    if not new.done and (not new.say.endswith("?") or len(_question(new.say)) > MAX_QUESTION):
+        new.say = turn.say
+    if problems(new, language, theirs, person, filler):
+        turn.usd = new.usd
+        return turn
+    return new
 
 
 def _finished_say(turn: Turn, language: str, theirs: str, person: bool) -> Turn:
