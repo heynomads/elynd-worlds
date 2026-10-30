@@ -337,15 +337,24 @@ HUMAN = re.compile(
     r"\bich bin (?:keine?)\s+(?:KI|AI|bot|maschine|computer|roboter|programm)\b|"
     r"\bsoy (?:una?\s+)?(?:persona|humano|humana|ser humano)\b|\bno soy (?:una?\s+)?(?:IA|AI|bot|máquina|robot|programa)\b|"
     r"\bje suis (?:une?\s+)?(?:vraie?\s+)?(?:personne|humaine?|être humain)\b|"
-    r"\bje ne suis pas (?:une?\s+)?(?:IA|AI|bot|robot|machine|programme)\b", re.I)
+    r"\bje ne suis pas (?:une?\s+)?(?:IA|AI|bot|robot|machine|programme)\b|"
+    # "I'm Anna, a real person", "Yes, I am real", "ein echter Mensch", "une vraie personne", "una persona real"
+    r"\b(?:a|an)\s+(?:real|actual|living)\s+(?:person|human(?:\s+being)?)\b|\bI(?:'m|’m| am)\s+real\b|"
+    r"\bein(?:e|en)?\s+echte[rn]?\s+(?:mensch|person)\b|\bune?\s+vraie?\s+(?:personne|humaine?)\b|"
+    r"\buna?\s+(?:persona|humano|humana)\s+(?:real|de verdad)\b", re.I)
 # Their answer asks whether the guide is a person, a human, a bot or an AI.
 ASKS_IF_PERSON = re.compile(
-    r"\b(?:are you|are u|r u|you're|you are|is this|am i talking to|am i speaking to|talking to)\s+(?:a\s+|an\s+)?"
+    r"\b(?:are you|are u|r u|you're|you are|is this|am i (?:talking|speaking|chatting|writing) (?:to|with))\s+(?:a\s+|an\s+)?"
     r"(?:real\s+)?(?:person|human|people|bot|robot|ai|a\.i\.|machine|computer|chatbot|real)\b|"
     r"\bbist du (?:eine?\s+)?(?:echte[rn]?\s+)?(?:mensch|person|bot|roboter|ki|maschine)\b|"
     r"\bist das (?:eine?\s+)?(?:mensch|bot|ki|maschine)\b|"
     r"\beres (?:una?\s+)?(?:persona|humano|humana|bot|robot|ia|máquina|real)\b|"
-    r"\b(?:es-tu|tu es|êtes-vous)\s+(?:une?\s+)?(?:vraie?\s+)?(?:personne|humain|humaine|bot|robot|ia|machine)\b", re.I)
+    r"\b(?:es-tu|tu es|êtes-vous)\s+(?:une?\s+)?(?:vraie?\s+)?(?:personne|humain|humaine|bot|robot|ia|machine)\b|"
+    # "am I chatting with a human?", "rede ich mit einem Menschen?", "je parle à une IA ?", "¿hablo con una persona?"
+    r"\b(?:rede|spreche|schreibe|chatte)\s+ich\s+(?:hier\s+)?mit\s+(?:einem|einer)\s+(?:echten\s+)?"
+    r"(?:mensch\w*|person|ki|bot|maschine|roboter)\b|"
+    r"\bje\s+(?:parle|discute|écris)\s+(?:à|avec)\s+(?:une?\s+)?(?:vraie?\s+)?(?:personne|humain\w*|ia|bot|robot|machine)\b|"
+    r"\b(?:hablo|estoy\s+hablando|chateo|escribo)\s+con\s+(?:una?\s+)?(?:persona|humano|humana|ia|bot|robot|máquina)\b", re.I)
 AI_SAYS = re.compile(r"\b(?:AI|A\.I\.|KI|IA)\b|\bartificial intelligence\b|künstliche intelligenz|"
                      r"inteligencia artificial|intelligence artificielle", re.I)
 # A chip says what is there on a good day, never what would be gone.
@@ -787,9 +796,10 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
     Raises GuideError when the model cannot be reached, or when no finishing turn comes right; a question that never
     comes right is the guide's own plain question."""
     language = language if language in LANGUAGES else "ENG"
+    if care_check is not None and isinstance(turns, list) and any(
+            care_check(t.get("text")) for t in turns if isinstance(t, dict) and isinstance(t.get("text"), str)):
+        return Turn(care=True)       # every line sent, before any merge: words typed again never hide words that need care
     conversation = clean_turns(turns)
-    if care_check is not None and any(care_check(text) for role, text in conversation if role == "you"):
-        return Turn(care=True)
     today = today or dt.date.today()
     answers_text = [text for role, text in conversation if role == "you"]
     answers = len(answers_text)

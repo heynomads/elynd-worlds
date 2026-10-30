@@ -696,3 +696,25 @@ def test_english_turns_are_never_proofread_and_a_failed_proofreading_keeps_the_t
     llama = FakeLlama(lambda s, u: script.pop(0) if script else LlamaError("down"))
     turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS[:2]), today=TODAY)
     assert turn.say == "Im Teammeeting. Wann ist das am schwersten?" and len(llama.calls) == 2
+
+
+def test_words_in_a_line_typed_again_are_still_checked():
+    """An answer typed again after a failed turn replaces the older one (clean_turns), but the care check reads
+    every line sent first: words in the replaced line still give care, with no model call."""
+    sent = turns("I want calmer mornings") + [{"role": "you", "text": "words the server flags"},
+                                              {"role": "you", "text": "Mornings with the kids"}]
+    llama = FakeLlama([])
+    turn = guide.next_turn(llama, "ENG", sent, today=TODAY, care_check=lambda t: "server flags" in t.lower())
+    assert turn.care and not llama.calls
+
+
+def test_the_person_patterns_catch_more_ways_of_saying_it_and_not_ordinary_answers():
+    for say in ("I'm Anna, a real person.", "Yes, I am real.", "Ich bin Anna, ein echter Mensch.",
+                "Je suis une vraie personne.", "Soy una persona real."):
+        assert guide.HUMAN.search(say), say
+    for answer in ("am I chatting with a human?", "Rede ich mit einem Menschen?", "Je parle à une IA ?",
+                   "¿Hablo con una persona?", "Are you real?"):
+        assert guide.ASKS_IF_PERSON.search(answer), answer
+    for ordinary in ("I get nervous talking to people at work.", "Reading your book, like you used to.",
+                     "I keep talking to my boss in my head."):
+        assert not guide.ASKS_IF_PERSON.search(ordinary) and not guide.HUMAN.search(ordinary), ordinary

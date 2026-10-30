@@ -191,3 +191,30 @@ async def test_the_critic_is_told_which_animals_and_people_belong_or_that_the_wo
             assert "awake and upright" in system   # on top of the at-rest rule
     both = critic.figures_rule(design(DOG, WOMAN))
     assert both == critic.ONLY_THESE.format("the sleeping dog and the sleeping woman")
+
+
+async def test_a_revision_never_brings_an_animal_or_a_person_the_design_did_not_have():
+    """A critic's fix may speak of a figure ("show the figure lying asleep instead"); a revision that answers with a
+    new person or animal gets a thing: the painter and the critic then keep the place alone."""
+    scene = design(STONE)
+    added = {**SCENE, "subjects": [{**STONE}, {**DOG, "name": "resting woman", "kind": "person"},
+                                   {**DOG, "name": "curled cat", "kind": "animal"}]}
+    client = FakeClient(scenes=[added])
+    revised = await art_director.revise(client, scene, {"figures_wrong": True, "fix": "Show the figure asleep."},
+                                        Meter())
+    assert [(s["name"], s["kind"]) for s in revised["subjects"]] == [
+        ("smooth stone", "thing"), ("resting woman", "thing"), ("curled cat", "thing")]
+    assert art_director.figures_in(revised) == []
+
+
+def test_an_animal_or_a_person_is_never_moved_as_a_cut_out():
+    """A person stays still; an animal only floats (a duck on a pond) or flutters (a butterfly); things keep their
+    motion."""
+    subjects = [{**DOG, "name": "sleeping woman", "kind": "person", "motion": "sway"},
+                {**DOG, "name": "sleeping dog", "kind": "animal", "motion": "sway"},
+                {**DOG, "name": "resting duck", "kind": "animal", "motion": "float"},
+                {**STONE, "name": "hammock", "kind": "thing", "motion": "sway"}]
+    checked = art_director.check({**SCENE, "subjects": subjects[:3]})
+    assert [s["motion"] for s in checked["subjects"]] == ["still", "still", "float"]
+    checked = art_director.check({**SCENE, "subjects": subjects[3:]})
+    assert checked["subjects"][0]["motion"] == "sway"

@@ -230,6 +230,11 @@ def check(scene: dict[str, Any]) -> dict[str, Any]:
         subject["glows"] = subject.get("glows") is True
         kind = str(subject.get("kind") or "").strip().lower()
         subject["kind"] = kind if kind in KINDS else "thing"
+        # An animal or a person the meditation brings is painted at rest and never moved as a cut-out (a rocking
+        # figure reads as a cheap 2D puppet): a person stays still; an animal only floats (a duck on a pond) or
+        # flutters (a butterfly).
+        if kind == "person" or (kind == "animal" and subject.get("motion") not in ("float", "flutter")):
+            subject["motion"] = "still"
     nature = [n for n in dict.fromkeys(scene.get("nature") or []) if n in NATURE]
     particles = scene.get("particles") if scene.get("particles") in PARTICLES else "none"
     return {**scene, "palette": palette[:5], "subjects": subjects, "nature": nature, "particles": particles}
@@ -280,14 +285,15 @@ async def revise(client, scene: dict[str, Any], critique: dict[str, Any], meter:
 
 def keep_kinds(scene: dict[str, Any], revised: dict[str, Any]) -> dict[str, Any]:
     """A revision with each subject it kept of the kind it was: a thing never turns into an animal or a person, nor
-    one the meditation brings into a thing, whatever the answer said."""
+    one the meditation brings into a thing, whatever the answer said. A subject the revision adds is a thing: a
+    revision never brings an animal or a person the design did not have."""
     subjects = revised.get("subjects")
     if not isinstance(subjects, list):
         return revised
     kinds = {" ".join(str(s.get("name") or "").split()).lower(): s.get("kind")
              for s in scene.get("subjects") or [] if isinstance(s, dict)}
     return {**revised, "subjects": [
-        {**s, "kind": kinds.get(" ".join(str(s.get("name") or "").split()).lower(), s.get("kind"))}
+        {**s, "kind": kinds.get(" ".join(str(s.get("name") or "").split()).lower(), "thing")}
         if isinstance(s, dict) else s for s in subjects]}
 
 
