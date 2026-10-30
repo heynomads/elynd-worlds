@@ -48,10 +48,10 @@ SYSTEM = "You plan meditation journeys for ELYND. You answer with one JSON objec
 CHECKIN = {
     "ENG": ("since your last meditation", "Since your last meditation, how calm have you felt?",
             "'Since your last meditation, how {word} have you felt?' with one word for what they want more of, from "
-            "what they want (confident; rested; at ease), never a symptom"),
+            "their goal (confident; rested; at ease), never a symptom"),
     "GER": ("seit deiner letzten meditation", "Wie ruhig hast du dich seit deiner letzten Meditation gefühlt?",
             "'Wie {Wort} hast du dich seit deiner letzten Meditation gefühlt?' with one word for what they want more "
-            "of, from what they want (zuversichtlich; ausgeruht; gelassen), never a symptom"),
+            "of, from their goal (zuversichtlich; ausgeruht; gelassen), never a symptom"),
     "ES": ("desde tu última meditación", "¿Cuánta calma has sentido desde tu última meditación?",
            "'¿Cuánta {sustantivo} has sentido desde tu última meditación?' with a noun for what they want more of, "
            "never an adjective that would assume their gender (confianza; calma; '¿Cuánto descanso…?'), never a "
@@ -152,19 +152,17 @@ class Plan:
 
 RULES = """This is meditation practice toward their intention: never advice, never a condition's name, never causes \
 or analysis. Never use the words heal, cure, therapy, treatment, disorder, symptom, patient, recover, cope, help, \
-manage, trigger or "nervous system", nor their equivalents in {language}. Never call what they want a goal, a \
-target or an objective, nor use those words' equivalents in {language} (German "Ziel", Spanish "objetivo" or "meta", French "objectif"): say it in their own \
-words."""
+manage, trigger or "nervous system", nor their equivalents in {language}."""
 
-ARC = """You plan a 30-day meditation journey at ELYND for one person, toward what they want (below). Each day ELYND writes \
+ARC = """You plan a 30-day meditation journey at ELYND for one person, toward the goal below. Each day ELYND writes \
 them a {minutes}-minute guided meditation from your plan. Write in {language}.
 
-Their journey: "{title}". What they want, in their own words: {summary}{moment}
+Their journey: "{title}". Their goal, in their own words: {summary}{moment}
 Their own words: {words}.
 
 The weeks build: first noticing (when and how it shows up, without judging), then kindness toward themselves, then \
 practising the moment itself (rehearsal, steadiness, the body's part), then carrying it into their life. Shape the \
-themes to what they want and their own situations; do not copy these words.
+themes to their goal and their own situations; do not copy these words.
 
 {rules} The promise says what these days are for, never a result: never "you will". Never assume how a coming moment \
 will go.
@@ -179,7 +177,7 @@ situations: what this week is for>"}}, (four in all)]}}"""
 WEEK = """You plan days {first} to {last} of a 30-day meditation journey at ELYND for one person. Each day ELYND writes \
 them a {minutes}-minute guided meditation from your plan. Write in {language}.
 
-Their journey: "{title}". What they want, in their own words: {summary}
+Their journey: "{title}". Their goal, in their own words: {summary}
 What the thirty days are for: {promise}
 The four weeks: {weeks}
 This is week {week}: "{theme}" ({line}).{moment}
@@ -189,9 +187,9 @@ moment and a different practice each day.
 The days of this week and what each is:
 {days}
 
-Kinds: "begin" opens the journey (what they want said back, the thirty days sketched, a first small practice); "practice" \
+Kinds: "begin" opens the journey (their goal said back, the thirty days sketched, a first small practice); "practice" \
 is one step of this week's theme; "look_back" looks back on the week that ends and opens the next week's theme; \
-"arrive" closes the thirty days: it honours what they practised, never says they got what they wanted or how things went.
+"arrive" closes the thirty days: it honours what they practised, never says the goal is reached or how things went.
 {rules}
 Each day's small thing to try is a moment of attention, breath or kindness inside one of the situations they named, \
 different every day. Never a task, a list, a tool, a timer, a notification setting, work or productivity advice, or a \
@@ -202,7 +200,7 @@ stay longer in, go further into, or test themselves against what they fear: invi
 anchor attention in what steadies (feet, breath, hands, something they enjoy), never in a racing heart or the feeling \
 they fear. With a loss, never ask them to smile about, let go of or move on from the person: remembering has its \
 place.
-Vary the techniques; use sleep_journey only when what they want is about sleep. A title names this day's own step, never a \
+Vary the techniques; use sleep_journey only for a goal about sleep. A title names this day's own step, never a \
 general one.
 
 Answer with one JSON object and nothing else:
@@ -501,7 +499,7 @@ def make_plan(llama: Llama, language: str, title: str, summary: str, minutes: in
     ctx = _Context(language=language, title=title, summary=summary, keep=capitalised(summary) | capitalised(title),
                    words=their_words(summary, title), label=_label_pattern(moment))
     rules = RULES.format(language=lang_name)
-    words = ", ".join(ctx.words) or "(few: use the situations in what they want)"
+    words = ", ".join(ctx.words) or "(few: use the situations in their goal)"
     arc, spent = _ask(llama, ARC.format(minutes=minutes, language=lang_name, title=title, summary=summary,
                                         moment=_moment_line(moment, today, weeks=True), words=words, rules=rules,
                                         checkin=CHECKIN[language][2]),

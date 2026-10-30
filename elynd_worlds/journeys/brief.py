@@ -155,7 +155,7 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
     lines = [
         f"THIS MEDITATION IS DAY {n} OF THE LISTENER'S 30-DAY JOURNEY. Unlike a single meditation, it is the next "
         f"meeting with a teacher who knows them and remembers the days before.",
-        f'What they want, in their own words: "{_quote(summary, 600)}"',
+        f'Their goal, in their own words: "{_quote(summary, 600)}"',
         f'The journey: "{plan.title}". {plan.promise}',
         f'Week {week} of 4: "{theme["theme"]}": {theme["line"]}',
         f'Today, day {n}: "{day.title}". {_sentence(day.focus)} What they take from it: {_sentence(day.aim)} One '
@@ -203,7 +203,7 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
     k = kind(n)
     if k == "begin":
         names = ", then ".join(f'"{w["theme"]}"' for w in plan.weeks)
-        rules.append(f"Open by welcoming them to the first day of their journey. Say back what they want in one "
+        rules.append(f"Open by welcoming them to the first day of their journey. Say their goal back to them in one "
                      f"or two sentences, close to their own words. Then tell them simply, as a teacher would and "
                      f"without listing, how the thirty days will go: {names}. Then the first practice.")
     elif k == "look_back":
@@ -313,8 +313,6 @@ def day_block(plan: Plan, n: int, today: dt.date, summary: str, past: list[Past]
         f"Say the day in words once, near the start (day {words}).",
         "Never say the app, the plan, the program, data, rating, scale, score or AI, and never turn their answers "
         "into numbers. Quote their words sparingly, a short phrase at most.",
-        "Never call what they want a goal, a target or an objective, nor use those words' equivalents in the "
-        "meditation's language (German \"Ziel\", Spanish \"objetivo\" or \"meta\", French \"objectif\"): say it in their own words.",
         "Everything else about this meditation (its length, its voice, its structure, its closing) stays as the rest "
         "of this prompt asks.",
     ]
