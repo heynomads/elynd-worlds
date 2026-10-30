@@ -64,9 +64,9 @@ after the script is written in our runs; the slower ones were made six at a time
 ## A world from the first second: the library
 
 A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
-places a library can hold. So the same agent painted a **library** in advance: **445 worlds** of the places guided
-meditations visit most, each at several times of day, seasons or weathers, 70 of them dark worlds for falling
-asleep, all from `scripts/library_briefs.py` and each checked by the critic like any other
+places a library can hold. So the same agent painted a **library** in advance: **445 worlds** of the 89 places
+guided meditations visit most often (most places at several times of day, seasons or weathers), 70 of them dark
+worlds for falling asleep, all from `scripts/library_briefs.py` and each checked by the critic like any other
 (`library/catalog.json` lists them). Every library world looks alive (`library.looks_dead`: water, a stream, a
 field, swaying crowns, rain, snow, leaves or petals, a moving subject, or a sky wide or starry enough to carry the
 world; `scripts/library_audit.py`), and every figure and post was looked at up close.
