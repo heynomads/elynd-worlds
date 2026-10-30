@@ -79,7 +79,7 @@ never repeat it: say back the situation and what they want to feel (the packed t
 - Never use the words heal, cure, therapy, treatment, disorder, symptom, patient, recover, cope, help, manage or \
 trigger, nor their equivalents in {language}. Never "normal", never compare them with other people.
 - Speak to them as "you" (German "du", Spanish "tú", French "tu"). Write in {language}, in complete, natural \
-sentences; a question ends with a question mark.
+sentences; a question ends with a question mark.{language_note}
 
 You ask two questions, one at a time, only for what is still missing:
 1. when or where it shows up most (situations, people, times of day);
@@ -239,6 +239,47 @@ CLOSINGS = {
 }
 # Asked whether it is a person, the guide says plainly that it is an AI (Llama's and Muse's use policies; EU AI Act,
 # Art. 50): the sentence code puts first when a model's answer does not say it.
+# German, French and Spanish: their words are said back as "du", "tu", "tú" (a model often keeps their "I"), and
+# a question reads as a native speaker would ask it. English needs no note.
+LANGUAGE_NOTES = {
+    "ENG": "",
+    "GER": ('\n- In German, say their words back as "du": their "ich", "mich", "mir", "mein" become "du", "dich", "dir", '
+            '"dein" ("Ein Tag, an dem ich sage, was ich denke" becomes "Ein Tag, an dem du sagst, was du denkst"). Ask '
+            'in natural, correct German, like "Wann in deinen Tagen ist dir das am wichtigsten?" or "Und wie sähe ein '
+            'guter Tag für dich aus?" (never "Was würde ... aussehen"). Never "Sie".'),
+    "FR": ('\n- In French, say their words back as "tu": their "je", "me", "moi", "mon", "ma", "mes" become "tu", "te", '
+           '"toi", "ton", "ta", "tes" ("plus calme avec mes enfants" becomes "plus calme avec tes enfants"). Ask in '
+           'natural, correct French, like "À quels moments de tes journées est-ce que ça compte le plus pour toi ?" or '
+           '"Et une bonne journée, elle ressemblerait à quoi pour toi ?" (never "Qu\'est-ce qu\'une bonne journée '
+           'ressemblerait"). A space before "?" and "!".'),
+    "ES": ('\n- In Spanish, say their words back as "tú": their "yo", "me", "mi", "mis" and endings like "concentrarme" '
+           'become "tú", "te", "tu", "tus", "concentrarte" ("termino lo importante" becomes "terminas lo importante"). '
+           'Ask in natural, correct Spanish, like "¿En qué momentos de tus días te importa más?" or "¿Y cómo sería un '
+           'buen día para ti?"; every question opens with "¿".'),
+}
+# Their words said back with their own "I" (German, French, Spanish): the guide is asked again; at the last try the
+# words are left out and the closing stands alone. Only the words said back are checked, never the question.
+FIRST_PERSON = {
+    "GER": re.compile(r"\b(?:ich|mich|mir|mein(?:e|en|em|er|es)?)\b", re.I),
+    "FR": re.compile(r"\b(?:je|moi|mon|ma|mes|me)\b|\b[jm]['’]", re.I),
+    "ES": re.compile(r"\b(?:yo|mi|mis|me|conmigo)\b|\b\w+(?:ar|er|ir)me\b", re.I),
+}
+YOU_NOT_I = {"GER": ('"du"', '"ich"'), "FR": ('"tu"', '"je"'), "ES": ('"tú"', '"yo"')}
+
+
+def first_person(text: str, language: str) -> str | None:
+    """Their "I" in words said back to them (German, French, Spanish only), or None."""
+    pattern = FIRST_PERSON.get(language)
+    found = pattern.search(text or "") if pattern else None
+    return found.group(0) if found else None
+
+
+def said_back(say: str, done: bool) -> str:
+    """The part of a say that gives their words back: all of a finishing say, all but the question otherwise."""
+    parts = sentences(say)
+    return " ".join(parts if done else parts[:-1])
+
+
 HONEST = {
     "ENG": "I'm an AI guide, not a person.",
     "GER": "Ich bin ein KI-Guide, kein Mensch.",
@@ -658,6 +699,10 @@ def problems(turn: Turn, language: str, theirs: str = "", asked: bool = False,
         word = compares(text)
         if word:
             found.append(f'{name} says "{word}": never "normal", never a comparison with other people')
+    word = first_person(said_back(turn.say, turn.done), language)
+    if word:
+        you, i = YOU_NOT_I[language]
+        found.append(f'say: "{word}": say their words back to them as {you}, never as {i}')
     if not turn.done and len(_question(turn.say)) > MAX_QUESTION:
         found.append(f"the question is longer than {MAX_QUESTION} characters: ask it shorter")
     if turn.done:
@@ -682,8 +727,10 @@ def repair(turn: Turn, language: str, theirs: str = "", asked: bool = False,
     the title, the question or too much of the rest would go."""
     chips = [c for c in turn.chips if not (_text_problem(c, language) or compares(c) or ABSENCE.search(c)
                                            or _filler_in(c, filler))]
-    kept = [s for s in sentences(turn.say) if _sentence_ok(s, language, theirs, turn.done, filler)]
-    if not kept or (not turn.done and not any("?" in s for s in kept)):
+    question = "" if turn.done else _question(turn.say)
+    kept = [s for s in sentences(turn.say) if _sentence_ok(s, language, theirs, turn.done, filler)
+            and (s == question or not first_person(s, language))]
+    if (not kept and not turn.done) or (not turn.done and not any("?" in s for s in kept)):
         return None
     if not turn.done and kept[-1] != _question(turn.say):
         return None
@@ -760,7 +807,7 @@ def next_turn(llama: Llama, language: str, turns: object, *, today: dt.date | No
     transcript = "\n".join(f"Teacher: {text}" if role == "guide" else f"Them: {next(shown)}"
                            for role, text in conversation)
     system = SYSTEM.format(language=LANGUAGES[language], today=today.isoformat(), weekday=today.strftime("%A"),
-                           example=_example())
+                           example=_example(), language_note=LANGUAGE_NOTES[language])
     ask = ASK.get(answers, CHANGED) + (f" {PERSON}" if person else "") + (f" {EMPTY_FINISH}"
                                                                         if must_finish and any(empty) else "")
     user = f"The conversation so far:\n{transcript}\n\n{ask} Only the JSON object."

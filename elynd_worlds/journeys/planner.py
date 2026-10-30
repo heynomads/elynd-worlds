@@ -521,8 +521,61 @@ def make_plan(llama: Llama, language: str, title: str, summary: str, minutes: in
     spent += sum(usd for _, usd in results)
     days = [day for week_days, _ in results for day in week_days]
     spent += _retitle(llama, ctx, days, lang_name, rules)
-    return Plan(title=title, promise=arc["promise"], checkin_question=arc["checkin_question"], weeks=arc["weeks"],
+    plan = Plan(title=title, promise=arc["promise"], checkin_question=arc["checkin_question"], weeks=arc["weeks"],
                 world=None, days=days, usd=spent)
+    if language != "ENG":
+        plan.usd += _proofread(llama, ctx, plan, lang_name)
+    return plan
+
+
+PROOFREAD = """You check the {language} of short texts from a meditation app, written to one person as "{you}". Fix \
+only spelling mistakes, grammar mistakes and wording a native speaker would never use. Keep the meaning, the "{you}" \
+form, the length and the style; leave every text that is already correct exactly as it is.
+
+The texts, as JSON:
+{texts}
+
+Answer with one JSON object with exactly the same keys and the checked texts, and nothing else."""
+YOU_FORM = {"GER": "du", "ES": "tú", "FR": "tu"}
+
+
+def _proofread(llama: Llama, ctx: _Context, plan: Plan, lang_name: str) -> float:
+    """German, French and Spanish: one call checks the texts the listener reads (the promise, the check-in question,
+    the weeks, the day titles) for spelling and grammar, in place. A text comes back only when it still keeps every
+    rule and its length; a failed or odd answer leaves the plan as it was. Returns the call's cost."""
+    texts = {"promise": plan.promise, "checkin": plan.checkin_question}
+    for week in plan.weeks:
+        texts[f"w{week['n']}_theme"], texts[f"w{week['n']}_line"] = week["theme"], week["line"]
+    for day in plan.days:
+        texts[f"d{day.n}"] = day.title
+    try:
+        reply = llama.chat(SYSTEM, PROOFREAD.format(language=lang_name, you=YOU_FORM.get(ctx.language, "you"),
+                                                     texts=json.dumps(texts, ensure_ascii=False, indent=0)),
+                           max_tokens=1600, temperature=0.2)
+        checked = first_json(reply.text)
+    except Exception:          # the plan stands as made; a proofreading call never fails a plan
+        return 0.0
+    must = CHECKIN[ctx.language][0]
+
+    def fixed(key: str, limit: int, title: bool = False) -> str | None:
+        new = _plain(checked.get(key), limit).rstrip("." if title else "")
+        old = texts[key]
+        if not new or new == old or not 0.6 <= len(new) / max(1, len(old)) <= 1.5 or _words_problem(new, ctx):
+            return None
+        if title and (DAY_RELATIVE.search(new) or (ctx.label and ctx.label.search(new))):
+            return None
+        if key == "checkin" and must not in new.lower():
+            return None
+        return new
+
+    plan.promise = fixed("promise", LIMITS["promise"]) or plan.promise
+    plan.checkin_question = fixed("checkin", LIMITS["checkin_question"]) or plan.checkin_question
+    for week in plan.weeks:
+        week["theme"] = fixed(f"w{week['n']}_theme", LIMITS["theme"], title=True) or week["theme"]
+        week["line"] = fixed(f"w{week['n']}_line", LIMITS["line"]) or week["line"]
+    for day in plan.days:
+        day.title = fixed(f"d{day.n}", LIMITS["title"], title=True) or day.title
+    return reply.usd
 
 
 def parse_titles(text: str, ctx: _Context, need: list[Day], taken: set[str],

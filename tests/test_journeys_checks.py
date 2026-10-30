@@ -10,6 +10,7 @@ import pytest
 
 from elynd_worlds.journeys import guide
 from elynd_worlds.journeys.guide import GuideError
+from elynd_worlds.journeys.llama import LlamaError
 from tests.test_journeys import FakeLlama, turns
 
 TODAY = dt.date(2026, 11, 2)
@@ -587,3 +588,79 @@ def test_answers_typed_again_after_a_failed_turn_count_as_the_newest():
         guide.clean_turns([g("Q1"), g("Q2"), y("a")])
     with pytest.raises(ValueError, match="order"):
         guide.clean_turns([y("a"), g("Q1"), y("b")])
+
+
+# ─── German, French and Spanish: their words said back as "you"; plans proofread ───
+
+DE_ANSWERS = ("Mein Ziel ist, in Meetings sicherer zu sprechen.", "Vor allem montags im Teammeeting.",
+              "Ein Tag, an dem ich sage, was ich denke.")
+
+
+def test_the_guide_gets_a_note_in_german_french_and_spanish_and_none_in_english():
+    for language, note in (("GER", 'say their words back as "du"'), ("FR", 'say their words back as "tu"'),
+                           ("ES", 'say their words back as "tú"')):
+        llama = FakeLlama([ask()])
+        guide.next_turn(llama, language, turns("x y z words"), today=TODAY)
+        assert note in llama.calls[0][0]
+    llama = FakeLlama([ask()])
+    guide.next_turn(llama, "ENG", turns("I want calmer mornings"), today=TODAY)
+    assert "In German" not in llama.calls[0][0] and "{language_note}" not in llama.calls[0][0]
+
+
+def test_their_ich_said_back_is_asked_again_and_du_comes_back():
+    llama = FakeLlama([finish(say="Sage, was ich denke."), finish(say="Sagen, was du denkst.")])
+    turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS), today=TODAY)
+    assert turn.say.startswith("Sagen, was du denkst.") and len(llama.calls) == 2
+    assert 'say their words back to them as "du", never as "ich"' in llama.calls[1][1]
+
+
+def test_at_the_last_try_the_closing_stands_alone_rather_than_their_ich():
+    llama = FakeLlama([finish(say="Sage, was ich denke.")] * 3)
+    turn = guide.next_turn(llama, "GER", turns(*DE_ANSWERS), today=TODAY)
+    assert turn.say in guide.CLOSINGS["GER"]
+
+
+def test_only_the_words_said_back_are_checked_never_the_question():
+    assert guide.first_person(guide.said_back("Im Teammeeting. Erzählst du mir mehr?", False), "GER") is None
+    assert guide.first_person(guide.said_back("Wenn ich spreche. Wann ist das?", False), "GER") == "ich"
+    assert guide.first_person("Plus calme avec mes enfants.", "FR") == "mes"
+    assert guide.first_person("Concentrarme mejor.", "ES").lower() == "concentrarme"
+    assert guide.first_person("Concentrarte mejor, con tus reuniones.", "ES") is None
+    assert guide.first_person("Stop putting off my thesis.", "ENG") is None
+
+
+DE_ARC = {"promise": "Dreißig Tage, um im Meeting ruhig zu sprechen.",
+          "checkin_question": "Wie sicher hast du dich seit deiner letzten Meditation gefühlt?",
+          "weeks": [{"theme": "Bemerken", "line": "Diesen Monntag im Teammeeting achtsam sein."},
+                    {"theme": "Freundlichkeit", "line": "Freundlich zu dir sein, wenn alle zuschauen."},
+                    {"theme": "Präsenz", "line": "Ruhig bleiben, während du sprichst."},
+                    {"theme": "Mitnehmen", "line": "Die Ruhe in alle Gespräche mitnehmen."}]}
+
+
+def test_a_german_plan_is_proofread_once_and_only_safe_corrections_are_kept():
+    script = Script(arcs=(DE_ARC,))
+
+    def answer(system, user):
+        if "You check the German" in user:
+            texts = json.loads(user.split("The texts, as JSON:\n")[1].split("\n\nAnswer with")[0])
+            texts["w1_line"] = "Diesen Montag im Teammeeting achtsam sein."        # a typo fixed: kept
+            texts["w2_line"] = "Heile dich, wenn alle zuschauen."                   # a word ELYND never uses: refused
+            texts["promise"] = "Ruhig."                                             # far too short: refused
+            texts["checkin"] = "Wie sicher fühlst du dich heute?"                   # lost its fixed words: refused
+            return json.dumps(texts)
+        return script(system, user)
+    llama = FakeLlama(answer)
+    plan = planner.make_plan(llama, "GER", "Sicher im Meeting", "Du möchtest im Meeting ruhig sprechen.", today=TODAY)
+    assert plan.weeks[0]["line"] == "Diesen Montag im Teammeeting achtsam sein."
+    assert plan.weeks[1]["line"] == DE_ARC["weeks"][1]["line"]
+    assert plan.promise == DE_ARC["promise"] and plan.checkin_question == DE_ARC["checkin_question"]
+    assert sum("You check the German" in u for _, u in llama.calls) == 1
+
+
+def test_a_failed_proofreading_call_leaves_the_plan_and_english_is_never_proofread():
+    script = Script(arcs=(DE_ARC,))
+    llama = FakeLlama(lambda s, u: LlamaError("down") if "You check the" in u else script(s, u))
+    plan = planner.make_plan(llama, "GER", "Sicher im Meeting", "Du möchtest im Meeting ruhig sprechen.", today=TODAY)
+    assert plan.weeks[0]["line"] == DE_ARC["weeks"][0]["line"] and len(plan.days) == 30
+    plan, llama = make(Script())
+    assert not any("You check the" in u for _, u in llama.calls)
