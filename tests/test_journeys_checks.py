@@ -573,3 +573,17 @@ def test_a_field_that_breaks_a_rule_is_shown_blank_when_asked_again():
     assert (day20["n"], day20["focus"], day20["try_today"]) == (20, "REWRITE", GOOD_TRY)
     assert 'a word ELYND never uses, in any form ("help"): say it another way' in again
     assert "write anew every field marked REWRITE" in again and plan.day(20).focus == "Today you notice your hands."
+
+
+def test_answers_typed_again_after_a_failed_turn_count_as_the_newest():
+    """An app that let someone type again after a failed turn sent two answers in a row, and every later call failed
+    on the order check. The newest answer of such a run stands for it; the answer limit counts after the merge."""
+    g, y = (lambda t: {"role": "guide", "text": t}), (lambda t: {"role": "you", "text": t})
+    assert guide.clean_turns([g("Q1"), y("first try"), y("second try")]) == [("guide", "Q1"), ("you", "second try")]
+    assert guide.clean_turns([g("Q1"), y("a"), g("Q2"), y("b"), y("c"), y("d")])[-1] == ("you", "d")
+    runs = [g("Q1")] + [y(f"a{i}") for i in range(guide.MAX_ANSWERS + 3)]
+    assert guide.clean_turns(runs) == [("guide", "Q1"), ("you", f"a{guide.MAX_ANSWERS + 2}")]
+    with pytest.raises(ValueError, match="order"):
+        guide.clean_turns([g("Q1"), g("Q2"), y("a")])
+    with pytest.raises(ValueError, match="order"):
+        guide.clean_turns([y("a"), g("Q1"), y("b")])

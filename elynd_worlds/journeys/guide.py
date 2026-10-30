@@ -366,13 +366,23 @@ class Turn:
 
 def clean_turns(turns: object) -> list[tuple[str, str]]:
     """The conversation as the app sent it: [("guide" | "you", text)], guide first, alternating, ending with their
-    answer, at most MAX_ANSWERS answers. Raises ValueError otherwise."""
+    answer, at most MAX_ANSWERS answers (counted after the merge below). Raises ValueError otherwise.
+
+    Answers with no guide turn between them (someone typed again after a turn failed, in an app before that was
+    fixed) count as the newest of them: the guide never read the older ones, so the conversation goes on instead of
+    failing on every later call."""
     if not isinstance(turns, list) or not turns:
         raise ValueError("turns")
-    out = []
-    for i, turn in enumerate(turns):
+    kept = []
+    for turn in turns:
         if not isinstance(turn, dict):
             raise ValueError("turn")
+        if kept and turn.get("role") == "you" and kept[-1].get("role") == "you":
+            kept[-1] = turn
+        else:
+            kept.append(turn)
+    out = []
+    for i, turn in enumerate(kept):
         role, text = turn.get("role"), turn.get("text")
         if role != ("guide" if i % 2 == 0 else "you") or not isinstance(text, str):
             raise ValueError("order")
