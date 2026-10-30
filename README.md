@@ -24,7 +24,9 @@ Its guide and its plan run on Meta's open-weights Llama 3.3 70B. **Built with Ll
 > **Open-source parts it uses** (installed, not copied here): the OpenAI Python SDK (Apache-2.0; Meta Model API
 > speaks its wire format), httpx (BSD-3-Clause), Pillow (MIT-CMU), NumPy (BSD-3-Clause), Meta's meta-sam-parser
 > (SAM License) for SAM 3.1's answers, pytest (MIT) and pytest-asyncio (Apache-2.0), Flutter (BSD-3-Clause), boto3
-> (Apache-2.0) for Amazon Bedrock in Journeys, and the Poppins font (SIL Open Font License 1.1, bundled).
+> (Apache-2.0) for Amazon Bedrock in Journeys, PyTorch (BSD-3-Clause) and Hugging Face Transformers (Apache-2.0)
+> with the Depth Anything V2 Small model (Apache-2.0, downloaded on first use) for a journey's climb, and the Poppins
+> font (SIL Open Font License 1.1, bundled).
 
 ## How a world is made
 
@@ -215,6 +217,25 @@ illness, a condition's name, a promise of a result, an attention exercise while 
 answer that says it is asked again with the reason. The tests run all of it against a fake Llama: no network, no
 key.
 
+## A journey's climb
+
+Built on 30 Oct 2026 (`scripts/climb/`): a journey's thirty days as one walk up a mountain, one painting a week.
+Muse Image paints each week's view as an edit of the one before, further along the same path, so it stays one
+place, painted as the place alone (`climb_stage.py`; each painting passed the critic). Each day is a small step into
+the painting, from a depth map by Depth Anything V2 Small (`walker.py`), and a little brighter than the day before;
+a drifting cloud carries the walk into the next week's painting, and on day thirty the view turns back down the
+path, where thirty lights come on, day one's far below. The climb is made once and is the same for everyone:
+nothing of a listener's journey goes into it.
+
+```bash
+.venv/bin/pip install torch "transformers<5"                              # for the depth model
+.venv/bin/python scripts/climb/climb_stage.py B climb/A.png climb/B.png  # week 2 from week 1 (Meta key); C to G2 alike
+.venv/bin/python scripts/climb/climb_weeks.py climb out/climb             # the whole climb as one video
+.venv/bin/python scripts/climb/climb_days.py climb out/climb-days         # each day's still and step, marked as AI-made
+```
+
+`climb/A.png` can be any painting of a path; ours is the first stage of a journey's world (`elynd-worlds stages`).
+
 ## See it in a browser
 
 `web/` is a gallery of worlds the agent made for the example meditations. They live as they do on the phone:
@@ -284,6 +305,7 @@ flutter/elynd_worlds_scene/   the scene on the phone (Dart, and the living paint
 web/                   the scene in a browser (JavaScript, WebGL 2) and the gallery
 scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline;
                        library_briefs.py writes the library's themes
+scripts/climb/         a journey's climb: a painting a week (Muse Image), a step a day by depth (walker.py)
 library/briefs/        the library's themes (the pictures are kept out of git; catalog.json lists the 445 worlds)
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API and a fake Llama
