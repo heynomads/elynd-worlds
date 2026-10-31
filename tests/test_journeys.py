@@ -362,6 +362,16 @@ def test_a_moment_in_their_life_shapes_the_days_around_it(days, says):
         assert "My presentation" not in text
 
 
+def test_the_day_before_a_moment_rehearses_its_steps_never_a_picture_of_the_result():
+    moment = Moment("My presentation", (TODAY + dt.timedelta(days=1)).isoformat())
+    text = brief.day_block(plan(), 9, TODAY, SUMMARY, [brief.Past(8, TODAY - dt.timedelta(days=1))], moment)
+    assert ('Make room to rehearse their "My presentation" step by step: getting there, the first minute, one small '
+            "wobble, named in everyday words and met at once with what steadies them (their breath, their feet, their "
+            "hands), then getting through it in their own way.") in text
+    assert "Rehearse the steps, not a picture of the result (even if today's step pictures one)" in text
+    assert 'never assume how it will go, never "you will"' in text and "picture it going well" not in text
+
+
 def test_every_seventh_day_looks_back_on_the_week_and_opens_the_next():
     start = TODAY - dt.timedelta(days=14)
     past = [brief.Past(n, start + dt.timedelta(days=n), a, note) for n, a, note in

@@ -80,6 +80,8 @@ STILL = re.compile(r"\b(?:before|after|parked|park|car park|engine off|picture|i
                    r"at home)\b", re.I)
 # A result promised, or how their moment will go presumed.
 PROMISE = re.compile(r"\b(?:you will|you'll|you're going to|you are going to)\b", re.I)
+# The "then" of a small thing to try invites, never predicts ("when you're going to bed" predicts nothing).
+PREDICTS = re.compile(r"\b(?:you will|you'll)\b", re.I)
 PASSING = re.compile(r"\b(?:after|when|once)\s+(?:you\s+)?pass(?:ing|es)?\b", re.I)
 # A day is a meditation, not a date: no "tomorrow", no "the day before".
 DAY_RELATIVE = re.compile(r"\b(?:tomorrow\w*|the (?:day|evening|night|morning) (?:before|of your)|final preparations?|"
@@ -174,6 +176,9 @@ own words and situations>",
  "weeks": [{{"theme": "<1 to 3 words>", "line": "<one sentence to them, 60 to 140 characters, in one of their \
 situations: what this week is for>"}}, (four in all)]}}"""
 
+# Each day's small thing to try is an implementation intention, "when <situation>, <one small step>": tied to a
+# situation they will meet, a plan in that form is carried out more often than an intention alone. Every day from the
+# first: its step is the week's own (noticing, kindness, rehearsal, carrying it), so the form never asks for more.
 WEEK = """You plan days {first} to {last} of a 30-day meditation journey at ELYND for one person. Each day ELYND writes \
 them a {minutes}-minute guided meditation from your plan. Write in {language}.
 
@@ -191,9 +196,13 @@ Kinds: "begin" opens the journey (their goal said back, the thirty days sketched
 is one step of this week's theme; "look_back" looks back on the week that ends and opens the next week's theme; \
 "arrive" closes the thirty days: it honours what they practised, never says the goal is reached or how things went.
 {rules}
-Each day's small thing to try is a moment of attention, breath or kindness inside one of the situations they named, \
-different every day. Never a task, a list, a tool, a timer, a notification setting, work or productivity advice, or a \
-rule for others. Writing at most once a week.
+Each day's small thing to try is a small when-then plan in one of the situations they named, different every day: \
+"When <that situation, as it can come today>, <one small step of attention, breath or kindness that fits today's \
+practice>", e.g. one slow breath, feet on the floor, a kind sentence to themselves. The "when" is something that \
+happens (a place, a time, something they do), never a feeling they fear; in a car it is "Before you set off" or "When \
+you have parked", never a moment of the drive itself. The "then" invites, in the present tense or as a gentle \
+imperative, and never predicts: never "you will" or "you'll". Never a task, a list, a tool, a timer, a notification \
+setting, work or productivity advice, or a rule for others. Writing at most once a week.
 Never ask for attention exercises while driving or doing anything that needs full attention: anything to try in a car \
 is only before setting off, when parked, or after arriving (a meditation may picture the drive). Never ask them to \
 stay longer in, go further into, or test themselves against what they fear: invite noticing and small comforts, and \
@@ -207,8 +216,8 @@ Answer with one JSON object and nothing else:
 {{"days": [{{"n": <day>, "title": "<2 to 6 words, sentence case>", "focus": "<one sentence to them, second person, \
 present tense, 50 to 200 characters: what today's meditation is about, e.g. 'Today you notice what your body does when \
 you hold back.'>", "technique": "<one of {techniques}>", "aim": "<one sentence: what they take from it>", \
-"try_today": "<one sentence to them, 40 to 180 characters: one small thing to try today, in one of their \
-situations>"}}, ...]}}"""
+"try_today": "<one sentence to them, 40 to 180 characters: a small when-then plan for today in {language}, in one \
+of their situations: 'When <situation>, <small step>.'>"}}, ...]}}"""
 
 RETITLE = """Some days of a 30-day meditation journey at ELYND need a new title: each repeats another day's title. Write in \
 {language}.
@@ -410,6 +419,9 @@ def parse_week(text: str, ctx: _Context, first: int, last_n: int,
             elif name == "try_today" and IN_CAR.search(value) and not STILL.search(value):
                 hard.append(f'day {n} try_today: "{IN_CAR.search(value).group(0)}" while driving: anything in a car is '
                             f"only before setting off, when parked, or after arriving")
+            if name == "try_today" and PREDICTS.search(value):
+                hard.append(f'day {n} try_today: "{PREDICTS.search(value).group(0)}" predicts: the "then" of a plan '
+                            f"invites, in the present tense, and never says what will happen")
         days.append(day)
     if not WRITING.search(ctx.summary):
         writing = [d.n for d in days if WRITING.search(d.try_today) or WRITING.search(d.focus)]

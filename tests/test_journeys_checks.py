@@ -296,6 +296,16 @@ def test_p5_no_promise_and_no_presumed_pass():
     assert 'presumes how their moment will go ("after passing")' in reasons(llama)
 
 
+def test_p5_the_then_of_a_small_thing_to_try_invites_and_never_predicts():
+    predicting = {3: {"try_today": "When the examiner greets you, you'll feel your breath settle."}}
+    plan, llama = make(Script(weeks={1: [predicting, {}]}))
+    assert 'day 3 try_today: "you\'ll" predicts' in reasons(llama) and plan.day(3).try_today == GOOD_TRY
+    # "Going to" in a situation is no prediction.
+    bedtime = {3: {"try_today": "When you're going to bed, let your breath slow down, like on Sundays."}}
+    plan, llama = make(Script(weeks={1: [bedtime]}))
+    assert reasons(llama) == "" and plan.day(3).try_today.startswith("When you're going to bed")
+
+
 def test_p6_day_titles_are_never_repeated_and_their_words_are_asked_for():
     breathing = {10: {"title": "Breathing into calm"}, 12: {"title": "Looking back"}}
     later = {17: {"title": "Breathing Into Calm"}, 21: {"title": "Looking back"}}
@@ -395,6 +405,17 @@ def test_the_plan_prompts_steady_attention_and_a_last_day_that_reaches_for_nothi
     assert "never says the goal is reached or how things went" in week
     assert "never in a racing heart or the feeling they fear" in week
     assert "a different moment and a different practice each day" in week
+
+
+def test_every_days_small_thing_to_try_is_a_when_then_plan_in_their_language_and_never_on_the_road():
+    plan, llama = make(Script())
+    for first in (1, 8, 15, 22):
+        week = next(u for _, u in llama.calls if f"plan days {first} to" in u)
+        assert "Each day's small thing to try is a small when-then plan in one of the situations they named" in week
+        assert "a small when-then plan for today in English, in one of their situations: 'When <situation>, <small " \
+               "step>.'" in week
+        assert 'in a car it is "Before you set off" or "When you have parked", never a moment of the drive' in week
+        assert 'never predicts: never "you will" or "you\'ll"' in week
 
 
 def test_a_moment_label_starts_with_a_capital():
