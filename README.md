@@ -202,9 +202,10 @@ ones before (`elynd_worlds/journeys/`, in English, German, Spanish and French):
   (30) is fixed in code.
 * **The day's block** (`brief.py`: code, no model call) is what makes thirty meditations one story; ELYND's writer
   gets it each day. A practice day picks up from the last one and from how they said it went, every seventh day
-  looks back on the week, the day before their moment rehearses its steps (getting there, the first minute, one small
-  wobble met with their breath), and day thirty looks back on the whole journey, from their first words to today. It
-  can also read back a few words they wrote to themselves on day one; the ELYND app does not ask for them yet.
+  looks back on the week, the day before their moment lets them picture it going well and walk through its steps
+  (getting there, the first minute, one small wobble met with their breath), and day thirty looks back on the whole
+  journey, from their first words to today. It can also read back a few words they wrote to themselves on day one;
+  the ELYND app does not ask for them yet.
 * **A journey's world grows** (`stages.py`, `elynd-worlds stages`): five living worlds of one place, the first
   painted, the other four repainted from it in another light and season from the same viewpoint, each checked by
   the critic next to the first. It is made from a description given by hand, never from a listener's words, and

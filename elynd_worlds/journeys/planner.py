@@ -418,7 +418,8 @@ def parse_week(text: str, ctx: _Context, first: int, last_n: int,
                             f"driving, never a push into what they fear")
             elif name == "try_today" and IN_CAR.search(value) and not STILL.search(value):
                 hard.append(f'day {n} try_today: "{IN_CAR.search(value).group(0)}" while driving: anything in a car is '
-                            f"only before setting off, when parked, or after arriving")
+                            f'only before setting off, when parked, or after arriving (begin it "Before you set off," '
+                            f'or "When you have parked,")')
             if name == "try_today" and PREDICTS.search(value):
                 hard.append(f'day {n} try_today: "{PREDICTS.search(value).group(0)}" predicts: the "then" of a plan '
                             f"invites, in the present tense, and never says what will happen")

@@ -94,14 +94,14 @@ def _moment_line(moment: Moment | None, today: dt.date, past: list[Past] = ()) -
     days = (when - today).days
     label = moment.label
     if days == 1:
-        # Rehearsing the steps (process simulation), not only picturing the result: picturing only success can sap the
-        # effort a moment needs, while rehearsing how it unfolds goes with doing better and worrying less.
+        # The day before: picturing it going well together with rehearsing its steps (process simulation): getting
+        # there, the first minute, a small wobble and how they steady themselves, getting through it their own way.
         return (f'Their "{label}" is tomorrow.',
-                f'Make room to rehearse their "{label}" step by step: getting there, the first minute, one small '
-                f"wobble, named in everyday words and met at once with what steadies them (their breath, their feet, "
-                f"their hands), then getting through it in their own way. Rehearse the steps, not a picture of the "
-                f"result (even if today's step pictures one): never assume how it will go, never "
-                f'"you will". Leave them ready for it.')
+                f'Make room to rehearse their "{label}": let them picture it going well, step by step, steady in '
+                f"the body, and leave them ready for it. Let the picture walk through its steps too: getting there, "
+                f"the first minute, one small wobble, named in everyday words and met at once with what steadies them "
+                f"(their breath, their feet, their hands), then getting through it in their own way. Never "
+                f'"you will".')
     if days == 0:
         return (f'Today is their "{label}".',
                 f'You do not know whether their "{label}" is behind or ahead of them today: follow their note if they '

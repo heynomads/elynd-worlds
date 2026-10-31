@@ -279,6 +279,20 @@ def test_p4_anything_in_a_car_is_only_before_setting_off_parked_or_after_arrivin
     assert plan.day(25).try_today == GOOD_TRY
 
 
+def test_p4_a_slip_in_a_car_is_asked_again_with_its_fix():
+    # A when-then plan asked again three times as "When you sit in the car, …": the reason now says how to begin it.
+    slip = {3: {"try_today": "When you sit in the car, then gently place your hands on the wheel."}}
+    plan, llama = make(Script(weeks={1: [slip, {}]}))
+    assert ('day 3 try_today: "the wheel" while driving: anything in a car is only before setting off, when parked, or '
+            'after arriving (begin it "Before you set off," or "When you have parked,")') in reasons(llama)
+    assert plan.day(3).try_today == GOOD_TRY
+    # Its two beginnings pass.
+    for begun in ("Before you set off, gently place your hands on the wheel, like on Sundays with your dad.",
+                  "When you have parked, gently place your hands on the wheel, like on Sundays with your dad."):
+        plan, llama = make(Script(weeks={1: [{3: {"try_today": begun}}]}))
+        assert reasons(llama) == "" and plan.day(3).try_today == begun
+
+
 @pytest.mark.parametrize("step", ["Stay a little longer with the breath at a red light.",
                                   "Observe your thoughts as you navigate a challenging moment at work.",
                                   "Before you start the engine, three slow breaths with your hands on your lap."])
