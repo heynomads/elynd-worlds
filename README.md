@@ -63,6 +63,25 @@ same time; a rejection cancels the others. The still painting is shown as soon a
 after the script is written in our runs; the slower ones were made six at a time), and the living world follows
 (59–104 s).
 
+### How every world is checked
+
+Every check is built into the run, so no step can skip one and nothing reaches a listener unchecked:
+
+1. **Code first.** The design comes back as strict JSON in a fixed schema; SAM checks that the plate holds no moving
+   subject; a library world that would not move is left out (`looks_dead`).
+2. **An independent judge.** Muse Spark Open looks at every painting next to its design: safe, calm, on brief, no
+   animal or person the design does not bring, no text, at least 7 of 10 (`pass_score`). The still painting is shown
+   only after it says yes.
+3. **One more try, with the reason.** A rejected painting goes back to the art director with the critic's one-sentence
+   fix, and the agent paints once more.
+4. **A safe default.** A world that still fails, or a painting no allowed judge could check, is never shown: the
+   listener keeps a calm library world.
+5. **A person.** Every library painting was opened at full size and looked at for figures before it went in
+   (`scripts/library_audit.py`).
+
+A journey's plan is checked the same way in code: a day that asks for anything while driving, or promises a result,
+is asked again.
+
 ## A world from the first second: the library
 
 A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
