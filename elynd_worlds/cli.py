@@ -28,7 +28,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import library, timeline
+from . import library, place, timeline
 from .art_director import Meditation
 from .director import make_world
 from .meta import Meter, connect, connect_open, encode
@@ -106,6 +106,11 @@ async def _make(args: argparse.Namespace) -> int:
         print("refusing: --open-designer needs the open model (its key, and its ledger under budget)", file=sys.stderr)
         return 2
     print(f"designer: {'Muse Spark Open' if args.open_designer else 'Muse Spark'}", file=sys.stderr)
+    llama = None
+    if args.llama_place:   # as the ELYND app does: Muse Spark designs from Llama's description, never the meditation
+        from .journeys.llama import Llama
+        llama = Llama()
+        print("place: described by Llama 3.3 on Amazon Bedrock (no word of the meditation goes to Meta)", file=sys.stderr)
     out = Path(args.out) / time.strftime("%Y%m%d-%H%M%S")
     gate = asyncio.Semaphore(args.parallel)
 
@@ -113,8 +118,16 @@ async def _make(args: argparse.Namespace) -> int:
         async with gate:
             meter = Meter()
             started = time.monotonic()
+            meditation, described = meditation_for(path, args), None
+            if llama is not None:
+                chat = lambda system, user: llama.chat(system, user, max_tokens=300, temperature=0.4).text  # noqa: E731
+                meditation = await asyncio.to_thread(place.for_designer, chat, meditation)
+                if meditation is None:
+                    return {"name": path.stem, "ok": False, "error": "no place description passed the checks",
+                            "usd": meter.usd, "meta_usd": meter.meta_usd, "open_usd": meter.open_usd}
+                described = meditation.script
             try:
-                world = await make_world(client, meditation_for(path, args), settings=settings, meter=meter,
+                world = await make_world(client, meditation, settings=settings, meter=meter,
                                          open_client=open_client)
             except Exception as error:  # noqa: BLE001 - report and keep the batch going
                 return {"name": path.stem, "ok": False, "error": f"{type(error).__name__}: {error}"[:300],
@@ -128,7 +141,8 @@ async def _make(args: argparse.Namespace) -> int:
                     "design_seconds": next((s.seconds for s in world.trace if s.name == "design"), None),
                     "plate": world.plate_source,
                     "layers": [layer.wording for layer in world.layers] if world.moving else [],
-                    "wanted": [s["name"] for s in world.scene["subjects"]], "folder": str(folder)}
+                    "wanted": [s["name"] for s in world.scene["subjects"]], "folder": str(folder),
+                    **({"place": described} if described else {})}
 
     results = await asyncio.gather(*(one(Path(p)) for p in args.scripts))
     total = round(sum(r["meta_usd"] for r in results), 5)
@@ -295,6 +309,9 @@ def main(argv: list[str] | None = None) -> int:
     make.add_argument("--open-budget", type=float, default=DEFAULT.open_budget_usd)
     make.add_argument("--open-timeout", type=float, default=45.0,
                       help="seconds the open critic gets before Muse Spark judges (a batch shares one process)")
+    make.add_argument("--llama-place", action="store_true",
+                      help="Llama 3.3 on Amazon Bedrock (AWS credentials from the environment) describes the place "
+                           "first and Muse Spark designs from that, never from the meditation, as in the ELYND app")
     make.add_argument("--open-designer", action="store_true",
                       help="Muse Spark Open designs each world too: everything but painting and cutting on open weights")
 

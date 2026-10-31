@@ -186,8 +186,19 @@ class Meditation:
     mood: str = ""
     language: str = "en"
     minutes: int = 10
+    # 31 Oct 2026: `script` is not the meditation but the place it needs, as Llama 3.3 described it without the
+    # listener's words (place.py); then no mood either.
+    brief: bool = False
 
     def as_message(self) -> str:
+        if self.brief:
+            return (
+                f"Technique: {self.technique or 'not given'}\n"
+                f"Length: {self.minutes} minutes\n"
+                f"Language of the meditation: {self.language}\n\n"
+                f"The place this meditation needs, described for you without the listener's words:\n"
+                f"{self.script.strip()}"
+            )
         return (
             f"Technique: {self.technique or 'not given'}\n"
             f"Mood before the session: {self.mood or 'not given'}\n"
