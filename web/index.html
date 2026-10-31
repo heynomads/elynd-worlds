@@ -76,9 +76,11 @@
     moves and finds the water, the sky and the grass, so the painting lives as such a place would. These are worlds the
     agent made for the example meditations in this repository.</p>
   <ul class="models" aria-label="Meta models used">
-    <li>Muse Spark · designs, checks, revises</li>
+    <li>Muse Spark · designs and revises</li>
     <li>Muse Image · paints and repaints</li>
+    <li>Muse Spark Open · judges every painting (open weights)</li>
     <li>SAM 3.1 · cuts the layers, finds the water, sky and grass, checks the plate</li>
+    <li>Llama 3.3 · the journeys' guide and plan (open weights)</li>
   </ul>
   <div class="actions">
     <button class="play" type="button" aria-pressed="false">▶ Play as a meditation</button>
@@ -128,6 +130,7 @@
     design: ["Muse Spark", "designed the world"],
     paint: ["Muse Image", "painted it"],
     critique: ["Muse Spark", "looked at the painting"],
+    "critique (open weights)": ["Muse Spark Open", "judged the painting again (31 Oct)"],
     cut: ["SAM 3.1", "cut the subjects into layers"],
     "remove subjects": ["Muse Image", "painted the scene without what moves"],
     regions: ["SAM 3.1", "found what moves in nature"],
@@ -140,10 +143,12 @@
   function steps(world) {
     return world.steps.map((step) => {
       const base = step.step.replace(/ \d+$/, "");
-      const [who, what] = STEP[base] || ["", step.step];
+      let [who, what] = STEP[base] || ["", step.step];
+      if (base === "critique" && /open/.test(world.verdict.judge || "")) who = "Muse Spark Open";
       let note = "";
       if (base === "design") note = esc(world.design.place);
       else if (base === "critique") note = `<span class="score">${world.verdict.score}/10</span> “${esc(world.verdict.reason)}”`;
+      else if (base === "critique (open weights)" && world.open_verdict) note = `<span class="score">${world.open_verdict.score}/10</span> “${esc(world.open_verdict.reason)}”`;
       else if (base === "cut") note = world.layers.map((l) => `${esc(l.name)} (${esc(l.motion)})`).join(", ") || "nothing it could cut cleanly";
       else if (base === "regions") note = esc(step.note);
       else if (base === "replate") note = esc(step.note);

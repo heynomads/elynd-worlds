@@ -110,7 +110,7 @@ def build(folder: Path) -> dict:
         "meditation": {"technique": header.get("technique", ""), "language": header.get("language", ""),
                        "minutes": int(header.get("minutes", 10)), "opening": opening},
         "design": {k: scene.get(k) for k in ("place", "time_of_day", "light", "air", "subjects", "nature", "particles")},
-        "verdict": {k: verdict[k] for k in ("score", "reason", "subjects_seen")},
+        "verdict": {k: verdict[k] for k in ("score", "reason", "subjects_seen", "judge") if k in verdict},
         "steps": manifest["trace"],
         "cost_usd": manifest["cost_usd"],
         "seconds": manifest["seconds"],

@@ -137,6 +137,11 @@
      "note": "score 9: Glassy still water under a soft pink and gold sunset with moored boat perfectly conveys quiet harbour calm."
     },
     {
+     "step": "critique (open weights)",
+     "seconds": 4.76,
+     "note": "score 10: Painting shows the quiet harbour at golden hour with still glassy water reflecting the soft pink and gold sky, matching the design perfectly with both subjects calm and distinct."
+    },
+    {
      "step": "regions 1",
      "seconds": 17.59,
      "note": "water, sky"
@@ -158,7 +163,13 @@
     }
    ],
    "cost_usd": 0.05831,
-   "seconds": 70.4
+   "seconds": 70.4,
+   "open_verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 10,
+    "reason": "Painting shows the quiet harbour at golden hour with still glassy water reflecting the soft pink and gold sky, matching the design perfectly with both subjects calm and distinct.",
+    "passes": true
+   }
   },
   {
    "id": "bodyscan_meadow",
@@ -166,14 +177,14 @@
    "sleep": false,
    "aspect": 0.5625,
    "focus": [
-    0.4878,
-    0.6072
+    0.5155,
+    0.6581
    ],
    "palette": [
-    "#8FC3E8",
-    "#B5D99A",
-    "#EAF3C5",
-    "#F9E9A6"
+    "#87BFE8",
+    "#7CB342",
+    "#DDEDC0",
+    "#8B6D4A"
    ],
    "painting": "painting.webp",
    "plate": "plate.webp",
@@ -184,17 +195,35 @@
      "motion": "flutter",
      "attached": "air",
      "anchor": [
-      0.4878,
-      0.6072
+      0.3134,
+      0.6345
      ],
      "box": [
-      0.355,
-      0.5464,
-      0.6207,
-      0.668
+      0.1146,
+      0.5405,
+      0.5122,
+      0.7285
      ],
      "glows": false,
      "file": "layer_0.webp"
+    },
+    {
+     "name": "smooth stone",
+     "depth": "mid",
+     "motion": "still",
+     "attached": "ground",
+     "anchor": [
+      0.7834,
+      0.7412
+     ],
+     "box": [
+      0.6259,
+      0.6377,
+      0.941,
+      0.7412
+     ],
+     "glows": false,
+     "file": "layer_1.webp"
     }
    ],
    "living": {
@@ -203,15 +232,15 @@
     "sky": true,
     "grass": true,
     "stream": false,
-    "trees": false,
+    "trees": true,
     "horizon": null,
     "lights": [],
-    "particles": "pollen",
     "birds": "flock",
     "night": false,
     "fish": false,
     "shadows": true,
-    "seed": 0.005
+    "particles": "pollen",
+    "seed": 0.3872
    },
    "meditation": {
     "technique": "body_scan",
@@ -220,77 +249,85 @@
     "opening": "Bring your attention to your feet. Notice their weight, their warmth. Now imagine you are lying in a summer meadow at midday, the grass soft beneath you, a wooden fence at the far edge of the field. Let your attention move up through your…"
    },
    "design": {
-    "place": "A sunlit summer meadow with soft grass stretching to a distant wooden fence under a wide sky.",
+    "place": "A bright summer meadow at midday with soft grass stretching to a wooden fence and distant trees.",
     "time_of_day": "midday",
-    "light": "Bright soft midday sunlight from overhead, even and gentle",
-    "air": "Warm clear still air with a faint soft summer haze",
+    "light": "bright soft midday sunlight from overhead",
+    "air": "warm still summer air with soft brightness",
     "subjects": [
      {
       "attached": "air",
       "depth": "near",
       "glows": false,
+      "kind": "animal",
       "motion": "flutter",
       "name": "white butterfly",
-      "where": "centre"
+      "where": "left"
+     },
+     {
+      "attached": "ground",
+      "depth": "mid",
+      "glows": false,
+      "kind": "thing",
+      "motion": "still",
+      "name": "smooth stone",
+      "where": "right"
      }
     ],
     "nature": [
      "sky",
-     "grass"
+     "grass",
+     "trees"
     ],
     "particles": "pollen"
    },
    "verdict": {
-    "score": 9,
-    "reason": "Bright open meadow with distant fence and clear central butterfly perfectly conveys peaceful midday calm.",
+    "score": 10,
+    "reason": "Painting shows bright midday meadow with wooden fence and both designed subjects clearly visible, calm and accurate.",
     "subjects_seen": [
-     "white butterfly"
-    ]
+     "white butterfly",
+     "smooth stone"
+    ],
+    "judge": "meta-models/muse-spark-open-1026"
    },
    "steps": [
     {
      "step": "design",
-     "seconds": 15.28,
-     "note": "Sunlit Summer Meadow; subjects: white butterfly"
+     "seconds": 6.42,
+     "note": "Sunlit Summer Meadow; subjects: white butterfly, smooth stone"
     },
     {
      "step": "paint 1",
-     "seconds": 39.43,
+     "seconds": 23.49,
      "note": ""
-    },
-    {
-     "step": "cut 1",
-     "seconds": 6.99,
-     "note": "white butterfly"
     },
     {
      "step": "critique 1",
-     "seconds": 7.03,
-     "note": "score 9: Bright open meadow with distant fence and clear central butterfly perfectly conveys peaceful midday calm."
-    },
-    {
-     "step": "regions 1",
-     "seconds": 23.26,
-     "note": "sky, grass"
+     "seconds": 12.83,
+     "note": "score 10 by meta-models/muse-spark-open-1026: Painting shows bright midday meadow with wooden fence and both designed subjects clearly visible, calm and accurate."
     },
     {
      "step": "remove subjects 1",
-     "seconds": 29.4,
+     "seconds": 23.28,
      "note": ""
     },
     {
-     "step": "plate",
-     "seconds": 17.93,
-     "note": "filled"
+     "step": "regions 1",
+     "seconds": 27.4,
+     "note": "sky, grass"
     },
     {
-     "step": "replate",
-     "seconds": 0.0,
-     "note": "muse_image: repainted again (26 Oct 23:05, $0.0125) with the current engine (the prompt names only the moving subjects; tone matched by the median shift); SAM 3.1 found it clean"
+     "step": "cut 1",
+     "seconds": 28.26,
+     "note": "white butterfly, smooth stone"
+    },
+    {
+     "step": "plate",
+     "seconds": 2.15,
+     "note": "muse_image"
     }
    ],
-   "cost_usd": 0.05023,
-   "seconds": 102.14
+   "cost_usd": 0.05011,
+   "seconds": 60.42
   },
   {
    "id": "german_forest",
@@ -424,6 +461,11 @@
      "note": "score 9: Golden forest, soft light, quiet stream, mossy boulder and floating red leaf perfectly match the peaceful autumn design."
     },
     {
+     "step": "critique (open weights)",
+     "seconds": 5.2,
+     "note": "score 9: Painting shows golden beech forest at golden hour with soft filtered light, narrow stream, and both subjects clearly visible and distinct, conveying warm calm stillness with no figures or text."
+    },
+    {
      "step": "regions 1",
      "seconds": 18.43,
      "note": "stream"
@@ -450,7 +492,13 @@
     }
    ],
    "cost_usd": 0.06256,
-   "seconds": 103.47
+   "seconds": 103.47,
+   "open_verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 9,
+    "reason": "Painting shows golden beech forest at golden hour with soft filtered light, narrow stream, and both subjects clearly visible and distinct, conveying warm calm stillness with no figures or text.",
+    "passes": true
+   }
   },
   {
    "id": "lake_visualization",
@@ -543,6 +591,11 @@
      "note": "score 9: A misty still lake framed by tall pines in soft morning light perfectly conveys quiet calm for meditation."
     },
     {
+     "step": "critique (open weights)",
+     "seconds": 4.52,
+     "note": "score 9: Still misty pine lake with mirror-like water and soft dawn light perfectly matches the morning mood, and the smooth stone on the left is whole and distinct."
+    },
+    {
      "step": "regions 1",
      "seconds": 12.76,
      "note": "water, sky"
@@ -564,7 +617,13 @@
     }
    ],
    "cost_usd": 0.05294,
-   "seconds": 101.71
+   "seconds": 101.71,
+   "open_verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 9,
+    "reason": "Still misty pine lake with mirror-like water and soft dawn light perfectly matches the morning mood, and the smooth stone on the left is whole and distinct.",
+    "passes": true
+   }
   },
   {
    "id": "sleep_cabin",
@@ -678,6 +737,11 @@
      "note": "score 9: The warm lantern in the cabin window overlooking misty blue night ridges creates a still and sleep-ready calm ideal for meditation."
     },
     {
+     "step": "critique (open weights)",
+     "seconds": 6.66,
+     "note": "score 9: Painting shows the cabin window view to fading blue ridge at night with warm glowing lantern centered on sill matching place time and calm mood and no figures or text."
+    },
+    {
      "step": "cut 1",
      "seconds": 11.72,
      "note": "candle lantern"
@@ -704,7 +768,13 @@
     }
    ],
    "cost_usd": 0.05132,
-   "seconds": 97.99
+   "seconds": 97.99,
+   "open_verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 9,
+    "reason": "Painting shows the cabin window view to fading blue ridge at night with warm glowing lantern centered on sill matching place time and calm mood and no figures or text.",
+    "passes": true
+   }
   },
   {
    "id": "spanish_beach",
@@ -843,6 +913,11 @@
      "note": "score 10: Soft golden sunset beach with gentle waves creates a peaceful mood with both subjects clearly visible."
     },
     {
+     "step": "critique (open weights)",
+     "seconds": 4.95,
+     "note": "score 10: Painting shows the quiet sunset beach at golden hour with soft glowing light, warm still air, gentle waves and both the white seashell and wooden rowboat clearly visible and calm."
+    },
+    {
      "step": "regions 1",
      "seconds": 17.25,
      "note": "water, sky"
@@ -864,7 +939,13 @@
     }
    ],
    "cost_usd": 0.05762,
-   "seconds": 65.24
+   "seconds": 65.24,
+   "open_verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 10,
+    "reason": "Painting shows the quiet sunset beach at golden hour with soft glowing light, warm still air, gentle waves and both the white seashell and wooden rowboat clearly visible and calm.",
+    "passes": true
+   }
   }
  ]
 }
