@@ -69,7 +69,7 @@ guided meditations visit most often (most places at several times of day, season
 worlds for falling asleep, all from `scripts/library_briefs.py` and each checked by the critic like any other
 (`library/catalog.json` lists them). Every library world looks alive (`library.looks_dead`: water, a stream, a
 field, swaying crowns, rain, snow, leaves or petals, a moving subject, or a sky wide or starry enough to carry the
-world; `scripts/library_audit.py`), and every figure and post was looked at up close.
+world; `scripts/library_audit.py`), and every painting was opened at full size and looked at for figures.
 
 **What each world helps with.** Muse Spark looked at every painting (`library.tag_moods`, 384 px, one world a
 request) and named the one to three feelings it helps with, best first: calm, letting go, warmth, rest, a push,
