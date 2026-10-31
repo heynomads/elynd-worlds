@@ -10,7 +10,9 @@ built during the Meta Global AI Developer Hackathon (Startup track, *Build for Y
 meditations a place you can see: a calm painting that fits the meditation and lives as such a place would.
 Its water ripples, its clouds drift, its grass waves, a lantern flickers, and the objects in it move as such
 things move. It greets you as you arrive, fades while your eyes are closed, returns in long silences and at the
-end, and stays with you afterwards as a card you can share.
+end, and stays with you afterwards as a card you can share. When a meditation is personal, Llama 3.3, Meta's open
+model, reads it in ELYND's own AWS account and describes the place it needs, and Meta's models paint that place from
+the description, never from the listener's words ([below](#privacy-and-safety)).
 
 **ELYND Journeys**, built during the same hackathon and also in this repository, turns thirty days into one story:
 a meditation for each day of a listener's journey that remembers the ones before ([below](#elynd-journeys-built-with-llama)).
@@ -25,16 +27,19 @@ Its guide and its plan run on Meta's open-weights Llama 3.3 70B. **Built with Ll
 > speaks its wire format), httpx (BSD-3-Clause), Pillow (MIT-CMU), NumPy (BSD-3-Clause), Meta's meta-sam-parser
 > (SAM License) for SAM 3.1's answers, pytest (MIT) and pytest-asyncio (Apache-2.0), Flutter (BSD-3-Clause), boto3
 > (Apache-2.0) for Amazon Bedrock in Journeys, PyTorch (BSD-3-Clause) and Hugging Face Transformers (Apache-2.0)
-> with the Depth Anything V2 Small model (Apache-2.0, downloaded on first use) for a journey's climb, and the Poppins
+> with the Depth Anything V2 Small model (Apache-2.0, downloaded on first use) for a journey's climb (run once,
+> offline, when the climb is rendered: not a Meta model, never in the app or on the server), and the Poppins
 > font (SIL Open Font License 1.1, bundled).
 
 ## How a world is made
 
-One agent run per meditation, four Meta models, one of them open weights:
+One agent run per meditation, four Meta models, one of them open weights (in the ELYND app a fifth comes first:
+Llama 3.3 describes the place, so the art director never reads a listener's words):
 
 ```mermaid
 flowchart TD
-    M[Meditation script] --> D[Muse Spark · art director<br/>designs the world as strict JSON]
+    M[Meditation script] --> L[Llama 3.3 · in the app, in ELYND's own AWS<br/>the place it needs, without the listener's words]
+    L --> D[Muse Spark · art director<br/>designs the world as strict JSON]
     D --> P[Muse Image · painter<br/>paints it, 9:16]
     P --> C[Muse Spark Open vision · critic<br/>open weights, on Baseten; in the app the only judge<br/>safe? calm? on brief? score]
     P --> S[SAM 3.1 · cutter<br/>one layer per subject]
@@ -67,7 +72,8 @@ after the script is written in our runs; the slower ones were made six at a time
 
 Every check is built into the run, so no step can skip one and nothing reaches a listener unchecked:
 
-1. **Code first.** The design comes back as strict JSON in a fixed schema; SAM checks that the plate holds no moving
+1. **Code first.** In the app, the place Llama describes for a meditation holds nothing about the listener
+   (`place.py`); the design comes back as strict JSON in a fixed schema; SAM checks that the plate holds no moving
    subject; a library world that would not move is left out (`looks_dead`).
 2. **An independent judge.** Muse Spark Open looks at every painting next to its design: safe, calm, on brief, no
    animal or person the design does not bring, no text, at least 7 of 10 (`pass_score`). The still painting is shown
@@ -104,8 +110,10 @@ the paintings told a summit at sunrise from a sunny garden.
 their last part), else the listener's feeling, the same way the music is chosen; fit first, then never a world
 seen in the last ten meditations while one that fits as well is fresh. A sleep meditation gets a sleep world.
 
-With **personal worlds**, which a listener turns on, Muse Spark reads the meditation instead (`library.pick`, at
-most its first 600 words, minimal reasoning, a prompt-cache key per use: about a third of a cent), names the three
+With **personal worlds**, which a listener turns on, Muse Spark chooses instead (`library.pick`, minimal reasoning,
+a prompt-cache key per use: about a third of a cent). In the ELYND app it never reads the meditation: Llama 3.3,
+Meta's open model, reads it in ELYND's own AWS account (Amazon Bedrock) and describes the place it needs, without
+the listener's words, and code checks that description before anything goes on (`place.py`; below). It names the three
 library worlds that fit best and says whether the meditation is built around something no library world shows: a
 particular animal or object that matters to the listener, a particular person's place, an unusual setting.
 
@@ -152,12 +160,18 @@ particular animal or object that matters to the listener, a particular person's 
 
 ## Privacy and safety
 
-* Opt-in for Meta. Every meditation opens on a library world chosen on ELYND's own server, and nothing is sent
-  for that. Nothing reaches Meta until a listener turns on personal worlds, on a screen that says plainly what is
-  sent to whom (a one-time card on the home screen, or the switch in Profile, which also turns it off again). The
-  server records that consent before it asks Meta anything.
-* In ELYND, only the written meditation goes to Meta, with its technique, language and length: no name, no
-  email, no mood, no account id.
+* Opt-in. Every meditation opens on a library world chosen on ELYND's own server, and nothing is sent for that.
+  Personal worlds are off until a listener turns them on, on a screen that says plainly what is sent to whom (a
+  one-time card on the home screen, or the switch in Profile, which also turns it off again). The server records
+  that consent before it reads the meditation for them.
+* A listener's words never reach Meta's Model API: its processor terms exclude health data, consent or not, and a
+  meditation can repeat what a listener shared about their health. In ELYND, Llama 3.3 on Amazon Bedrock, in
+  ELYND's own AWS account (as for Journeys), reads the meditation and describes the place it needs in a few
+  sentences; `place.py` refuses a description that speaks of a person, names health, feelings or the body, takes a
+  name from the meditation or copies a run of its words, asks once more, and otherwise the library world stays. Only
+  that description goes to Meta, with the technique, language and length: no name, no email, no mood, no account
+  id. (Tested on nine meditations, three of them personal ones in English, German and Spanish: every world 9-10 of
+  10 from the critic, $0.03-0.05 each; the descriptions kept each meditation's own place and things.)
 * Standard mode only. The package refuses `-contributor` models, which may train on what they receive.
 * `store: false` on every Muse Spark and SAM request (the Responses API stores requests by default), and a
   pseudonymous listener id (a keyed hash Meta cannot reverse) so that any abuse enforcement targets one
@@ -201,9 +215,10 @@ design whenever it cannot. On the six example meditations a whole world cost $0.
 
 In the ELYND app the open model judges but does not design. A listener's meditation can carry what they shared
 about their health, and Baseten's standard data terms exclude health data unless a separate agreement covers it
-(its Data Processing Addendum, 15 Sep 2026, Annex A), so listeners' meditations go only to Meta, whose models they
-agreed to. Muse Spark Open sees only the painting and a short description of the place. Library worlds grow from
-our own short texts about a place, never from a listener's meditation, so the open model can design those.
+(its Data Processing Addendum, 15 Sep 2026, Annex A), and Meta's Model API terms exclude it too, so no listener's
+meditation goes to either: Llama 3.3 in ELYND's own AWS describes the place (above), and Muse Spark designs from that.
+Muse Spark Open sees only the painting and a short description of the place. Library worlds grow from our own short
+texts about a place, never from a listener's meditation, so the open model can design those.
 
 ## ELYND Journeys: built with Llama
 
