@@ -230,11 +230,14 @@ nothing of a listener's journey goes into it.
 ```bash
 .venv/bin/pip install torch "transformers<5"                              # for the depth model
 .venv/bin/python scripts/climb/climb_stage.py B climb/A.png climb/B.png  # week 2 from week 1 (Meta key); C to G2 alike
+.venv/bin/python scripts/climb/climb_stage.py PLATE climb/A.png climb/A_plate.png  # optional: A without its nearest objects
 .venv/bin/python scripts/climb/climb_weeks.py climb out/climb             # the whole climb as one video
 .venv/bin/python scripts/climb/climb_days.py climb out/climb-days         # each day's still and step, marked as AI-made
 ```
 
 `climb/A.png` can be any painting of a path; ours is the first stage of a journey's world (`elynd-worlds stages`).
+Week 1's steps keep a near tree's edge whole (hard depth edges, guided by colour), and with `climb/A_plate.png`
+what they reveal behind a rock or a post is painted rather than smeared (31 Oct 2026).
 
 ## See it in a browser
 

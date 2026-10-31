@@ -9,9 +9,13 @@ Each clip starts on the day before's still and ends on its day's still, so the a
 Every still and clip is marked as made by AI, like every picture of a world (meta.encode, loop.mark_mp4). The climb
 is made once and is the same for everyone: nothing of a listener's journey goes into it.
 
+Week 1 walks with STAGES/A_plate.png behind it when there (A without its nearest objects, climb_stage.py PLATE:
+what a step reveals behind a rock or a post) and walker.py's hard depth edges (a near tree's edge never tears into
+specks as the days walk on). CLIMB_UNTIL_DAY=8 renders only days 1-8 (manifest_until.json).
+
     python scripts/climb/climb_days.py climb out/climb-days"""
 from __future__ import annotations
-import json, shutil, subprocess, sys, tempfile
+import json, os, shutil, subprocess, sys, tempfile
 from pathlib import Path
 import numpy as np
 from PIL import Image
@@ -25,6 +29,18 @@ sys.path.insert(0, str(Path(__file__).parent))
 import climb_weeks as cw                                # noqa: E402  (loads the paintings; renders nothing yet)
 
 W, H, FPS = cw.W, cw.H, cw.FPS
+UNTIL = int(os.environ.get("CLIMB_UNTIL_DAY", "0"))
+
+
+def plate_for(key: str) -> Image.Image | None:
+    """STAGES/<key>_plate.png with the painting's colours (each channel's mean and spread), if there."""
+    path = STAGES_DIR / f"{key}_plate.png"
+    if not path.exists():
+        return None
+    a = np.asarray(Image.open(path).convert("RGB").resize(cw.PICS[key].size, Image.LANCZOS), dtype=np.float32)
+    r = np.asarray(cw.PICS[key], dtype=np.float32)
+    a = (a - a.mean((0, 1))) / (a.std((0, 1)) + 1e-6) * r.std((0, 1)) + r.mean((0, 1))
+    return Image.fromarray(a.clip(0, 255).astype(np.uint8))
 
 
 def clean(img: Image.Image, day: int, key: str, factor: float | None = None) -> Image.Image:
@@ -101,7 +117,7 @@ def cloud_clip(w, key, w2, key2, day, tz):
 
 
 def main():
-    w = cw.Walker(cw.PICS["A"], pp=cw.STAGES[0][1])
+    w = cw.Walker(cw.PICS["A"], pp=cw.STAGES[0][1], plate=plate_for("A"), edges=True)
     tz = 0.0
     days[1] = {"step": None, "still": still(clean(w.render(0.0), 1, "A"), 1)}
     for s, (key, _) in enumerate(cw.STAGES):
@@ -117,6 +133,10 @@ def main():
         days[last + 1]["still"] = still(clean(w2.render(tz), last + 1, nxt), last + 1)
         del w
         w = w2
+        if UNTIL and last + 1 >= UNTIL:
+            (OUT / "manifest_until.json").write_text(json.dumps({str(d): days[d] for d in sorted(days)}, indent=1))
+            print(len(days), "days (until day", UNTIL, ");", OUT)
+            return
     # Day 30: the last steps up to the cairn (an ordinary step), then the finale once day 30 is made.
     c = Clip("step30.mp4")
     m = frames(0.85)

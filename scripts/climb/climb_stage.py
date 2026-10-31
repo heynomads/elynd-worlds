@@ -51,6 +51,11 @@ STAGES = {
            "in the valley; distant hills fade into a pale morning sky. The sun has just risen behind the viewer: "
            "warm golden light, long soft shadows pointing down the slope. Keep this picture's painterly style, "
            "brushwork and palette, so it is clearly the same place. " + painter.PLACE_ALONE_STYLE),
+    # The first painting without its nearest objects (climb_days.py walks week 1 with it behind: what the first steps
+    # reveal behind a rock or a post is painted, not smeared). Save it as climb/A_plate.png.
+    "PLATE": ("Remove the nearest objects in the foreground completely (a rock, a post or a stump at the front of the "
+              "picture) and paint what would be behind them instead, continuing the ground and the path naturally. "
+              "Change nothing else: the same place, light, palette, brushwork and framing. " + painter.PLACE_ALONE_STYLE),
 }
 
 
