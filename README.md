@@ -27,9 +27,10 @@ Its guide and its plan run on Meta's open-weights Llama 3.3 70B. **Built with Ll
 > speaks its wire format), httpx (BSD-3-Clause), Pillow (MIT-CMU), NumPy (BSD-3-Clause), Meta's meta-sam-parser
 > (SAM License) for SAM 3.1's answers, pytest (MIT) and pytest-asyncio (Apache-2.0), Flutter (BSD-3-Clause), boto3
 > (Apache-2.0) for Amazon Bedrock in Journeys, PyTorch (BSD-3-Clause) and Hugging Face Transformers (Apache-2.0)
-> with the Depth Anything V2 Small model (Apache-2.0, downloaded on first use) for a journey's climb (run once,
-> offline, when the climb is rendered: not a Meta model, never in the app or on the server), and the Poppins
-> font (SIL Open Font License 1.1, bundled).
+> with the Depth Anything V2 Small model (Yang et al., 2024, arXiv:2406.09414; Apache-2.0, downloaded on first use)
+> for a journey's climb (run once, offline, when the climb is rendered; not a Meta model: the depth maps it made
+> ship as pictures in ELYND's app for the journey's walk, but the model itself never runs in the app or on the
+> server), and the Poppins font (SIL Open Font License 1.1, bundled).
 
 ## How a world is made
 
