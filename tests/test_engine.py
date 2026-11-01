@@ -20,7 +20,8 @@ from elynd_worlds import (Meditation, Meter, Settings, art_director, cli, critic
 from elynd_worlds import regions as regions_module
 from elynd_worlds.card import make_card
 from elynd_worlds.director import NoWorld, make_world, make_world_or_none
-from elynd_worlds.meta import MetaAPIError, _ResponsesOverHTTP, is_marked, preview_jpeg
+from elynd_worlds.meta import (MetaAPIError, _ResponsesOverHTTP, connect, connect_open, is_marked, preview_jpeg,
+                               reasoning)
 from elynd_worlds.settings import Prices
 
 from .fakes import (BRANCH_BOX, DOG, EDIT, FAIL, H, PAINTING, PASS, SCENE, SKY_BOX, STONE_BOX, W, WATER_BOX, WOMAN,
@@ -741,6 +742,30 @@ async def test_responses_over_http_streams_events_and_reports_errors():
     assert events == [{"type": "a"}, {"type": "b"}]
     with pytest.raises(MetaAPIError, match="402"):
         [e async for e in await responses.create(model="bad", input=[])]
+
+
+async def test_the_reasoning_effort_reaches_the_request_body_with_any_sdk():
+    """An app may pin an OpenAI SDK older than 1.58, which has no `reasoning_effort` (with openai 1.57.0 every world
+    failed with a TypeError before its first request). Through connect() and connect_open() the effort goes in the
+    request's body with any SDK, beside the body fields a request brings itself."""
+    seen = []
+
+    def answer(request: httpx.Request) -> httpx.Response:
+        seen.append((request.url.host, json.loads(request.content)))
+        return httpx.Response(200, json={
+            "id": "c", "object": "chat.completion", "created": 0, "model": "m",
+            "choices": [{"index": 0, "finish_reason": "stop", "message": {"role": "assistant", "content": "{}"}}]})
+
+    # The default hosts; the mock transport answers, nothing leaves the test.
+    meta_client = connect("k", transport=httpx.MockTransport(answer))
+    open_client = connect_open("k", transport=httpx.MockTransport(answer))
+    for client in (meta_client, open_client):
+        response = await client.chat.completions.create(
+            model="m", messages=[{"role": "user", "content": "hi"}], extra_body={"store": False}, **reasoning("low"))
+        assert response.choices[0].message.content == "{}"
+    await meta_client.chat.completions.create(model="m", messages=[], **reasoning(None))
+    assert [(host, body.get("reasoning_effort"), body.get("store")) for host, body in seen] == [
+        ("api.meta.ai", "low", False), ("inference.baseten.co", "low", False), ("api.meta.ai", None, None)]
 
 
 # ─── command line ───────────────────────────────────────────────────────

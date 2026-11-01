@@ -10,12 +10,14 @@ client. This module adds three things around it:
 * `_ResponsesOverHTTP`: SAM 3.1 is served through the Responses API, which
   OpenAI SDKs older than 1.66 do not have. The same streaming request is then
   sent with httpx, so the package also runs inside apps that pin an older SDK.
+  `_effort_in_body` does the same for `reasoning_effort` (SDKs older than 1.58).
 * Small helpers for images (data URLs, decoding, Muse Image's built-in tools,
   and the machine-readable "made by AI" mark every picture keeps).
 """
 from __future__ import annotations
 
 import base64
+import inspect
 import io
 import json
 import logging
@@ -245,15 +247,17 @@ class _ResponsesOverHTTP:
 
 
 def connect(api_key: str | None = None, *, base_url: str = API_BASE, timeout: float = 60.0,
-            max_retries: int = 2) -> AsyncOpenAI:
-    """An async client for Meta Model API. The key defaults to $MODEL_API_KEY."""
+            max_retries: int = 2, transport: httpx.AsyncBaseTransport | None = None) -> AsyncOpenAI:
+    """An async client for Meta Model API. The key defaults to $MODEL_API_KEY. `transport` lets tests answer
+    without a network."""
     key = (api_key or os.environ.get("MODEL_API_KEY", "")).strip()
     if not key:
         raise MetaAPIError("No Meta Model API key: pass one or set MODEL_API_KEY")
-    client = AsyncOpenAI(base_url=base_url, api_key=key, timeout=timeout, max_retries=max_retries)
+    client = AsyncOpenAI(base_url=base_url, api_key=key, timeout=timeout, max_retries=max_retries,
+                         http_client=httpx.AsyncClient(transport=transport) if transport else None)
     if not hasattr(client, "responses"):
-        client.responses = _ResponsesOverHTTP(key, base_url)
-    return client
+        client.responses = _ResponsesOverHTTP(key, base_url, transport)
+    return _effort_in_body(client)
 
 
 def reasoning(effort: str | None) -> dict[str, Any]:
@@ -262,7 +266,29 @@ def reasoning(effort: str | None) -> dict[str, Any]:
     return {"reasoning_effort": effort} if effort else {}
 
 
-def connect_open(api_key: str | None = None, *, base_url: str = OPEN_API_BASE, timeout: float = 60.0) -> AsyncOpenAI:
+def _effort_in_body(client: AsyncOpenAI) -> AsyncOpenAI:
+    """`reasoning_effort` (reasoning()) for OpenAI SDKs older than 1.58, which do not know it: it goes in the
+    request's body, where a newer SDK puts it too, so the model's host reads the same request.
+
+    Without it, in an app that pins such an SDK, every Muse Spark and Muse Spark Open request with an effort fails
+    before it is sent (TypeError: an unexpected keyword argument 'reasoning_effort'), and no world is painted.
+    """
+    completions = client.chat.completions
+    create = completions.create
+    if "reasoning_effort" in inspect.signature(create).parameters:
+        return client
+
+    async def create_with_effort(*args: Any, reasoning_effort: str | None = None, **request: Any) -> Any:
+        if reasoning_effort is not None:
+            request["extra_body"] = {**(request.get("extra_body") or {}), "reasoning_effort": reasoning_effort}
+        return await create(*args, **request)
+
+    completions.create = create_with_effort
+    return client
+
+
+def connect_open(api_key: str | None = None, *, base_url: str = OPEN_API_BASE, timeout: float = 60.0,
+                 transport: httpx.AsyncBaseTransport | None = None) -> AsyncOpenAI:
     """An async client for Muse Spark Open (served by Baseten). The key defaults to $OPEN_MODEL_API_KEY.
 
     It never retries: when the open model fails, Muse Spark on Meta Model API answers instead.
@@ -270,7 +296,8 @@ def connect_open(api_key: str | None = None, *, base_url: str = OPEN_API_BASE, t
     key = (api_key or os.environ.get("OPEN_MODEL_API_KEY", "")).strip()
     if not key:
         raise MetaAPIError("No open-model API key: pass one or set OPEN_MODEL_API_KEY")
-    return AsyncOpenAI(base_url=base_url, api_key=key, timeout=timeout, max_retries=0)
+    return _effort_in_body(AsyncOpenAI(base_url=base_url, api_key=key, timeout=timeout, max_retries=0,
+                                       http_client=httpx.AsyncClient(transport=transport) if transport else None))
 
 
 # Models Meta Model API answered 404 for, and until when (time.monotonic()) they are skipped.
