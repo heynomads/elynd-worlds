@@ -40,6 +40,10 @@ from .settings import DEFAULT, Settings
 # Channel order of the region map, and what SAM 3.1 is asked for each.
 CHANNELS = ("water", "sky", "grass", "stream")
 PHRASES = {"water": "water", "sky": "sky", "grass": "grass", "stream": "stream"}
+# "grass" finds nothing in some paintings (a watercolour slope, the verge of a trail: 2 of the 19 push worlds of
+# 30 Oct 2026, the pilot of 2 Nov), where "grassy ground" finds the near meadow (recut_grass_20261031). It is asked
+# only when no grass was found at all, one more request, so a far hillside never waves with a meadow that was found.
+GRASS_AGAIN = "grassy ground"
 # What a field is made of, in the words of the design's place, and what SAM is asked for: the specific
 # plants first, then flowers in general.
 PLANTS = [(re.compile(rf"\b({words})\b", re.I), phrase) for words, phrase in (
@@ -125,7 +129,12 @@ async def find_regions(client, painting: bytes, scene: dict[str, Any], meter: Me
     answers = await asyncio.gather(*(segment(client, url, phrase, meter, settings) for _, phrase in asks),
                                    return_exceptions=True)
     # The pixel work runs in a worker thread, so the other steps' answers are read on time meanwhile.
-    return await asyncio.to_thread(_map, painting, asks, answers, regions, settings)
+    found = await asyncio.to_thread(_map, painting, asks, answers, regions, settings)
+    if "grass" in wanted and not found.present.get("grass"):
+        again = await asyncio.gather(segment(client, url, GRASS_AGAIN, meter, settings), return_exceptions=True)
+        found = await asyncio.to_thread(_map, painting, [*asks, ("grass", GRASS_AGAIN)], [*answers, *again],
+                                        Regions(trees=regions.trees), settings)
+    return found
 
 
 def plants(scene: dict[str, Any], most: int = 2) -> list[str]:
