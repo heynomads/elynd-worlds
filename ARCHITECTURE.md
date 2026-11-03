@@ -39,7 +39,8 @@ models. Run once, offline, not at runtime: Depth Anything V2 Small, for the clim
    describes the place it needs. `place.py` refuses a description that speaks of a person, names health, feelings or
    the body, takes a name from the meditation or copies a run of its words; it asks once more, and otherwise the
    library world stays (`tests/test_place.py`). This is a filter designed so that nothing of the listener reaches
-   Meta, not a proof; it is why only a short description of a place ever leaves ELYND.
+   Meta, not a proof; it is why, of the meditation, only a short description of a place (with its technique,
+   language and length) ever leaves ELYND.
 4. **Parallel steps that fail gracefully.** The critique, the cutting, the plate and the search for what moves only
    need the painting, so they run at the same time (`director.py`). A rejection cancels the others and sends the
    critic's fix to the art director for one more painting (`test_a_rejected_painting_is_revised_and_painted_again`,
@@ -66,7 +67,7 @@ step, the old olive tree, and my old dog Bruno asleep in its shade in the late a
 | Muse Spark: art director | 8.6 s | "Golden Courtyard Rest": a sleeping dog (still, left), a red watering can (still, right), sky and trees that move, golden hour. |
 | Muse Image: painter | 17.8 s | One painting. |
 | Muse Spark Open: critic | 14.6 s | 9 of 10: "Painting matches the designed golden-hour courtyard with olive tree, warm light, sleeping dog on the left and red watering can on the right clearly visible and calm." |
-| **Shown at 44.4 s** | | The painting replaces the library world. These times are on the world agent's own clock, from its start once the meditation was written; the steps below started with the critique. |
+| **Shown at 44.4 s** | | The painting replaces the library world. These times are on the world agent's own clock, from its start once the meditation was written (the server recorded the painting 54.8 s and the finished world 111.4 s after the request); the steps below started with the critique. |
 | SAM 3.1: what moves | 59.2 s | The sky and the olive's leaves. |
 | SAM 3.1: cutter | 77.7 s | Tried the dog and the can; both are still by design, so nothing is cut and no plate is needed. |
 | **Alive at 109.6 s** | | The world moves through its region map: the sky drifts, the leaves sway, a flock passes. |
