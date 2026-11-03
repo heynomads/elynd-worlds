@@ -203,10 +203,10 @@ particular animal or object that matters to the listener, a particular person's 
 ## Cost
 
 Every step reports its usage to a meter priced with the published rates. A painted world costs about **4 cents**
-(the median over the first 445 library worlds is 4.2¢, over all 1,101 3.8¢; the production world above cost 4.1¢;
+(the median over the first 445 library worlds is 4.2¢, over all 1,101 3.8¢; the production world above cost 3.8¢;
 the six example worlds, made before the open critic took over, 5–6¢): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves) and a
-handful of SAM images. The first 445 library worlds cost about $20. When Muse Spark Open judges, its share (half a
-cent to a cent) is Baseten's bill: the meter keeps the two bills apart. The command line refuses to run past a budget
+handful of SAM images. The first 445 library worlds cost about $20. When Muse Spark Open judges, its share (a
+median 0.3¢ a world, at most about 1¢) is Baseten's bill: the meter keeps the two bills apart. The command line refuses to run past a budget
 and stops asking the open model at a budget of its own; the ELYND backend stops making worlds at a total and a daily
 cap.
 

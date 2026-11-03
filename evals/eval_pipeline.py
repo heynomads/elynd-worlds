@@ -87,7 +87,7 @@ def compute() -> dict[str, Any]:
                 "run": r["run"], "paintings": r["paintings"], "critic_score": r["critic"]["score"],
                 "seconds_to_painting": r["seconds_to_painting"], "seconds_to_ready": r["seconds_to_ready"],
                 "steps": steps, "slowest_after_painting": max((s for s in steps if kind(s) in PARALLEL), key=steps.get),
-                "plate": r["plate"], "cost_cents": round((r["cost_usd"] + r["open_cost_usd"]) * 100, 2),
+                "plate": r["plate"], "cost_cents": round(r["cost_usd"] * 100, 2),  # both bills: open_cost_usd is part of it
                 "open_share_cents": round(r["open_cost_usd"] * 100, 2),
                 "share_of_engine_world_timeout": round(r["seconds_to_ready"] / engine["world_timeout_s"], 2),
                 "share_of_server_world_timeout": round(r["seconds_to_ready"] / server["world_timeout_s"], 2)})

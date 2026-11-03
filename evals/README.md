@@ -20,7 +20,7 @@ runs on ELYND's live server. Nothing here calls a model or the network: every nu
 | Critic: known bad paintings | a seated person the design did not bring | 14 | 14 of 14 turned down (3-4/10; 95 % CI 78.5-100 %) | one kind of fault, 14 paintings; muse-spark-1.3 had passed all 14 under the rule of 27 Oct |
 | Critic: against a look and the code | the 2 Nov run: every picture looked at; looks_dead | 705 | the look turned down 9 the critic passed (1.3 %); the critic passed all 56 the code found dead | the look was by AI reviewer agents, not a person; the critic does not judge motion |
 | Designer | Muse Spark vs Muse Spark Open designing; both critics; failures counted | 20 | designed 20/20 vs 18/20; paired score +0.11 (95 % CI -0.17 to +0.44); design 3.0x as fast as Muse Spark at default reasoning, 1.35x as fast as Muse Spark at reasoning low | 20 meditations; the low-reasoning run kept only its summary, so no interval there |
-| Pipeline: the live server | the team's demo runs, single worlds | 2 painted, 2 library | painting at 38 / 44 s, living world at 78 / 110 s (91% of the engine's 120 s timeout; the server allows 170 s); 4.0 ¢ / 4.1 ¢ | two runs |
+| Pipeline: the live server | the team's demo runs, single worlds | 2 painted, 2 library | painting at 38 / 44 s, living world at 78 / 110 s (91% of the engine's 120 s timeout; the server allows 170 s); 3.7 ¢ / 3.8 ¢ | two runs |
 | Pipeline: the library jobs | step times, plates, SAM, cost | 1,082 | plate: no moving subject 851, Muse Image edit 210, local fill 21; SAM left a request unanswered in 88 of 639 (2 Nov); cost median 4.2 ¢ (first 445, 20.12 USD), 3.5 ¢ (2 Nov) | many worlds at once per machine, so step times are a busy batch's; SAM failures recorded from 2 Nov only |
 | Place check | Llama 3.3's place description, refused by code | - | no records | the place step does not log the descriptions it turns down |
 
@@ -130,8 +130,8 @@ ELYND's server uses: only Muse Spark Open may judge (`open_critic_only`), its ti
 
 | Demo run | To the painting | To the living world | Of the 120 s / 170 s world limit | Steps (s) | Critic | Cost |
 |---|---|---|---|---|---|---|
-| observatory | 37.73 s | 77.91 s | 65% / 46% | design 4.8, paint 22.0, critique 8.3, cut 34.0, what moves 46.7, plate 1.4 | 9/10, first painting | 4.0 ¢ |
-| courtyard | 44.43 s | 109.55 s | 91% / 64% | design 8.6, paint 17.8, critique 14.6, what moves 59.2, cut 77.7, plate 1.6 | 9/10, first painting | 4.1 ¢ |
+| observatory | 37.73 s | 77.91 s | 65% / 46% | design 4.8, paint 22.0, critique 8.3, cut 34.0, what moves 46.7, plate 1.4 | 9/10, first painting | 3.7 ¢ |
+| courtyard | 44.43 s | 109.55 s | 91% / 64% | design 8.6, paint 17.8, critique 14.6, what moves 59.2, cut 77.7, plate 1.6 | 9/10, first painting | 3.8 ¢ |
 
 Both passed at the first painting. After the painting, SAM is the slow part: cutting the subjects and finding what
 moves took 34-78 s, the critique 8-15 s. The courtyard's living world came at 109.55 s, 91 % of the engine's
@@ -168,7 +168,7 @@ times, not one world's.
   64, grass 41, water 20); that part stays still, and 27 were asked again later. The first library's runs did not
   yet record such failures.
 * **Cost.** A painted world costs about 4 cents: a median 4.2 ¢ in the first library (the first 445 worlds:
-  20.12 USD), 3.5 ¢ in the second, 4.0 and 4.1 ¢ for the demo runs on the server. Muse Spark Open's share is a
+  20.12 USD), 3.5 ¢ in the second, 3.7 and 3.8 ¢ for the demo runs on the server (each cost is both bills: Meta's and Muse Spark Open's host's). Muse Spark Open's share is a
   median 0.3 ¢ a world.
 
 ## d. The place check

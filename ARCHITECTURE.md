@@ -66,12 +66,12 @@ step, the old olive tree, and my old dog Bruno asleep in its shade in the late a
 | Muse Spark: art director | 8.6 s | "Golden Courtyard Rest": a sleeping dog (still, left), a red watering can (still, right), sky and trees that move, golden hour. |
 | Muse Image: painter | 17.8 s | One painting. |
 | Muse Spark Open: critic | 14.6 s | 9 of 10: "Painting matches the designed golden-hour courtyard with olive tree, warm light, sleeping dog on the left and red watering can on the right clearly visible and calm." |
-| **Shown at 44.4 s** | | The painting replaces the library world (server clock). The steps below started with the critique. |
+| **Shown at 44.4 s** | | The painting replaces the library world. These times are on the world agent's own clock, from its start once the meditation was written; the steps below started with the critique. |
 | SAM 3.1: what moves | 59.2 s | The sky and the olive's leaves. |
 | SAM 3.1: cutter | 77.7 s | Tried the dog and the can; both are still by design, so nothing is cut and no plate is needed. |
 | **Alive at 109.6 s** | | The world moves through its region map: the sky drifts, the leaves sway, a flock passes. |
 
-Cost: 3.8¢ at Meta and 0.3¢ at Baseten, 4.1¢ in all. A painted world costs about 4 cents (the median over the first 445
+Cost: 3.8¢ in all: 3.5¢ at Meta and 0.3¢ at Baseten. A painted world costs about 4 cents (the median over the first 445
 library worlds is 4.2¢, over all 1,101 3.8¢); the first 445 library worlds cost about $20.
 
 ## Production settings
