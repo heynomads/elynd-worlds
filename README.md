@@ -74,8 +74,9 @@ flowchart TD
 The critique, the cutting, the repaint and the search for what moves only need the painting, so they run at the
 same time; a rejection cancels the others. The still painting is shown as soon as the critic accepts it (21–70 s
 after the script is written in our runs; the slower ones were made six at a time), and the living world follows
-(59–104 s). On ELYND's production server, a personal world was shown at 44 s and alive at 110 s
-([ARCHITECTURE.md](ARCHITECTURE.md#one-world-on-production-step-by-step)).
+(59–104 s). On ELYND's production server, a personal world was painted 44 s into the agent's run, the app had it
+alive 61 s after the meditation was asked for, and the agent's last step (trying to cut out subjects that stay still)
+ended at 110 s ([ARCHITECTURE.md](ARCHITECTURE.md#one-world-on-production-step-by-step)).
 
 ### How every world is checked
 
