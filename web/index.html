@@ -85,6 +85,13 @@
   .built a:hover { text-decoration-color: var(--gold); }
   .built .before { display: block; color: var(--muted); font-size: 13.5px; }
   h1 { font-size: clamp(2.25rem, 1.2rem + 3vw, 3.5rem); line-height: 1.07; letter-spacing: -0.035em; margin: 0 0 22px; }
+  /* Each part's name: the largest type of its part, its number beside it in gold; the claim under it */
+  .part-name { display: flex; align-items: center; gap: 0.3em; margin: 0 0 18px; color: var(--mist);
+    font: 600 clamp(2.6rem, 1.3rem + 4.4vw, 4.75rem)/1.02 var(--display); letter-spacing: -0.04em; }
+  .part-num { flex: none; display: inline-grid; place-items: center; width: 1.62em; height: 1.62em; border-radius: 50%;
+    border: 2px solid var(--gold); color: var(--gold); font-size: 0.42em; letter-spacing: 0; line-height: 1; }
+  .claim { margin: 0 0 24px; max-width: 18em; color: var(--mist); font: 600 clamp(1.45rem, 1rem + 1.35vw, 2.25rem)/1.18 var(--display);
+    letter-spacing: -0.025em; text-wrap: balance; }
   .lead { color: var(--slate); font-size: clamp(17px, 0.98rem + 0.3vw, 19.5px); line-height: 1.6; margin: 0 0 28px;
     max-width: 36em; }
   .lead a { color: var(--mist); }
@@ -158,8 +165,7 @@
     background: radial-gradient(900px 420px at 78% 0, rgba(229, 204, 152, 0.07), transparent 70%),
       linear-gradient(180deg, var(--deep) 0, var(--ground) 640px); }
   .opener { padding-top: clamp(64px, 9vw, 128px); }
-  .part-title { font-size: clamp(2.25rem, 1.2rem + 3vw, 3.5rem); line-height: 1.07; letter-spacing: -0.035em; margin: 0 0 22px;
-    max-width: 15em; }
+
   .opener .lead { max-width: 38em; margin: 0; }
   .opener .lead b { color: var(--mist); font-weight: 600; }
 
@@ -534,8 +540,8 @@
         <span class="before">ELYND itself (its writer, voices, music and player) existed before.</span></p>
       <div class="hero-main">
         <div class="hero-head">
-          <p class="eyebrow"><span class="pn" aria-hidden="true">1</span>ELYND Worlds</p>
-          <h1 id="hero-title">Every meditation opens on a living painted world.</h1>
+          <h1 class="part-name" id="hero-title"><span class="part-num" aria-hidden="true">1</span>ELYND Worlds</h1>
+          <p class="claim">Every meditation opens on a living painted world.</p>
         </div>
         <p class="lead">In the <a href="https://elynd.app">ELYND</a> app, each guided meditation's world is a calm painted
           place to arrive in and come back to, alive as such a place would be: one from a library Meta's models painted,
@@ -584,7 +590,6 @@
   <div class="runs-band">
   <section class="sec wrap" id="runs" aria-labelledby="runs-title">
     <div class="sec-head">
-      <p class="eyebrow">ELYND Worlds</p>
       <h2 id="runs-title">Two real runs</h2>
       <p class="sec-lead">A personal world painted on production, and a painting Muse Spark Open turned down.</p>
       <p class="x-hint"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 1.8 14.2 5 8 8.2 1.8 5Z"/><path d="M1.8 8 8 11.2 14.2 8"/><path d="M1.8 11 8 14.2 14.2 11"/></svg>
@@ -603,7 +608,7 @@
           <h3>The courtyard</h3>
           <div class="swap">
             <div class="normal">
-              <p class="small">From what we typed into the app (our own test words, not a listener's):</p>
+              <p class="small">An excerpt of what we typed into the app (our own test words, not a listener's):</p>
               <ul class="typed"><li>my grandmother's courtyard</li><li>her red watering can</li><li>my old dog Bruno</li></ul>
               <p class="small">Llama 3.3 reads the meditation and turns it into a place, with no names and nothing
                 about the listener, checked in code: from the meditation, only that description (with its technique,
@@ -663,7 +668,6 @@
 
   <section class="sec wrap" id="examples" aria-labelledby="examples-title">
     <div class="sec-head">
-      <p class="eyebrow">ELYND Worlds</p>
       <h2 id="examples-title">The example worlds</h2>
       <p class="sec-lead">Made by the agent for the example meditations in this repository, each alive as on the
         phone. Open the X-ray on any of them.</p>
@@ -673,7 +677,6 @@
 
   <section class="sec wrap" id="how" aria-labelledby="how-title">
     <div class="sec-head">
-      <p class="eyebrow">ELYND Worlds</p>
       <h2 id="how-title">What you are seeing</h2>
     </div>
     <div class="how-grid">
@@ -703,11 +706,11 @@
     </div>
   </section>
   <!-- 2 · ELYND Journeys: a part of its own, after everything about worlds -->
-  <section class="part2" id="journeys" aria-labelledby="part2-eyebrow part2-name">
+  <section class="part2" id="journeys" aria-labelledby="part2-name">
     <div class="wrap">
       <div class="opener">
-        <p class="eyebrow" id="part2-eyebrow"><span class="pn" aria-hidden="true">2</span>ELYND Journeys</p>
-        <h2 class="part-title" id="part2-name">Thirty days of meditations toward one goal.</h2>
+        <h2 class="part-name" id="part2-name"><span class="part-num" aria-hidden="true">2</span>ELYND Journeys</h2>
+        <p class="claim">Thirty days of meditations toward one goal.</p>
         <p class="lead"><b>A world is where one meditation happens; a journey is thirty days of meditations toward one
           goal.</b> Llama plans them, and you walk them as one climb up a painted mountain, a step a day.</p>
       </div>
