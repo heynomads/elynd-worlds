@@ -2,7 +2,7 @@
 
 <img src="docs/quiet_sunset_harbour.webp" width="260" align="right" alt="Quiet Sunset Harbour, one of the example worlds, alive: the water ripples and glints, the clouds drift, gulls pass. Twelve seconds that loop without a seam.">
 
-**Every meditation opens on a living painted world: one of 445 that Meta's models painted for the library, or a new
+**Every meditation opens on a living painted world: one of 1,101 that Meta's models painted for the library, or a new
 one painted live for a very personal meditation, designed, painted, checked and brought to life with Meta's models.**
 
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
@@ -19,9 +19,16 @@ a meditation for each day of a listener's journey that remembers the ones before
 Its guide and its plan run on Meta's open-weights Llama 3.3 70B. **Built with Llama.**
 
 > **What existed before, what is new.** ELYND, the meditation app (writing, voices, player), existed before
-> the hackathon. Earlier on the kickoff day we tried the Meta Model API in a separate private
-> prototype. This repository was started from scratch after the kickoff (26 Oct 2026, 12:00 ET) and
-> contains none of that prototype's code: everything here was written during the hackathon.
+> the hackathon; its meditation writer and voices are not Meta models and are not part of this entry. Earlier on the
+> kickoff day we tried the Meta Model API in a separate private prototype, never submitted. This repository was
+> started from scratch after hacking started (26 Oct 2026, 12:24 ET) and contains none of that prototype's code:
+> everything here was written during the hackathon. Its first large commit (the engine and its tests, 12:50 ET) was
+> written with AI coding agents from our design notes in the half hour after the start; every change since is in the
+> history.
+>
+> **For judges:** [ARCHITECTURE.md](ARCHITECTURE.md) shows which model sees what, the parts that were hard (with
+> the files and tests) and one world made on production, step by step; [evals/](evals/) has what we measured,
+> failures included.
 >
 > **Open-source parts it uses** (installed, not copied here): the OpenAI Python SDK (Apache-2.0; Meta Model API
 > speaks its wire format), httpx (BSD-3-Clause), Pillow (MIT-CMU), NumPy (BSD-3-Clause), Meta's meta-sam-parser
@@ -67,7 +74,8 @@ flowchart TD
 The critique, the cutting, the repaint and the search for what moves only need the painting, so they run at the
 same time; a rejection cancels the others. The still painting is shown as soon as the critic accepts it (21–70 s
 after the script is written in our runs; the slower ones were made six at a time), and the living world follows
-(59–104 s).
+(59–104 s). On ELYND's production server, a personal world was shown at 44 s and alive at 110 s
+([ARCHITECTURE.md](ARCHITECTURE.md#one-world-on-production-step-by-step)).
 
 ### How every world is checked
 
@@ -83,21 +91,22 @@ Every check is built into the run, so no step can skip one and nothing reaches a
    fix, and the agent paints once more.
 4. **A safe default.** A world that still fails, or a painting no allowed judge could check, is never shown: the
    listener keeps a calm library world.
-5. **A person.** Every library painting was opened at full size and looked at for figures before it went in
-   (`scripts/library_audit.py`).
+5. **A second look, for the first library.** Its paintings were also opened at full size and checked for figures
+   before they went in. `scripts/library_audit.py` lists any library world that would look dead (`looks_dead`).
 
 A journey's plan is checked the same way in code: a day that asks for anything while driving, or promises a result,
 is asked again.
 
 ## A world from the first second: the library
 
-A world made for a meditation takes about a minute and costs about five cents, and most meditations visit
-places a library can hold. So the same agent painted a **library** in advance: **445 worlds** of the 89 places
-guided meditations visit most often (most places at several times of day, seasons or weathers), 70 of them dark
-worlds for falling asleep, all from `scripts/library_briefs.py` and each checked by the critic like any other
-(`library/catalog.json` lists them). Every library world looks alive (`library.looks_dead`: water, a stream, a
-field, swaying crowns, rain, snow, leaves or petals, a moving subject, or a sky wide or starry enough to carry the
-world; `scripts/library_audit.py`), and every painting was opened at full size and looked at for figures.
+A world made for a meditation takes about a minute and costs about four cents, and most meditations visit places a
+library can hold. So the same agent painted a **library** in advance: **1,101 worlds** of the 208 places guided
+meditations visit most often (most places at several times of day, seasons or weathers), 159 of them dark worlds for
+falling asleep. The first library's 89 places come from `scripts/library_briefs.py` (26–31 Oct); 639 more worlds of
+119 new places from `scripts/library_briefs_2.py` (2 Nov). Muse Spark Open, the open-weights critic, passed every one
+(`library/catalog.json` lists them with its verdicts). Every library world looks alive (`library.looks_dead`: water,
+a stream, a field, swaying crowns, rain, snow, leaves or petals, a moving subject, or a sky wide or starry enough to
+carry the world; `scripts/library_audit.py`).
 
 **What each world helps with.** Muse Spark looked at every painting (`library.tag_moods`, 384 px, one world a
 request) and named the one to three feelings it helps with, best first: calm, letting go, warmth, rest, a push,
@@ -165,18 +174,19 @@ particular animal or object that matters to the listener, a particular person's 
   Personal worlds are off until a listener turns them on, on a screen that says plainly what is sent to whom (a
   one-time card on the home screen, or the switch in Profile, which also turns it off again). The server records
   that consent before it reads the meditation for them.
-* A listener's words never reach Meta's Model API: its processor terms exclude health data, consent or not, and a
+* The meditation never goes to Meta's Model API: its processor terms exclude health data, consent or not, and a
   meditation can repeat what a listener shared about their health. In ELYND, Llama 3.3 on Amazon Bedrock, in
   ELYND's own AWS account (as for Journeys), reads the meditation and describes the place it needs in a few
   sentences; `place.py` refuses a description that speaks of a person, names health, feelings or the body, takes a
   name from the meditation or copies a run of its words, asks once more, and otherwise the library world stays. Only
   that description goes to Meta, with the technique, language and length: no name, no email, no mood, no account
-  id. (Tested on nine meditations, three of them personal ones in English, German and Spanish: every world 9-10 of
+  id. The check is a filter (word lists and a copy check), designed so that nothing of the listener reaches Meta,
+  not a proof. (Tested on nine meditations, three of them personal ones in English, German and Spanish: every world 9-10 of
   10 from the critic, $0.03-0.05 each; the descriptions kept each meditation's own place and things.)
 * Standard mode only. The package refuses `-contributor` models, which may train on what they receive.
 * `store: false` on every Muse Spark and SAM request (the Responses API stores requests by default), and a
   pseudonymous listener id (a keyed hash Meta cannot reverse) so that any abuse enforcement targets one
-  listener, not the whole app.
+  listener, not the whole app. Muse Image requests carry that pseudonymous id only (as `user`).
 * A world shows the place alone unless the meditation itself brings an animal or a person (the listener's dog,
   asleep). Then only those, asleep or lying at rest and painted naturally, a person small and seen from behind,
   never a face up close or a figure looking at the viewer. The critic checks every painting and turns away any
@@ -190,11 +200,13 @@ particular animal or object that matters to the listener, a particular person's 
 
 ## Cost
 
-Every step reports its usage to a meter priced with the published rates. A world costs about **$0.06**
-($0.050–0.063 in our last six): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves)
-and a handful of SAM images. When Muse Spark Open judges, its share (half a cent to a cent) is Baseten's bill:
-the meter keeps the two bills apart. The command line refuses to run past a budget and stops asking the open
-model at a budget of its own; the ELYND backend stops making worlds at a total and a daily cap.
+Every step reports its usage to a meter priced with the published rates. A painted world costs about **4 cents**
+(the median over the library is 4.2¢; the production world above cost 4.1¢; the six example worlds, made before the
+open critic took over, 5–6¢): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves) and a
+handful of SAM images. The first 445 library worlds cost about $20. When Muse Spark Open judges, its share (half a
+cent to a cent) is Baseten's bill: the meter keeps the two bills apart. The command line refuses to run past a budget
+and stops asking the open model at a budget of its own; the ELYND backend stops making worlds at a total and a daily
+cap.
 
 ## Open weights for the thinking, too
 
@@ -208,8 +220,11 @@ revises it from the critic's note, so everything but the painting and the cuttin
 | Muse Spark Open, reasoning low | 8.94 / 10 | 8.78 / 10 | 4.8 s | 18 of 20 |
 | Muse Spark, reasoning low (the default since) | 8.95 / 10 | 8.75 / 10 | 6.4 s | 20 of 20 |
 
-So the open model's worlds score as well with either judge, and it designs three times as fast. The same test showed
-that Muse Spark needs no long thinking either: with reasoning low it designs as well, in less than half the time. Its host
+So the open model's worlds score as well with either judge (its scores are over the 18 it designed; the 2 it did not
+design count as failures in [`evals/`](evals/), with each meditation's result). It designs about three times as fast
+as Muse Spark left to think as long as it likes, and about 1.3 times as fast as Muse Spark with reasoning low. The same
+test showed that Muse Spark needs no long thinking either: with reasoning low it designs as well, in less than half the
+time. Its host
 enforces no answer shape (one design came back without a title) and its filter refused one calm meditation (a
 desert under the stars), so the engine asks it once more when an answer is out of shape and lets Muse Spark
 design whenever it cannot. On the six example meditations a whole world cost $0.040 instead of $0.055.
@@ -235,8 +250,8 @@ ones before (`elynd_worlds/journeys/`, in English, German, Spanish and French):
   thing to try, as a when-then plan in one of their situations ("When you sit down before the meeting, one slow
   breath with your feet on the floor"). Which day opens the journey, looks back on its week (7, 14, 21) or closes it
   (30) is fixed in code.
-* **The day's block** (`brief.py`: code, no model call) is what makes thirty meditations one story; ELYND's writer
-  gets it each day. A practice day picks up from the last one and from how they said it went, every seventh day
+* **The day's block** (`brief.py`: code, no model call) is what makes thirty meditations one story; ELYND's existing
+  writer (not a Meta model, and not part of this entry) gets it each day and writes the day's meditation. A practice day picks up from the last one and from how they said it went, every seventh day
   looks back on the week, the day before their moment lets them picture it going well and walk through its steps
   (getting there, the first minute, one small wobble met with their breath), and day thirty looks back on the whole
   journey, from their first words to today. It can also read back a few words they wrote to themselves on day one;
@@ -348,10 +363,12 @@ web/                   the scene in a browser (JavaScript, WebGL 2) and the gall
 scripts/               the gallery builder; replate.py rebuilds saved worlds' plates offline;
                        library_briefs.py writes the library's themes
 scripts/climb/         a journey's climb: a painting a week (Muse Image), a step a day by depth (walker.py)
-library/briefs/        the library's themes (the pictures are kept out of git; catalog.json lists the 445 worlds)
+library/briefs/        the library's themes (the pictures are kept out of git; catalog.json lists the 1,101 worlds)
 examples/              example meditations written for this repository
 tests/                 against a fake Meta Model API and a fake Llama
+evals/                 what we measured, failures included, recomputed from the data in evals/data/
 docs/                  the picture at the top of this page
+ARCHITECTURE.md        which model sees what, the hard parts, one production world step by step
 ```
 
 ## Licence
