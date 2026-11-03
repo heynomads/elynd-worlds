@@ -1,0 +1,88 @@
+{
+ "schema": "elynd.gallery/1",
+ "id": "courtyard",
+ "title": "The courtyard",
+ "about": "A personal world painted on ELYND's production server on 2 Nov 2026 for our own test note (no real listener's). Only fields that hold nothing of the meditation: the painting, SAM 3.1's region map, the step times, the cost (cost_usd is both bills, Meta's Model API and Muse Spark Open's host; open_usd is part of it), the judge's score, the models and Llama 3.3's place description (the same step re-run on the same meditation: production keeps no copy of it).",
+ "sleep": false,
+ "aspect": 0.5625,
+ "focus": [
+  0.4927,
+  0.7474
+ ],
+ "time_of_day": "golden hour",
+ "painting": "painting.webp",
+ "plate": null,
+ "layers": [],
+ "living": {
+  "regions": "regions.webp",
+  "water": false,
+  "sky": true,
+  "grass": false,
+  "stream": false,
+  "trees": true,
+  "horizon": null,
+  "lights": [],
+  "particles": "none",
+  "birds": "flock",
+  "night": false,
+  "fish": false,
+  "shadows": false,
+  "seed": 0.672
+ },
+ "typed": [
+  "my grandmother's courtyard",
+  "her red watering can",
+  "my old dog Bruno"
+ ],
+ "place": {
+  "model": "Llama 3.3 70B",
+  "text": "A courtyard in late afternoon, warm golden light, with a red watering can, an old olive tree, and a dog asleep in its shade.",
+  "seconds": 1.3,
+  "usd": 0.00056,
+  "rerun": true
+ },
+ "verdict": {
+  "score": 9,
+  "judge": "meta-models/muse-spark-open-1026"
+ },
+ "steps": [
+  {
+   "step": "design",
+   "seconds": 8.6,
+   "note": ""
+  },
+  {
+   "step": "paint 1",
+   "seconds": 17.79,
+   "note": ""
+  },
+  {
+   "step": "critique 1",
+   "seconds": 14.6,
+   "note": "",
+   "usd": 0.00293
+  },
+  {
+   "step": "regions 1",
+   "seconds": 59.22,
+   "note": "sky"
+  },
+  {
+   "step": "cut 1",
+   "seconds": 77.72,
+   "note": "red watering can, sleeping dog"
+  },
+  {
+   "step": "plate",
+   "seconds": 1.62,
+   "note": "painting"
+  }
+ ],
+ "paintings": 1,
+ "cost_usd": 0.03786,
+ "meta_usd": 0.03493,
+ "open_usd": 0.00293,
+ "clock": "the agent's own: from its start, after the meditation was written",
+ "seconds_to_painting": 44.43,
+ "seconds": 109.55
+}
