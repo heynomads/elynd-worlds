@@ -534,6 +534,7 @@ class WorldView {
     const canvas = this.canvas;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return; // not laid out yet (or hidden): nothing to draw into
     const pw = Math.round(w * dpr), ph = Math.round(h * dpr);
     if (canvas.width !== pw || canvas.height !== ph) {
       canvas.width = pw;

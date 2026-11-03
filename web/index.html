@@ -527,12 +527,14 @@
                 olive tree, and a dog asleep in its shade.</blockquote>
               <dl class="facts">
                 <div><dt>Painted in</dt><dd>44 s</dd></div>
-                <div><dt>Alive in</dt><dd>110 s</dd></div>
+                <div><dt>Alive on the phone</dt><dd>61 s</dd></div>
                 <div><dt>Cost</dt><dd>3.8¢</dd></div>
                 <div><dt>Muse Spark Open</dt><dd>9/10</dd></div>
               </dl>
-              <p class="fine">Times on the agent's own clock; the cost is Meta's Model API and Muse Spark Open's host
-                together. On production only Muse Spark Open may pass a painting (7/10 or more), at most two are
+              <p class="fine">Painted 44&nbsp;s into the agent's own run. The app's status poll had the living world
+                61&nbsp;s after the meditation was asked for; the agent's remaining steps (trying to cut out the
+                subjects, which stay still here) ended at 110&nbsp;s. The cost is Meta's Model API and Muse Spark
+                Open's host together. On production only Muse Spark Open may pass a painting (7/10 or more), at most two are
                 painted and a world may take up to 170&nbsp;s; until it is ready, the listener sees a world from the
                 library.</p>
             </div>
@@ -796,6 +798,28 @@
 
   const rank = (id) => (FIRST.includes(id) ? FIRST.indexOf(id) : LAST.includes(id) ? 1000 + LAST.indexOf(id) : 500);
   const views = [];
+  // Only the worlds on the screen are drawn. Each is watched from the moment its record has loaded, so none
+  // waits for another, and the page (Play, the climb, the X-ray links) works before any of them has loaded.
+  const seen = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const view = views.find((v) => v.canvas === entry.target);
+      if (view) view.visible = entry.isIntersecting;
+    }
+  });
+  const add = (view) => {
+    views.push(view);
+    seen.observe(view.canvas);
+  };
+  // Until its canvas draws, a frame shows the painting, cropped as the canvas crops it; then only the canvas
+  // shows, so a played meditation fades it to a glow over the dark frame.
+  function backdrop(frame, view, url) {
+    const r = coverRect(frame.clientWidth, frame.clientHeight, view.world.aspect, view.world.focus);
+    frame.style.backgroundImage = `url("${url}")`;
+    frame.style.backgroundRepeat = "no-repeat";
+    frame.style.backgroundSize = `${r.width}px ${r.height}px`;
+    frame.style.backgroundPosition = `${r.left}px ${r.top}px`;
+    view.loaded.then(() => setTimeout(() => { frame.style.backgroundImage = "none"; }, 300)).catch(() => {});
+  }
   // Both records start loading at once.
   const examples = fetch(`${BASE}/index.json`).then((response) => response.json());
   const courtyardRecord = fetch("featured/courtyard/world.json").then((response) => response.json());
@@ -803,75 +827,77 @@
   // Beside the headline: the courtyard, painted on production, alive at once and the first to react when a
   // meditation plays. Until it draws, its frame shows the painting, cropped as the canvas crops it.
   const heroCanvas = document.getElementById("hero-world");
-  const heroFrame = heroCanvas.parentElement;
-  try {
-    const world = await courtyardRecord;
-    const r = coverRect(heroFrame.clientWidth, heroFrame.clientHeight, world.aspect, world.focus);
-    heroFrame.style.backgroundImage = `url("featured/${world.id}/${world.painting}")`;
-    heroFrame.style.backgroundSize = `${r.width}px ${r.height}px`;
-    heroFrame.style.backgroundPosition = `${r.left}px ${r.top}px`;
-    const view = new WorldView(heroCanvas, world, "featured");
-    view.visible = true;
-    views.push(view);
-    // Once the canvas draws, only it shows: a played meditation fades it to a glow over the dark frame.
-    view.loaded.then(() => setTimeout(() => { heroFrame.style.backgroundImage = "none"; }, 300));
-  } catch (error) {
-    console.warn("ELYND Worlds: the world beside the headline could not be loaded", error);
-    heroCanvas.classList.add("failed");
-  }
+  (async () => {
+    try {
+      const world = await courtyardRecord;
+      const view = new WorldView(heroCanvas, world, "featured");
+      view.visible = true;
+      backdrop(heroCanvas.parentElement, view, `featured/${world.id}/${world.painting}`);
+      add(view);
+    } catch (error) {
+      console.warn("ELYND Worlds: the world beside the headline could not be loaded", error);
+      heroCanvas.classList.add("failed");
+    }
+  })();
 
   // The courtyard: a world painted on production, drawn like the others, with its X-ray.
   const courtyard = document.getElementById("courtyard");
-  try {
-    const world = await courtyardRecord;
-    const canvas = courtyard.querySelector("canvas");
-    const view = new WorldView(canvas, world, "featured");
-    view.visible = true;
-    XRay.attach(view, { card: courtyard, frame: courtyard.querySelector(".view"),
-      panel: courtyard.querySelector(".xray-panel"), title: "the courtyard" });
-    views.push(view);
-  } catch (error) {
-    console.warn("ELYND Worlds: the courtyard could not be loaded", error);
-    courtyard.querySelector("canvas").classList.add("failed");
-  }
+  (async () => {
+    try {
+      const world = await courtyardRecord;
+      const canvas = courtyard.querySelector("canvas");
+      const view = new WorldView(canvas, world, "featured");
+      view.visible = true;
+      backdrop(courtyard.querySelector(".view"), view, `featured/${world.id}/${world.painting}`);
+      XRay.attach(view, { card: courtyard, frame: courtyard.querySelector(".view"),
+        panel: courtyard.querySelector(".xray-panel"), title: "the courtyard" });
+      add(view);
+    } catch (error) {
+      console.warn("ELYND Worlds: the courtyard could not be loaded", error);
+      courtyard.querySelector("canvas").classList.add("failed");
+    }
+  })();
 
   // The example worlds.
-  try {
-    const { worlds } = await examples;
-    const ordered = worlds.map((w, i) => [w, i]).sort((a, b) => rank(a[0].id) - rank(b[0].id) || a[1] - b[1]).map(([w]) => w);
-    for (const world of ordered) {
-      const card = document.createElement("article");
-      card.className = "card";
-      const m = world.meditation;
-      card.innerHTML = `
-        <div class="view">
-          <canvas role="img" aria-label="${esc(world.title)}: ${esc(world.design.place)}"></canvas>
-        </div>
-        <div class="body">
-          <h3>${esc(world.title)}</h3>
-          <div class="swap">
-            <div class="normal">
-              <p class="meta">${esc(TECHNIQUE[m.technique] || m.technique)} · ${esc(LANGUAGE[m.language] || m.language)} · ${m.minutes} min${world.sleep ? " · sleep" : ""}</p>
-              <blockquote>${esc(m.opening)}</blockquote>
-              <details>
-                <summary>How the agent made it</summary>
-                <ol class="steps">${steps(world)}</ol>
-                <p class="total">Cost $${world.cost_usd.toFixed(3)} at Meta's prices · moving after ${Math.round(world.seconds)} s</p>
-              </details>
-            </div>
-            <div class="xray-panel" aria-live="polite"></div>
+  (async () => {
+    try {
+      const { worlds } = await examples;
+      const ordered = worlds.map((w, i) => [w, i]).sort((a, b) => rank(a[0].id) - rank(b[0].id) || a[1] - b[1]).map(([w]) => w);
+      for (const world of ordered) {
+        const card = document.createElement("article");
+        card.className = "card";
+        const m = world.meditation;
+        card.innerHTML = `
+          <div class="view">
+            <canvas role="img" aria-label="${esc(world.title)}: ${esc(world.design.place)}"></canvas>
           </div>
-        </div>`;
-      grid.appendChild(card);
-      const view = new WorldView(card.querySelector("canvas"), world, BASE);
-      view.visible = true;
-      XRay.attach(view, { card, frame: card.querySelector(".view"), panel: card.querySelector(".xray-panel"),
-        title: world.title });
-      views.push(view);
+          <div class="body">
+            <h3>${esc(world.title)}</h3>
+            <div class="swap">
+              <div class="normal">
+                <p class="meta">${esc(TECHNIQUE[m.technique] || m.technique)} · ${esc(LANGUAGE[m.language] || m.language)} · ${m.minutes} min${world.sleep ? " · sleep" : ""}</p>
+                <blockquote>${esc(m.opening)}</blockquote>
+                <details>
+                  <summary>How the agent made it</summary>
+                  <ol class="steps">${steps(world)}</ol>
+                  <p class="total">Cost $${world.cost_usd.toFixed(3)} at Meta's prices · moving after ${Math.round(world.seconds)} s</p>
+                </details>
+              </div>
+              <div class="xray-panel" aria-live="polite"></div>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+        const view = new WorldView(card.querySelector("canvas"), world, BASE);
+        view.visible = true;
+        backdrop(card.querySelector(".view"), view, `${BASE}/${world.id}/${world.painting}`);
+        XRay.attach(view, { card, frame: card.querySelector(".view"), panel: card.querySelector(".xray-panel"),
+          title: world.title });
+        add(view);
+      }
+    } catch (error) {
+      console.warn("ELYND Worlds: the example worlds could not be loaded", error);
     }
-  } catch (error) {
-    console.warn("ELYND Worlds: the example worlds could not be loaded", error);
-  }
+  })();
 
   // "See each step in the X-ray": to the card, with its X-ray open.
   for (const link of document.querySelectorAll("a[data-xray]")) {
@@ -910,14 +936,6 @@
     thumbs[i].focus();
     show(i);
   });
-
-  const seen = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      const view = views.find((v) => v.canvas === entry.target);
-      if (view) view.visible = entry.isIntersecting;
-    }
-  });
-  views.forEach((v) => seen.observe(v.canvas));
 
   // A ten-minute session, sped up: silences of 60, 70 and 40 s; the voice
   // says "breathe in" at 0:20 and "breathe out" at 0:24.
@@ -962,7 +980,10 @@
     playButton.focus({ preventScroll: true });
   });
 
+  // One world that cannot be drawn (a canvas without a size yet, a lost GL context) never stops the others.
+  const broken = new Set();
   function frame(now) {
+    requestAnimationFrame(frame);
     const clock = now / 1000;
     let session = null;
     if (playing) {
@@ -983,10 +1004,14 @@
       if (!view.visible) continue;
       const played = session === null ? null
         : { timeline: view.world.sleep ? timelines.sleep : timelines.awake, t: session };
-      if (XRay.active(view)) XRay.draw(view, clock, played, still, now);
-      else view.draw(clock, played, still);
+      try {
+        if (XRay.active(view)) XRay.draw(view, clock, played, still, now);
+        else view.draw(clock, played, still);
+      } catch (error) {
+        if (!broken.has(view)) console.warn("ELYND Worlds: a world could not be drawn this frame", error);
+        broken.add(view);
+      }
     }
-    requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
 })();

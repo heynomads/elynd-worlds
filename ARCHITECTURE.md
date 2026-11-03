@@ -70,7 +70,7 @@ step, the old olive tree, and my old dog Bruno asleep in its shade in the late a
 | **Shown at 44.4 s** | | The painting replaces the library world. These times are on the world agent's own clock, from its start once the meditation was written (the server recorded the painting 54.8 s and the finished world 111.4 s after the request); the steps below started with the critique. |
 | SAM 3.1: what moves | 59.2 s | The sky and the olive's leaves. |
 | SAM 3.1: cutter | 77.7 s | Tried the dog and the can; both are still by design, so nothing is cut and no plate is needed. |
-| **Alive at 109.6 s** | | The world moves through its region map: the sky drifts, the leaves sway, a flock passes. |
+| **Done at 109.6 s** | | The agent's last steps end. The listener had the living world sooner: the app's status poll got it, painted and with its region map, 61 s after the meditation was asked for. It moves through that map: the sky drifts, the leaves sway, a flock passes. |
 
 Cost: 3.8¢ in all: 3.5¢ at Meta and 0.3¢ at Baseten. A painted world costs about 4 cents (the median over the first 445
 library worlds is 4.2¢, over all 1,101 3.8¢); the first 445 library worlds cost about $20.

@@ -250,7 +250,7 @@ const XRay = (() => {
       const parts = livelyOf(world);
       if (parts.length) extra += `<p class="x-note">${parts.join(", ").replace(/^./, (c) => c.toUpperCase())}.</p>`;
       const ready = typeof world.seconds_to_painting === "number"
-        ? `Painted ${Math.round(world.seconds_to_painting)} s and alive ${Math.round(world.seconds)} s after the agent started`
+        ? `Painted ${Math.round(world.seconds_to_painting)} s and finished ${Math.round(world.seconds)} s after the agent started`
         : typeof world.seconds === "number" ? `Moving ${Math.round(world.seconds)} s after the agent started` : "";
       // Which of the painting's checks and cuts this run had: they work at the same time.
       const had = (name) => (world.steps || []).some((s) => s.step.replace(/ \d+$/, "") === name);
@@ -532,6 +532,7 @@ const XRay = (() => {
     const canvas = view.canvas;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const pw = Math.round(canvas.clientWidth * dpr), ph = Math.round(canvas.clientHeight * dpr);
+    if (!pw || !ph) return; // not laid out yet (or hidden): nothing to draw into
     const fading = xr.fade !== null && now - xr.fade < FADE_MS;
     if (live) {
       view.draw(clock, session, still);
