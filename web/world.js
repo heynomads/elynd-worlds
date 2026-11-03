@@ -508,7 +508,9 @@ class WorldView {
       .then((blob) => createImageBitmap(blob, { premultiplyAlpha: "none", colorSpaceConversion: "none" }));
     const moving = Boolean(world.plate) && world.layers.length > 0;
     const regions = world.living && world.living.regions;
-    Promise.all([
+    this.base = base;
+    // Settles once the pictures are in (or could not be loaded: then `ready` stays false); the X-ray waits for it.
+    this.loaded = Promise.all([
       image(moving ? world.plate : world.painting),
       Promise.all(moving ? world.layers.map((l) => image(l.file)) : []),
       regions ? exact(regions).catch(() => null) : null,
