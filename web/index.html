@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ELYND Worlds and Journeys</title>
-<meta name="description" content="Built during the Meta Global AI Developer Hackathon: ELYND Worlds, where every meditation in the ELYND app opens on a living painted world made with Meta's models, and ELYND Journeys, thirty days toward one goal planned by Llama 3.3.">
+<meta name="description" content="Built during the Meta Global AI Developer Hackathon: ELYND Worlds, where every meditation in the ELYND app opens on a living painted world made with Meta's models, and ELYND Journeys, thirty days of meditations toward one goal, planned by Llama 3.3.">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0F2427">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F2427'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%235BBFB5' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23E8F0EA'/%3E%3C/svg%3E">
@@ -61,8 +61,8 @@
   .nav-links { display: flex; align-items: center; gap: 2px; margin-left: auto; min-width: 0; overflow-x: auto;
     scrollbar-width: none; }
   .nav-links::-webkit-scrollbar { display: none; }
-  .nav-links a { flex: none; padding: 8px 12px; border-radius: 999px; color: var(--slate); text-decoration: none;
-    font-size: 14px; line-height: 1.2; white-space: nowrap; }
+  .nav-links a { flex: none; display: inline-flex; align-items: center; padding: 8px 12px; border-radius: 999px; color: var(--slate);
+    text-decoration: none; font-size: 14px; line-height: 1.2; white-space: nowrap; }
   .nav-links a:hover { color: var(--mist); }
   .nav-links a[aria-current="true"] { color: var(--mist); background: rgba(238, 247, 245, 0.07); }
   /* The row scrolls sideways (a phone), so the focus ring is drawn inside each link, never clipped. */
@@ -81,6 +81,8 @@
   .hero-side { display: flex; flex-direction: column; gap: 16px; }
   .built { grid-column: 1 / -1; margin: 0 0 30px; color: var(--gold); font-size: 14px; line-height: 1.55; }
   .built strong { font-weight: 600; }
+  .built a { color: inherit; text-decoration-color: rgba(229, 204, 152, 0.5); }
+  .built a:hover { text-decoration-color: var(--gold); }
   .built .before { display: block; color: var(--muted); font-size: 13.5px; }
   h1 { font-size: clamp(2.25rem, 1.2rem + 3vw, 3.5rem); line-height: 1.07; letter-spacing: -0.035em; margin: 0 0 22px; }
   .lead { color: var(--slate); font-size: clamp(17px, 0.98rem + 0.3vw, 19.5px); line-height: 1.6; margin: 0 0 28px;
@@ -93,10 +95,14 @@
   /* Its width stays when it turns into Stop, so the buttons beside it do not move. */
   button.play { min-width: 216px; background: var(--teal); color: var(--deep); border: 0; }
   button.play:hover { background: #77CEC4; }
-  button.play[aria-pressed="true"] { background: var(--gold); }
+  button.play[aria-pressed="true"] { background: transparent; color: var(--gold); box-shadow: inset 0 0 0 1px rgba(229, 204, 152, 0.55); }
   a.button { color: var(--mist); border: 1px solid var(--rule-2); background: rgba(238, 247, 245, 0.03); }
   a.button:hover { border-color: rgba(238, 247, 245, 0.36); background: rgba(238, 247, 245, 0.07); }
-  .play-hint { margin: 12px 0 0; color: var(--muted); font-size: 13.5px; }
+  .play-hint { margin: 12px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.55; max-width: 38em; }
+  button.as-link { padding: 0; border: 0; background: none; color: var(--slate); font: inherit; cursor: pointer;
+    text-decoration: underline; text-decoration-color: rgba(175, 199, 197, 0.45); text-underline-offset: 3px; }
+  button.as-link:hover { color: var(--mist); }
+  button.as-link[aria-pressed="true"] { color: var(--gold); }
   .hero-models { padding-top: 36px; }
   .hero-world { margin: 0; }
   .frame { position: relative; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; background: var(--deep) no-repeat;
@@ -122,8 +128,8 @@
   ol.flow { list-style: none; margin: 0; padding: 0; counter-reset: step; border-top: 1px solid var(--rule); }
   ol.flow li { counter-increment: step; display: grid; grid-template-columns: 26px 270px minmax(0, 1fr);
     column-gap: 14px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--rule); }
-  ol.flow li::before { content: counter(step); width: 24px; height: 24px; margin-top: -1px; border-radius: 50%; display: grid;
-    place-items: center; color: var(--gold); background: rgba(229, 204, 152, 0.13); font: 600 11.5px/1 var(--display); }
+  ol.flow li::before { content: counter(step); padding-top: 3px; color: var(--muted); font: 600 13px/1 var(--display);
+    font-variant-numeric: tabular-nums; }
   ol.flow .who { color: var(--mist); font: 600 15px/1.45 var(--display); letter-spacing: -0.005em; }
   ol.flow .what { color: var(--slate); font-size: 15px; line-height: 1.45; }
   .ow { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--rule-2);
@@ -139,21 +145,130 @@
   .clause { display: inline-block; }
   .sec-lead { margin: 0; color: var(--slate); font-size: clamp(16.5px, 0.98rem + 0.2vw, 18px); line-height: 1.65; }
 
-  /* ELYND Journeys */
-  .j-grid { display: grid; grid-template-columns: clamp(250px, 27vw, 340px) minmax(0, 1fr); column-gap: clamp(36px, 6vw, 88px);
-    grid-template-areas: "view head" "view rest"; grid-template-rows: auto 1fr; }
-  .j-head { grid-area: head; }
-  .j-rest { grid-area: rest; }
-  .j-view { grid-area: view; align-self: start; position: sticky; top: calc(var(--nav-h) + 28px); aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden;
-    background: var(--deep); box-shadow: 0 0 0 1px rgba(238, 247, 245, 0.09), 0 40px 80px -36px rgba(0, 0, 0, 0.75); }
-  .j-view video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
-  .j-again { position: absolute; right: 12px; bottom: 12px; z-index: 1; min-height: 40px; padding: 0 16px; border-radius: 999px;
-    font: 600 13.5px/1 var(--display); cursor: pointer; color: var(--deep); background: var(--gold); border: none; }
-  .j-again[hidden] { display: none; }
-  .j-head .sec-lead { max-width: 40em; }
-  .j-flow { margin: 32px 0 0; }
-  .j-plan { margin: 32px 0 0; padding: clamp(20px, 3vw, 28px); background: var(--card); border: 1px solid var(--rule);
-    border-radius: 24px; }
+  /* The two things built, each with its number: 1 ELYND Worlds, 2 ELYND Journeys, so that no visitor takes them for
+     one thing (3 Nov 2026) */
+  .pn { display: inline-grid; place-items: center; width: 1.75em; height: 1.75em; margin-right: 0.6em; border-radius: 50%;
+    border: 1px solid currentColor; font: 600 0.95em/1 var(--display); letter-spacing: 0; vertical-align: 0.04em; }
+  .nav-links a .pn { width: 1.6em; height: 1.6em; margin-right: 0.45em; font-size: 0.82em; color: var(--gold); vertical-align: 0.06em; }
+  .nav-links a.part2-link { position: relative; margin-left: 13px; }
+  .nav-links a.part2-link::before { content: ""; position: absolute; left: -8px; top: 9px; bottom: 9px; width: 1px; background: var(--rule-2); }
+
+  /* 2 · ELYND Journeys: its own part of the page, opened by its number and what sets it apart from a world */
+  .part2 { margin-top: clamp(80px, 10vw, 136px); border-top: 1px solid var(--rule-2);
+    background: radial-gradient(900px 420px at 78% 0, rgba(229, 204, 152, 0.07), transparent 70%),
+      linear-gradient(180deg, var(--deep) 0, var(--ground) 640px); }
+  .opener { padding-top: clamp(64px, 9vw, 128px); }
+  .part-title { font-size: clamp(2.25rem, 1.2rem + 3vw, 3.5rem); line-height: 1.07; letter-spacing: -0.035em; margin: 0 0 22px;
+    max-width: 15em; }
+  .opener .lead { max-width: 38em; margin: 0; }
+  .opener .lead b { color: var(--mist); font-weight: 600; }
+
+  /* The walk, as elynd.app walks it (there since 1 Nov 2026, here since 3 Nov). Where WebGL runs, the script sets
+     .walking: the climb stays in view for two screens of scrolling (three felt slow on elynd.app), drifting up gently, while the scroll walks the
+     app's climb in a canvas; then it goes on with the page, its 30 lights lit. Without .walking (no WebGL, reduced
+     motion, a data saver, no script) the view back stands with its 30 lights. */
+  .journey { --climb-w: min(44%, 520px); display: grid; grid-template-columns: minmax(0, 1fr) var(--climb-w);
+    column-gap: clamp(36px, 6vw, 88px); align-items: center; padding-top: clamp(36px, 4.4vw, 56px); }
+  .as-h3 { font-size: clamp(1.5rem, 1rem + 1.2vw, 2.15rem); line-height: 1.15; letter-spacing: -0.025em; margin: 0 0 16px; }
+  .climb .fade { position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, rgba(11, 29, 32, 0.3) 0, rgba(11, 29, 32, 0) 72px),
+      linear-gradient(0deg, rgba(11, 29, 32, 0.3) 0, rgba(11, 29, 32, 0) 72px); }
+  .journey-copy .sec-lead { max-width: 34em; }
+  .walk-hint { display: none; margin: 18px 0 0; color: var(--slate); font-size: 15px; }
+  .walking .walk-hint { display: block; }
+  .climb { position: relative; margin: 0; width: 100%; aspect-ratio: 2 / 3; overflow: hidden; border-radius: 28px;
+    background: linear-gradient(180deg, #7C8466 0%, #6B6A4A 30%, #5A4E36 62%, #3A3226 100%);
+    box-shadow: 0 0 0 1px rgba(238, 247, 245, 0.09), 0 40px 80px -36px rgba(0, 0, 0, 0.75); }
+  .climb img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9); transition: opacity 800ms ease; }
+  .js .climb img:not(.loaded) { opacity: 0; }
+  .lamps span { position: absolute; left: var(--x); top: var(--y); width: max(6px, calc(var(--s) * 1.7%)); aspect-ratio: 1;
+    border-radius: 50%; mix-blend-mode: screen; transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #FFFFF6 0%, #FFE6B0 30%, rgba(255, 210, 140, 0.55) 52%, rgba(255, 205, 128, 0) 74%);
+    transition: opacity 700ms ease, transform 700ms ease; transition-delay: calc(var(--i) * 110ms); }
+  .lamps span::after { content: ""; position: absolute; inset: -170%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 206, 138, 0.55) 0%, rgba(255, 206, 138, 0.18) 35%, rgba(255, 206, 138, 0) 68%); }
+  .lamps span:last-child::before { content: ""; position: absolute; inset: -95%; border-radius: 50%; border: 1.5px solid var(--gold);
+    transition: opacity 900ms ease 3.5s; }
+  .js .climb:not(.lit) .lamps span { opacity: 0; transform: translate(-50%, -50%) scale(0.2); }
+  .js .climb:not(.lit) .lamps span:last-child::before { opacity: 0; }
+  .climb .daytag { position: absolute; padding: 5px 11px; border-radius: 999px; color: var(--mist); font-size: 12px; font-weight: 500;
+    white-space: nowrap; font-variant-numeric: tabular-nums; background: rgba(15, 36, 39, 0.62);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transform: translateY(-50%); transition: opacity 500ms ease; }
+  .climb .first { left: calc(49.72% + 18px); top: 4.35%; }
+  .climb figcaption.daytag { left: calc(52.5% + 30px); top: 94.26%; }
+  .js .climb:not(.lit) .daytag { opacity: 0; }
+  .climb .letter { position: absolute; left: 8%; bottom: 6%; max-width: min(38%, 270px); margin: 0; padding: 14px 16px; border-radius: 16px;
+    color: var(--mist); font-size: 14px; line-height: 1.45; background: rgba(15, 36, 39, 0.74);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); transition: opacity 800ms ease 3.4s; }
+  .climb .letter small, .climb .said-first small { display: block; margin-bottom: 6px; color: var(--teal); font-size: 11.5px; }
+  .js .climb:not(.lit) .letter { opacity: 0; transition-delay: 0s; }
+  .climb canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 600ms ease; }
+  .climb canvas.on { opacity: 1; }
+  .journey.walking { --screen: 100vh; --walk-len: 200vh; align-items: start;
+    --climb-w: min(44%, 560px, calc((var(--screen) - var(--nav-h)) * 0.86 * 2 / 3)); }
+  @supports (height: 100svh) { .journey.walking { --screen: 100svh; --walk-len: 200svh; } }   /* the toolbar never resizes it */
+  .walking .walk::after { content: ""; display: block; height: var(--walk-len); }   /* the walk's scroll */
+  .walking .climb { position: sticky; top: var(--nav-h); will-change: transform;
+    background: linear-gradient(180deg, #334765 0%, #818086 30%, #1A2933 62%, #222D34 100%); }
+  .walking .journey-copy { position: sticky; top: var(--nav-h); height: calc(var(--screen) - var(--nav-h)); display: flex;
+    flex-direction: column; justify-content: center; }
+  .walking .climb img { filter: brightness(0.84); transform: scale(1.02); }
+  .walking .lamps { position: absolute; left: var(--vx); top: var(--vy); width: var(--vw); height: var(--vh); }
+  .walking .lamps span { transition: none; }
+  .walking .climb .first { left: calc(var(--vx) + var(--vw) * 0.4972 + 18px); top: calc(var(--vy) + var(--vh) * 0.0435); }
+  .walking .climb figcaption.daytag { left: calc(var(--vx) + var(--vw) * 0.525 + 30px); top: calc(var(--vy) + var(--vh) * 0.9426); }
+  .walking .climb .daytag, .walking .climb .letter, .walking .climb .lamps span:last-child::before { opacity: 0; transition: opacity 600ms ease; }
+  .walking .climb.top1 .first, .walking .climb.top30 figcaption.daytag, .walking .climb.top30 .lamps span:last-child::before,
+  .walking .climb.said .letter { opacity: 1; }
+  .walking .climb.top30 .lamps span:last-child::before { animation: answer 1.5s ease-in-out 2; }   /* day 30's ring answers */
+  @keyframes answer { 50% { transform: scale(1.35); opacity: 0.5; } }
+  /* The spark that runs down the path, lighting the lights */
+  .walking .lamps .spark { position: absolute; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%); mix-blend-mode: screen;
+    opacity: 0; background: radial-gradient(circle, #FFFFFF 0%, #FFF3D6 26%, rgba(255, 214, 150, 0.6) 50%, rgba(255, 205, 128, 0) 72%); }
+  .walking .lamps .spark::after { content: ""; position: absolute; inset: -220%; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 222, 165, 0.5) 0%, rgba(255, 214, 150, 0.16) 38%, rgba(255, 210, 150, 0) 68%); }
+  /* Day 1: the goal the journey starts from, high up, the first thing in view */
+  .climb .said-first { position: absolute; left: 8%; top: 7%; max-width: min(50%, 300px); margin: 0; padding: 14px 16px; border-radius: 16px;
+    color: var(--mist); font-size: 14px; line-height: 1.45; background: rgba(15, 36, 39, 0.74);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); opacity: 0; transition: opacity 600ms ease; }
+  .walking .climb.day1 .said-first { opacity: 1; }
+  /* The 30 days so far, as the app's walk shows them: the day, and a light for each day walked */
+  .walk-hud { display: flex; flex-direction: column; align-items: center; gap: 12px; pointer-events: none; transition: opacity 500ms ease; }
+  .climb .walk-hud { position: absolute; inset: 0 0 auto 0; padding: 18px 20px 60px;
+    background: linear-gradient(180deg, rgba(15, 36, 39, 0.76) 0, rgba(15, 36, 39, 0.4) 55%, rgba(15, 36, 39, 0) 100%); }
+  .walk-hud.gone { opacity: 0; }
+  .walk-hud p { margin: 0; color: var(--mist); font-size: 15px; font-weight: 500; font-variant-numeric: tabular-nums;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45); }
+  .walk-hud p span { color: var(--slate); font-weight: 400; }
+  .walk-hud p.walk-week { min-height: 1.4em; color: var(--gold); font-size: 13.5px; }   /* the real plan's week */
+  .walk-dots { display: flex; justify-content: space-between; align-items: center; width: min(100%, 400px); height: 12px; }
+  .walk-dots i { flex: none; width: 6px; height: 6px; border-radius: 50%; background: rgba(238, 247, 245, 0.32);
+    transition: background 300ms ease, box-shadow 300ms ease, transform 300ms ease; }
+  .walk-dots i.wk { margin-left: 6px; }
+  .climb .walk-dots i:not(.done):not(.now):not(:last-child) { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.28); }   /* seen on a pale sky */
+  .walk-dots i.done { background: #F6DFA6; box-shadow: 0 0 8px rgba(246, 223, 166, 0.75); }
+  .walk-dots i.now { background: rgba(9, 22, 24, 0.6); box-shadow: inset 0 0 0 1.5px var(--teal); transform: scale(1.7); }
+  .walk-dots i:last-child { background: transparent; box-shadow: inset 0 0 0 1.5px var(--gold); transform: scale(1.7); }
+  .walk-dots i:last-child.now { background: #F6DFA6; box-shadow: 0 0 0 1.5px var(--gold), 0 0 10px rgba(246, 223, 166, 0.8); }
+  @media (min-width: 900px) {
+    /* beside the copy, the day is a figure of its own; it stays on day 30 with every light lit */
+    .journey-copy .walk-hud { align-items: flex-start; gap: 18px; margin-top: clamp(24px, 4vh, 44px); }
+    .journey-copy .walk-hud.gone { opacity: 1; }
+    .journey-copy .walk-hud p { font-size: 18px; text-shadow: none; }
+    .journey-copy .walk-hud p:first-child { display: flex; align-items: baseline; gap: 6px; }
+    .journey-copy .walk-hud p:first-child b { margin: 0; min-width: 1.25em; font-variant-numeric: tabular-nums; }
+    .journey-copy .walk-hud p b { display: inline-block; margin: 0 2px 0 6px; font: 600 clamp(2.75rem, 1.9rem + 1.9vw, 4rem)/1 var(--display);
+      letter-spacing: -0.02em; vertical-align: -0.1em; }
+    .journey-copy .walk-dots { width: min(100%, 360px); }
+    .journey-copy .walk-hud p.walk-week { margin-top: -4px; font-size: 15px; }
+  }
+
+  /* After the walk: how a journey is made, a real plan, and the climb's six paintings */
+  .j-flow { max-width: 760px; margin: clamp(56px, 7vw, 96px) 0 0; }
+  .j-pair { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: start;
+    margin-top: clamp(28px, 3.6vw, 40px); }
+  .j-climb { margin-top: clamp(40px, 5vw, 64px); }
+  .j-plan { padding: clamp(20px, 3vw, 28px); background: var(--card); border: 1px solid var(--rule); border-radius: 24px; }
   .j-plan h3 { font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; margin: 0 0 8px; }
   ol.weeks { list-style: none; padding: 0; margin: 18px 0 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px; }
@@ -162,7 +277,7 @@
   ol.weeks b { display: block; margin-bottom: 2px; color: var(--mist); font: 600 13.5px/1.4 var(--display); }
   .day1 { margin: 0; color: var(--slate); font-size: 14.5px; }
   .day1 b { color: var(--mist); font-weight: 600; }
-  ul.notes { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 10px; max-width: 40em; }
+  ul.notes { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; max-width: 40em; }
   ul.notes li { position: relative; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.6; }
   ul.notes li::before { content: ""; position: absolute; left: 0; top: 0.78em; width: 9px; height: 1.5px; background: var(--gold);
     opacity: 0.8; }
@@ -220,7 +335,7 @@
   .checks li.no { color: var(--bad); border-color: rgba(255, 180, 174, 0.45); }
   .verdict { color: var(--bad); font-weight: 650; }
 
-  /* Three real runs: on a wide screen, the picture beside its words */
+  /* The real runs: on a wide screen, the picture beside its words */
   .runs-band { margin-top: clamp(72px, 9vw, 120px); padding-bottom: clamp(72px, 9vw, 112px); background: var(--deep); }
   .runs-band .sec { padding-top: clamp(64px, 8vw, 104px); }
   .x-hint { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 0; color: var(--slate); font-size: 16px; line-height: 1.6; }
@@ -303,7 +418,13 @@
     -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 18px 44px -12px rgba(0, 0, 0, 0.6);
     color: var(--slate); font-size: 14px; line-height: 1.4; }
   .session[hidden] { display: none; }
+  @media (min-width: 1024px) {
+    .session { left: max(16px, calc((100vw - var(--max)) / 2 + var(--gutter))); transform: none; width: min(600px, calc(100vw - 32px)); }
+  }
   .session b { color: var(--mist); font-weight: 600; font-variant-numeric: tabular-nums; }
+  /* The minute's words, as the voice says them */
+  .session .line { grid-column: 1 / -1; margin: 0; min-height: 1.45em; color: var(--mist); font-size: 16px; line-height: 1.45; }
+  .session .line[hidden] { display: none; }
   .session .stop { min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; background: var(--gold);
     color: var(--deep); border: none; font: 600 13.5px/1 var(--display); }
   .bar { grid-column: 1 / -1; height: 3px; background: var(--rule); border-radius: 2px; overflow: hidden; }
@@ -332,6 +453,9 @@
     .nav-links { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
       mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); padding-right: 22px; }
     .nav-links a { padding: 8px 9px; }
+    /* On a phone the bar names the two parts only, both always in sight */
+    .nav-links a:not(.part-link) { display: none; }
+    .nav-links a.part-link.in { color: var(--mist); background: rgba(238, 247, 245, 0.07); }
     .nav .code { padding: 7px 12px; }
     /* One column, in the order a phone reads it: what was built, both products, then the words and the buttons */
     .hero-grid { grid-template-columns: minmax(0, 1fr); }
@@ -347,14 +471,13 @@
     .j-card .j-title::after { content: " · "; color: var(--muted); }
     .hero-world { order: 4; margin-top: 18px; }
     .hero-world .frame { aspect-ratio: 1 / 1; border-radius: 24px; }
-    .lead { order: 5; margin: 26px 0 24px; font-size: 16.5px; }
-    .hero-act { order: 6; }
+    .hero-act { order: 5; margin-top: 22px; }
+    .lead { order: 6; margin: 26px 0 0; font-size: 16.5px; }
     .hero-models { order: 7; padding-top: 36px; }
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .actions .play { grid-column: 1 / -1; }
     a.button { padding: 0 14px; }
-    .j-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "view" "rest"; grid-template-rows: none; }
-    .j-view { position: relative; top: auto; width: min(100%, 340px); margin: 28px auto 0; }
+    .j-pair { grid-template-columns: minmax(0, 1fr); }
     ol.weeks { grid-template-columns: 1fr; }
     .foot { grid-template-columns: 1fr; }
     #climb .thumbs { order: -1; margin: 0 0 20px; }
@@ -367,6 +490,17 @@
     ol.weeks li { background: none; border: 0; border-top: 1px solid var(--rule); border-radius: 0; padding: 10px 0; }
     ol.weeks li:last-child { border-bottom: 1px solid var(--rule); }
     .body { padding: 20px 18px 22px; }
+  }
+  @media (max-width: 899px) {
+    /* The walk on a narrower screen (as on elynd.app): the words first, then the climb, centred and fitting the screen
+       below the bar, with the day and its lights over the painting's top */
+    .journey, .journey.walking { grid-template-columns: minmax(0, 1fr); }
+    .journey .climb { width: min(100%, 420px); margin: 32px auto 0; }
+    .walking .journey-copy { position: static; height: auto; display: block; }
+    .journey.walking .climb { width: min(100%, calc((var(--screen) - var(--nav-h)) * 0.86 * 2 / 3)); }
+    .walking .climb .letter { max-width: 40%; }   /* clear of day 30's ring */
+    .climb .said-first { left: 4%; top: 74px; max-width: 64%; font-size: 12.5px; padding: 11px 13px; }   /* under the day */
+    .climb .letter { left: 4%; max-width: 46%; font-size: 12.5px; padding: 11px 13px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; }
@@ -382,11 +516,11 @@
       <span>ELYND</span>
     </a>
     <nav class="nav-links" aria-label="On this page">
-      <a href="#elynd-worlds">Worlds</a>
-      <a href="#journeys">Journeys</a>
-      <a href="#runs">Real runs</a>
-      <a href="#examples">Examples</a>
-      <a href="#how">What you see</a>
+      <a class="part-link" data-part="1" href="#elynd-worlds"><span class="pn" aria-hidden="true">1</span>Worlds</a>
+      <a data-part="1" href="#runs">Real runs</a>
+      <a data-part="1" href="#examples">Examples</a>
+      <a data-part="1" href="#how">What you see</a>
+      <a class="part-link part2-link" data-part="2" href="#journeys"><span class="pn" aria-hidden="true">2</span>Journeys</a>
     </nav>
     <a class="code" href="https://github.com/heynomads/elynd-worlds">Code <span aria-hidden="true">↗</span></a>
   </div>
@@ -395,30 +529,34 @@
 <main id="main">
   <section class="hero" id="elynd-worlds" aria-labelledby="hero-title">
     <div class="wrap hero-grid">
-      <p class="built">Built during the Meta Global AI Developer Hackathon, 26&nbsp;Oct&nbsp;– 4&nbsp;Nov&nbsp;2026:
-        <strong>ELYND Worlds</strong> and <strong>ELYND Journeys</strong>.
-        <span class="before">ELYND itself (writing, voices, player) existed before.</span></p>
+      <p class="built">We built two things during the Meta Global AI Developer Hackathon (26&nbsp;Oct&nbsp;– 4&nbsp;Nov&nbsp;2026):
+        <strong>ELYND&nbsp;Worlds</strong> and <a href="#journeys"><strong>ELYND&nbsp;Journeys</strong></a>.
+        <span class="before">ELYND itself (its writer, voices, music and player) existed before.</span></p>
       <div class="hero-main">
         <div class="hero-head">
-          <p class="eyebrow">ELYND Worlds</p>
+          <p class="eyebrow"><span class="pn" aria-hidden="true">1</span>ELYND Worlds</p>
           <h1 id="hero-title">Every meditation opens on a living painted world.</h1>
         </div>
         <p class="lead">In the <a href="https://elynd.app">ELYND</a> app, each guided meditation's world is a calm painted
           place to arrive in and come back to, alive as such a place would be: one from a library Meta's models painted,
-          or a new one painted live for a very personal meditation.</p>
+          or a new one painted on demand for a very personal meditation.</p>
         <div class="hero-act">
           <div class="actions">
             <button class="play" type="button" aria-pressed="false" aria-describedby="play-hint">▶&#xFE0E; Play as a meditation</button>
             <a class="button" href="https://elynd.app">Visit elynd.app</a>
             <a class="button" href="https://github.com/heynomads/elynd-worlds">Code on GitHub</a>
           </div>
-          <p class="play-hint" id="play-hint">A ten-minute session, sped up, on the worlds on the screen.</p>
+          <p class="play-hint" id="play-hint">Sound on: a one-minute ELYND meditation in one of the app's own
+            voices, with its music; the worlds on the screen change with it, as in the app. Or see
+            <button class="as-link fast" type="button" aria-pressed="false">a sample ten-minute one, 12× faster</button>, without sound.</p>
+          <p class="play-hint before-note">The minute's voice, words and music are ELYND's own, from before the hackathon,
+            played from elynd.app.</p>
         </div>
         <div class="hero-models">
           <p class="flow-label"><span id="world-flow">How a world is made, in order</span>
             <a href="#courtyard" data-xray="courtyard">See each step in the X-ray ↓</a></p>
           <ol class="flow" aria-labelledby="world-flow">
-            <li><span class="who">Llama 3.3<i class="ow">open weights</i></span><span class="what">turns the meditation into a place, nothing personal</span></li>
+            <li><span class="who">Llama 3.3<i class="ow">open weights</i></span><span class="what">turns the meditation into a place, with no personal details</span></li>
             <li><span class="who">Muse Spark</span><span class="what">designs the world</span></li>
             <li><span class="who">Muse Image</span><span class="what">paints it</span></li>
             <li><span class="who">Muse Spark Open<i class="ow">open weights</i></span><span class="what">judges it</span></li>
@@ -429,68 +567,16 @@
       <div class="hero-side">
         <figure class="hero-world">
           <div class="frame">
-            <canvas id="hero-world" role="img" aria-label="The courtyard: a sun-warmed courtyard in late afternoon light with an old olive tree, a red watering can and a dog asleep in the shade"></canvas>
-            <span class="badge">Painted on production</span>
+            <canvas id="hero-world" role="img" aria-label="Golden Beech Forest: a silent autumn beech forest with golden light, a narrow stream flowing, leaves drifting down and a red maple leaf floating"></canvas>
+            <span class="badge">Drawn live, not a video</span>
           </div>
-          <figcaption>The courtyard, from our own test words</figcaption>
+          <figcaption>Watch the stream and the falling leaves</figcaption>
         </figure>
         <a class="j-card" href="#journeys">
           <img src="featured/climb/day01_thumb.webp" width="120" height="213" alt="">
           <span class="j-text"><span class="j-title">Also built: ELYND&nbsp;Journeys</span>
-            <span class="j-line">Thirty days toward one goal, planned by Llama.&nbsp;<span class="go" aria-hidden="true">→</span></span></span>
+            <span class="j-line">Thirty days of meditations, planned by Llama.&nbsp;<span class="go" aria-hidden="true">→</span></span></span>
         </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" id="journeys" aria-labelledby="journeys-title">
-    <div class="wrap j-grid">
-      <div class="j-head">
-        <p class="eyebrow">ELYND Journeys</p>
-        <h2 id="journeys-title"><span class="clause">Thirty days toward one goal,</span> <span class="clause">planned by Llama.</span></h2>
-        <p class="sec-lead">A guide on Llama 3.3 listens, then plans thirty days: each day's meditation offers one small
-          when-then step (“when …, I …”) for a situation you named, and the day before a moment you name, the
-          meditation rehearses it. The journey's world climbs one mountain, a step a day.</p>
-      </div>
-      <div class="j-view">
-        <video class="j-walk" muted playsinline preload="metadata" poster="featured/climb/day01.webp" width="720" height="1280"
-          aria-label="The app's own walk up the journey's mountain, from day 1 before dawn in a pine forest at the foot of the path, across a meadow and up the ridge, to day 30 at the top above the clouds at sunrise">
-          <source src="featured/journey/walk.mp4" type="video/mp4">
-        </video>
-        <span class="badge">The app's own walk · days 1 to 30</span>
-        <button class="j-again" type="button" hidden>↻ Walk again</button>
-      </div>
-      <div class="j-rest">
-        <div class="j-flow">
-          <p class="flow-label"><span id="journey-flow">How a journey is made, in order</span></p>
-          <ol class="flow" aria-labelledby="journey-flow">
-            <li><span class="who">Llama 3.3<i class="ow">open weights</i></span><span class="what">the guide listens and sums up what it heard</span></li>
-            <li><span class="who">Llama 3.3</span><span class="what">plans the thirty days</span></li>
-            <li><span class="who">Muse Image</span><span class="what">paints the climb: six paintings up one mountain</span></li>
-            <li><span class="who">Muse Spark Open and Muse Spark</span><span class="what">judged each painting</span></li>
-          </ol>
-        </div>
-        <div class="j-plan">
-          <p class="kicker">A real plan · made on production, 2&nbsp;Nov&nbsp;2026</p>
-          <h3>“Speaking up in meetings”</h3>
-          <p class="small">“To speak up in meetings with your thoughts, even if imperfect.” Ready about ten seconds
-            after the guide's summary was confirmed; the answers were our own test words, not a listener's.</p>
-          <ol class="weeks" aria-label="The plan's four weeks">
-            <li><b>Week 1 · Noticing moments</b>When do you stay silent in meetings?</li>
-            <li><b>Week 2 · Gentle kindness</b>How do you support yourself in challenging discussions?</li>
-            <li><b>Week 3 · Practising expression</b>Imagine sharing your thoughts with your manager present.</li>
-            <li><b>Week 4 · Embodying confidence</b>Feel your body when you speak up in a meeting.</li>
-          </ol>
-          <p class="day1"><b>Day 1, “Starting to speak up”:</b> You begin to notice your thoughts in meetings.</p>
-        </div>
-        <ul class="notes">
-          <li>Each day's meditation is written and voiced by ELYND's own writer and voices, which existed before the
-            hackathon and are not Meta models.</li>
-          <li>The guide and the planner run on Llama 3.3 on Amazon Bedrock, in ELYND's own AWS account, so a listener's
-            answers never reach Meta's Model API.</li>
-          <li>The climb is painted once and is the same for every listener; the walk steps into it with depth maps from
-            Depth Anything V2 Small, made once offline (not a Meta model).</li>
-        </ul>
       </div>
     </div>
   </section>
@@ -498,9 +584,9 @@
   <div class="runs-band">
   <section class="sec wrap" id="runs" aria-labelledby="runs-title">
     <div class="sec-head">
-      <h2 id="runs-title">Three real runs</h2>
-      <p class="sec-lead">A personal world painted on production, a journey's thirty days as one climb, and a
-        painting the judge turned down.</p>
+      <p class="eyebrow">ELYND Worlds</p>
+      <h2 id="runs-title">Two real runs</h2>
+      <p class="sec-lead">A personal world painted on production, and a painting Muse Spark Open turned down.</p>
       <p class="x-hint"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 1.8 14.2 5 8 8.2 1.8 5Z"/><path d="M1.8 8 8 11.2 14.2 8"/><path d="M1.8 11 8 14.2 14.2 11"/></svg>
         <span><b>X-ray</b> steps through how a world is made: the painting, SAM 3.1's layers and regions, the plate,
           the live shader, with models, times and cost.</span></p>
@@ -543,6 +629,146 @@
         </div>
       </article>
 
+      <article class="card" id="rejected">
+        <div class="view">
+          <img class="stage" src="featured/rejected/painting.webp" width="720" height="1280" decoding="async"
+            alt="The painting that was turned down: a strip of meadow with a stone and a post floats above the sea, with a mirrored band of grass below it">
+          <span class="badge bad">Turned down · 4/10</span>
+        </div>
+        <div class="body">
+          <p class="kicker">A real rejection</p>
+          <h3>Muse Spark Open said no</h3>
+          <p class="small">Muse Spark's design, for the world library: <q>A bright flower meadow runs to a high cliff
+            edge above a calm blue sea.</q> Muse Spark Open looked at the painting:</p>
+          <blockquote class="no"><span class="verdict">4/10.</span> “Both the smooth stone and wooden post are visible in
+            bright midday light, but the meadow is rendered as a floating, disconnected strip above the sea with a
+            mirrored grass band below, breaking the continuous cliff-edge and creating a chaotic, unsettling spatial
+            effect.”</blockquote>
+          <ul class="checks" aria-label="The judge's checks">
+            <li class="no">on brief: no</li><li class="no">calm: no</li><li>stray figures: none</li><li>text: none</li>
+          </ul>
+          <p class="small">Its fix for another try: “Change the design to require a single continuous ground plane
+            where the meadow runs solidly to the cliff edge above the sea with no floating, cut-out, or mirrored
+            layers.”</p>
+          <p class="fine">Muse Spark had passed it with 8/10 while the open judge was busy. Every painting passed
+            that way went back to Muse Spark Open, which has the final say: it passed 73 of 74 and turned this one
+            down. No listener saw it. In the app only Muse Spark Open may pass a painting; when none passes, the
+            listener keeps a calm world from the library.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+  </div>
+
+  <section class="sec wrap" id="examples" aria-labelledby="examples-title">
+    <div class="sec-head">
+      <p class="eyebrow">ELYND Worlds</p>
+      <h2 id="examples-title">The example worlds</h2>
+      <p class="sec-lead">Made by the agent for the example meditations in this repository, each alive as on the
+        phone. Open the X-ray on any of them.</p>
+    </div>
+    <div class="grid" id="worlds"></div>
+  </section>
+
+  <section class="sec wrap" id="how" aria-labelledby="how-title">
+    <div class="sec-head">
+      <p class="eyebrow">ELYND Worlds</p>
+      <h2 id="how-title">What you are seeing</h2>
+    </div>
+    <div class="how-grid">
+      <div>
+        <h3>Alive as such a place would be</h3>
+        <p>Each world lives as such a place would: the water ripples and its reflections wobble, now and then the sun
+          glints on it; the clouds drift; the grass waves in the wind; a stream flows; a lantern flickers; leaves, snow,
+          pollen or fireflies drift through the air.</p>
+        <p>The objects move as such things move: a boat sinks a little on the swell and rolls, a butterfly floats and
+          folds its wings, branches sway, stones and posts stay still.</p>
+      </div>
+      <div>
+        <h3>Play as a meditation</h3>
+        <p>A minute of ELYND, in one of the app's own voices with its music, played from ELYND's website (its voice,
+          words and music existed before the hackathon). The worlds change with it as in the app: whole for 45 seconds while the
+          listener arrives, dimmer after, whole again at the end.</p>
+        <p>A sample ten-minute meditation, 12× faster and without sound, shows the rest: the world fades to a glow
+          while the eyes are closed, more of it returns in a long silence, all of it at the end, when time has passed
+          there too (a morning sun has climbed, a golden light has deepened). A sleep world stays dim and warm, and
+          ends dark.</p>
+      </div>
+      <div>
+        <h3>The app's own shader</h3>
+        <p>This page draws every world with the app's own shader (WebGL 2) and the same timeline, whose Python, Dart
+          and JavaScript versions are tested against each other frame by frame.</p>
+      </div>
+    </div>
+  </section>
+  <!-- 2 · ELYND Journeys: a part of its own, after everything about worlds -->
+  <section class="part2" id="journeys" aria-labelledby="part2-eyebrow part2-name">
+    <div class="wrap">
+      <div class="opener">
+        <p class="eyebrow" id="part2-eyebrow"><span class="pn" aria-hidden="true">2</span>ELYND Journeys</p>
+        <h2 class="part-title" id="part2-name">Thirty days of meditations toward one goal.</h2>
+        <p class="lead"><b>A world is where one meditation happens; a journey is thirty days of meditations toward one
+          goal.</b> Llama plans them, and you walk them as one climb up a painted mountain, a step a day.</p>
+      </div>
+
+      <div class="journey" id="journey-walk">
+        <div class="journey-copy">
+          <h3 class="as-h3" id="journeys-title"><span class="clause">Planned by Llama,</span> <span class="clause">walked a step a day.</span></h3>
+          <p class="sec-lead">A Llama 3.3 guide listens, then plans thirty days; ELYND writes each day's meditation around
+            one small “when …, I …” step for a situation you named, and the day before an event you name, the
+            meditation rehearses it.</p>
+          <p class="walk-hint">Scroll to walk the thirty days <span aria-hidden="true">↓</span></p>
+        </div>
+        <!-- The view back down the mountain on day 30, one light on the path for each day (elynd.app's, with the
+             same lights). Where WebGL runs, the scroll walks there first: the climb's paintings in a canvas. -->
+        <div class="walk" id="walk">
+          <figure class="climb" id="walk-climb">
+            <img src="featured/journey/view-back-800.webp" srcset="featured/journey/view-back-480.webp 480w, featured/journey/view-back-800.webp 800w, featured/journey/view-back-1152.webp 1152w"
+              sizes="(max-width: 899px) 100vw, 560px" width="800" height="1200" loading="lazy" decoding="async"
+              alt="A painted mountain path seen from the top at sunrise, with a small light on the path for each of the 30 days">
+            <div class="fade"></div>
+            <div class="lamps" aria-hidden="true"><span style="--i:0;--x:49.72%;--y:4.35%;--s:0.50"></span><span style="--i:1;--x:46.67%;--y:6.48%;--s:0.51"></span><span style="--i:2;--x:50.56%;--y:8.43%;--s:0.51"></span><span style="--i:3;--x:46.94%;--y:10.00%;--s:0.52"></span><span style="--i:4;--x:47.92%;--y:12.78%;--s:0.55"></span><span style="--i:5;--x:50.00%;--y:13.70%;--s:0.55"></span><span style="--i:6;--x:52.08%;--y:17.78%;--s:0.60"></span><span style="--i:7;--x:51.67%;--y:20.00%;--s:0.62"></span><span style="--i:8;--x:57.08%;--y:22.04%;--s:0.65"></span><span style="--i:9;--x:55.56%;--y:24.91%;--s:0.69"></span><span style="--i:10;--x:47.78%;--y:26.76%;--s:0.72"></span><span style="--i:11;--x:43.89%;--y:28.06%;--s:0.74"></span><span style="--i:12;--x:44.58%;--y:29.17%;--s:0.75"></span><span style="--i:13;--x:52.50%;--y:30.09%;--s:0.77"></span><span style="--i:14;--x:55.00%;--y:33.61%;--s:0.83"></span><span style="--i:15;--x:47.08%;--y:34.07%;--s:0.84"></span><span style="--i:16;--x:42.78%;--y:37.22%;--s:0.90"></span><span style="--i:17;--x:40.00%;--y:38.43%;--s:0.92"></span><span style="--i:18;--x:46.94%;--y:41.20%;--s:0.98"></span><span style="--i:19;--x:53.33%;--y:43.43%;--s:1.03"></span><span style="--i:20;--x:61.53%;--y:43.80%;--s:1.04"></span><span style="--i:21;--x:61.25%;--y:49.63%;--s:1.17"></span><span style="--i:22;--x:55.69%;--y:53.70%;--s:1.27"></span><span style="--i:23;--x:51.67%;--y:57.04%;--s:1.35"></span><span style="--i:24;--x:44.03%;--y:60.37%;--s:1.44"></span><span style="--i:25;--x:46.25%;--y:68.06%;--s:1.65"></span><span style="--i:26;--x:50.42%;--y:72.87%;--s:1.79"></span><span style="--i:27;--x:53.47%;--y:80.28%;--s:2.03"></span><span style="--i:28;--x:55.00%;--y:86.94%;--s:2.25"></span><span style="--i:29;--x:52.50%;--y:94.26%;--s:2.50"></span></div>
+            <span class="daytag first" aria-hidden="true">Day 1</span>
+            <p class="letter" aria-hidden="true"><small>Looking back from the top</small>The last meditation reminds you where you started.</p>
+            <figcaption class="daytag" aria-hidden="true">Day <b class="daynum">30</b></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="j-flow">
+        <p class="flow-label"><span id="journey-flow">How a journey is made, in order</span></p>
+        <ol class="flow" aria-labelledby="journey-flow">
+            <li><span class="who">Llama 3.3<i class="ow">open weights</i></span><span class="what">the guide listens and sums up what it heard</span></li>
+            <li><span class="who">Llama 3.3</span><span class="what">plans the thirty days</span></li>
+            <li><span class="who">Muse Image</span><span class="what">painted the climb once: six paintings up one mountain</span></li>
+            <li><span class="who">Muse Spark Open or Muse Spark</span><span class="what">judged each painting</span></li>
+          </ol>
+      </div>
+      <div class="j-pair">
+        <div class="j-plan">
+          <p class="kicker">A real plan · made on production, 2&nbsp;Nov&nbsp;2026</p>
+          <h3>“Speaking up in meetings”</h3>
+          <p class="small">“To speak up in meetings with your thoughts, even if imperfect.” Ready about ten seconds
+            after the guide's summary was confirmed; the answers were our own test words, not a listener's.</p>
+          <ol class="weeks" aria-label="The plan's four weeks">
+            <li><b>Week 1 · Noticing moments</b>When do you stay silent in meetings?</li>
+            <li><b>Week 2 · Gentle kindness</b>How do you support yourself in challenging discussions?</li>
+            <li><b>Week 3 · Practising expression</b>Imagine sharing your thoughts with your manager present.</li>
+            <li><b>Week 4 · Embodying confidence</b>Feel your body when you speak up in a meeting.</li>
+          </ol>
+          <p class="day1"><b>Day 1, “Starting to speak up”:</b> You begin to notice your thoughts in meetings.</p>
+        </div>
+        <ul class="notes">
+          <li>Each day's meditation is written and voiced by ELYND's own writer and voices, which existed before the
+            hackathon and are not Meta models.</li>
+          <li>The guide and the planner run on Llama 3.3 on Amazon Bedrock, in ELYND's own AWS account, so a listener's
+            answers never reach Meta's Model API.</li>
+          <li>The climb is painted once and is the same for every listener; the walk steps into it with depth maps from
+            Depth Anything V2 Small, made once offline (not a Meta model).</li>
+        </ul>
+      </div>
+      <div class="runs-list j-climb">
       <article class="card" id="climb">
         <div class="view">
           <img class="stage" src="featured/climb/day01.webp" width="720" height="1280" decoding="async"
@@ -550,10 +776,10 @@
           <span class="badge" id="climb-badge">Week 1 · days 1–7</span>
         </div>
         <div class="body">
-          <p class="kicker">A journey · thirty days</p>
+          <p class="kicker">ELYND Journeys · the climb</p>
           <h3><span class="clause">The climb:</span> <span class="clause">one place, six paintings</span></h3>
           <p class="small">A journey is thirty days toward one goal: Llama 3.3 plans each day, and ELYND writes the
-            day's meditation. Its world is one walk up one mountain, a painting a week. Each after the first is a
+            day's meditation. You walk it as one climb up one mountain, a painting a week. Each after the first is a
             Muse Image edit of the painting before it, further along the same path, so it stays one place (one
             between weeks 3 and 4 is not shown; the last looks back from the top); a critic passed every one.</p>
           <div class="thumbs" role="group" aria-label="The climb's six paintings">
@@ -589,72 +815,6 @@
             and is the same for everyone; nothing of a listener goes into it.</p>
         </div>
       </article>
-
-      <article class="card" id="rejected">
-        <div class="view">
-          <img class="stage" src="featured/rejected/painting.webp" width="720" height="1280" decoding="async"
-            alt="The painting that was turned down: a strip of meadow with a stone and a post floats above the sea, with a mirrored band of grass below it">
-          <span class="badge bad">Turned down · 4/10</span>
-        </div>
-        <div class="body">
-          <p class="kicker">A real rejection</p>
-          <h3>The judge said no</h3>
-          <p class="small">Muse Spark's design, for the world library: <q>A bright flower meadow runs to a high cliff
-            edge above a calm blue sea.</q> Muse Spark Open looked at the painting:</p>
-          <blockquote class="no"><span class="verdict">4/10.</span> “Both the smooth stone and wooden post are visible in
-            bright midday light, but the meadow is rendered as a floating, disconnected strip above the sea with a
-            mirrored grass band below, breaking the continuous cliff-edge and creating a chaotic, unsettling spatial
-            effect.”</blockquote>
-          <ul class="checks" aria-label="The judge's checks">
-            <li class="no">on brief: no</li><li class="no">calm: no</li><li>stray figures: none</li><li>text: none</li>
-          </ul>
-          <p class="small">Its fix for another try: “Change the design to require a single continuous ground plane
-            where the meadow runs solidly to the cliff edge above the sea with no floating, cut-out, or mirrored
-            layers.”</p>
-          <p class="fine">Muse Spark had passed it with 8/10 while the open judge was busy. Every painting passed
-            that way went back to Muse Spark Open, which has the final say: it passed 73 of 74 and turned this one
-            down. No listener saw it. In the app only Muse Spark Open may pass a painting; when none passes, the
-            listener keeps a calm world from the library.</p>
-        </div>
-      </article>
-
-    </div>
-  </section>
-  </div>
-
-  <section class="sec wrap" id="examples" aria-labelledby="examples-title">
-    <div class="sec-head">
-      <h2 id="examples-title">The example worlds</h2>
-      <p class="sec-lead">Made by the agent for the example meditations in this repository, each alive as on the
-        phone. Open the X-ray on any of them.</p>
-    </div>
-    <div class="grid" id="worlds"></div>
-  </section>
-
-  <section class="sec wrap" id="how" aria-labelledby="how-title">
-    <div class="sec-head">
-      <h2 id="how-title">What you are seeing</h2>
-    </div>
-    <div class="how-grid">
-      <div>
-        <h3>Alive as such a place would be</h3>
-        <p>Each world lives as such a place would: the water ripples and its reflections wobble, now and then the sun
-          glints on it; the clouds drift; the grass waves in the wind; a stream flows; a lantern flickers; leaves, snow,
-          pollen or fireflies drift through the air.</p>
-        <p>The objects move as such things move: a boat sinks a little on the swell and rolls, a butterfly floats and
-          folds its wings, branches sway, stones and posts stay still.</p>
-      </div>
-      <div>
-        <h3>Play as a meditation</h3>
-        <p>A ten-minute session, sped up: the whole world while the listener arrives, a glow while their eyes are
-          closed, more of it in a long silence, all of it at the end, when time has passed in the place too: a morning
-          world's sun has climbed, a golden one's glow has deepened.</p>
-        <p>A sleep world stays dim, ends dark, and its light stays warm.</p>
-      </div>
-      <div>
-        <h3>The phone's own shader</h3>
-        <p>This page draws it all with the phone's own shader (WebGL 2), and the same timeline: the Python, Dart and
-          JavaScript versions are tested against each other frame by frame.</p>
       </div>
     </div>
   </section>
@@ -671,7 +831,7 @@
         for this repository; the courtyard was painted on ELYND's production server from our own test words, not a
         listener's, and the worlds made for ELYND's listeners stay private to them. Every picture is marked as made by AI
         in its metadata.</p>
-      <p>ELYND itself, the writing, voices and player of its meditations, existed before the hackathon; ELYND Worlds and
+      <p>ELYND itself, the writer, voices, music and player of its meditations, existed before the hackathon; ELYND Worlds and
         ELYND Journeys were built during it.</p>
       <p class="copy">© 2026 Comads OÜ.</p>
     </div>
@@ -684,39 +844,420 @@
 
 <!-- While a meditation plays: where it is, at the bottom of the screen wherever the page is scrolled. -->
 <div class="session" hidden>
-  <div class="session-text"><b class="clock">0:00</b> of 10:00 · <span class="phase" aria-live="polite"></span></div>
+  <div class="session-text"><b class="clock">0:00</b> of <span class="total">1:10</span> · <span class="phase" aria-live="polite"></span></div>
   <button class="stop" type="button">■ Stop</button>
+  <p class="line" hidden></p>
   <div class="bar" aria-hidden="true"><i></i></div>
 </div>
 
 <script>
 "use strict";
-// The journey's walk: plays once while it is on the screen (never with reduced motion) and stops at the top.
+// The journey's walk, as elynd.app walks it (templates/website/home.html, 1 Nov 2026, from the app's climb walk:
+// lib/journeys/climb_walk.dart, with its paintings, depth maps and numbers). Where WebGL runs (and no data saver or
+// reduced motion is on), the scroll walks the climb while the painting stays in view for two screens. Each week's
+// painting is a 72x128 grid lifted off its depth map, so walking moves the camera into the picture and near things
+// come closer faster. A cloud carries you to the next week (far things fade first); each day is a little brighter and
+// warmer; at the top the sunrise glows, then the view back down shows, where the 30 lights come on, day 1 far below to
+// day 30 at your feet, and then the day-30 words. Scrolling back walks back. The walk follows the scroll a little
+// softly and draws only while it moves, never off screen. Elsewhere, or if the walk cannot go on, the painting fades
+// in once loaded and the lights come on one by one; with reduced motion, it stands with its lights.
 (() => {
-  const walk = document.querySelector("video.j-walk");
-  const again = document.querySelector(".j-again");
-  if (!walk || !again) return;
-  const play = () => {
-    const started = walk.play();
-    if (started) started.catch(() => { again.hidden = false; });
-  };
-  walk.addEventListener("ended", () => { again.textContent = "↻ Walk again"; again.hidden = false; });
-  again.addEventListener("click", () => {
-    again.hidden = true;
-    if (walk.ended) walk.currentTime = 0;
-    play();
-  });
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-    again.textContent = "▶︎ Walk the thirty days";
-    again.hidden = false;
-    return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+  document.documentElement.classList.add("js");
+  var climb = document.getElementById('walk-climb'), painting = climb.querySelector('img'), daynum = climb.querySelector('.daynum');
+  function watch(el, threshold, fn) {
+    new IntersectionObserver(function (entries) { fn(entries[0].isIntersecting); }, { threshold: threshold }).observe(el);
   }
-  new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) { if (!walk.paused) walk.pause(); }
-      else if (walk.paused && !walk.ended && again.hidden) play();
+  if (!walkTheClimb()) viewBack();
+
+  function viewBack() {
+    var lit = false, inView = false;
+    daynum.textContent = '1';
+    function light() {
+      if (lit || !inView || !painting.classList.contains('loaded')) return;
+      lit = true; climb.classList.add('lit');
+      var d = 1, t = setInterval(function () { d += 1; daynum.textContent = String(d); if (d >= 30) clearInterval(t); }, 110);
     }
-  }, { threshold: 0.5 }).observe(walk);
+    function loaded() {
+      var done = function () { painting.classList.add('loaded'); setTimeout(light, 400); };
+      if (painting.decode) painting.decode().then(done, done); else done();
+    }
+    if (painting.complete && painting.naturalWidth) loaded();
+    else {
+      painting.addEventListener('load', loaded, { once: true });
+      painting.addEventListener('error', function () { painting.style.display = 'none'; painting.classList.add('loaded'); light(); }, { once: true });
+    }
+    watch(climb, 0.2, function (on) { inView = on; light(); });
+  }
+
+  function walkTheClimb() {
+    var section = document.getElementById('journey-walk'), box = document.getElementById('walk');
+    var saver = navigator.connection && navigator.connection.saveData;
+    if (!box || saver || !window.Promise || !window.Float32Array) return false;
+    var canvas = document.createElement('canvas'), gl = null;
+    try {
+      gl = canvas.getContext('webgl', { alpha: false, antialias: true, depth: true, powerPreference: 'low-power',
+                                        failIfMajorPerformanceCaveat: true });
+    } catch (e) { gl = null; }
+    if (!gl) return false;
+    var files = {}, wide = window.matchMedia('(min-width: 900px)'), size = wide.matches ? 'lg' : 'sm';
+    ['a', 'b', 'c', 'e', 'f', 'g'].forEach(function (key) {
+      var at = 'featured/journey/walk/' + key;
+      files[key] = { sm: at + '-sm.webp', lg: at + '-lg.webp', depth: at + '-depth.png' };
+    });
+    var lamps = climb.querySelectorAll('.lamps span'), i, j;
+
+    // The app's climb (walkStages): the days each painting holds, how far its week walks into it in plain sight (tmax)
+    // and on under the cloud (fogGo), where its path heads (fractions of its width and height from the top left),
+    // and its cloud's colour.
+    var WEEKS = [
+      { key: 'a', from: 1, to: 7, tmax: 0.50, fogGo: 0.17, head: [0.50, 0.57], fog: [184, 196, 204] },
+      { key: 'b', from: 8, to: 14, tmax: 0.50, fogGo: 0.17, head: [0.53, 0.52], fog: [204, 207, 212] },
+      { key: 'c', from: 15, to: 21, tmax: 0.50, fogGo: 0.17, head: [0.66, 0.52], fog: [230, 217, 201] },
+      { key: 'e', from: 22, to: 28, tmax: 0.50, fogGo: 0.17, head: [0.54, 0.40], fog: [242, 224, 199] },
+      { key: 'f', from: 29, to: 30, tmax: 0.22, fogGo: 0.08, head: [0.51, 0.40], fog: [255, 232, 194] }
+    ];
+    var BACK = { key: 'g', head: [0.5, 0.5] }, GLOW = [1, 230 / 255, 186 / 255], GROUND = [15 / 255, 36 / 255, 39 / 255];
+    // The scroll in beats (shares of the walk's 2 screens): day 1, each week's walk with a cloud into the next, the
+    // top, the sunrise, the view back settling, its 30 lights lit by a spark running down the path, then the day-30
+    // words, held.
+    var BEATS = [['start', 8]];
+    WEEKS.forEach(function (w, k) {
+      BEATS.push(['walk', k < WEEKS.length - 1 ? 26 : 20, k]);
+      if (k < WEEKS.length - 1) BEATS.push(['cloud', 18, k]);
+    });
+    BEATS.push(['glow', 26], ['back', 12], ['lights', 50], ['words', 48]);
+    var UNITS = BEATS.reduce(function (sum, b) { return sum + b[1]; }, 0);
+    function ease(x) { return x * x * (3 - 2 * x); }
+    function band(x, a, b) { return ease(Math.max(0, Math.min(1, (x - a) / (b - a)))); }
+    function viewAt(s) {   // where s (0 to 1 of the walk's scroll) puts you: the paintings to draw, and what to show
+      var x = Math.max(0, Math.min(1, s)) * UNITS, k = 0;
+      while (k < BEATS.length - 1 && x > BEATS[k][1]) { x -= BEATS[k][1]; k += 1; }
+      var beat = BEATS[k][0], f = Math.min(1, x / BEATS[k][1]), w = WEEKS[BEATS[k][2] || 0], top = WEEKS[WEEKS.length - 1];
+      var v = { layers: [{ week: w, t: 0, fog: 0, alpha: 1 }], fogColor: w.fog, bloom: 0, day: 1, back: false, lights: -1, words: false, first: false };
+      if (beat === 'start') v.first = true;
+      else if (beat === 'walk') {
+        // each week after the first goes on from where its cloud left it (0.06 in), so the walk never stops
+        var t0 = k > 0 ? 0.06 : 0;
+        v.layers[0].t = t0 + f * (w.tmax - t0);
+        v.day = w.from + f * (w.to - w.from);
+        v.first = BEATS[k][2] === 0 && v.day < 3.5;
+      } else if (beat === 'cloud') {
+        // into the mist in this week's painting, the next one showing through it: never a blank, the cloud
+        // thickest far away (the app's cloud, capped and drifting), the next painting walking in from 0 to 0.06
+        var n = WEEKS[BEATS[k][2] + 1];
+        v.day = w.to + f;
+        v.fogColor = w.fog.map(function (c, m) { return c + (n.fog[m] - c) * f; });
+        v.layers = [{ week: w, t: w.tmax + f * w.fogGo * 1.2, fog: 1.4 * band(f, 0, 0.6), alpha: 1 },
+                    { week: n, t: 0.06 * ease(f), fog: 1.4 * (1 - band(f, 0.4, 1)), alpha: band(f, 0.3, 0.7) }];
+      } else {
+        v.day = 30; v.fogColor = top.fog;
+        if (beat === 'glow') {   // the sunrise blooms from the sun, the view back down comes through it
+          v.layers = [{ week: top, t: top.tmax + 0.2 * ease(f), fog: 0, alpha: 1 },
+                      { week: BACK, t: 0.07, fog: 0, alpha: band(f, 0.55, 1) }];
+          v.bloom = 0.72 * band(f, 0, 0.7);
+        } else {
+          v.back = true;
+          v.layers = [{ week: BACK, t: beat === 'back' ? 0.07 * (1 - ease(f)) : 0, fog: 0, alpha: 1 }];
+          if (beat === 'back') v.bloom = 0.72 * (1 - ease(f));
+          else { v.lights = beat === 'lights' ? f : 1; v.words = beat === 'words'; }
+        }
+      }
+      return v;
+    }
+
+    // The camera the depth maps were made for: 50 degrees high over a 9:16 painting. The painting covers the canvas,
+    // 2 % more (the app's numbers); the view back stands on the canvas's foot, as the still view back does (its
+    // images are the painting's lower 1200 of 1422 rows), so its lights, tags and words go where that crop lands.
+    var HALF_H = Math.tan(25 * Math.PI / 180), HALF_W = HALF_H * 9 / 16, NX = 72, NY = 128, NEAR = 0.05, FAR = 40;
+    var BACK_TOP = 222 / 1422, lens = { walk: [1, 1, 1], back: [1, 1, 1] }, stick = 0, free = 0, screen = document.createElement('div');
+    screen.style.cssText = 'position: absolute; top: 0; left: 0; width: 0; height: 100vh; height: 100svh; visibility: hidden; pointer-events: none';
+    function fit() {   // also where the painting sticks, and how far it drifts up while the walk plays (the room it has)
+      var w = climb.clientWidth, h = climb.clientHeight, a = w / Math.max(1, h), dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var cw = Math.max(1, Math.round(w * dpr)), ch = Math.max(1, Math.round(h * dpr));
+      if (canvas.width !== cw || canvas.height !== ch) { canvas.width = cw; canvas.height = ch; }
+      [['walk', 1.02], ['back', 1]].forEach(function (k) {   // [x scale, y scale, half the painting's height on screen]
+        var fx2, fy2;
+        if (a > 9 / 16) { fx2 = k[1] / HALF_W; fy2 = fx2 * a; } else { fy2 = k[1] / HALF_H; fx2 = fy2 / a; }
+        lens[k[0]] = [fx2, fy2, fy2 * HALF_H];
+      });
+      var hw = lens.back[0] * HALF_W, hh = lens.back[2];
+      climb.style.setProperty('--vx', (w / 2 * (1 - hw)).toFixed(1) + 'px');
+      climb.style.setProperty('--vw', (w * hw).toFixed(1) + 'px');
+      climb.style.setProperty('--vy', (h * (1 - hh * (1 - BACK_TOP))).toFixed(1) + 'px');
+      climb.style.setProperty('--vh', (h * hh * (1 - BACK_TOP)).toFixed(1) + 'px');
+      stick = parseFloat(getComputedStyle(climb).top) || 0;
+      free = Math.max(0, screen.offsetHeight - stick - h);
+      drift();
+    }
+    function drift() { climb.style.transform = 'translateY(' + (free * 0.6 * (1 - Math.max(0, s))).toFixed(1) + 'px)'; }   // from a little low to just under the bar
+
+    // The drawing: a painting lifted off its depth map, graded by the day; the cloud as mist that drifts as you walk
+    // (two layers, the near one faster, thicker far away, at most 64 % thick); the sunrise as light from the sun.
+    var VS = 'attribute vec3 p; attribute vec2 q; uniform vec3 cam; uniform vec4 lens; uniform vec2 zm; varying vec2 uv; varying float zn;' +
+      'void main() { vec3 r = p - cam; float d = max(0.05, -r.z); uv = q; zn = clamp((d - 0.7) / 12.0, 0.0, 1.0);' +
+      ' gl_Position = vec4(r.x * lens.x, r.y * lens.y + lens.w * d, zm.x * d + zm.y, d); }';
+    var FS = '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n' +
+      'uniform sampler2D map; uniform vec3 grade, fogc, glowc, sun; uniform float fog, alpha, bloom, drift, res; varying vec2 uv; varying float zn;' +
+      'float h(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }' +
+      'float n2(vec2 p) { vec2 i = floor(p), f = fract(p); f = f * f * (3.0 - 2.0 * f);' +
+      ' return mix(mix(h(i), h(i + vec2(1.0, 0.0)), f.x), mix(h(i + vec2(0.0, 1.0)), h(i + vec2(1.0, 1.0)), f.x), f.y); }' +
+      'void main() { vec3 c = texture2D(map, uv).rgb * grade;' +
+      ' if (fog > 0.0) { vec2 s = gl_FragCoord.xy / res;' +
+      '  float m = mix(n2(s * 3.1 + vec2(drift * 2.2, drift * 0.6)), n2(s * 1.7 + vec2(drift * 0.8, 0.0)), zn);' +
+      '  float f = clamp(fog * (0.45 + 0.95 * zn) * (0.55 + 0.9 * m), 0.0, 1.0); c = mix(c, fogc, f * f * (3.0 - 2.0 * f) * 0.64); }' +
+      ' if (bloom > 0.0) { float k = length(gl_FragCoord.xy - sun.xy) / sun.z; vec3 l = glowc * bloom * (0.2 + 0.8 * exp(-k * k));' +
+      '  c = 1.0 - (1.0 - c) * (1.0 - l); }' +
+      ' gl_FragColor = vec4(c, alpha); }';
+    var prog, U, aP, aQ, ib, ub, pics = {}, chain = null, lost = false;
+    var cols = NX + 1, rows = NY + 1, uvs = new Float32Array(cols * rows * 2), idx = new Uint16Array(NX * NY * 6), n = 0;
+    for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) { uvs[(j * cols + i) * 2] = i / NX; uvs[(j * cols + i) * 2 + 1] = 1 - j / NY; }
+    for (j = 0; j < NY; j++) for (i = 0; i < NX; i++) {
+      var c0 = j * cols + i;
+      idx[n++] = c0; idx[n++] = c0 + 1; idx[n++] = c0 + cols + 1; idx[n++] = c0; idx[n++] = c0 + cols + 1; idx[n++] = c0 + cols;
+    }
+    function shader(type, src) { var sh = gl.createShader(type); gl.shaderSource(sh, src); gl.compileShader(sh); return sh; }
+    function setup() {   // the program and the grid every painting shares (again after a lost context comes back)
+      prog = gl.createProgram();
+      gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
+      gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return false;
+      U = {};
+      ['cam', 'lens', 'zm', 'map', 'grade', 'fogc', 'glowc', 'sun', 'fog', 'alpha', 'bloom', 'drift', 'res'].forEach(function (name) {
+        U[name] = gl.getUniformLocation(prog, name);
+      });
+      aP = gl.getAttribLocation(prog, 'p'); aQ = gl.getAttribLocation(prog, 'q');
+      ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, idx, gl.STATIC_DRAW);
+      ub = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, ub); gl.bufferData(gl.ARRAY_BUFFER, uvs, gl.STATIC_DRAW);
+      return true;
+    }
+    if (!setup()) return false;
+
+    function lift(img) {   // a depth map (near = 255) -> the grid's points, each where the camera sees it in the painting
+      var cv = document.createElement('canvas'), W = img.naturalWidth, H = img.naturalHeight;
+      cv.width = W; cv.height = H;
+      var cx = cv.getContext('2d');
+      cx.drawImage(img, 0, 0);
+      var px = cx.getImageData(0, 0, W, H).data, pos = new Float32Array(cols * rows * 3);
+      function at(x, y) { return px[(y * W + x) * 4] / 255; }
+      for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) {
+        var u = i / NX, v = j / NY, sx = u * (W - 1), sy = (1 - v) * (H - 1), x0 = Math.floor(sx), y0 = Math.floor(sy);
+        var x1 = Math.min(W - 1, x0 + 1), y1 = Math.min(H - 1, y0 + 1), ax = sx - x0, ay = sy - y0;
+        var d = (at(x0, y0) * (1 - ax) + at(x1, y0) * ax) * (1 - ay) + (at(x0, y1) * (1 - ax) + at(x1, y1) * ax) * ay;
+        // the nearest things (a stump, a pine) stand no closer than 1.18: walked up to, they grow, not smear
+        var z = Math.max(1.18, 1 / (0.06 + 0.94 * d)), k = (j * cols + i) * 3;
+        pos[k] = (u - 0.5) * 2 * HALF_W * z; pos[k + 1] = (v - 0.5) * 2 * HALF_H * z; pos[k + 2] = -z;
+      }
+      var b = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, pos, gl.STATIC_DRAW);
+      return b;
+    }
+    function texture(img) {
+      var t = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return t;
+    }
+    // The paintings load once the walk is two screens away, the first one first (until it is in, it stands as a still).
+    function picture(url) {
+      return new Promise(function (ok, no) {
+        var im = new Image();
+        im.onload = function () { if (im.decode) im.decode().then(function () { ok(im); }, function () { ok(im); }); else ok(im); };
+        im.onerror = no;
+        im.src = url;
+      });
+    }
+    function load(key) {
+      return Promise.all([picture(files[key][size]), picture(files[key].depth)]).then(function (got) {
+        if (lost || gl.isContextLost()) return;
+        pics[key] = { tex: texture(got[0]), pos: lift(got[1]) };
+        request();
+      });
+    }
+    function loadAll() {
+      if (!chain) chain = ['a', 'b', 'c', 'e', 'f', 'g'].reduce(function (p, key) { return p.then(function () { return load(key); }); },
+                                                              Promise.resolve()).catch(giveUp);
+    }
+
+    function draw(v) {   // the paintings v stands in, from v's camera; false while none of them is in yet
+      var c = v.layers.some(function (l) { return l.fog > 0; }) ? v.fogColor.map(function (x) { return x / 255; }) : GROUND, drawn = false;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.clearColor(c[0], c[1], c[2], 1);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.useProgram(prog);
+      gl.enable(gl.DEPTH_TEST);
+      gl.bindBuffer(gl.ARRAY_BUFFER, ub); gl.enableVertexAttribArray(aQ); gl.vertexAttribPointer(aQ, 2, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+      gl.uniform2f(U.zm, (FAR + NEAR) / (FAR - NEAR), -2 * FAR * NEAR / (FAR - NEAR));
+      gl.uniform3f(U.fogc, v.fogColor[0] / 255, v.fogColor[1] / 255, v.fogColor[2] / 255);
+      gl.uniform3f(U.glowc, GLOW[0], GLOW[1], GLOW[2]);
+      gl.uniform3f(U.sun, canvas.width * 0.5, canvas.height * 0.78, canvas.height * 0.5);   // the sun, high in the middle
+      gl.uniform1f(U.res, canvas.height);
+      gl.uniform1f(U.bloom, v.bloom);
+      v.layers.forEach(function (l, k) {
+        var pic = pics[l.week.key];
+        if (!pic || l.alpha < 0.002 || (k === 0 && v.layers[1] && v.layers[1].alpha > 0.998 && pics[v.layers[1].week.key])) return;
+        var back = l.week === BACK, light = back ? 1 : (Math.min(30, Math.max(1, v.day)) - 1) / 29;
+        var e = 0.84 + 0.2 * light, warm = 0.55 * light;
+        if (drawn) gl.clear(gl.DEPTH_BUFFER_BIT);
+        if (l.alpha < 0.998) { gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA); } else gl.disable(gl.BLEND);
+        gl.bindBuffer(gl.ARRAY_BUFFER, pic.pos); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 3, gl.FLOAT, false, 0, 0);
+        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, pic.tex); gl.uniform1i(U.map, 0);
+        gl.uniform3f(U.cam, (l.week.head[0] - 0.5) * 2 * HALF_W * l.t, (0.5 - l.week.head[1]) * 2 * HALF_H * l.t, -l.t);
+        var L = back ? lens.back : lens.walk;
+        gl.uniform4f(U.lens, L[0], L[1], 0, back ? L[2] - 1 : 0);
+        gl.uniform3f(U.grade, e * (1 + 0.07 * warm), e, e * (1 - 0.10 * warm));   // brighter and warmer each day
+        gl.uniform1f(U.fog, l.fog);
+        gl.uniform1f(U.drift, (l.t + k * 1.7) * 4);
+        gl.uniform1f(U.alpha, l.alpha);
+        gl.drawElements(gl.TRIANGLES, idx.length, gl.UNSIGNED_SHORT, 0);
+        drawn = true;
+      });
+      gl.disable(gl.BLEND);
+      return drawn;
+    }
+
+    // On the walk: the day and its 30 dots (a light for each day walked), as the app's walk shows them; beside the
+    // copy on a wide screen (the day a large figure), over the painting's top on a narrower one. Day 1: the goal the
+    // journey starts from. On the view back: a spark runs down the path, lighting the 30 lights from day 1, far below,
+    // to day 30 at your feet; day 30's ring answers; the words come.
+    var hud = document.createElement('div'), dots = [], shown = { day: 0, back: null, lights: -2, words: null, first: null };
+    hud.className = 'walk-hud';
+    hud.setAttribute('aria-hidden', 'true');
+    hud.innerHTML = '<p>Day <b>1</b><span> of 30</span></p><div class="walk-dots"></div><p class="walk-week"></p>';
+    var dayNow = hud.querySelector('b'), row = hud.querySelector('.walk-dots'), weekNow = hud.querySelector('.walk-week');
+    // The real plan's weeks (the plan below); the last two days are the top.
+    var PLAN = [[7, 'Week 1 · Noticing moments'], [14, 'Week 2 · Gentle kindness'], [21, 'Week 3 · Practising expression'],
+                [28, 'Week 4 · Embodying confidence'], [30, 'The last two days · the top']];
+    for (i = 1; i <= 30; i++) {
+      var dot = document.createElement('i');
+      if (i === 8 || i === 15 || i === 22 || i === 29) dot.className = 'wk';
+      row.appendChild(dot);
+      dots.push(dot);
+    }
+    // The goal of the real plan below (made on production, 2 Nov 2026, from our own test words)
+    var first = document.createElement('p');
+    first.className = 'said-first';
+    first.setAttribute('aria-hidden', 'true');
+    first.innerHTML = '<small>The goal</small>“To speak up in meetings with your thoughts, even if imperfect.”';
+    var spark = document.createElement('i'), path = [];
+    spark.className = 'spark';
+    for (i = 0; i < lamps.length; i++) {
+      path.push([parseFloat(lamps[i].style.getPropertyValue('--x')), parseFloat(lamps[i].style.getPropertyValue('--y')),
+                 parseFloat(lamps[i].style.getPropertyValue('--s'))]);
+    }
+    function words(v) {
+      var day = Math.max(1, Math.min(30, Math.round(v.day)));
+      if (day !== shown.day) {
+        shown.day = day; dayNow.textContent = String(day);
+        weekNow.textContent = PLAN.filter(function (w) { return day <= w[0]; })[0][1];
+        dots.forEach(function (dot, k) { dot.classList.toggle('done', k < day - 1); dot.classList.toggle('now', k === day - 1); });
+      }
+      if (v.back !== shown.back) { shown.back = v.back; hud.classList.toggle('gone', v.back); }
+      if (v.first !== shown.first) { shown.first = v.first; climb.classList.toggle('day1', v.first); }
+      if (v.lights !== shown.lights) {
+        shown.lights = v.lights;
+        var at = v.lights < 0 ? -1 : v.lights * (path.length - 1) / 0.94;   // the spark is home a little before the beat ends
+        for (var k = 0; k < lamps.length; k++) {
+          var l = Math.max(0, Math.min(1, (at - k) * 2 + 1));
+          lamps[k].style.opacity = String(l);
+          lamps[k].style.transform = 'translate(-50%, -50%) scale(' + (0.2 + 0.8 * l).toFixed(3) + ')';
+        }
+        var on = at >= 0 && at < path.length - 1;
+        spark.style.opacity = on ? String(Math.min(1, at * 4, (path.length - 1 - at) * 4)) : '0';
+        if (on) {
+          var a0 = Math.floor(at), r = at - a0, p0 = path[a0], p1 = path[a0 + 1];
+          spark.style.left = (p0[0] + (p1[0] - p0[0]) * r).toFixed(2) + '%';
+          spark.style.top = (p0[1] + (p1[1] - p0[1]) * r).toFixed(2) + '%';
+          spark.style.width = ((p0[2] + (p1[2] - p0[2]) * r) * 1.7 * 1.6).toFixed(2) + '%';
+        }
+        climb.classList.toggle('top1', at >= 0);
+        climb.classList.toggle('top30', at >= path.length - 1.25);
+      }
+      if (v.words !== shown.words) { shown.words = v.words; climb.classList.toggle('said', v.words); }
+    }
+    function placeHud() { (wide.matches ? section.querySelector('.journey-copy') : climb).appendChild(hud); }
+
+    // The walk plays over the 2 screens the painting stays in view (it rises into view on day 1, all of it in view
+    // just as the walk starts). It follows the scroll a little softly (the camera eases toward where the scroll is,
+    // about a tenth of a second behind) and draws only while it is on its way.
+    var s = -1, raf = 0, last = 0, inSight = false;
+    function goal() {
+      var r = box.getBoundingClientRect(), span = r.height - climb.offsetHeight;
+      return span > 0 ? Math.max(0, Math.min(1, (stick - r.top) / span)) : 0;
+    }
+    function frame(now) {
+      raf = 0;
+      if (lost || gl.isContextLost()) return;
+      var g = goal(), dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
+      last = now;
+      s = s < 0 ? g : s + (g - s) * (1 - Math.exp(-9 * dt));
+      if (Math.abs(g - s) < 0.0002) s = g;
+      var v = viewAt(s);
+      drift();
+      if (draw(v)) canvas.classList.add('on');
+      words(v);
+      if (s !== g) request(); else last = 0;
+    }
+    function request() { if (!raf && inSight && !lost) raf = requestAnimationFrame(frame); }
+    function giveUp() {   // the view back, as without the walk
+      if (lost) return;
+      lost = true;
+      if (raf) cancelAnimationFrame(raf);
+      section.classList.remove('walking');
+      [canvas, hud, first, spark].forEach(function (el) { if (el.parentNode) el.parentNode.removeChild(el); });
+      climb.classList.remove('top1', 'top30', 'said', 'day1');
+      ['--vx', '--vy', '--vw', '--vh', 'transform'].forEach(function (name) { climb.style.removeProperty(name); });
+      if (screen.parentNode) screen.parentNode.removeChild(screen);
+      for (var k = 0; k < lamps.length; k++) { lamps[k].style.opacity = ''; lamps[k].style.transform = ''; }
+      painting.classList.remove('loaded');
+      painting.setAttribute('sizes', poster.sizes); painting.setAttribute('srcset', poster.srcset); painting.setAttribute('src', poster.src);
+      viewBack();
+    }
+    // A phone can drop the drawing: it comes back and the walk goes on where it was; if it does not come back within
+    // a few seconds, the view back stands as without the walk.
+    var restoring = 0;
+    canvas.addEventListener('webglcontextlost', function (e) {
+      e.preventDefault();
+      pics = {}; chain = null;
+      restoring = setTimeout(giveUp, 4000);
+    });
+    canvas.addEventListener('webglcontextrestored', function () {
+      clearTimeout(restoring);
+      if (lost || !setup()) { giveUp(); return; }
+      loadAll();
+    });
+
+    // The still before the walk is the walk's first view (the view back's images are not loaded at all).
+    var poster = { src: painting.getAttribute('src'), srcset: painting.getAttribute('srcset'), sizes: painting.getAttribute('sizes') };
+    painting.removeAttribute('srcset'); painting.removeAttribute('sizes');
+    painting.addEventListener('load', function () { if (!lost) painting.classList.add('loaded'); });
+    painting.setAttribute('src', files.a[size]);
+    section.classList.add('walking');
+    canvas.setAttribute('aria-hidden', 'true');
+    climb.insertBefore(canvas, climb.querySelector('.fade'));
+    climb.insertBefore(first, climb.querySelector('.letter'));
+    climb.querySelector('.lamps').appendChild(spark);
+    document.body.appendChild(screen);
+    placeHud();
+    if (wide.addEventListener) wide.addEventListener('change', placeHud); else if (wide.addListener) wide.addListener(placeHud);
+    fit();
+    new IntersectionObserver(function (entries) {
+      inSight = entries[0].isIntersecting;
+      if (inSight) { s = -1; fit(); request(); }
+      else if (raf) { cancelAnimationFrame(raf); raf = 0; last = 0; }
+    }, { rootMargin: '25% 0px' }).observe(box);
+    new IntersectionObserver(function (entries) { if (entries[0].isIntersecting) loadAll(); }, { rootMargin: '200% 0px' }).observe(box);
+    window.addEventListener('scroll', function () { request(); }, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(function () { fit(); request(); }).observe(climb);
+    else window.addEventListener('resize', function () { fit(); request(); });
+    return true;
+  }
 })();
 
 // The bar at the top: which part of the page is on the screen.
@@ -725,7 +1266,12 @@
   const parts = links.map((a) => document.querySelector(a.getAttribute("href"))).filter(Boolean);
   if (!("IntersectionObserver" in window) || !parts.length) return;
   const row = document.querySelector(".nav-links");
-  const mark = (part) => links.forEach((a) => {
+  const mark = (part) => {
+    const its = links.find((a) => a.getAttribute("href") === `#${part.id}`).dataset.part;
+    links.forEach((a) => a.classList.toggle("in", a.classList.contains("part-link") && a.dataset.part === its));
+    markLink(part);
+  };
+  const markLink = (part) => links.forEach((a) => {
     if (a.getAttribute("href") !== `#${part.id}`) { a.removeAttribute("aria-current"); return; }
     if (a.getAttribute("aria-current") === "true") return;
     a.setAttribute("aria-current", "true");
@@ -748,9 +1294,13 @@
   const BASE = "worlds";
   const grid = document.getElementById("worlds");
   const playButton = document.querySelector("button.play");
+  const fastButton = document.querySelector("button.fast");
+  const playHint = document.getElementById("play-hint");
   const sessionBar = document.querySelector(".session");
   const clockText = sessionBar.querySelector(".clock");
+  const totalText = sessionBar.querySelector(".total");
   const phaseText = sessionBar.querySelector(".phase");
+  const lineText = sessionBar.querySelector(".line");
   const barFill = sessionBar.querySelector(".bar i");
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const PLAY = "▶︎ Play as a meditation";
@@ -824,15 +1374,20 @@
   const examples = fetch(`${BASE}/index.json`).then((response) => response.json());
   const courtyardRecord = fetch("featured/courtyard/world.json").then((response) => response.json());
 
-  // Beside the headline: the courtyard, painted on production, alive at once and the first to react when a
-  // meditation plays. Until it draws, its frame shows the painting, cropped as the canvas crops it.
+  // Beside the headline: a world whose life shows at a glance (3 Nov 2026: the courtyard there read as a still; its
+  // only life is a light wind in one olive tree, about 0.5 % of its pixels a second, against a quarter of the
+  // forest's: its stream, its drifting leaves). Alive at once and the first to react
+  // when a meditation plays; until it draws, its frame shows the painting, cropped as the canvas crops it.
+  const HERO = "german_forest";
   const heroCanvas = document.getElementById("hero-world");
   (async () => {
     try {
-      const world = await courtyardRecord;
-      const view = new WorldView(heroCanvas, world, "featured");
+      const { worlds } = await examples;
+      const world = worlds.find((w) => w.id === HERO);
+      if (!world) throw new Error(`${HERO} is not in ${BASE}/index.json`);
+      const view = new WorldView(heroCanvas, world, BASE);
       view.visible = true;
-      backdrop(heroCanvas.parentElement, view, `featured/${world.id}/${world.painting}`);
+      backdrop(heroCanvas.parentElement, view, `${BASE}/${world.id}/${world.painting}`);
       add(view);
     } catch (error) {
       console.warn("ELYND Worlds: the world beside the headline could not be loaded", error);
@@ -937,46 +1492,121 @@
     show(i);
   });
 
-  // A ten-minute session, sped up: silences of 60, 70 and 40 s; the voice
-  // says "breathe in" at 0:20 and "breathe out" at 0:24.
+  // Play as a meditation (with a voice since 3 Nov 2026): a minute of ELYND in real time, in one of the app's own
+  // voices with its music, the minute elynd.app plays (made by the app's own voice path, 31 Oct 2026; its words, and when each is said,
+  // as that page shows them). The worlds follow the app's timeline for it, read from the sound's own clock, so they never run
+  // ahead of the voice. Nothing of it loads before the click.
+  const MINUTE = {
+    seconds: 69.59,
+    captions: [
+      [2.2, "Hi, I see you’re curious about ELYND,"],
+      [5.48, "so let’s skip the explaining and just take a minute together."],
+      [15.41, "Wherever you are, let your shoulders drop,"],
+      [18.58, "and let your eyes rest on something soft."],
+      [27.68, "Breathe in slowly through your nose."],
+      [34.97, "And let it go, a little longer than it came in."],
+      [46.15, "This minute was written for anyone who’s curious;"],
+      [49.93, "yours would be written from your own words,"],
+      [53.25, "for exactly the moment you’re in, and read in the voice you choose,"],
+      [58.42, "even your own."],
+      [64.02, "Welcome."],
+    ],
+    cues: [{ at: 27.68, inhale: true }, { at: 34.97, inhale: false }],
+  };
+  // Or a whole ten-minute session, sped up and without sound: silences of 60, 70 and 40 s; the voice says "breathe in"
+  // at 0:20 and "breathe out" at 0:24.
   const SPEED = 12, DURATION = 600;
   const SILENCES = [[150, 210], [330, 400], [480, 520]];
   const CUES = [{ at: 20, inhale: true }, { at: 24, inhale: false }];
   const timelines = {
-    awake: WorldTimeline.build(DURATION, SILENCES, CUES, false),
-    sleep: WorldTimeline.build(DURATION, SILENCES, CUES, true),
+    voice: { awake: WorldTimeline.build(MINUTE.seconds, [], MINUTE.cues, false),
+      sleep: WorldTimeline.build(MINUTE.seconds, [], MINUTE.cues, true) },
+    fast: { awake: WorldTimeline.build(DURATION, SILENCES, CUES, false),
+      sleep: WorldTimeline.build(DURATION, SILENCES, CUES, true) },
   };
-  let playing = null;
+  let playing = null; // {mode: "voice" | "fast", start}
+  let sound = null; // the minute, made on the first Play
+  const mmss = (t) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
 
   function phase(t) {
     if (t < WorldTimeline.ARRIVE) return "arriving: the whole world";
-    if (SILENCES.some(([s, e]) => s <= t && t < e && e - s >= 30)) return "a long silence: the world returns";
-    if (DURATION - t < 30) return "the end: the world comes back";
-    return "eyes closed: the world becomes a glow";
+    if (SILENCES.some(([s, e]) => s <= t && t < e && e - s >= 30)) return "a long silence: more of the world";
+    if (DURATION - t < 30) return "the end: the whole world again";
+    return "eyes closed: the world fades to a glow";
+  }
+  function said(t) {
+    let line = "";
+    for (const [at, words] of MINUTE.captions) if (at <= t) line = words;
+    return line;
   }
 
-  playButton.addEventListener("click", () => {
-    if (playing) {
-      playing = null;
-      playButton.setAttribute("aria-pressed", "false");
-      playButton.textContent = PLAY;
-      sessionBar.hidden = true;
-      phaseText.textContent = "";
-      return;
-    }
-    playing = { start: performance.now() };
+  function stop() {
+    if (!playing) return;
+    const was = playing;
+    playing = null;
+    if (was.mode === "voice" && sound) sound.pause();
+    playButton.setAttribute("aria-pressed", "false");
+    playButton.textContent = PLAY;
+    fastButton.setAttribute("aria-pressed", "false");
+    sessionBar.hidden = true;
+    phaseText.textContent = "";
+    lineText.textContent = "";
+  }
+  function begin(mode) {
+    stop();
+    playing = { mode, start: performance.now() };
     playButton.setAttribute("aria-pressed", "true");
     playButton.textContent = "■ Stop";
+    fastButton.setAttribute("aria-pressed", String(mode === "fast"));
     clockText.textContent = "0:00";
+    totalText.textContent = mode === "voice" ? mmss(MINUTE.seconds) : `${mmss(DURATION)}, 12× faster`;
     barFill.style.width = "0%";
+    phaseText.textContent = mode === "voice" ? "one of ELYND's own voices" : "";
+    lineText.textContent = "";
+    lineText.hidden = mode !== "voice";
     sessionBar.hidden = false;
-    // What changes is the worlds: bring them into view when none is on the screen.
-    if (!views.some((v) => v.visible)) {
-      document.getElementById("runs-title").scrollIntoView({ behavior: still ? "auto" : "smooth", block: "start" });
+    // What changes is the worlds: the one beside the headline comes into view when no world is mostly on the screen
+    // (on a phone it stands just above the words and the buttons).
+    const inSight = (canvas) => {
+      const r = canvas.getBoundingClientRect();
+      return Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / Math.max(1, r.height) >= 0.6;
+    };
+    if (!views.some((v) => v.visible && inSight(v.canvas))) heroCanvas.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "center" });
+  }
+  function playVoice() {
+    const note = playHint.querySelector(".no-sound");
+    if (note) note.remove();
+    if (!sound) {
+      sound = new Audio();
+      sound.preload = "auto";
+      // Streamed from elynd.app, where it is public: the minute is ELYND's own work from before the hackathon, so
+      // this repository, which holds only the hackathon's work, does not carry it.
+      const at = "https://elynd.app/static/website/sample/atlas-minute";
+      sound.src = sound.canPlayType('audio/mp4; codecs="mp4a.40.2"') ? `${at}.m4a` : `${at}.mp3`;
+      sound.addEventListener("ended", () => { if (playing && playing.mode === "voice") stop(); });
+      // Paused from outside the page (a headset, the system's controls): the meditation ends with it.
+      sound.addEventListener("pause", () => { if (playing && playing.mode === "voice" && !sound.ended) stop(); });
+      sound.addEventListener("playing", () => {
+        if (playing && playing.mode === "voice") phaseText.textContent = "one of ELYND's own voices";
+      });
     }
-  });
+    begin("voice");
+    phaseText.textContent = "loading the voice";
+    if (sound.currentTime) sound.currentTime = 0;
+    const started = sound.play();
+    if (started) started.catch(() => {
+      if (!playing || playing.mode !== "voice") return;
+      stop();
+      const no = document.createElement("span");
+      no.className = "no-sound";
+      no.textContent = " This browser did not play the sound.";
+      playHint.append(no);
+    });
+  }
+  playButton.addEventListener("click", () => { if (playing) stop(); else playVoice(); });
+  fastButton.addEventListener("click", () => { if (playing && playing.mode === "fast") stop(); else begin("fast"); });
   sessionBar.querySelector(".stop").addEventListener("click", () => {
-    if (playing) playButton.click();
+    stop();
     playButton.focus({ preventScroll: true });
   });
 
@@ -987,23 +1617,30 @@
     const clock = now / 1000;
     let session = null;
     if (playing) {
-      const t = ((now - playing.start) / 1000) * SPEED;
-      if (t > DURATION) {
-        playButton.click();
+      const voice = playing.mode === "voice";
+      const duration = voice ? MINUTE.seconds : DURATION;
+      const t = voice ? sound.currentTime : ((now - playing.start) / 1000) * SPEED;
+      if (!voice && t > DURATION) {
+        stop();
       } else {
-        session = t;
-        // Only what changed: the clock, and the phase (read out once each time it changes).
-        const mmss = `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, "0")}`;
-        if (clockText.textContent !== mmss) clockText.textContent = mmss;
-        const what = phase(t);
-        if (phaseText.textContent !== what) phaseText.textContent = what;
-        barFill.style.width = `${(100 * t) / DURATION}%`;
+        session = Math.min(t, duration);
+        // Only what changed: the clock, and the words said or the phase (read out once each time it changes).
+        const shown = mmss(session);
+        if (clockText.textContent !== shown) clockText.textContent = shown;
+        if (voice) {
+          const line = said(session);
+          if (lineText.textContent !== line) lineText.textContent = line;
+        } else {
+          const what = phase(session);
+          if (phaseText.textContent !== what) phaseText.textContent = what;
+        }
+        barFill.style.width = `${(100 * session) / duration}%`;
       }
     }
+    const set = session === null ? null : timelines[playing.mode];
     for (const view of views) {
       if (!view.visible) continue;
-      const played = session === null ? null
-        : { timeline: view.world.sleep ? timelines.sleep : timelines.awake, t: session };
+      const played = set === null ? null : { timeline: view.world.sleep ? set.sleep : set.awake, t: session };
       try {
         if (XRay.active(view)) XRay.draw(view, clock, played, still, now);
         else view.draw(clock, played, still);

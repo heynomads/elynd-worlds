@@ -298,9 +298,12 @@ what they reveal behind a rock or a post is painted rather than smeared (31 Oct 
 ## See it in a browser
 
 `web/` is a gallery of worlds the agent made for the example meditations. They live as they do on the phone:
-the page compiles the phone's own shader for WebGL 2 and uses the same motion. **Play as a meditation** runs a
-session sped up (arriving, eyes closed, a long silence, the end), and each world shows how the agent made it: the
-design, the critic's score, the layers, what moves, the time and the cost. **Open it at
+the page compiles the phone's own shader for WebGL 2 and uses the same motion. **Play as a meditation** plays a
+minute of ELYND in one of its own voices, with the app's music (played from elynd.app: the voice, the words and
+the music existed before the hackathon), and the worlds follow it as the app's would;
+a whole session also runs sped up (arriving, eyes closed, a long silence, the end). Each world shows how the agent
+made it: the design, the critic's score, the layers, what moves, the time and the cost. The page's second part is
+ELYND Journeys: scrolling walks the journey's climb, day 1 to 30, as the app's walk does. **Open it at
 https://heynomads.github.io/elynd-worlds/web/**, nothing to install; or serve the repository and open `/web/`:
 
 ```bash
