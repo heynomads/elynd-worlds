@@ -1,0 +1,6347 @@
+[
+ {
+  "id": "seastacks-dawn",
+  "place": "a rocky coast with tall sea stacks standing in calm water",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "seastacks-golden",
+  "place": "a rocky coast with tall sea stacks standing in calm water",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "seastacks-mist",
+  "place": "a rocky coast with tall sea stacks standing in calm water",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "strength",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "seastacks-breeze",
+  "place": "a rocky coast with tall sea stacks standing in calm water",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "seastacks-stars",
+  "place": "a rocky coast with tall sea stacks standing in calm water",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "seastacks-bluehour",
+  "place": "a rocky coast with tall sea stacks standing in calm water",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "strength",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "chalkcliffs-morning",
+  "place": "white chalk cliffs above a calm green sea",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "chalkcliffs-midday",
+  "place": "white chalk cliffs above a calm green sea",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "strength",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "chalkcliffs-golden",
+  "place": "white chalk cliffs above a calm green sea",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "chalkcliffs-clouds",
+  "place": "white chalk cliffs above a calm green sea",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "chalkcliffs-night",
+  "place": "white chalk cliffs above a calm green sea",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "pebblecove-morning",
+  "place": "a small cove of smooth grey pebbles",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "pebblecove-golden",
+  "place": "a small cove of smooth grey pebbles",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "pebblecove-dusk",
+  "place": "a small cove of smooth grey pebbles",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "pebblecove-afterrain",
+  "place": "a small cove of smooth grey pebbles",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "pebblecove-moon",
+  "place": "a small cove of smooth grey pebbles",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "tidalflats-dawn",
+  "place": "wide tidal flats at low tide",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "release",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "tidalflats-golden",
+  "place": "wide tidal flats at low tide",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "tidalflats-mist",
+  "place": "wide tidal flats at low tide",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "release",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "tidalflats-sunset",
+  "place": "wide tidal flats at low tide",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "tidalflats-moonrise",
+  "place": "wide tidal flats at low tide",
+  "variant": "moonrise",
+  "when": "as the moon rises",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "mangroves-morning",
+  "place": "a quiet channel of still water between mangrove trees",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "mangroves-midday",
+  "place": "a quiet channel of still water between mangrove trees",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "mangroves-golden",
+  "place": "a quiet channel of still water between mangrove trees",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "mangroves-mist",
+  "place": "a quiet channel of still water between mangrove trees",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "mangroves-afterrain",
+  "place": "a quiet channel of still water between mangrove trees",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "mangroves-night",
+  "place": "a quiet channel of still water between mangrove trees",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "coralreef-morning",
+  "place": "a shallow coral reef seen from a quiet white shore",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "coralreef-midday",
+  "place": "a shallow coral reef seen from a quiet white shore",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "coralreef-golden",
+  "place": "a shallow coral reef seen from a quiet white shore",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "coralreef-sunset",
+  "place": "a shallow coral reef seen from a quiet white shore",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "coralreef-stars",
+  "place": "a shallow coral reef seen from a quiet white shore",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "atoll-dawn",
+  "place": "a ring of white sand around a turquoise lagoon",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "joy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "atoll-midday",
+  "place": "a ring of white sand around a turquoise lagoon",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "atoll-golden",
+  "place": "a ring of white sand around a turquoise lagoon",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "atoll-bluehour",
+  "place": "a ring of white sand around a turquoise lagoon",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "atoll-moon",
+  "place": "a ring of white sand around a turquoise lagoon",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "sandbar-dawn",
+  "place": "a long pale sandbar reaching out between two calm seas",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "sandbar-midday",
+  "place": "a long pale sandbar reaching out between two calm seas",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "sandbar-golden",
+  "place": "a long pale sandbar reaching out between two calm seas",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "sandbar-dusk",
+  "place": "a long pale sandbar reaching out between two calm seas",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "sandbar-night",
+  "place": "a long pale sandbar reaching out between two calm seas",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "icebergbay-morning",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "icebergbay-midday",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "icebergbay-golden",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "icebergbay-mist",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "icebergbay-aurora",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "aurora",
+  "when": "under the northern lights",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "icebergbay-bluehour",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "icebergbay-snowfall",
+  "place": "a quiet bay with icebergs floating in still water",
+  "variant": "snowfall",
+  "when": "while snow is falling",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "driftwood-morning",
+  "place": "a wild beach with silver driftwood",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "driftwood-golden",
+  "place": "a wild beach with silver driftwood",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "driftwood-mist",
+  "place": "a wild beach with silver driftwood",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "release",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "driftwood-breeze",
+  "place": "a wild beach with silver driftwood",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "driftwood-sunset",
+  "place": "a wild beach with silver driftwood",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "driftwood-moon",
+  "place": "a wild beach with silver driftwood",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "shellbeach-dawn",
+  "place": "a beach of small white shells",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "joy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "shellbeach-morning",
+  "place": "a beach of small white shells",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "shellbeach-midday",
+  "place": "a beach of small white shells",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "shellbeach-golden",
+  "place": "a beach of small white shells",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "shellbeach-night",
+  "place": "a beach of small white shells",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "estuary-dawn",
+  "place": "a wide river estuary opening to the sea",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "release",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "estuary-golden",
+  "place": "a wide river estuary opening to the sea",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "estuary-mist",
+  "place": "a wide river estuary opening to the sea",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "release",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "estuary-breeze",
+  "place": "a wide river estuary opening to the sea",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "estuary-sunset",
+  "place": "a wide river estuary opening to the sea",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "estuary-moonrise",
+  "place": "a wide river estuary opening to the sea",
+  "variant": "moonrise",
+  "when": "as the moon rises",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "seameadow-morning",
+  "place": "a flower meadow on a cliff high above the sea",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "seameadow-midday",
+  "place": "a flower meadow on a cliff high above the sea",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "seameadow-golden",
+  "place": "a flower meadow on a cliff high above the sea",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "seameadow-breeze",
+  "place": "a flower meadow on a cliff high above the sea",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "seameadow-clouds",
+  "place": "a flower meadow on a cliff high above the sea",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "joy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "seameadow-stars",
+  "place": "a flower meadow on a cliff high above the sea",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "rockarch-dawn",
+  "place": "a natural stone arch standing in a calm sea",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "rockarch-midday",
+  "place": "a natural stone arch standing in a calm sea",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "strength",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "rockarch-golden",
+  "place": "a natural stone arch standing in a calm sea",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "rockarch-sunset",
+  "place": "a natural stone arch standing in a calm sea",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "rockarch-mist",
+  "place": "a natural stone arch standing in a calm sea",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "strength",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "rockarch-night",
+  "place": "a natural stone arch standing in a calm sea",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "archipelago-morning",
+  "place": "a scattering of small rocky islands in a calm sea",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "archipelago-golden",
+  "place": "a scattering of small rocky islands in a calm sea",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "archipelago-mist",
+  "place": "a scattering of small rocky islands in a calm sea",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "archipelago-dusk",
+  "place": "a scattering of small rocky islands in a calm sea",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "archipelago-night",
+  "place": "a scattering of small rocky islands in a calm sea",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "longbeach-dawn",
+  "place": "a long empty beach at low tide",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "release",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "longbeach-golden",
+  "place": "a long empty beach at low tide",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "longbeach-mist",
+  "place": "a long empty beach at low tide",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "release",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "longbeach-breeze",
+  "place": "a long empty beach at low tide",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "longbeach-sunset",
+  "place": "a long empty beach at low tide",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "longbeach-moon",
+  "place": "a long empty beach at low tide",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "machair-morning",
+  "place": "a flowery coastal meadow above a white sand beach",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "machair-midday",
+  "place": "a flowery coastal meadow above a white sand beach",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "machair-golden",
+  "place": "a flowery coastal meadow above a white sand beach",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "machair-breeze",
+  "place": "a flowery coastal meadow above a white sand beach",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "machair-bluehour",
+  "place": "a flowery coastal meadow above a white sand beach",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "machair-night",
+  "place": "a flowery coastal meadow above a white sand beach",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "headland-dawn",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "headland-morning",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "headland-golden",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "headland-clouds",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "headland-breeze",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "headland-sunset",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "headland-stars",
+  "place": "a green headland reaching into a calm sea",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "windyshore-morning",
+  "place": "a wide shore with tall grass in the wind",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "windyshore-midday",
+  "place": "a wide shore with tall grass in the wind",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "release",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "windyshore-golden",
+  "place": "a wide shore with tall grass in the wind",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "windyshore-breeze",
+  "place": "a wide shore with tall grass in the wind",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "windyshore-dusk",
+  "place": "a wide shore with tall grass in the wind",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "release",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "windyshore-moon",
+  "place": "a wide shore with tall grass in the wind",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "pinecoast-morning",
+  "place": "a pine forest on a sandy coast",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "pinecoast-golden",
+  "place": "a pine forest on a sandy coast",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "pinecoast-mist",
+  "place": "a pine forest on a sandy coast",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "pinecoast-afternoon",
+  "place": "a pine forest on a sandy coast",
+  "variant": "afternoon",
+  "when": "on a soft afternoon",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "pinecoast-night",
+  "place": "a pine forest on a sandy coast",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "lakebeach-dawn",
+  "place": "a small sandy beach on a calm lake",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "lakebeach-morning",
+  "place": "a small sandy beach on a calm lake",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "lakebeach-midday",
+  "place": "a small sandy beach on a calm lake",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "lakebeach-golden",
+  "place": "a small sandy beach on a calm lake",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakebeach-autumn",
+  "place": "a small sandy beach on a calm lake",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakebeach-stars",
+  "place": "a small sandy beach on a calm lake",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "stoneshore-morning",
+  "place": "a lake shore of smooth round stones",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "stoneshore-golden",
+  "place": "a lake shore of smooth round stones",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "stoneshore-mist",
+  "place": "a lake shore of smooth round stones",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "stoneshore-afterrain",
+  "place": "a lake shore of smooth round stones",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "stoneshore-dusk",
+  "place": "a lake shore of smooth round stones",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "stoneshore-night",
+  "place": "a lake shore of smooth round stones",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "boathouse-morning",
+  "place": "an old wooden boathouse on a calm lake",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "boathouse-golden",
+  "place": "an old wooden boathouse on a calm lake",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "boathouse-mist",
+  "place": "an old wooden boathouse on a calm lake",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "boathouse-autumn",
+  "place": "an old wooden boathouse on a calm lake",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "boathouse-snow",
+  "place": "an old wooden boathouse on a calm lake",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "calm",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "boathouse-night",
+  "place": "an old wooden boathouse on a calm lake",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "reedlake-dawn",
+  "place": "a wide lake edged with tall reeds",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "reedlake-golden",
+  "place": "a wide lake edged with tall reeds",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "reedlake-mist",
+  "place": "a wide lake edged with tall reeds",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "reedlake-breeze",
+  "place": "a wide lake edged with tall reeds",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "reedlake-autumn",
+  "place": "a wide lake edged with tall reeds",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "reedlake-moonrise",
+  "place": "a wide lake edged with tall reeds",
+  "variant": "moonrise",
+  "when": "as the moon rises",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "oxbow-morning",
+  "place": "a quiet oxbow lake in a river meadow",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "oxbow-golden",
+  "place": "a quiet oxbow lake in a river meadow",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "oxbow-mist",
+  "place": "a quiet oxbow lake in a river meadow",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "oxbow-autumn",
+  "place": "a quiet oxbow lake in a river meadow",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "oxbow-dusk",
+  "place": "a quiet oxbow lake in a river meadow",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "oxbow-night",
+  "place": "a quiet oxbow lake in a river meadow",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "cypressswamp-dawn",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "cypressswamp-morning",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "cypressswamp-golden",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "cypressswamp-mist",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "cypressswamp-afterrain",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "cypressswamp-fireflies",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "fireflies",
+  "when": "on a warm summer night",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "cypressswamp-night",
+  "place": "a still swamp with tall cypress trees standing in the water",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "craterlake-morning",
+  "place": "a deep blue crater lake inside an old volcano",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "craterlake-midday",
+  "place": "a deep blue crater lake inside an old volcano",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "craterlake-golden",
+  "place": "a deep blue crater lake inside an old volcano",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "craterlake-clouds",
+  "place": "a deep blue crater lake inside an old volcano",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "craterlake-dusk",
+  "place": "a deep blue crater lake inside an old volcano",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "craterlake-stars",
+  "place": "a deep blue crater lake inside an old volcano",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "tarn-dawn",
+  "place": "a small high mountain tarn among grey rocks",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "tarn-morning",
+  "place": "a small high mountain tarn among grey rocks",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "tarn-midday",
+  "place": "a small high mountain tarn among grey rocks",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "tarn-mist",
+  "place": "a small high mountain tarn among grey rocks",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "tarn-snow",
+  "place": "a small high mountain tarn among grey rocks",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "tarn-stars",
+  "place": "a small high mountain tarn among grey rocks",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "springpool-morning",
+  "place": "a crystal spring pool in a green wood",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "springpool-midday",
+  "place": "a crystal spring pool in a green wood",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "springpool-golden",
+  "place": "a crystal spring pool in a green wood",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "springpool-afterrain",
+  "place": "a crystal spring pool in a green wood",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "springpool-autumn",
+  "place": "a crystal spring pool in a green wood",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "springpool-dusk",
+  "place": "a crystal spring pool in a green wood",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "travertine-dawn",
+  "place": "white terraces of warm spring water on a hillside",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "gratitude",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "travertine-morning",
+  "place": "white terraces of warm spring water on a hillside",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "travertine-golden",
+  "place": "white terraces of warm spring water on a hillside",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "travertine-dusk",
+  "place": "white terraces of warm spring water on a hillside",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "travertine-bluehour",
+  "place": "white terraces of warm spring water on a hillside",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "travertine-night",
+  "place": "white terraces of warm spring water on a hillside",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "geyserbasin-dawn",
+  "place": "a steaming valley of hot springs",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "geyserbasin-morning",
+  "place": "a steaming valley of hot springs",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "geyserbasin-golden",
+  "place": "a steaming valley of hot springs",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "geyserbasin-dusk",
+  "place": "a steaming valley of hot springs",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "geyserbasin-frost",
+  "place": "a steaming valley of hot springs",
+  "variant": "frost",
+  "when": "on a frosty morning",
+  "feeling": "calm",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "geyserbasin-night",
+  "place": "a steaming valley of hot springs",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "braidedriver-morning",
+  "place": "a wide braided river of gravel bars and shining channels",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "braidedriver-midday",
+  "place": "a wide braided river of gravel bars and shining channels",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "release",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "braidedriver-golden",
+  "place": "a wide braided river of gravel bars and shining channels",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "braidedriver-clouds",
+  "place": "a wide braided river of gravel bars and shining channels",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "release",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "braidedriver-autumn",
+  "place": "a wide braided river of gravel bars and shining channels",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "release",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "braidedriver-stars",
+  "place": "a wide braided river of gravel bars and shining channels",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "riverisland-morning",
+  "place": "a small wooded island in a wide slow river",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "riverisland-golden",
+  "place": "a small wooded island in a wide slow river",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "riverisland-mist",
+  "place": "a small wooded island in a wide slow river",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "riverisland-autumn",
+  "place": "a small wooded island in a wide slow river",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "riverisland-dusk",
+  "place": "a small wooded island in a wide slow river",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "riverisland-moon",
+  "place": "a small wooded island in a wide slow river",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "cascades-morning",
+  "place": "a chain of small waterfalls stepping down a mossy hillside",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "cascades-midday",
+  "place": "a chain of small waterfalls stepping down a mossy hillside",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "release",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "cascades-golden",
+  "place": "a chain of small waterfalls stepping down a mossy hillside",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "cascades-afterrain",
+  "place": "a chain of small waterfalls stepping down a mossy hillside",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "cascades-autumn",
+  "place": "a chain of small waterfalls stepping down a mossy hillside",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "release",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "cascades-night",
+  "place": "a chain of small waterfalls stepping down a mossy hillside",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "lakecliffs-dawn",
+  "place": "a long lake below tall cliffs",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "lakecliffs-morning",
+  "place": "a long lake below tall cliffs",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "lakecliffs-golden",
+  "place": "a long lake below tall cliffs",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakecliffs-mist",
+  "place": "a long lake below tall cliffs",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "lakecliffs-dusk",
+  "place": "a long lake below tall cliffs",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakecliffs-night",
+  "place": "a long lake below tall cliffs",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "meltwater-sunrise",
+  "place": "a cold clear stream running down from snowy peaks",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "meltwater-morning",
+  "place": "a cold clear stream running down from snowy peaks",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "meltwater-midday",
+  "place": "a cold clear stream running down from snowy peaks",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "meltwater-clouds",
+  "place": "a cold clear stream running down from snowy peaks",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "meltwater-thaw",
+  "place": "a cold clear stream running down from snowy peaks",
+  "variant": "thaw",
+  "when": "at the spring thaw",
+  "feeling": "energy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "meltwater-dusk",
+  "place": "a cold clear stream running down from snowy peaks",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "energy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "glacierfoot-morning",
+  "place": "the foot of a glacier, where a milky river begins",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "glacierfoot-midday",
+  "place": "the foot of a glacier, where a milky river begins",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "glacierfoot-golden",
+  "place": "the foot of a glacier, where a milky river begins",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "glacierfoot-mist",
+  "place": "the foot of a glacier, where a milky river begins",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "glacierfoot-dusk",
+  "place": "the foot of a glacier, where a milky river begins",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "glacierfoot-stars",
+  "place": "the foot of a glacier, where a milky river begins",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "dunelake-dawn",
+  "place": "a small clear lake between high sand dunes",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "dunelake-golden",
+  "place": "a small clear lake between high sand dunes",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "dunelake-dusk",
+  "place": "a small clear lake between high sand dunes",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "dunelake-stars",
+  "place": "a small clear lake between high sand dunes",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "dunelake-moon",
+  "place": "a small clear lake between high sand dunes",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "canyonriver-dawn",
+  "place": "a green river winding through a red-rock canyon",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "release",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "canyonriver-morning",
+  "place": "a green river winding through a red-rock canyon",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "canyonriver-golden",
+  "place": "a green river winding through a red-rock canyon",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "canyonriver-dusk",
+  "place": "a green river winding through a red-rock canyon",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "release",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "canyonriver-stars",
+  "place": "a green river winding through a red-rock canyon",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "pinklake-dawn",
+  "place": "a shallow pink salt lake under a wide sky",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "joy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "pinklake-midday",
+  "place": "a shallow pink salt lake under a wide sky",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "pinklake-golden",
+  "place": "a shallow pink salt lake under a wide sky",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "pinklake-sunset",
+  "place": "a shallow pink salt lake under a wide sky",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "pinklake-dusk",
+  "place": "a shallow pink salt lake under a wide sky",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "pinklake-night",
+  "place": "a shallow pink salt lake under a wide sky",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "waterfallvalley-morning",
+  "place": "a green valley with many thin waterfalls",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "waterfallvalley-midday",
+  "place": "a green valley with many thin waterfalls",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "release",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "waterfallvalley-golden",
+  "place": "a green valley with many thin waterfalls",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "waterfallvalley-mist",
+  "place": "a green valley with many thin waterfalls",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "release",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "waterfallvalley-afterrain",
+  "place": "a green valley with many thin waterfalls",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "waterfallvalley-night",
+  "place": "a green valley with many thin waterfalls",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "meadowbrook-dawn",
+  "place": "a brook winding through a flower meadow",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "meadowbrook-morning",
+  "place": "a brook winding through a flower meadow",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "meadowbrook-midday",
+  "place": "a brook winding through a flower meadow",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "meadowbrook-golden",
+  "place": "a brook winding through a flower meadow",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "meadowbrook-afterrain",
+  "place": "a brook winding through a flower meadow",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "meadowbrook-fireflies",
+  "place": "a brook winding through a flower meadow",
+  "variant": "fireflies",
+  "when": "on a warm summer night",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "meadowbrook-night",
+  "place": "a brook winding through a flower meadow",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "paddyfields-dawn",
+  "place": "flat rice paddies full of water",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "paddyfields-morning",
+  "place": "flat rice paddies full of water",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "paddyfields-golden",
+  "place": "flat rice paddies full of water",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "paddyfields-mist",
+  "place": "flat rice paddies full of water",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "paddyfields-afterrain",
+  "place": "flat rice paddies full of water",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "paddyfields-night",
+  "place": "flat rice paddies full of water",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "karst-dawn",
+  "place": "a river winding between tall green limestone hills",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "karst-morning",
+  "place": "a river winding between tall green limestone hills",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "karst-golden",
+  "place": "a river winding between tall green limestone hills",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "karst-mist",
+  "place": "a river winding between tall green limestone hills",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "karst-afterrain",
+  "place": "a river winding between tall green limestone hills",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "karst-night",
+  "place": "a river winding between tall green limestone hills",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "halffrozen-morning",
+  "place": "a half-frozen waterfall",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "halffrozen-midday",
+  "place": "a half-frozen waterfall",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "halffrozen-golden",
+  "place": "a half-frozen waterfall",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "halffrozen-snowfall",
+  "place": "a half-frozen waterfall",
+  "variant": "snowfall",
+  "when": "while snow is falling",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "halffrozen-dusk",
+  "place": "a half-frozen waterfall",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "halffrozen-night",
+  "place": "a half-frozen waterfall",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "rainforestriver-dawn",
+  "place": "a wide calm river through a rainforest",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "rainforestriver-morning",
+  "place": "a wide calm river through a rainforest",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "rainforestriver-golden",
+  "place": "a wide calm river through a rainforest",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "rainforestriver-mist",
+  "place": "a wide calm river through a rainforest",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "rainforestriver-afterrain",
+  "place": "a wide calm river through a rainforest",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "rainforestriver-night",
+  "place": "a wide calm river through a rainforest",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "springfalls-sunrise",
+  "place": "a river in spring flood pouring white over wide rocks",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "release",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "springfalls-morning",
+  "place": "a river in spring flood pouring white over wide rocks",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "springfalls-midday",
+  "place": "a river in spring flood pouring white over wide rocks",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "release",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "springfalls-clouds",
+  "place": "a river in spring flood pouring white over wide rocks",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "release",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "springfalls-afterrain",
+  "place": "a river in spring flood pouring white over wide rocks",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "springfalls-golden",
+  "place": "a river in spring flood pouring white over wide rocks",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakeinlet-dawn",
+  "place": "a narrow inlet of a calm lake between wooded shores",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "lakeinlet-morning",
+  "place": "a narrow inlet of a calm lake between wooded shores",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "lakeinlet-golden",
+  "place": "a narrow inlet of a calm lake between wooded shores",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakeinlet-mist",
+  "place": "a narrow inlet of a calm lake between wooded shores",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "lakeinlet-autumn",
+  "place": "a narrow inlet of a calm lake between wooded shores",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakeinlet-stars",
+  "place": "a narrow inlet of a calm lake between wooded shores",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "whitedesert-dawn",
+  "place": "a desert of white sand and pale rock",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "whitedesert-morning",
+  "place": "a desert of white sand and pale rock",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "whitedesert-golden",
+  "place": "a desert of white sand and pale rock",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "whitedesert-dusk",
+  "place": "a desert of white sand and pale rock",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "whitedesert-bluehour",
+  "place": "a desert of white sand and pale rock",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "whitedesert-stars",
+  "place": "a desert of white sand and pale rock",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "reddunes-dawn",
+  "place": "tall red sand dunes",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "reddunes-sunrise",
+  "place": "tall red sand dunes",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "reddunes-golden",
+  "place": "tall red sand dunes",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "reddunes-dusk",
+  "place": "tall red sand dunes",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "strength",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "reddunes-stars",
+  "place": "tall red sand dunes",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "reddunes-moon",
+  "place": "tall red sand dunes",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "joshuatrees-dawn",
+  "place": "a high desert with Joshua trees",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "joshuatrees-golden",
+  "place": "a high desert with Joshua trees",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "joshuatrees-sunset",
+  "place": "a high desert with Joshua trees",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "joshuatrees-dusk",
+  "place": "a high desert with Joshua trees",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "joshuatrees-stars",
+  "place": "a high desert with Joshua trees",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "joshuatrees-milkyway",
+  "place": "a high desert with Joshua trees",
+  "variant": "milkyway",
+  "when": "under the Milky Way",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "saguaro-dawn",
+  "place": "a desert of tall saguaro cacti",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "saguaro-morning",
+  "place": "a desert of tall saguaro cacti",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "saguaro-golden",
+  "place": "a desert of tall saguaro cacti",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "saguaro-sunset",
+  "place": "a desert of tall saguaro cacti",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "saguaro-dusk",
+  "place": "a desert of tall saguaro cacti",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "saguaro-stars",
+  "place": "a desert of tall saguaro cacti",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "mesa-dawn",
+  "place": "a wide plain with flat red mesas",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "mesa-morning",
+  "place": "a wide plain with flat red mesas",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "mesa-golden",
+  "place": "a wide plain with flat red mesas",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "mesa-clouds",
+  "place": "a wide plain with flat red mesas",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "mesa-sunset",
+  "place": "a wide plain with flat red mesas",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "mesa-stars",
+  "place": "a wide plain with flat red mesas",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "hoodoos-dawn",
+  "place": "a valley of tall orange rock spires",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "hoodoos-morning",
+  "place": "a valley of tall orange rock spires",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "hoodoos-golden",
+  "place": "a valley of tall orange rock spires",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "hoodoos-snow",
+  "place": "a valley of tall orange rock spires",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "hoodoos-dusk",
+  "place": "a valley of tall orange rock spires",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "hoodoos-stars",
+  "place": "a valley of tall orange rock spires",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "paintedhills-morning",
+  "place": "rolling hills in bands of red, gold and cream",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "paintedhills-midday",
+  "place": "rolling hills in bands of red, gold and cream",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "paintedhills-golden",
+  "place": "rolling hills in bands of red, gold and cream",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "paintedhills-afterrain",
+  "place": "rolling hills in bands of red, gold and cream",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "paintedhills-dusk",
+  "place": "rolling hills in bands of red, gold and cream",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "paintedhills-night",
+  "place": "rolling hills in bands of red, gold and cream",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "lavafield-morning",
+  "place": "an old lava field covered in soft green moss",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "lavafield-golden",
+  "place": "an old lava field covered in soft green moss",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lavafield-mist",
+  "place": "an old lava field covered in soft green moss",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "lavafield-afterrain",
+  "place": "an old lava field covered in soft green moss",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "lavafield-dusk",
+  "place": "an old lava field covered in soft green moss",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "lavafield-aurora",
+  "place": "an old lava field covered in soft green moss",
+  "variant": "aurora",
+  "when": "under the northern lights",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "larchforest-morning",
+  "place": "a larch forest turning golden in autumn",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "larchforest-golden",
+  "place": "a larch forest turning golden in autumn",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "larchforest-mist",
+  "place": "a larch forest turning golden in autumn",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "gratitude",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "larchforest-autumn",
+  "place": "a larch forest turning golden in autumn",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "larchforest-dusk",
+  "place": "a larch forest turning golden in autumn",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "larchforest-night",
+  "place": "a larch forest turning golden in autumn",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "aspengrove-morning",
+  "place": "a grove of aspen trees with white trunks and golden leaves",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "aspengrove-midday",
+  "place": "a grove of aspen trees with white trunks and golden leaves",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "aspengrove-golden",
+  "place": "a grove of aspen trees with white trunks and golden leaves",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "aspengrove-autumn",
+  "place": "a grove of aspen trees with white trunks and golden leaves",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "aspengrove-breeze",
+  "place": "a grove of aspen trees with white trunks and golden leaves",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "aspengrove-night",
+  "place": "a grove of aspen trees with white trunks and golden leaves",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "maplewood-morning",
+  "place": "a wood of red maples",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "maplewood-golden",
+  "place": "a wood of red maples",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "maplewood-mist",
+  "place": "a wood of red maples",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "gratitude",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "maplewood-autumn",
+  "place": "a wood of red maples",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "maplewood-afterrain",
+  "place": "a wood of red maples",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "maplewood-night",
+  "place": "a wood of red maples",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "ginkgoavenue-morning",
+  "place": "an avenue of ginkgo trees in yellow autumn leaf",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "ginkgoavenue-golden",
+  "place": "an avenue of ginkgo trees in yellow autumn leaf",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "ginkgoavenue-autumn",
+  "place": "an avenue of ginkgo trees in yellow autumn leaf",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "ginkgoavenue-afterrain",
+  "place": "an avenue of ginkgo trees in yellow autumn leaf",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "ginkgoavenue-dusk",
+  "place": "an avenue of ginkgo trees in yellow autumn leaf",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "ginkgoavenue-night",
+  "place": "an avenue of ginkgo trees in yellow autumn leaf",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "cedarforest-morning",
+  "place": "a forest of tall old cedars",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "cedarforest-golden",
+  "place": "a forest of tall old cedars",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "cedarforest-mist",
+  "place": "a forest of tall old cedars",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "cedarforest-afterrain",
+  "place": "a forest of tall old cedars",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "cedarforest-snow",
+  "place": "a forest of tall old cedars",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "calm",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "cedarforest-night",
+  "place": "a forest of tall old cedars",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "eucalyptus-morning",
+  "place": "a grove of pale eucalyptus trees",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "eucalyptus-midday",
+  "place": "a grove of pale eucalyptus trees",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "eucalyptus-golden",
+  "place": "a grove of pale eucalyptus trees",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "eucalyptus-dusk",
+  "place": "a grove of pale eucalyptus trees",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "eucalyptus-night",
+  "place": "a grove of pale eucalyptus trees",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "palmgrove-dawn",
+  "place": "a grove of tall palms",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "palmgrove-morning",
+  "place": "a grove of tall palms",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "palmgrove-midday",
+  "place": "a grove of tall palms",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "palmgrove-golden",
+  "place": "a grove of tall palms",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "palmgrove-breeze",
+  "place": "a grove of tall palms",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "palmgrove-night",
+  "place": "a grove of tall palms",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "cloudforest-dawn",
+  "place": "a misty cloud forest high on a mountain",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "cloudforest-morning",
+  "place": "a misty cloud forest high on a mountain",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "cloudforest-mist",
+  "place": "a misty cloud forest high on a mountain",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "cloudforest-afterrain",
+  "place": "a misty cloud forest high on a mountain",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "cloudforest-golden",
+  "place": "a misty cloud forest high on a mountain",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "cloudforest-night",
+  "place": "a misty cloud forest high on a mountain",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "ferngully-morning",
+  "place": "a green gully full of tall ferns",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "ferngully-midday",
+  "place": "a green gully full of tall ferns",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "ferngully-golden",
+  "place": "a green gully full of tall ferns",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "ferngully-mist",
+  "place": "a green gully full of tall ferns",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "ferngully-afterrain",
+  "place": "a green gully full of tall ferns",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "ferngully-dusk",
+  "place": "a green gully full of tall ferns",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "bogcotton-morning",
+  "place": "a wide bog white with cotton grass",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "bogcotton-midday",
+  "place": "a wide bog white with cotton grass",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "release",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "bogcotton-golden",
+  "place": "a wide bog white with cotton grass",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "bogcotton-breeze",
+  "place": "a wide bog white with cotton grass",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "bogcotton-dusk",
+  "place": "a wide bog white with cotton grass",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "release",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "bogcotton-moonrise",
+  "place": "a wide bog white with cotton grass",
+  "variant": "moonrise",
+  "when": "as the moon rises",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "tundra-morning",
+  "place": "an autumn tundra in red and gold",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "tundra-golden",
+  "place": "an autumn tundra in red and gold",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "tundra-mist",
+  "place": "an autumn tundra in red and gold",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "tundra-frost",
+  "place": "an autumn tundra in red and gold",
+  "variant": "frost",
+  "when": "on a frosty morning",
+  "feeling": "calm",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "tundra-dusk",
+  "place": "an autumn tundra in red and gold",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "tundra-aurora",
+  "place": "an autumn tundra in red and gold",
+  "variant": "aurora",
+  "when": "under the northern lights",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "corkoaks-dawn",
+  "place": "a wide pasture of old cork oaks on golden grass",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "gratitude",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "corkoaks-morning",
+  "place": "a wide pasture of old cork oaks on golden grass",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "corkoaks-golden",
+  "place": "a wide pasture of old cork oaks on golden grass",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "corkoaks-dusk",
+  "place": "a wide pasture of old cork oaks on golden grass",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "corkoaks-night",
+  "place": "a wide pasture of old cork oaks on golden grass",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "mossgarden-morning",
+  "place": "a shady garden of soft green moss and stepping stones",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "mossgarden-golden",
+  "place": "a shady garden of soft green moss and stepping stones",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "mossgarden-mist",
+  "place": "a shady garden of soft green moss and stepping stones",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "mossgarden-afterrain",
+  "place": "a shady garden of soft green moss and stepping stones",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "mossgarden-autumn",
+  "place": "a shady garden of soft green moss and stepping stones",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "mossgarden-night",
+  "place": "a shady garden of soft green moss and stepping stones",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "sprucelake-dawn",
+  "place": "a northern lake ringed by dark spruce",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "sprucelake-morning",
+  "place": "a northern lake ringed by dark spruce",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "sprucelake-mist",
+  "place": "a northern lake ringed by dark spruce",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "sprucelake-golden",
+  "place": "a northern lake ringed by dark spruce",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "sprucelake-snow",
+  "place": "a northern lake ringed by dark spruce",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "calm",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "sprucelake-aurora",
+  "place": "a northern lake ringed by dark spruce",
+  "variant": "aurora",
+  "when": "under the northern lights",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "hazelbrook-morning",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "hazelbrook-midday",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "hazelbrook-golden",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "hazelbrook-spring",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "calm",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "hazelbrook-afterrain",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "hazelbrook-autumn",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "hazelbrook-night",
+  "place": "a brook running through a bright hazel wood",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "forestmeadow-dawn",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "forestmeadow-morning",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "forestmeadow-midday",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "forestmeadow-golden",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "forestmeadow-mist",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "forestmeadow-fireflies",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "fireflies",
+  "when": "on a warm summer night",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "forestmeadow-night",
+  "place": "a wide meadow at the heart of a forest",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "poppyfield-morning",
+  "place": "a field of red poppies",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "poppyfield-midday",
+  "place": "a field of red poppies",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "poppyfield-golden",
+  "place": "a field of red poppies",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "poppyfield-breeze",
+  "place": "a field of red poppies",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "poppyfield-dusk",
+  "place": "a field of red poppies",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "rapeseed-morning",
+  "place": "a bright yellow field of rapeseed",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "rapeseed-midday",
+  "place": "a bright yellow field of rapeseed",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "rapeseed-golden",
+  "place": "a bright yellow field of rapeseed",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "rapeseed-clouds",
+  "place": "a bright yellow field of rapeseed",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "joy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "rapeseed-breeze",
+  "place": "a bright yellow field of rapeseed",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "rapeseed-spring",
+  "place": "a bright yellow field of rapeseed",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "joy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "flaxfield-morning",
+  "place": "a field of pale blue flax flowers",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "flaxfield-midday",
+  "place": "a field of pale blue flax flowers",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "flaxfield-golden",
+  "place": "a field of pale blue flax flowers",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "flaxfield-breeze",
+  "place": "a field of pale blue flax flowers",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "flaxfield-dusk",
+  "place": "a field of pale blue flax flowers",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "haymeadow-morning",
+  "place": "a summer hay meadow with a few round bales",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "haymeadow-golden",
+  "place": "a summer hay meadow with a few round bales",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "haymeadow-clouds",
+  "place": "a summer hay meadow with a few round bales",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "gratitude",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "haymeadow-sunset",
+  "place": "a summer hay meadow with a few round bales",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "haymeadow-dusk",
+  "place": "a summer hay meadow with a few round bales",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "haymeadow-stars",
+  "place": "a summer hay meadow with a few round bales",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "daisymeadow-morning",
+  "place": "a meadow white with daisies",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "daisymeadow-midday",
+  "place": "a meadow white with daisies",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "daisymeadow-golden",
+  "place": "a meadow white with daisies",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "daisymeadow-breeze",
+  "place": "a meadow white with daisies",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "daisymeadow-dusk",
+  "place": "a meadow white with daisies",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "buttercups-morning",
+  "place": "a meadow golden with buttercups",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "buttercups-midday",
+  "place": "a meadow golden with buttercups",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "buttercups-golden",
+  "place": "a meadow golden with buttercups",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "buttercups-spring",
+  "place": "a meadow golden with buttercups",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "joy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "buttercups-afterrain",
+  "place": "a meadow golden with buttercups",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "buttercups-dusk",
+  "place": "a meadow golden with buttercups",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "daffodils-morning",
+  "place": "a hillside of yellow daffodils",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "daffodils-midday",
+  "place": "a hillside of yellow daffodils",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "daffodils-golden",
+  "place": "a hillside of yellow daffodils",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "daffodils-spring",
+  "place": "a hillside of yellow daffodils",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "joy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "daffodils-thaw",
+  "place": "a hillside of yellow daffodils",
+  "variant": "thaw",
+  "when": "at the spring thaw",
+  "feeling": "joy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "daffodils-dusk",
+  "place": "a hillside of yellow daffodils",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "crocuses-morning",
+  "place": "a meadow of purple and white crocuses",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "crocuses-midday",
+  "place": "a meadow of purple and white crocuses",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "gratitude",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "crocuses-golden",
+  "place": "a meadow of purple and white crocuses",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "crocuses-spring",
+  "place": "a meadow of purple and white crocuses",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "gratitude",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "crocuses-thaw",
+  "place": "a meadow of purple and white crocuses",
+  "variant": "thaw",
+  "when": "at the spring thaw",
+  "feeling": "gratitude",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "crocuses-dusk",
+  "place": "a meadow of purple and white crocuses",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "gorsehills-sunrise",
+  "place": "green hills bright with yellow gorse",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "gorsehills-morning",
+  "place": "green hills bright with yellow gorse",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "gorsehills-midday",
+  "place": "green hills bright with yellow gorse",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "gorsehills-clouds",
+  "place": "green hills bright with yellow gorse",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "gorsehills-breeze",
+  "place": "green hills bright with yellow gorse",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "gorsehills-golden",
+  "place": "green hills bright with yellow gorse",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-morning",
+  "place": "soft rolling chalk downs",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-midday",
+  "place": "soft rolling chalk downs",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-golden",
+  "place": "soft rolling chalk downs",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-clouds",
+  "place": "soft rolling chalk downs",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-breeze",
+  "place": "soft rolling chalk downs",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-mist",
+  "place": "soft rolling chalk downs",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "chalkdowns-night",
+  "place": "soft rolling chalk downs",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "pampas-morning",
+  "place": "a wide plain of pale pampas grass",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "release",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "pampas-golden",
+  "place": "a wide plain of pale pampas grass",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "pampas-breeze",
+  "place": "a wide plain of pale pampas grass",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "pampas-sunset",
+  "place": "a wide plain of pale pampas grass",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "release",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "pampas-dusk",
+  "place": "a wide plain of pale pampas grass",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "release",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "pampas-moon",
+  "place": "a wide plain of pale pampas grass",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "fells-morning",
+  "place": "wide green fells with a low stone wall and a small lake",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "fells-golden",
+  "place": "wide green fells with a low stone wall and a small lake",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "fells-mist",
+  "place": "wide green fells with a low stone wall and a small lake",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "focus",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "fells-clouds",
+  "place": "wide green fells with a low stone wall and a small lake",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "fells-snow",
+  "place": "wide green fells with a low stone wall and a small lake",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "fells-night",
+  "place": "wide green fells with a low stone wall and a small lake",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "highpasture-morning",
+  "place": "a high summer pasture with an old wooden fence",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "highpasture-midday",
+  "place": "a high summer pasture with an old wooden fence",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "gratitude",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "highpasture-golden",
+  "place": "a high summer pasture with an old wooden fence",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "highpasture-clouds",
+  "place": "a high summer pasture with an old wooden fence",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "gratitude",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "highpasture-dusk",
+  "place": "a high summer pasture with an old wooden fence",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "highpasture-stars",
+  "place": "a high summer pasture with an old wooden fence",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "plateau-dawn",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "plateau-sunrise",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "plateau-midday",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "strength",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "plateau-golden",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "plateau-clouds",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "plateau-sunset",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "plateau-stars",
+  "place": "a wide grassy plateau above the valleys",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "almondblossom-dawn",
+  "place": "an orchard of almond trees in white and pink blossom",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "gratitude",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "almondblossom-morning",
+  "place": "an orchard of almond trees in white and pink blossom",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "almondblossom-midday",
+  "place": "an orchard of almond trees in white and pink blossom",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "gratitude",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "almondblossom-golden",
+  "place": "an orchard of almond trees in white and pink blossom",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "almondblossom-spring",
+  "place": "an orchard of almond trees in white and pink blossom",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "gratitude",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "almondblossom-dusk",
+  "place": "an orchard of almond trees in white and pink blossom",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "orangegrove-morning",
+  "place": "an orange grove in the sun",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "orangegrove-midday",
+  "place": "an orange grove in the sun",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "orangegrove-golden",
+  "place": "an orange grove in the sun",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "orangegrove-dusk",
+  "place": "an orange grove in the sun",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "orangegrove-night",
+  "place": "an orange grove in the sun",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "wisteria-morning",
+  "place": "a garden walk under hanging wisteria",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "wisteria-midday",
+  "place": "a garden walk under hanging wisteria",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "gratitude",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "wisteria-golden",
+  "place": "a garden walk under hanging wisteria",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "wisteria-afterrain",
+  "place": "a garden walk under hanging wisteria",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "wisteria-spring",
+  "place": "a garden walk under hanging wisteria",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "gratitude",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "wisteria-dusk",
+  "place": "a garden walk under hanging wisteria",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "magnolias-morning",
+  "place": "a park of old magnolia trees in full bloom",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "magnolias-midday",
+  "place": "a park of old magnolia trees in full bloom",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "gratitude",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "magnolias-golden",
+  "place": "a park of old magnolia trees in full bloom",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "magnolias-spring",
+  "place": "a park of old magnolia trees in full bloom",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "gratitude",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "magnolias-afterrain",
+  "place": "a park of old magnolia trees in full bloom",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "magnolias-dusk",
+  "place": "a park of old magnolia trees in full bloom",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "hydrangeas-morning",
+  "place": "a garden path lined with blue hydrangeas",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "hydrangeas-golden",
+  "place": "a garden path lined with blue hydrangeas",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "hydrangeas-rain",
+  "place": "a garden path lined with blue hydrangeas",
+  "variant": "rain",
+  "when": "in gentle rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "hydrangeas-afterrain",
+  "place": "a garden path lined with blue hydrangeas",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "hydrangeas-dusk",
+  "place": "a garden path lined with blue hydrangeas",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "hydrangeas-night",
+  "place": "a garden path lined with blue hydrangeas",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "irispond-dawn",
+  "place": "a pond edged with purple irises",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "irispond-morning",
+  "place": "a pond edged with purple irises",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "irispond-golden",
+  "place": "a pond edged with purple irises",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "irispond-afterrain",
+  "place": "a pond edged with purple irises",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "irispond-dusk",
+  "place": "a pond edged with purple irises",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "irispond-night",
+  "place": "a pond edged with purple irises",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "azaleas-morning",
+  "place": "a hillside of pink azaleas",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "azaleas-midday",
+  "place": "a hillside of pink azaleas",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "azaleas-golden",
+  "place": "a hillside of pink azaleas",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "azaleas-mist",
+  "place": "a hillside of pink azaleas",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "joy",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "azaleas-spring",
+  "place": "a hillside of pink azaleas",
+  "variant": "spring",
+  "when": "in spring",
+  "feeling": "joy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "azaleas-dusk",
+  "place": "a hillside of pink azaleas",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "rhododendrons-dawn",
+  "place": "a mountain valley full of red rhododendrons",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "rhododendrons-morning",
+  "place": "a mountain valley full of red rhododendrons",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "rhododendrons-midday",
+  "place": "a mountain valley full of red rhododendrons",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "strength",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "rhododendrons-golden",
+  "place": "a mountain valley full of red rhododendrons",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "rhododendrons-mist",
+  "place": "a mountain valley full of red rhododendrons",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "strength",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "rhododendrons-dusk",
+  "place": "a mountain valley full of red rhododendrons",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "strength",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "peonies-morning",
+  "place": "a garden full of peonies",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "peonies-midday",
+  "place": "a garden full of peonies",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "gratitude",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "peonies-golden",
+  "place": "a garden full of peonies",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "peonies-afterrain",
+  "place": "a garden full of peonies",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "peonies-dusk",
+  "place": "a garden full of peonies",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "peonies-night",
+  "place": "a garden full of peonies",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "lupins-morning",
+  "place": "a field of blue and purple lupins by a river",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "joy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "lupins-midday",
+  "place": "a field of blue and purple lupins by a river",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "joy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "lupins-golden",
+  "place": "a field of blue and purple lupins by a river",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "joy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lupins-breeze",
+  "place": "a field of blue and purple lupins by a river",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "lupins-dusk",
+  "place": "a field of blue and purple lupins by a river",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "joy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "cornfield-sunrise",
+  "place": "a tall green cornfield under a summer sky",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "cornfield-morning",
+  "place": "a tall green cornfield under a summer sky",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "cornfield-midday",
+  "place": "a tall green cornfield under a summer sky",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "cornfield-golden",
+  "place": "a tall green cornfield under a summer sky",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "cornfield-breeze",
+  "place": "a tall green cornfield under a summer sky",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "cornfield-dusk",
+  "place": "a tall green cornfield under a summer sky",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "energy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "vineterrace-morning",
+  "place": "steep terraced vineyards above a wide river",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "gratitude",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "vineterrace-golden",
+  "place": "steep terraced vineyards above a wide river",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "gratitude",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "vineterrace-autumn",
+  "place": "steep terraced vineyards above a wide river",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "vineterrace-dusk",
+  "place": "steep terraced vineyards above a wide river",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "gratitude",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "vineterrace-night",
+  "place": "steep terraced vineyards above a wide river",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "bigsky-dawn",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "bigsky-morning",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "bigsky-clouds",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "bigsky-breeze",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "bigsky-golden",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "bigsky-sunset",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "bigsky-stars",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "bigsky-milkyway",
+  "place": "a wide flat grassland under an enormous sky",
+  "variant": "milkyway",
+  "when": "under the Milky Way",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "heathpond-dawn",
+  "place": "a small dark pond on a wide heath",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "calm",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "heathpond-golden",
+  "place": "a small dark pond on a wide heath",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "heathpond-mist",
+  "place": "a small dark pond on a wide heath",
+  "variant": "mist",
+  "when": "on a misty morning",
+  "feeling": "calm",
+  "technique": "mindfulness",
+  "sleep": false
+ },
+ {
+  "id": "heathpond-dusk",
+  "place": "a small dark pond on a wide heath",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "heathpond-autumn",
+  "place": "a small dark pond on a wide heath",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "heathpond-moon",
+  "place": "a small dark pond on a wide heath",
+  "variant": "moon",
+  "when": "under a full moon",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "thymehills-morning",
+  "place": "dry hills covered in wild thyme and pale stones",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "thymehills-midday",
+  "place": "dry hills covered in wild thyme and pale stones",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "thymehills-golden",
+  "place": "dry hills covered in wild thyme and pale stones",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "thymehills-dusk",
+  "place": "dry hills covered in wild thyme and pale stones",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "thymehills-night",
+  "place": "dry hills covered in wild thyme and pale stones",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "orchidmeadow-morning",
+  "place": "a wet meadow dotted with wild orchids",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "calm",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "orchidmeadow-midday",
+  "place": "a wet meadow dotted with wild orchids",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "calm",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "orchidmeadow-golden",
+  "place": "a wet meadow dotted with wild orchids",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "calm",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "orchidmeadow-afterrain",
+  "place": "a wet meadow dotted with wild orchids",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "orchidmeadow-dusk",
+  "place": "a wet meadow dotted with wild orchids",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "calm",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "orchidmeadow-night",
+  "place": "a wet meadow dotted with wild orchids",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "snowline-sunrise",
+  "place": "a high trail where the meadow meets the snow",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "snowline-morning",
+  "place": "a high trail where the meadow meets the snow",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "snowline-midday",
+  "place": "a high trail where the meadow meets the snow",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "snowline-clouds",
+  "place": "a high trail where the meadow meets the snow",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "snowline-golden",
+  "place": "a high trail where the meadow meets the snow",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "snowline-thaw",
+  "place": "a high trail where the meadow meets the snow",
+  "variant": "thaw",
+  "when": "at the spring thaw",
+  "feeling": "energy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-sunrise",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-dawn",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-morning",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-golden",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-clouds",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-bluehour",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "bluehour",
+  "when": "in the blue hour after sunset",
+  "feeling": "strength",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "sunrisepeaks-stars",
+  "place": "a line of snowy peaks at sunrise",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "icefield-dawn",
+  "place": "a wide field of snow and ice high in the mountains",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "icefield-morning",
+  "place": "a wide field of snow and ice high in the mountains",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "icefield-midday",
+  "place": "a wide field of snow and ice high in the mountains",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "strength",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "icefield-golden",
+  "place": "a wide field of snow and ice high in the mountains",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "icefield-stars",
+  "place": "a wide field of snow and ice high in the mountains",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "icefield-aurora",
+  "place": "a wide field of snow and ice high in the mountains",
+  "variant": "aurora",
+  "when": "under the northern lights",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "rockgarden-morning",
+  "place": "a high alpine rock garden of small bright flowers among boulders",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "rockgarden-midday",
+  "place": "a high alpine rock garden of small bright flowers among boulders",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "rockgarden-golden",
+  "place": "a high alpine rock garden of small bright flowers among boulders",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "rockgarden-clouds",
+  "place": "a high alpine rock garden of small bright flowers among boulders",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "rockgarden-dusk",
+  "place": "a high alpine rock garden of small bright flowers among boulders",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "mountainmist-dawn",
+  "place": "a mountain valley filling with soft morning mist",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "mountainmist-sunrise",
+  "place": "a mountain valley filling with soft morning mist",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "mountainmist-morning",
+  "place": "a mountain valley filling with soft morning mist",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "mountainmist-golden",
+  "place": "a mountain valley filling with soft morning mist",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "mountainmist-autumn",
+  "place": "a mountain valley filling with soft morning mist",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "mountainmist-dusk",
+  "place": "a mountain valley filling with soft morning mist",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "focus",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "highlake-dawn",
+  "place": "a turquoise lake high in the mountains with a grassy shore",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "focus",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "highlake-morning",
+  "place": "a turquoise lake high in the mountains with a grassy shore",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "focus",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "highlake-midday",
+  "place": "a turquoise lake high in the mountains with a grassy shore",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "focus",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "highlake-golden",
+  "place": "a turquoise lake high in the mountains with a grassy shore",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "focus",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "highlake-clouds",
+  "place": "a turquoise lake high in the mountains with a grassy shore",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "focus",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "highlake-stars",
+  "place": "a turquoise lake high in the mountains with a grassy shore",
+  "variant": "stars",
+  "when": "under the stars",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "stonepeaks-dawn",
+  "place": "a quiet basin below grey stone peaks",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "strength",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "stonepeaks-morning",
+  "place": "a quiet basin below grey stone peaks",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "strength",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "stonepeaks-golden",
+  "place": "a quiet basin below grey stone peaks",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "strength",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "stonepeaks-clouds",
+  "place": "a quiet basin below grey stone peaks",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "stonepeaks-snow",
+  "place": "a quiet basin below grey stone peaks",
+  "variant": "snow",
+  "when": "in winter",
+  "feeling": "strength",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "stonepeaks-night",
+  "place": "a quiet basin below grey stone peaks",
+  "variant": "night",
+  "when": "at night",
+  "feeling": "sleep",
+  "technique": "sleep_journey",
+  "sleep": true
+ },
+ {
+  "id": "switchbacks-sunrise",
+  "place": "a trail zigzagging up a bright green slope toward a high pass",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "switchbacks-morning",
+  "place": "a trail zigzagging up a bright green slope toward a high pass",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "switchbacks-midday",
+  "place": "a trail zigzagging up a bright green slope toward a high pass",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "switchbacks-clouds",
+  "place": "a trail zigzagging up a bright green slope toward a high pass",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "switchbacks-golden",
+  "place": "a trail zigzagging up a bright green slope toward a high pass",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "switchbacks-breeze",
+  "place": "a trail zigzagging up a bright green slope toward a high pass",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "cliffstairs-sunrise",
+  "place": "stone steps cut into a cliff, climbing toward the light",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "cliffstairs-morning",
+  "place": "stone steps cut into a cliff, climbing toward the light",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "cliffstairs-midday",
+  "place": "stone steps cut into a cliff, climbing toward the light",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "cliffstairs-golden",
+  "place": "stone steps cut into a cliff, climbing toward the light",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "cliffstairs-clouds",
+  "place": "stone steps cut into a cliff, climbing toward the light",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "cliffstairs-breeze",
+  "place": "stone steps cut into a cliff, climbing toward the light",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "riverpath-sunrise",
+  "place": "a path following a fast clear river upstream toward the mountains",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "riverpath-morning",
+  "place": "a path following a fast clear river upstream toward the mountains",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "riverpath-midday",
+  "place": "a path following a fast clear river upstream toward the mountains",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "riverpath-golden",
+  "place": "a path following a fast clear river upstream toward the mountains",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "riverpath-clouds",
+  "place": "a path following a fast clear river upstream toward the mountains",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "riverpath-thaw",
+  "place": "a path following a fast clear river upstream toward the mountains",
+  "variant": "thaw",
+  "when": "at the spring thaw",
+  "feeling": "energy",
+  "technique": "affirmation",
+  "sleep": false
+ },
+ {
+  "id": "duneclimb-sunrise",
+  "place": "a sandy path climbing a tall dune toward the sky",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "duneclimb-morning",
+  "place": "a sandy path climbing a tall dune toward the sky",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "duneclimb-golden",
+  "place": "a sandy path climbing a tall dune toward the sky",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "duneclimb-clouds",
+  "place": "a sandy path climbing a tall dune toward the sky",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "duneclimb-breeze",
+  "place": "a sandy path climbing a tall dune toward the sky",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "duneclimb-dusk",
+  "place": "a sandy path climbing a tall dune toward the sky",
+  "variant": "dusk",
+  "when": "at dusk",
+  "feeling": "energy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "forestclimb-sunrise",
+  "place": "a forest trail climbing toward sunlit rocks above the trees",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "forestclimb-morning",
+  "place": "a forest trail climbing toward sunlit rocks above the trees",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "forestclimb-midday",
+  "place": "a forest trail climbing toward sunlit rocks above the trees",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "forestclimb-golden",
+  "place": "a forest trail climbing toward sunlit rocks above the trees",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "forestclimb-autumn",
+  "place": "a forest trail climbing toward sunlit rocks above the trees",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "energy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "forestclimb-afterrain",
+  "place": "a forest trail climbing toward sunlit rocks above the trees",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "waterfalltrail-sunrise",
+  "place": "a path climbing beside a tall white waterfall",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "waterfalltrail-morning",
+  "place": "a path climbing beside a tall white waterfall",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "waterfalltrail-midday",
+  "place": "a path climbing beside a tall white waterfall",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "waterfalltrail-golden",
+  "place": "a path climbing beside a tall white waterfall",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "waterfalltrail-clouds",
+  "place": "a path climbing beside a tall white waterfall",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "waterfalltrail-afterrain",
+  "place": "a path climbing beside a tall white waterfall",
+  "variant": "afterrain",
+  "when": "just after the rain",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "morningsummit-sunrise",
+  "place": "a grassy summit with the whole world spread out below it at sunrise",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "morningsummit-dawn",
+  "place": "a grassy summit with the whole world spread out below it at sunrise",
+  "variant": "dawn",
+  "when": "at dawn",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "morningsummit-morning",
+  "place": "a grassy summit with the whole world spread out below it at sunrise",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "morningsummit-clouds",
+  "place": "a grassy summit with the whole world spread out below it at sunrise",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "morningsummit-golden",
+  "place": "a grassy summit with the whole world spread out below it at sunrise",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "morningsummit-breeze",
+  "place": "a grassy summit with the whole world spread out below it at sunrise",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "lakeshoretrail-sunrise",
+  "place": "a trail along the shore of a mountain lake leading toward the peaks",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "lakeshoretrail-morning",
+  "place": "a trail along the shore of a mountain lake leading toward the peaks",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "lakeshoretrail-midday",
+  "place": "a trail along the shore of a mountain lake leading toward the peaks",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "lakeshoretrail-golden",
+  "place": "a trail along the shore of a mountain lake leading toward the peaks",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "lakeshoretrail-clouds",
+  "place": "a trail along the shore of a mountain lake leading toward the peaks",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "lakeshoretrail-autumn",
+  "place": "a trail along the shore of a mountain lake leading toward the peaks",
+  "variant": "autumn",
+  "when": "in autumn",
+  "feeling": "energy",
+  "technique": "reflection",
+  "sleep": false
+ },
+ {
+  "id": "openroad-sunrise",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "openroad-morning",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "openroad-midday",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "openroad-golden",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "openroad-clouds",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "openroad-breeze",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "breeze",
+  "when": "on a breezy day",
+  "feeling": "release",
+  "technique": "emotional_release",
+  "sleep": false
+ },
+ {
+  "id": "openroad-sunset",
+  "place": "a quiet country road running straight toward far hills",
+  "variant": "sunset",
+  "when": "at sunset",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "springridge-sunrise",
+  "place": "a green ridge path in spring, leading on toward snowy peaks",
+  "variant": "sunrise",
+  "when": "at sunrise",
+  "feeling": "energy",
+  "technique": "visualization",
+  "sleep": false
+ },
+ {
+  "id": "springridge-morning",
+  "place": "a green ridge path in spring, leading on toward snowy peaks",
+  "variant": "morning",
+  "when": "on a clear morning",
+  "feeling": "energy",
+  "technique": "breath_awareness",
+  "sleep": false
+ },
+ {
+  "id": "springridge-midday",
+  "place": "a green ridge path in spring, leading on toward snowy peaks",
+  "variant": "midday",
+  "when": "on a warm, bright day",
+  "feeling": "energy",
+  "technique": "body_scan",
+  "sleep": false
+ },
+ {
+  "id": "springridge-golden",
+  "place": "a green ridge path in spring, leading on toward snowy peaks",
+  "variant": "golden",
+  "when": "in the golden hour",
+  "feeling": "energy",
+  "technique": "gratitude_reflection",
+  "sleep": false
+ },
+ {
+  "id": "springridge-clouds",
+  "place": "a green ridge path in spring, leading on toward snowy peaks",
+  "variant": "clouds",
+  "when": "under a sky of big white clouds",
+  "feeling": "energy",
+  "technique": "focus",
+  "sleep": false
+ },
+ {
+  "id": "springridge-thaw",
+  "place": "a green ridge path in spring, leading on toward snowy peaks",
+  "variant": "thaw",
+  "when": "at the spring thaw",
+  "feeling": "energy",
+  "technique": "affirmation",
+  "sleep": false
+ }
+]

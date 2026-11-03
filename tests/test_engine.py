@@ -884,6 +884,17 @@ async def test_the_library_is_read_from_saved_worlds(tmp_path):
         library.Entry("forestlake-mist", "Still Morning Lake", SCENE["place"], "dawn", sleep=False)]
 
 
+def test_every_library_world_in_the_catalog_was_passed_by_muse_spark_open():
+    # The library as registered on 3 Nov 2026: 1,101 worlds of 227 places, 159 of them for sleep. Muse Spark Open,
+    # the open-weights critic, judged every painting and passed it (the earliest worlds, first judged by Muse Spark,
+    # were judged again by the open model on 2 Nov 2026); library_summary.py lists each world's saved verdict.
+    worlds = json.loads((Path(__file__).parents[1] / "library" / "catalog.json").read_text())
+    assert len(worlds) == len({w["id"] for w in worlds}) == 1101
+    assert len({w["id"].split("-")[0] for w in worlds}) == 227 and sum(w["sleep"] for w in worlds) == 159
+    assert {w["critic"]["judge"] for w in worlds} == {"meta-models/muse-spark-open-1026"}
+    assert min(w["critic"]["score"] for w in worlds) >= Settings().pass_score
+
+
 def test_pick_shows_the_choice_for_each_meditation(tmp_path, monkeypatch, capsys):
     client = FakeClient(picks=[{"own_world": True, "choices": [{"id": "forestlake-mist", "fit": 7}]}])
     monkeypatch.setattr(cli, "connect", lambda key: client)
@@ -1021,10 +1032,21 @@ def test_every_library_place_can_be_named_and_only_by_its_whole_word():
     fields = {f.name for f in dataclasses.fields(library.Entry)}
     catalog = [library.Entry(**{**{k: v for k, v in w.items() if k in fields}, "moods": tuple(w["moods"])})
                for w in worlds]
-    # Each place has its own word but a clearing ("clearing the mind" is no place, and a clearing is a forest),
-    # cherry blossom (by its cherry) and two a detail names (a bridge, a hammock).
+    # Each place of the first library has its own word but a clearing ("clearing the mind" is no place, and a
+    # clearing is a forest), cherry blossom (by its cherry) and three a detail names (a bridge, a hammock). The second
+    # library's places (2 Nov 2026) are named for Muse Spark's pick, which reads each world's id and title: these 54
+    # of its 119 have no word here yet, so this choice, made without Muse Spark, finds their worlds only by what their
+    # title and place sentence name and by feeling.
+    second_library = {
+        "almondblossom", "archipelago", "atoll", "azaleas", "bigsky", "boathouse", "bogcotton", "buttercups",
+        "cascades", "chalkdowns", "coralreef", "crocuses", "cypressswamp", "daffodils", "driftwood", "duneclimb",
+        "estuary", "eucalyptus", "fells", "ferngully", "geyserbasin", "ginkgoavenue", "halffrozen", "headland",
+        "highpasture", "hoodoos", "hydrangeas", "joshuatrees", "karst", "lupins", "machair", "magnolias", "maplewood",
+        "meltwater", "mesa", "openroad", "oxbow", "pampas", "pebblecove", "peonies", "rapeseed", "rhododendrons",
+        "rockarch", "saguaro", "sandbar", "snowline", "springfalls", "switchbacks", "tarn", "tidalflats", "travertine",
+        "tundra", "vineterrace", "wisteria"}
     assert {p for p in {w["id"].split("-")[0] for w in worlds} if not library._id_places(p)} == {
-        "blossom", "clearing", "hammock", "stonebridge"}
+        "blossom", "clearing", "footbridge", "hammock", "stonebridge"} | second_library
     assert library._id_places("alpinetrail") == {"alpine"} and library._id_places("pineforest") == {"pine", "forest"}
     assert not library._id_places("footbridge") and library._named("A steaming hot spring.") == {"hotspring": 1}
 
@@ -1038,9 +1060,9 @@ def test_every_library_place_can_be_named_and_only_by_its_whole_word():
         assert opens_on(script, language) in {"lighthouse", "lighthousepath"}, script
     for n in range(6):   # whichever world the tie-break picks among the equals (5 of 6 were alpine)
         assert not opens_on(f"Walk slowly among the old pines. Breath {n}.").startswith("alpine")
-    # A stone bridge or a footbridge is no ridge.
+    # A stone bridge or a footbridge is no ridge (a push climbs a ridge whose first feeling is a push: one in spring).
     assert opens_on("A quiet ridge.") == opens_on("Mist on the ridge.") == "ridge"
-    assert opens_on("Climb to the ridge.", feeling="energy_motivation") == "ridge"
+    assert library._id_places(opens_on("Climb to the ridge.", feeling="energy_motivation")) == {"ridge"}
     assert opens_on("Tu marches dans une forêt de bambous.", "fr") == "bamboo"   # the rarer place of the two
     assert opens_on("You sink into a hot spring while snow falls.") == "hotspring"
     assert opens_on("Du sitzt am Steg, die Füße über dem Wasser.", "de") == "jetty"
