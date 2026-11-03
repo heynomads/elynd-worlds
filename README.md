@@ -65,7 +65,7 @@ flowchart TD
 |---|---|---|
 | Art director | `muse-spark-1.3` | Reads the meditation and designs one world in strict JSON: place, light, palette, air, 1–3 solid foreground subjects (what each is: a thing, or an animal or a person only when the meditation itself brings one; how it is attached, how it moves, whether it glows), what moves in nature (water, sky, grass, a stream, trees), what drifts through the air (leaves, snow, pollen, fireflies) and the painting prompt. It is told never to copy the listener's words and never to add an animal or a person of its own: the world is the place alone. No picture carries text. |
 | Painter | `muse-image-1.0` | Paints the world, portrait for a phone. Built-in web search and shell are off. The prompt ends with a style line that names the animals and people the design brings, asleep or lying at rest, and forbids any other; every other world is painted as the place alone. Told how to paint people and animals at rest in any world, Muse Image put a figure nobody designed into every painting we checked (8 of 8) and refused half the requests of the latest wording; told "no people and no animals", it added none and refused none (4 of 4; 29 Oct 2026). |
-| Critic | `meta-models/muse-spark-open-1026` (Muse Spark Open, open weights, served by Baseten; vision) | Looks at every painting before a listener does: a person or an animal the design does not bring, one drawn wrong or awake, a face up close, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. It sees only the painting and the scenery design, never the meditation or the listener. If it fails, takes longer than 18 s or answers out of shape, `muse-spark-1.3` on Meta Model API judges instead, except where the deployment lets only the open model judge (`open_critic_only`): the ELYND app does, so a painting it cannot check is never shown and the library world stays. On our six example worlds both agreed on every safety check, and both rejected the test pictures that must fail (a face up close, a sign with letters, a storm). |
+| Critic | `meta-models/muse-spark-open-1026` (Muse Spark Open, open weights, served by Baseten; vision) | Looks at every painting before a listener does: a person or an animal the design does not bring, one drawn wrong or awake, a face up close, text, anything unsettling, on brief, a 0–10 score, and a one-sentence fix. It sees only the painting and the scenery design, never the meditation or the listener. If it fails, takes longer than 18 s or answers out of shape, `muse-spark-1.3` on Meta Model API judges instead, except where the deployment lets only the open model judge (`open_critic_only`): the ELYND app does, so a painting it cannot check is never shown and the library world stays. On our six example worlds both agreed on every safety check. |
 | Revision | `muse-spark-1.3` | A rejected painting goes back to the art director with the critic's note, and the agent paints once more (two paintings at most). |
 | Cutter | `sam-3.1` | Cuts each designed subject out as its own layer: asks name and plural at once, keeps only the near instances, fills holes, and records the outline box. A layer is opaque two pixels past the outline, so it carries the subject's own soft edge; a floating boat's outline is closed over its oars, which then ride with it. |
 | What moves | `sam-3.1` | Finds the water, the sky, the grass and a stream the design names, one request each, and packs them into one region map the phone's shader reads; still subjects are taken out of it, so a stone in a lake never ripples. A glowing subject becomes a light that flickers. |
@@ -91,8 +91,9 @@ Every check is built into the run, so no step can skip one and nothing reaches a
    fix, and the agent paints once more.
 4. **A safe default.** A world that still fails, or a painting no allowed judge could check, is never shown: the
    listener keeps a calm library world.
-5. **A second look, for the first library.** Its paintings were also opened at full size and checked for figures
-   before they went in. `scripts/library_audit.py` lists any library world that would look dead (`looks_dead`).
+5. **The library, checked again.** Every library world carries Muse Spark Open's verdict, and
+   `scripts/library_audit.py` lists any that would look dead (`looks_dead`); what the critic and the code checks
+   caught, and missed, is in [`evals/`](evals/).
 
 A journey's plan is checked the same way in code: a day that asks for anything while driving, or promises a result,
 is asked again.
@@ -100,10 +101,11 @@ is asked again.
 ## A world from the first second: the library
 
 A world made for a meditation takes about a minute and costs about four cents, and most meditations visit places a
-library can hold. So the same agent painted a **library** in advance: **1,101 worlds** of the 208 places guided
+library can hold. So the same agent painted a **library** in advance: **1,101 worlds** of the 227 places guided
 meditations visit most often (most places at several times of day, seasons or weathers), 159 of them dark worlds for
-falling asleep. The first library's 89 places come from `scripts/library_briefs.py` (26–31 Oct); 639 more worlds of
-119 new places from `scripts/library_briefs_2.py` (2 Nov). Muse Spark Open, the open-weights critic, passed every one
+falling asleep: the first library's 89 places from `scripts/library_briefs.py` and 19 worlds that give a push
+(26–31 Oct), and 639 worlds of 119 new places from `scripts/library_briefs_2.py` (2 Nov). Muse Spark Open, the
+open-weights critic, passed every one
 (`library/catalog.json` lists them with its verdicts). Every library world looks alive (`library.looks_dead`: water,
 a stream, a field, swaying crowns, rain, snow, leaves or petals, a moving subject, or a sky wide or starry enough to
 carry the world; `scripts/library_audit.py`).
@@ -201,8 +203,8 @@ particular animal or object that matters to the listener, a particular person's 
 ## Cost
 
 Every step reports its usage to a meter priced with the published rates. A painted world costs about **4 cents**
-(the median over the library is 4.2¢; the production world above cost 4.1¢; the six example worlds, made before the
-open critic took over, 5–6¢): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves) and a
+(the median over the first 445 library worlds is 4.2¢, over all 1,101 3.8¢; the production world above cost 4.1¢;
+the six example worlds, made before the open critic took over, 5–6¢): two Muse Spark calls, two Muse Image pictures (one when nothing in it moves) and a
 handful of SAM images. The first 445 library worlds cost about $20. When Muse Spark Open judges, its share (half a
 cent to a cent) is Baseten's bill: the meter keeps the two bills apart. The command line refuses to run past a budget
 and stops asking the open model at a budget of its own; the ELYND backend stops making worlds at a total and a daily
@@ -222,7 +224,7 @@ revises it from the critic's note, so everything but the painting and the cuttin
 
 So the open model's worlds score as well with either judge (its scores are over the 18 it designed; the 2 it did not
 design count as failures in [`evals/`](evals/), with each meditation's result). It designs about three times as fast
-as Muse Spark left to think as long as it likes, and about 1.3 times as fast as Muse Spark with reasoning low. The same
+as Muse Spark left to think as long as it likes, and about 1.35 times as fast as Muse Spark with reasoning low. The same
 test showed that Muse Spark needs no long thinking either: with reasoning low it designs as well, in less than half the
 time. Its host
 enforces no answer shape (one design came back without a title) and its filter refused one calm meditation (a

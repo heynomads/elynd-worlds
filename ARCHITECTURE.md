@@ -71,8 +71,8 @@ step, the old olive tree, and my old dog Bruno asleep in its shade in the late a
 | SAM 3.1: cutter | 77.7 s | Tried the dog and the can; both are still by design, so nothing is cut and no plate is needed. |
 | **Alive at 109.6 s** | | The world moves through its region map: the sky drifts, the leaves sway, a flock passes. |
 
-Cost: 3.8¢ at Meta and 0.3¢ at Baseten, 4.1¢ in all. A painted world costs about 4 cents (the median over the library
-is 4.2¢); the first 445 library worlds cost about $20.
+Cost: 3.8¢ at Meta and 0.3¢ at Baseten, 4.1¢ in all. A painted world costs about 4 cents (the median over the first 445
+library worlds is 4.2¢, over all 1,101 3.8¢); the first 445 library worlds cost about $20.
 
 ## Production settings
 
