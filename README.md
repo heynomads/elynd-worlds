@@ -2,7 +2,7 @@
 
 <img src="docs/quiet_sunset_harbour.webp" width="260" align="right" alt="Quiet Sunset Harbour, one of the example worlds, alive: the water ripples and glints, the clouds drift, gulls pass. Twelve seconds that loop without a seam.">
 
-**Every meditation opens on a living painted world: one of 1,101 that Meta's models painted for the library, or a new
+**Every meditation opens on a living painted world: one of more than 1,100 that Meta's models painted for the library, or a new
 one painted live for a very personal meditation, designed, painted, checked and brought to life with Meta's models.**
 
 [ELYND](https://elynd.app) writes and voices a new guided meditation for each listener, every time. ELYND Worlds,
