@@ -1,0 +1,1442 @@
+{
+ "about": "Paintings the library jobs made that are not in the library, without ids or titles. 'look' = turned down when the pictures were looked at (contact sheets and actual-size crops, by AI reviewer agents); 'dead' = library.looks_dead (code); 'critic' = Muse Spark Open.",
+ "second_run": {
+  "painted": 705,
+  "looked_at": 705,
+  "flagged_by_look": 10,
+  "not_registered": [
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03917,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "look",
+    "detail": "broken picture: a hard horizontal seam with a flat strip across the bottom fifth",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03732,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": true,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03722,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03275,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (38%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03192,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "what moves in it was never found (sky)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03114,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": false,
+     "grass": false,
+     "stream": false,
+     "trees": true,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "what moves in it was never found (sky)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03189,
+    "sleep": true,
+    "living": {
+     "water": false,
+     "sky": false,
+     "grass": false,
+     "stream": false,
+     "trees": true,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "what moves in it was never found (sky)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03189,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": false,
+     "grass": false,
+     "stream": false,
+     "trees": true,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.02879,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (46%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03986,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (41%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.02748,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (29%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03274,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03068,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (28%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.036,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (36%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03503,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (40%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03873,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "look",
+    "detail": "the wooden signpost by the path reads as a bare cross (two arms at one height)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03693,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": true,
+     "particles": "none"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (14%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03416,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (18%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03627,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (35%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03093,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (48%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03179,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (34%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.02995,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (38%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03218,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (24%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.02646,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (27%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03156,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (35%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03417,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (40%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03311,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (49%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03394,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "what moves in it was never found (sky)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03238,
+    "sleep": true,
+    "living": {
+     "water": false,
+     "sky": false,
+     "grass": false,
+     "stream": false,
+     "trees": true,
+     "particles": "leaves"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (46%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03105,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (41%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.0336,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (45%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03858,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "look",
+    "detail": "a tiny pink shape with a lighter top at the foot of the tree on the red hill may be a small seated figure (seen at full size; dropped to be safe)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03817,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": true,
+     "trees": true,
+     "particles": "rain"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "look",
+    "detail": "broken picture: a hard horizontal seam with a flat washed strip across the bottom third",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03552,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": false,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (42%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.02432,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03194,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (26%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03009,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (32%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03061,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (43%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03685,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (34%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.0391,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (40%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03365,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (47%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03136,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (41%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03084,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (38%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03096,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (41%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03069,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "critic",
+    "detail": "belongs, calm; score 4; review: broken composition: a floating strip of meadow above the sea with grass below (Muse Spark Open scored it 4; seen at full size)",
+    "score": 4,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.04604,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": true,
+    "earlier": {
+     "judge": "muse-spark-1.3",
+     "score": 8
+    }
+   },
+   {
+    "why": "look",
+    "detail": "a tiny dark upright mark on top of the right-hand stack stays ambiguous at actual size (a possible perched bird); dropped to be safe",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.04104,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "look",
+    "detail": "the wooden signpost by the path reads as a bare cross on the hillside (two crossed boards on a post)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03626,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "look",
+    "detail": "the wooden signpost by the path reads as a bare cross on the hillside",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.0324,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "look",
+    "detail": "broken picture: a hard straight seam across the full width about four-fifths down with a flat pale strip below it (seen at full size)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03534,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": true,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": true
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (47%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03666,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (33%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.0325,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (31%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03375,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (39%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.0358,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (36%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03396,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (33%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03925,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (33%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03522,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "pollen"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (39%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03348,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (36%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03353,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (34%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03334,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (18%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03995,
+    "sleep": true,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": true,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (49%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03471,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (47%)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03066,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (46%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.03246,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "dead",
+    "detail": "only a little sky moves (37%)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.02902,
+    "sleep": false,
+    "living": {
+     "water": false,
+     "sky": true,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": false
+   },
+   {
+    "why": "look",
+    "detail": "a weathered post with one crossbar reads as a bare cross (actual size)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "cost_usd": 0.04316,
+    "sleep": false,
+    "living": {
+     "water": true,
+     "sky": false,
+     "grass": false,
+     "stream": false,
+     "trees": false,
+     "particles": "none"
+    },
+    "flagged_by_look": true
+   }
+  ]
+ },
+ "push_run": {
+  "themes": 20,
+  "paintings_made": 25,
+  "kept": 19,
+  "not_kept": [
+   {
+    "why": "look",
+    "detail": "unsettling: the rock face beside the waterfall reads as a stone face (eyes, nose) watching",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "paintings": 1,
+    "seconds": 42.4,
+    "design_seconds": 6.37,
+    "plate": "painting",
+    "cost": {
+     "usd": 0.03363,
+     "meta_usd": 0.03084,
+     "open_usd": 0.00279
+    }
+   },
+   {
+    "why": "dead",
+    "detail": "would not move: SAM found neither the sky nor the grass of the watercolour (looks_dead: what moves in it was never found)",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "paintings": 1,
+    "seconds": 67.4,
+    "design_seconds": 6.4,
+    "plate": "painting",
+    "cost": {
+     "usd": 0.03337,
+     "meta_usd": 0.03052,
+     "open_usd": 0.00285
+    }
+   },
+   {
+    "why": "dead",
+    "detail": "would not move: only 16% sky found, no grass, and the design's trees flag would sway bare slopes (no crowns in the painting)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "paintings": 2,
+    "seconds": 82.2,
+    "design_seconds": 6.49,
+    "plate": "painting",
+    "cost": {
+     "usd": 0.06643,
+     "meta_usd": 0.06001,
+     "open_usd": 0.00642
+    }
+   },
+   {
+    "why": "dead",
+    "detail": "would not move: only a little sky moves (30%, looks_dead)",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "paintings": 1,
+    "seconds": 50.2,
+    "design_seconds": 5.04,
+    "plate": "painting",
+    "cost": {
+     "usd": 0.02609,
+     "meta_usd": 0.02322,
+     "open_usd": 0.00287
+    }
+   },
+   {
+    "why": "look",
+    "detail": "a cross: the signpost's two arms cross the post on both sides and read as a double cross",
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "paintings": 1,
+    "seconds": 44.5,
+    "design_seconds": 5.32,
+    "plate": "painting",
+    "cost": {
+     "usd": 0.03584,
+     "meta_usd": 0.03267,
+     "open_usd": 0.00317
+    }
+   },
+   {
+    "why": "dead",
+    "detail": "would not move: only a little sky moves (46%; looks_dead needs half the picture for a world of sky alone); repainted once already, left out",
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "paintings": 1,
+    "seconds": 52.7,
+    "design_seconds": 5.14,
+    "plate": "painting",
+    "cost": {
+     "usd": 0.02621,
+     "meta_usd": 0.02382,
+     "open_usd": 0.00239
+    }
+   }
+  ]
+ },
+ "rejudge_turned_down": [
+  {
+   "run": "first",
+   "earlier": {
+    "judge": "muse-spark-1.3",
+    "score": 9
+   },
+   "verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 4,
+    "belongs": true,
+    "calm": true,
+    "figures_wrong": true,
+    "text_or_symbols": false
+   },
+   "detail": "the design brought a white butterfly (a subject that flutters); judged again under the place-alone rule, an animal the brief does not bring is turned down",
+   "cost_usd": 0.05631
+  },
+  {
+   "run": "first",
+   "earlier": {
+    "judge": "muse-spark-1.3",
+    "score": 9
+   },
+   "verdict": {
+    "judge": "meta-models/muse-spark-open-1026",
+    "score": 4,
+    "belongs": true,
+    "calm": true,
+    "figures_wrong": true,
+    "text_or_symbols": false
+   },
+   "detail": "the design brought a white butterfly (a subject that flutters); judged again under the place-alone rule, an animal the brief does not bring is turned down",
+   "cost_usd": 0.04668
+  }
+ ],
+ "known_bad_figures": {
+  "about": "14 paintings from the first library run (27 Oct 2026) in which Muse Image had added a seated person the design did not bring. At creation muse-spark-1.3 judged them under that day's rule, which accepted a small figure at rest; none of them is in the library. On 30 Oct 2026 Muse Spark Open judged each again with the place-alone rule.",
+  "paintings": [
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 3,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 3,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 3,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 3,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 3,
+     "figures_wrong": true
+    }
+   },
+   {
+    "at_creation": {
+     "judge": "muse-spark-1.3",
+     "score": 9,
+     "figures_wrong": false
+    },
+    "checked_again": {
+     "judge": "meta-models/muse-spark-open-1026",
+     "score": 4,
+     "figures_wrong": true
+    }
+   }
+  ]
+ }
+}

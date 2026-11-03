@@ -1,0 +1,1012 @@
+{
+ "about": "28 Oct 2026. 20 test meditations written for this test (four languages, eight moods, five techniques; no listener's words). Each designed by Muse Spark (reasoning: the model decides) and by Muse Spark Open (reasoning low), painted by Muse Image, and each painting judged by both critics. The open critic fell back to muse-spark-1.3 where its 'judge' says so.",
+ "twenty": [
+  {
+   "i": 0,
+   "language": "English",
+   "mood": "stressed",
+   "technique": "visualization",
+   "text": "You arrive at a lighthouse at dusk and you pause by the white door. You feel the cool iron railing under your hand and you hear gulls settling for the night. You climb the winding stairs slowly, and your footsteps echo softly against the stone. At the top, you step onto the narrow balcony and you watch the sky turn pink and violet. You see the beam begin to sweep across the darkening water. You rest your shoulders against the cool glass and you breathe with the slow rotation of the light. You imagine placing each busy thought onto a small boat below. You watch the boats drift outward, rocking gently on the waves. You stay here, held by stone and light, while evening settles around you quietly.",
+   "spark_default": {
+    "designed": true,
+    "title": "Quiet Lighthouse Dusk",
+    "design_s": 17.3,
+    "open_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.04139,
+    "meta_usd": 0.03759,
+    "open_usd": 0.0038
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Held by Stone and Light",
+    "design_s": 5.7,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02582,
+    "meta_usd": 0.01614,
+    "open_usd": 0.00968
+   }
+  },
+  {
+   "i": 1,
+   "language": "English",
+   "mood": "anxious",
+   "technique": "body scan",
+   "text": "You step into a bamboo forest at noon and you stand still on the soft earth. You hear tall stalks clicking gently above you and you see sunlight falling in thin green lines. You bring your attention to your feet and you notice the pressure of the ground beneath you. You move your awareness to your legs and you feel the weight of your body settling downward. You soften your belly and you let your shoulders drop away from your ears. You notice your hands and you allow your fingers to loosen. You scan your neck and jaw and you let the small muscles ease. You rest your attention on your breath as it moves through your chest. You hear leaves rustling and you feel cool shade on your skin. You remain here, supported by quiet green stillness around you.",
+   "spark_default": {
+    "designed": true,
+    "title": "Quiet Bamboo Stillness",
+    "design_s": 14.3,
+    "open_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03502,
+    "meta_usd": 0.03026,
+    "open_usd": 0.00476
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Quiet Green Stillness",
+    "design_s": 5.6,
+    "open_critic": {
+     "score": 7,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02561,
+    "meta_usd": 0.01688,
+    "open_usd": 0.00873
+   }
+  },
+  {
+   "i": 2,
+   "language": "English",
+   "mood": "sad",
+   "technique": "breath awareness",
+   "text": "You lie back on warm sand in a desert under the stars and you look upward. You feel the fine grains cool beneath your back and you hear complete silence stretching outward. You place one hand on your chest and one hand on your belly. You follow your inhale as it lifts your hands gently. You follow your exhale as your body settles deeper into the sand. You watch a few bright stars flicker and you breathe slowly beside them. You count your breaths softly from one to four and then you begin again. You feel night air touching your face and you let your throat relax. You notice sadness resting inside you and you breathe around it without pushing. You let each exhale grow a little longer. You stay with the vast sky, held and quiet and small.",
+   "spark_default": {
+    "designed": true,
+    "title": "Quiet Desert Night",
+    "design_s": 22.1,
+    "open_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.04782,
+    "meta_usd": 0.04169,
+    "open_usd": 0.00613
+   },
+   "open_low": {
+    "designed": false,
+    "error": "BadRequestError",
+    "detail": "Error code: 400 - The response was filtered due to the prompt triggering our content management policy.",
+    "cost_usd": 0.00498
+   }
+  },
+  {
+   "i": 3,
+   "language": "English",
+   "mood": "tired",
+   "technique": "sleep journey",
+   "text": "You enter a snowy cabin at night and you close the heavy wooden door. You hear snow brushing softly against the small windows and you see firelight moving on the walls. You slip off your boots and you feel the warm rug under your feet. You sit in a deep chair by the stove and you pull a thick blanket around your shoulders. You watch the flames settle to a steady glow and you listen to wood crackling quietly. You feel your eyelids grow heavy and you let your head rest back. You follow your breath as it slows and deepens. You imagine walking down a short hallway to a quiet bedroom. You lie beneath a heavy quilt and you feel its gentle weight. You hear wind outside and you rest deeply inside warmth and stillness.",
+   "spark_default": {
+    "designed": true,
+    "title": "Warm Snowy Cabin",
+    "design_s": 14.4,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03477,
+    "meta_usd": 0.03152,
+    "open_usd": 0.00325
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Snowy Cabin Night",
+    "design_s": 5.0,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02741,
+    "meta_usd": 0.01921,
+    "open_usd": 0.0082
+   }
+  },
+  {
+   "i": 4,
+   "language": "English",
+   "mood": "grateful",
+   "technique": "loving kindness",
+   "text": "You walk slowly between rows of a vineyard in late summer and you touch the sun-warmed leaves. You see heavy clusters of grapes glowing purple and green and you smell dry earth and sweet fruit. You stop in the warm light and you place your hands on your chest. You think of your own efforts this season and you thank yourself quietly for continuing. You picture someone who helped you recently and you send them silent thanks. You imagine your gratitude moving outward like sunlight across the vines. You say inwardly, may you be well, may you be safe, may you feel cared for. You let the words rest on your breath. You feel the ground steady under your shoes and you hear bees moving lazily. You stand among abundance and you allow your heart to stay open and thankful.",
+   "spark_default": {
+    "designed": true,
+    "title": "Warm Vineyard Gratitude",
+    "design_s": 10.6,
+    "open_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03184,
+    "meta_usd": 0.02681,
+    "open_usd": 0.00503
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Sunlit Vineyard Thanks",
+    "design_s": 3.9,
+    "open_critic": {
+     "score": 7,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02608,
+    "meta_usd": 0.01733,
+    "open_usd": 0.00875
+   }
+  },
+  {
+   "i": 5,
+   "language": "English",
+   "mood": "angry",
+   "technique": "visualization",
+   "text": "You stand on the shore of a quiet fjord at dawn and you face the pale water. You see low mist hanging over the surface and you hear a distant waterfall. You feel cool air on your cheeks and you plant your feet firmly on smooth rock. You picture your anger as a dark stone you are holding. You notice its weight and its rough edges. You breathe in the clean morning air and you breathe out slowly over the water. You imagine setting the stone down beside you. You watch the sky turn from gray to soft gold. You see the mist thin and lift. You feel your hands empty and open at your sides. You listen to small waves touching the shore. You let the wide stillness hold you. You remain here until your body feels cooler and quieter inside.",
+   "spark_default": {
+    "designed": true,
+    "title": "Still Fjord Dawn",
+    "design_s": 11.5,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03313,
+    "meta_usd": 0.02943,
+    "open_usd": 0.0037
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Dawn on the Quiet Fjord",
+    "design_s": 4.5,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02875,
+    "meta_usd": 0.01906,
+    "open_usd": 0.00969
+   }
+  },
+  {
+   "i": 6,
+   "language": "English",
+   "mood": "happy",
+   "technique": "body scan",
+   "text": "You sit on a low bench at the edge of a lavender field and you smile at the morning light. You see rows of purple stretching outward and you hear bees humming busily. You feel the warm wood beneath you and you plant your feet in dry soil. You notice the top of your head tingling in the sunshine. You relax your forehead and you soften the corners of your eyes. You let your cheeks lift and you unclench your jaw. You feel lightness in your chest as you breathe. You notice your arms resting easily and your hands warm in your lap. You feel your back straight yet comfortable. You bring awareness to your belly and your hips. You feel your legs steady and your feet grounded. You breathe in the sweet herbal scent and you let joy settle through your whole body quietly.",
+   "spark_default": {
+    "designed": true,
+    "title": "Lavender Morning Calm",
+    "design_s": 14.6,
+    "open_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03825,
+    "meta_usd": 0.03361,
+    "open_usd": 0.00464
+   },
+   "open_low": {
+    "designed": false,
+    "error": "SceneError",
+    "detail": "the scene has no title",
+    "cost_usd": 0.00586
+   }
+  },
+  {
+   "i": 7,
+   "language": "English",
+   "mood": "unmotivated",
+   "technique": "breath awareness",
+   "text": "You sit on the steps of a mountain hut above the clouds and you wrap your hands around a warm cup. You see a white sea of mist below you and blue sky above. You hear prayer flags snapping lightly in the wind. You feel the cold stone under you and the warmth spreading through your fingers. You watch your breath make small clouds in the air. You breathe in slowly through your nose and you breathe out through soft lips. You count each exhale and you start again at one when you lose track. You notice your shoulders lifting slightly with each inhale. You feel your feet heavy in your boots. You look at the distant peaks and you let their steadiness enter your breathing. You stay seated and you keep your rhythm simple and patient.",
+   "spark_default": {
+    "designed": true,
+    "title": "Above the Clouds",
+    "design_s": 22.4,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.04583,
+    "meta_usd": 0.04218,
+    "open_usd": 0.00365
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Breath Above the Clouds",
+    "design_s": 5.2,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02563,
+    "meta_usd": 0.01646,
+    "open_usd": 0.00917
+   }
+  },
+  {
+   "i": 8,
+   "language": "German",
+   "mood": "stressed",
+   "technique": "sleep journey",
+   "text": "Du trittst in einen Dachgarten im Regen und du hörst das leise Trommeln auf den Blättern. Du siehst nasse Töpfe mit Rosmarin und Minze und du riechst feuchte Erde. Du setzt dich unter ein kleines Glasdach und du spürst die kühle Luft auf deinem Gesicht. Du legst deine Hände auf deine Knie und du lässt deine Schultern schwer werden. Du folgst deinem Atem, wie er kommt und wieder geht. Du hörst das Wasser in der Dachrinne rauschen und du siehst Tropfen an der Kante fallen. Du stellst dir einen schmalen Weg zu einem trockenen Zimmer vor. Du legst dich dort auf ein weiches Bett und du ziehst die Decke bis zum Kinn. Du hörst den Regen weiter leise fallen und du bleibst liegen, warm und geschützt, während die Nacht dich umgibt.",
+   "spark_default": {
+    "designed": true,
+    "title": "Quiet Rooftop Rain",
+    "design_s": 16.3,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 6,
+     "pass": false,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.04304,
+    "meta_usd": 0.03896,
+    "open_usd": 0.00408
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Regen über dem Dachgarten",
+    "design_s": 6.2,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03639,
+    "meta_usd": 0.02459,
+    "open_usd": 0.0118
+   }
+  },
+  {
+   "i": 9,
+   "language": "German",
+   "mood": "sad",
+   "technique": "loving kindness",
+   "text": "Du sitzt an einem Koiteich in einem stillen Innenhof und du schaust auf das klare Wasser. Du siehst orange und weiße Fische langsam kreisen und du hörst das leise Plätschern einer kleinen Quelle. Du spürst die warme Steinbank unter dir und du lässt deine Füße auf dem Kies ruhen. Du legst eine Hand auf dein Herz und du atmest ruhig ein und aus. Du denkst an deine eigene Traurigkeit und du begegnest ihr mit Geduld. Du sagst dir leise, mögest du freundlich mit dir sein, mögest du getragen sein. Du stellst dir einen Menschen vor, der dir Gutes wünscht, und du nimmst diesen Wunsch an. Du lässt Wärme durch deine Brust strömen. Du schaust wieder auf die Fische und du folgst ihren ruhigen Kreisen. Du bleibst sitzen und du lässt Mitgefühl in dir und um dich wachsen.",
+   "spark_default": {
+    "designed": true,
+    "title": "Still Koi Pond",
+    "design_s": 13.6,
+    "open_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03264,
+    "meta_usd": 0.02913,
+    "open_usd": 0.00351
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Mitgefühl am Koiteich",
+    "design_s": 6.1,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02768,
+    "meta_usd": 0.01696,
+    "open_usd": 0.01072
+   }
+  },
+  {
+   "i": 10,
+   "language": "German",
+   "mood": "tired",
+   "technique": "visualization",
+   "text": "Du betrittst einen moosigen Mammutbaumhain und du schaust zu den hohen Kronen hinauf. Du siehst Lichtstreifen zwischen den Stämmen und du hörst ferne Vögel rufen. Du spürst weiches Moos unter deinen Schuhen und du lehnst dich an einen breiten Stamm. Du fühlst die raue Rinde an deinem Rücken und du lässt deine Beine schwer werden. Du stellst dir vor, wie Müdigkeit wie Nebel von dir abfällt. Du siehst den Nebel zwischen den Bäumen zergehen und du atmest die kühle Waldluft ein. Du gehst langsam einige Schritte und du berührst das feuchte Grün. Du setzt dich auf einen umgefallenen Stamm und du lässt deine Arme ruhen. Du hörst Blätter rascheln und du spürst Ruhe in deinen Gliedern. Du bleibst hier und du lässt den Wald dich still tragen.",
+   "spark_default": {
+    "designed": true,
+    "title": "Quiet Redwood Grove",
+    "design_s": 16.9,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03649,
+    "meta_usd": 0.03288,
+    "open_usd": 0.00361
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Mammutbaumhain im Licht",
+    "design_s": 4.2,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02744,
+    "meta_usd": 0.02267,
+    "open_usd": 0.00477
+   }
+  },
+  {
+   "i": 11,
+   "language": "German",
+   "mood": "angry",
+   "technique": "body scan",
+   "text": "Du steigst in eine warme Thermalquelle in einem isländischen Tal und du spürst das Wasser auf deiner Haut. Du siehst Dampf über der Oberfläche treiben und du hörst Wind über das Gras streichen. Du lehnst dich an den felsigen Rand und du lässt deine Füße frei schweben. Du richtest deine Aufmerksamkeit auf deine Füße und du spürst Wärme um deine Zehen. Du wanderst zu deinen Waden und Knien und du lässt sie locker. Du spürst deinen Bauch und deine Brust und du atmest langsam durch die Nase. Du bemerkst deine Hände und du öffnest deine Finger im Wasser. Du lockerst deinen Kiefer und deine Stirn und du lässt deine Zunge ruhen. Du spürst deinen Nacken und deine Schultern und du lässt Schwere zu. Du bleibst im warmen Wasser und du hörst deinen Atem ruhig kommen und gehen.",
+   "spark_default": {
+    "designed": true,
+    "title": "Warm Valley Pool",
+    "design_s": 14.1,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03305,
+    "meta_usd": 0.02991,
+    "open_usd": 0.00314
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Warme Quelle im Tal",
+    "design_s": 3.5,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02769,
+    "meta_usd": 0.02402,
+    "open_usd": 0.00367
+   }
+  },
+  {
+   "i": 12,
+   "language": "Spanish",
+   "mood": "anxious",
+   "technique": "sleep journey",
+   "text": "Tú llegas a una hamaca junto a una laguna turquesa y te sientas despacio. Tú escuchas las palmeras moverse con la brisa y ves el agua clara brillar. Tú sientes la tela suave bajo tus manos y apoyas los pies en la arena tibia. Tú te recuestas y cruzas los brazos sobre el pecho. Tú respiras hondo y sueltas el aire lentamente por la boca. Tú miras las nubes delgadas pasar y cuentas cada exhalación. Tú sientes tus párpados pesados y dejas que tu cabeza descanse. Tú imaginas una cabaña pequeña cerca del agua. Tú entras y te acuestas en una cama fresca con sábanas claras. Tú escuchas las olas suaves y te quedas quieto, arropado por la noche cálida y tranquila.",
+   "spark_default": {
+    "designed": true,
+    "title": "Quiet Night Lagoon",
+    "design_s": 18.9,
+    "open_critic": {
+     "score": 7,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.041,
+    "meta_usd": 0.03682,
+    "open_usd": 0.00418
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Descanso en la Laguna Tibia",
+    "design_s": 5.4,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02756,
+    "meta_usd": 0.01707,
+    "open_usd": 0.01049
+   }
+  },
+  {
+   "i": 13,
+   "language": "Spanish",
+   "mood": "happy",
+   "technique": "loving kindness",
+   "text": "Tú caminas por un campo de girasoles a la hora dorada y sonríes al cielo. Tú ves flores altas giradas hacia el sol y escuchas abejas entre los pétalos. Tú sientes la tierra seca bajo tus zapatos y tocas un tallo firme. Tú pones tus manos sobre tu corazón y respiras con calma. Tú agradeces tu alegría sencilla y la dejas crecer. Tú piensas en alguien que quieres y le deseas lo bueno en silencio. Tú dices por dentro, que estés bien, que estés a salvo, que sientas cariño. Tú imaginas esa bondad extendiéndose como luz entre las flores. Tú recuerdas un momento amable del día y lo sostienes. Tú sientes calor en el pecho y aflojas los hombros. Tú miras el horizonte dorado y te quedas aquí, abierto y agradecido entre los girasoles altos.",
+   "spark_default": {
+    "designed": true,
+    "title": "Golden Sunflower Field",
+    "design_s": 20.6,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.0459,
+    "meta_usd": 0.04196,
+    "open_usd": 0.00394
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Campo dorado de bondad",
+    "design_s": 3.9,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02512,
+    "meta_usd": 0.01793,
+    "open_usd": 0.00719
+   }
+  },
+  {
+   "i": 14,
+   "language": "Spanish",
+   "mood": "grateful",
+   "technique": "breath awareness",
+   "text": "Tú te sientas en un banco bajo un sauce junto al río al atardecer y apoyas las manos en las rodillas. Tú ves el agua moverse despacio y escuchas hojas rozando. Tú sientes la madera fresca bajo ti y el aire suave en la cara. Tú llevas tu atención a tu respiración y notas el aire entrar por la nariz. Tú sigues tu inhalación hasta el pecho y tu exhalación hasta el vientre. Tú cuentas uno al inhalar y dos al exhalar, y vuelves a empezar. Tú agradeces el día y las cosas pequeñas que sostuviste. Tú sientes gratitud en el pecho con cada respiración tranquila. Tú miras las ramas largas tocar el agua y respiras con ellas. Tú notas tus hombros sueltos y tu mandíbula relajada. Tú te quedas junto al río y sigues respirando, presente y agradecido en la luz tenue.",
+   "spark_default": {
+    "designed": true,
+    "title": "Willow River Dusk",
+    "design_s": 21.7,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.04452,
+    "meta_usd": 0.04452,
+    "open_usd": 0.0
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Junto al río al atardecer",
+    "design_s": 6.9,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.0294,
+    "meta_usd": 0.01728,
+    "open_usd": 0.01212
+   }
+  },
+  {
+   "i": 15,
+   "language": "Spanish",
+   "mood": "unmotivated",
+   "technique": "visualization",
+   "text": "Tú entras en una antigua biblioteca de piedra con chimenea y cierras la puerta pesada. Tú ves filas de libros altos y escuchas el fuego crepitar. Tú sientes el calor suave en tus mejillas y el olor a madera y papel. Tú te sientas en un sillón profundo y apoyas los pies en una alfombra gruesa. Tú imaginas tu desgana como una niebla gris sobre la mesa. Tú la ves adelgazar con cada respiración tranquila. Tú eliges un libro pequeño y lo abres por una página clara. Tú lees unas líneas despacio y dejas que una idea te anime. Tú te pones de pie y tocas los lomos ordenados. Tú enciendes una lámpara verde y miras la sala cálida. Tú sientes tus manos activas y tu espalda recta. Tú te quedas aquí y dejas que la curiosidad regrese poco a poco.",
+   "spark_default": {
+    "designed": true,
+    "title": "Warm Library Garden",
+    "design_s": 19.9,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.04288,
+    "meta_usd": 0.0393,
+    "open_usd": 0.00358
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Biblioteca de Piedra Cálida",
+    "design_s": 3.9,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02347,
+    "meta_usd": 0.01621,
+    "open_usd": 0.00726
+   }
+  },
+  {
+   "i": 16,
+   "language": "French",
+   "mood": "anxious",
+   "technique": "loving kindness",
+   "text": "Tu marches sur un sentier côtier dans un vent doux et tu regardes la mer calme. Tu vois les vagues toucher les rochers et tu entends les mouettes au loin. Tu sens l’air salé sur ton visage et tu poses tes pieds avec soin. Tu portes une main sur ton cœur et tu respires lentement. Tu reconnais ton inquiétude et tu l’accueilles sans lutte. Tu te dis doucement, puisses-tu être apaisé, puisses-tu être en sécurité, puisses-tu sentir de la bienveillance. Tu penses à quelqu’un qui te soutient et tu reçois sa présence. Tu imagines ta bonté s’étendre comme la lumière sur l’eau. Tu sens tes épaules s’abaisser et ta mâchoire se détendre. Tu regardes l’horizon large et tu restes ici, entouré par le ciel ouvert et le souffle régulier des vagues.",
+   "spark_default": {
+    "designed": true,
+    "title": "Calm Sea Path",
+    "design_s": 9.6,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03219,
+    "meta_usd": 0.02957,
+    "open_usd": 0.00262
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Lumière Bienveillante Sur La Mer",
+    "design_s": 4.2,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02369,
+    "meta_usd": 0.01635,
+    "open_usd": 0.00734
+   }
+  },
+  {
+   "i": 17,
+   "language": "French",
+   "mood": "tired",
+   "technique": "breath awareness",
+   "text": "Tu t’assieds dans un verger dans la brume d’automne et tu poses tes mains sur tes genoux. Tu vois des pommiers chargés de fruits rouges et tu sens l’air frais et humide. Tu entends des gouttes tomber des feuilles et tu regardes la brume flotter. Tu portes ton attention sur ta respiration et tu suis l’air qui entre par ton nez. Tu sens ta poitrine se soulever doucement et puis s’abaisser. Tu comptes tes expirations jusqu’à quatre et tu recommences. Tu sens tes pieds lourds dans tes chaussures et tes jambes relâchées. Tu laisses ton dos s’appuyer contre le tronc rugueux. Tu respires avec le rythme lent du verger endormi. Tu remarques la fatigue en toi et tu respires autour sans effort. Tu restes assis dans la brume douce et tu suis ton souffle calme et régulier.",
+   "spark_default": {
+    "designed": true,
+    "title": "Misty Autumn Orchard",
+    "design_s": 11.5,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03453,
+    "meta_usd": 0.03045,
+    "open_usd": 0.00408
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Respiration dans le verger",
+    "design_s": 5.4,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.02387,
+    "meta_usd": 0.01557,
+    "open_usd": 0.0083
+   }
+  },
+  {
+   "i": 18,
+   "language": "French",
+   "mood": "happy",
+   "technique": "body scan",
+   "text": "Tu t’installes dans une maison de thé au milieu d’un jardin de mousse et tu enlèves tes chaussures. Tu vois la mousse verte et épaisse et tu entends l’eau couler dans un bassin. Tu sens le bois lisse sous tes pieds et l’odeur légère du thé chaud. Tu portes ton attention sur tes pieds et tu sens le sol frais. Tu remontes vers tes jambes et tu les laisses se détendre. Tu relâches ton ventre et tu ouvres ta poitrine en respirant. Tu détends tes mains et tes doigts posés sur tes cuisses. Tu assouplis tes épaules et ta nuque et tu desserres ta mâchoire. Tu adoucis ton front et le contour de tes yeux. Tu sens de la joie douce circuler en toi. Tu regardes le jardin paisible et tu restes ici, ancré et léger, entouré de vert tendre et silencieux.",
+   "spark_default": {
+    "designed": true,
+    "title": "Moss Garden Tea",
+    "design_s": 9.4,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03242,
+    "meta_usd": 0.02889,
+    "open_usd": 0.00353
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Maison de thé dans le jardin de mousse",
+    "design_s": 4.1,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 8,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03508,
+    "meta_usd": 0.02658,
+    "open_usd": 0.0085
+   }
+  },
+  {
+   "i": 19,
+   "language": "French",
+   "mood": "grateful",
+   "technique": "sleep journey",
+   "text": "Tu t’allonges dans un voilier qui dérive sur un lac calme et tu regardes le ciel du soir. Tu vois les dernières couleurs roses sur l’eau et tu entends le bois craquer doucement. Tu sens la brise fraîche sur ton visage et la coque stable sous ton dos. Tu poses tes mains sur ton ventre et tu suis ta respiration lente. Tu remercies intérieurement pour les moments simples de la journée. Tu regardes les premières étoiles apparaître et tu expires longuement. Tu sens tes paupières devenir lourdes et tu laisses ta tête reposer. Tu imagines le bateau glisser vers une rive tranquille. Tu t’installes sous une couverture fine et tu écoutes l’eau contre la coque. Tu restes allongé et tu te laisses porter, reconnaissant et paisible, vers un repos profond.",
+   "spark_default": {
+    "designed": true,
+    "title": "Drifting Into Rest",
+    "design_s": 13.0,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.03268,
+    "meta_usd": 0.02949,
+    "open_usd": 0.00319
+   },
+   "open_low": {
+    "designed": true,
+    "title": "Dérive paisible sur le lac du soir",
+    "design_s": 4.0,
+    "open_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "meta-models/muse-spark-open-1026"
+    },
+    "spark_critic": {
+     "score": 9,
+     "pass": true,
+     "judge": "muse-spark-1.3"
+    },
+    "cost_usd": 0.0258,
+    "meta_usd": 0.01792,
+    "open_usd": 0.00788
+   }
+  }
+ ],
+ "spark_low_twenty": {
+  "about": "The same 20 meditations designed by Muse Spark with reasoning low (28 Oct 2026, the engine's default since). Only the run's summary was kept, not one row per meditation.",
+  "designed": 20,
+  "errors": 0,
+  "open_critic_mean": 8.75,
+  "spark_critic_mean": 8.95,
+  "open_critic_pass": 20,
+  "spark_critic_pass": 20,
+  "design_s_median": 6.4
+ },
+ "six_examples": {
+  "about": "The six example meditations of examples/ (28 Oct 2026), each made once per designer, judged by Muse Spark Open.",
+  "rows": [
+   {
+    "meditation": "anxious_harbour",
+    "designer": "spark_default",
+    "design_s": 13.75,
+    "seconds": 71.5,
+    "paintings": 1,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "muse_image",
+    "cost_usd": 0.05577,
+    "meta_usd": 0.05222,
+    "open_usd": 0.00355
+   },
+   {
+    "meditation": "bodyscan_meadow",
+    "designer": "spark_default",
+    "design_s": 13.5,
+    "seconds": 88.9,
+    "paintings": 1,
+    "score": 8,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "muse_image",
+    "cost_usd": 0.04917,
+    "meta_usd": 0.04487,
+    "open_usd": 0.0043
+   },
+   {
+    "meditation": "german_forest",
+    "designer": "spark_default",
+    "design_s": 12.13,
+    "seconds": 87.5,
+    "paintings": 1,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.03435,
+    "meta_usd": 0.02971,
+    "open_usd": 0.00464
+   },
+   {
+    "meditation": "lake_visualization",
+    "designer": "spark_default",
+    "design_s": 12.71,
+    "seconds": 119.1,
+    "paintings": 2,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.07929,
+    "meta_usd": 0.07126,
+    "open_usd": 0.00803
+   },
+   {
+    "meditation": "sleep_cabin",
+    "designer": "spark_default",
+    "design_s": 15.61,
+    "seconds": 66.9,
+    "paintings": 1,
+    "score": 8,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.03608,
+    "meta_usd": 0.03133,
+    "open_usd": 0.00475
+   },
+   {
+    "meditation": "spanish_beach",
+    "designer": "spark_default",
+    "design_s": 12.27,
+    "seconds": 106.6,
+    "paintings": 2,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.07386,
+    "meta_usd": 0.06644,
+    "open_usd": 0.00742
+   },
+   {
+    "meditation": "anxious_harbour",
+    "designer": "open_low",
+    "design_s": 4.76,
+    "seconds": 65.2,
+    "paintings": 1,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "muse_image",
+    "cost_usd": 0.04237,
+    "meta_usd": 0.0325,
+    "open_usd": 0.00987
+   },
+   {
+    "meditation": "bodyscan_meadow",
+    "designer": "open_low",
+    "design_s": 5.35,
+    "seconds": 96.1,
+    "paintings": 2,
+    "score": 10,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "muse_image",
+    "cost_usd": 0.0674,
+    "meta_usd": 0.0525,
+    "open_usd": 0.0149
+   },
+   {
+    "meditation": "german_forest",
+    "designer": "open_low",
+    "design_s": 3.5,
+    "seconds": 39.2,
+    "paintings": 1,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.03095,
+    "meta_usd": 0.0225,
+    "open_usd": 0.00845
+   },
+   {
+    "meditation": "lake_visualization",
+    "designer": "open_low",
+    "design_s": 13.3,
+    "seconds": 69.2,
+    "paintings": 1,
+    "score": 8,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.03038,
+    "meta_usd": 0.02,
+    "open_usd": 0.01038
+   },
+   {
+    "meditation": "sleep_cabin",
+    "designer": "open_low",
+    "design_s": 5.56,
+    "seconds": 70.3,
+    "paintings": 1,
+    "score": 9,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.03477,
+    "meta_usd": 0.025,
+    "open_usd": 0.00977
+   },
+   {
+    "meditation": "spanish_beach",
+    "designer": "open_low",
+    "design_s": 3.68,
+    "seconds": 49.9,
+    "paintings": 1,
+    "score": 8,
+    "judge": "meta-models/muse-spark-open-1026",
+    "plate": "painting",
+    "cost_usd": 0.0333,
+    "meta_usd": 0.025,
+    "open_usd": 0.0083
+   }
+  ]
+ }
+}

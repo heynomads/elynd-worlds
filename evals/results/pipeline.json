@@ -1,0 +1,421 @@
+{
+ "production": {
+  "painted": [
+   {
+    "run": "observatory",
+    "paintings": 1,
+    "critic_score": 9,
+    "seconds_to_painting": 37.73,
+    "seconds_to_ready": 77.91,
+    "steps": {
+     "design": 4.75,
+     "paint 1": 22.0,
+     "critique 1": 8.31,
+     "cut 1": 34.04,
+     "regions 1": 46.66,
+     "plate": 1.39
+    },
+    "slowest_after_painting": "regions 1",
+    "plate": "painting",
+    "cost_cents": 4.03,
+    "open_share_cents": 0.33,
+    "share_of_engine_world_timeout": 0.65,
+    "share_of_server_world_timeout": 0.46
+   },
+   {
+    "run": "courtyard",
+    "paintings": 1,
+    "critic_score": 9,
+    "seconds_to_painting": 44.43,
+    "seconds_to_ready": 109.55,
+    "steps": {
+     "design": 8.6,
+     "paint 1": 17.79,
+     "critique 1": 14.6,
+     "regions 1": 59.22,
+     "cut 1": 77.72,
+     "plate": 1.62
+    },
+    "slowest_after_painting": "cut 1",
+    "plate": "painting",
+    "cost_cents": 4.08,
+    "open_share_cents": 0.29,
+    "share_of_engine_world_timeout": 0.91,
+    "share_of_server_world_timeout": 0.64
+   }
+  ],
+  "library_chosen": [
+   {
+    "run": "beach, first run",
+    "library_fit": 10,
+    "seconds_to_library_world": 6.53,
+    "cost_cents": 0.72
+   },
+   {
+    "run": "beach, second run",
+    "library_fit": 10,
+    "seconds_to_library_world": 6.86,
+    "cost_cents": 0.36
+   }
+  ],
+  "server_settings": {
+   "open_critic_only": true,
+   "open_critic_timeout_s": 90,
+   "world_timeout_s": 170,
+   "director_reasoning": "low",
+   "open_critic_reasoning": "low",
+   "paintings": 2,
+   "pass_score": 7
+  },
+  "engine_defaults": {
+   "open_critic_only": false,
+   "open_critic_timeout_s": 18,
+   "world_timeout_s": 120,
+   "paintings": 2,
+   "pass_score": 7
+  },
+  "place": {
+   "text": "A courtyard in late afternoon, warm golden light, with a red watering can, an old olive tree, and a dog asleep in its shade.",
+   "model": "llama-3.3-70b-instruct (Amazon Bedrock)",
+   "seconds": 1.3,
+   "usd": 0.00056,
+   "note": "the place step run again on the same meditation text the same day; the server does not store the description it used"
+  }
+ },
+ "jobs": {
+  "first": {
+   "worlds": 443,
+   "step_seconds": {
+    "critique": {
+     "n": 464,
+     "median": 18.4,
+     "p90": 34.0,
+     "max": 68.0
+    },
+    "cut": {
+     "n": 443,
+     "median": 92.9,
+     "p90": 137.2,
+     "max": 189.8
+    },
+    "design": {
+     "n": 443,
+     "median": 11.1,
+     "p90": 25.1,
+     "max": 63.4
+    },
+    "paint": {
+     "n": 464,
+     "median": 18.8,
+     "p90": 39.8,
+     "max": 76.3
+    },
+    "plate": {
+     "n": 443,
+     "median": 9.2,
+     "p90": 39.2,
+     "max": 73.4
+    },
+    "regions": {
+     "n": 443,
+     "median": 88.9,
+     "p90": 137.0,
+     "max": 201.2
+    },
+    "remove subjects": {
+     "n": 113,
+     "median": 40.0,
+     "p90": 70.9,
+     "max": 141.8
+    },
+    "revise": {
+     "n": 21,
+     "median": 7.0,
+     "p90": 16.9,
+     "max": 19.9
+    }
+   },
+   "to_painting_s": {
+    "n": 443,
+    "median": 56.8,
+    "p90": 87.9,
+    "max": 150.2
+   },
+   "whole_world_s": {
+    "n": 443,
+    "median": 157.0,
+    "p90": 219.4,
+    "max": 317.5
+   },
+   "over_120_s": {
+    "k": 344,
+    "n": 443,
+    "share": 0.777,
+    "ci95": [
+     0.735,
+     0.813
+    ]
+   },
+   "over_170_s": {
+    "k": 174,
+    "n": 443,
+    "share": 0.393,
+    "ci95": [
+     0.348,
+     0.439
+    ]
+   },
+   "first_try_pass": {
+    "k": 422,
+    "n": 443,
+    "share": 0.953,
+    "ci95": [
+     0.929,
+     0.969
+    ]
+   },
+   "painted_twice": 21,
+   "plates": {
+    "painting": 319,
+    "none": 2,
+    "filled": 14,
+    "muse_image": 108
+   },
+   "sam": {
+    "regions_steps": 443,
+    "regions_with_a_failed_request": {
+     "k": 0,
+     "n": 443,
+     "share": 0.0,
+     "ci95": [
+      0.0,
+      0.009
+     ]
+    },
+    "failed_requests_by_phrase": {},
+    "nothing_found": 1,
+    "asked_again_later": 6,
+    "cut_failed": 0,
+    "cut_found_no_layer": 2
+   },
+   "muse_image_edit_failed": {
+    "failed: APITimeoutError": 10
+   },
+   "sam_images_per_world": {
+    "n": 443,
+    "median": 6.0,
+    "p90": 8.0,
+    "max": 14.0
+   }
+  },
+  "second": {
+   "worlds": 639,
+   "step_seconds": {
+    "critique": {
+     "n": 646,
+     "median": 25.5,
+     "p90": 75.9,
+     "max": 160.8
+    },
+    "cut": {
+     "n": 639,
+     "median": 171.6,
+     "p90": 223.5,
+     "max": 324.4
+    },
+    "design": {
+     "n": 639,
+     "median": 7.9,
+     "p90": 33.9,
+     "max": 103.7
+    },
+    "paint": {
+     "n": 646,
+     "median": 16.1,
+     "p90": 58.7,
+     "max": 109.1
+    },
+    "plate": {
+     "n": 639,
+     "median": 5.2,
+     "p90": 28.6,
+     "max": 143.1
+    },
+    "regions": {
+     "n": 639,
+     "median": 197.2,
+     "p90": 298.9,
+     "max": 570.6
+    },
+    "remove subjects": {
+     "n": 109,
+     "median": 68.5,
+     "p90": 121.1,
+     "max": 197.1
+    },
+    "revise": {
+     "n": 7,
+     "median": 6.1,
+     "p90": 20.3,
+     "max": 28.7
+    }
+   },
+   "to_painting_s": {
+    "n": 639,
+    "median": 65.8,
+    "p90": 134.1,
+    "max": 235.0
+   },
+   "whole_world_s": {
+    "n": 639,
+    "median": 255.6,
+    "p90": 357.4,
+    "max": 647.5
+   },
+   "over_120_s": {
+    "k": 637,
+    "n": 639,
+    "share": 0.997,
+    "ci95": [
+     0.989,
+     0.999
+    ]
+   },
+   "over_170_s": {
+    "k": 591,
+    "n": 639,
+    "share": 0.925,
+    "ci95": [
+     0.902,
+     0.943
+    ]
+   },
+   "first_try_pass": {
+    "k": 632,
+    "n": 639,
+    "share": 0.989,
+    "ci95": [
+     0.978,
+     0.995
+    ]
+   },
+   "painted_twice": 7,
+   "plates": {
+    "painting": 530,
+    "muse_image": 102,
+    "filled": 7
+   },
+   "sam": {
+    "regions_steps": 639,
+    "regions_with_a_failed_request": {
+     "k": 88,
+     "n": 639,
+     "share": 0.138,
+     "ci95": [
+      0.113,
+      0.167
+     ]
+    },
+    "failed_requests_by_phrase": {
+     "grass": 41,
+     "grassy ground": 5,
+     "heather": 1,
+     "sky": 64,
+     "stream": 8,
+     "water": 20
+    },
+    "nothing_found": 21,
+    "asked_again_later": 27,
+    "cut_failed": 0,
+    "cut_found_no_layer": 0
+   },
+   "muse_image_edit_failed": {},
+   "sam_images_per_world": {
+    "n": 639,
+    "median": 6.0,
+    "p90": 8.0,
+    "max": 16.0
+   }
+  },
+  "push": {
+   "paintings_recorded": 25,
+   "kept": 19,
+   "whole_world_s": {
+    "n": 25,
+    "median": 51.9,
+    "p90": 65.2,
+    "max": 82.2
+   },
+   "design_s": {
+    "n": 25,
+    "median": 6.3,
+    "p90": 7.6,
+    "max": 9.2
+   },
+   "first_try_pass": {
+    "k": 24,
+    "n": 25,
+    "share": 0.96,
+    "ci95": [
+     0.805,
+     0.993
+    ]
+   },
+   "plates": {
+    "painting": 25
+   }
+  }
+ },
+ "cost": {
+  "first_library_445": {
+   "n": 445,
+   "median_cents": 4.24,
+   "p10_cents": 3.54,
+   "p90_cents": 5.69,
+   "mean_cents": 4.52,
+   "total_usd": 20.12
+  },
+  "second_library_639": {
+   "n": 639,
+   "median_cents": 3.55,
+   "p10_cents": 3.12,
+   "p90_cents": 4.72,
+   "mean_cents": 3.73,
+   "total_usd": 23.84
+  },
+  "second_run_all_705": {
+   "n": 705,
+   "median_cents": 3.53,
+   "p10_cents": 3.1,
+   "p90_cents": 4.68,
+   "mean_cents": 3.7,
+   "total_usd": 26.08
+  },
+  "push_19": {
+   "n": 19,
+   "median_cents": 3.6,
+   "p10_cents": 3.3,
+   "p90_cents": 3.79,
+   "mean_cents": 3.57,
+   "total_usd": 0.68
+  },
+  "library_1101": {
+   "n": 1101,
+   "median_cents": 3.79,
+   "p10_cents": 3.24,
+   "p90_cents": 5.2,
+   "mean_cents": 4.04,
+   "total_usd": 44.53
+  },
+  "open_critic_share_cents": {
+   "n": 1101,
+   "median": 0.3,
+   "p90": 0.37,
+   "max": 1.03
+  },
+  "demo_runs_painted_cents": [
+   4.03,
+   4.08
+  ]
+ }
+}

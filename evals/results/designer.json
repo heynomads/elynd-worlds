@@ -1,0 +1,217 @@
+{
+ "meditations": {
+  "n": 20,
+  "languages": {
+   "English": 8,
+   "German": 4,
+   "Spanish": 4,
+   "French": 4
+  },
+  "moods": 8,
+  "techniques": 5
+ },
+ "arms": {
+  "spark_default": {
+   "meditations": 20,
+   "designed": {
+    "k": 20,
+    "n": 20,
+    "share": 1.0,
+    "ci95": [
+     0.839,
+     1.0
+    ]
+   },
+   "failures": [],
+   "open_critic": {
+    "passed_of_all": {
+     "k": 20,
+     "n": 20,
+     "share": 1.0,
+     "ci95": [
+      0.839,
+      1.0
+     ]
+    },
+    "mean_of_designed": 8.6,
+    "mean_failures_as_0": 8.6,
+    "median_failures_lowest": 9.0,
+    "fell_back_to_spark": 1
+   },
+   "spark_critic": {
+    "passed_of_all": {
+     "k": 19,
+     "n": 20,
+     "share": 0.95,
+     "ci95": [
+      0.764,
+      0.991
+     ]
+    },
+    "mean_of_designed": 8.85,
+    "mean_failures_as_0": 8.85,
+    "median_failures_lowest": 9.0
+   },
+   "design_s": {
+    "n": 20,
+    "median": 14.5,
+    "p90": 21.74,
+    "min": 9.4,
+    "max": 22.4
+   },
+   "cost_usd": {
+    "median_per_world": 0.0358,
+    "spent_incl_failures": 0.7594
+   }
+  },
+  "open_low": {
+   "meditations": 20,
+   "designed": {
+    "k": 18,
+    "n": 20,
+    "share": 0.9,
+    "ci95": [
+     0.699,
+     0.972
+    ]
+   },
+   "failures": [
+    "BadRequestError: Error code: 400 - The response was filtered due to the prompt triggering our content management policy.",
+    "SceneError: the scene has no title"
+   ],
+   "open_critic": {
+    "passed_of_all": {
+     "k": 18,
+     "n": 20,
+     "share": 0.9,
+     "ci95": [
+      0.699,
+      0.972
+     ]
+    },
+    "mean_of_designed": 8.78,
+    "mean_failures_as_0": 7.9,
+    "median_failures_lowest": 9.0,
+    "fell_back_to_spark": 2
+   },
+   "spark_critic": {
+    "passed_of_all": {
+     "k": 18,
+     "n": 20,
+     "share": 0.9,
+     "ci95": [
+      0.699,
+      0.972
+     ]
+    },
+    "mean_of_designed": 8.94,
+    "mean_failures_as_0": 8.05,
+    "median_failures_lowest": 9.0
+   },
+   "design_s": {
+    "n": 18,
+    "median": 4.75,
+    "p90": 6.13,
+    "min": 3.5,
+    "max": 6.9
+   },
+   "cost_usd": {
+    "median_per_world": 0.0267,
+    "spent_incl_failures": 0.5033
+   }
+  }
+ },
+ "paired": {
+  "meditations": 18,
+  "open_critic_diff_open_minus_spark": {
+   "mean": 0.11,
+   "ci95": [
+    -0.167,
+    0.444
+   ],
+   "open_higher": 3,
+   "same": 13,
+   "open_lower": 2
+  },
+  "spark_critic_diff_open_minus_spark": {
+   "mean": 0.11,
+   "ci95": [
+    -0.167,
+    0.5
+   ],
+   "open_higher": 1,
+   "same": 16,
+   "open_lower": 1
+  },
+  "design_s_ratio_spark_default_over_open": {
+   "ratio_of_medians": 3.02,
+   "ci95": [
+    2.565,
+    4.024
+   ],
+   "open_faster_on": 18
+  }
+ },
+ "spark_low": {
+  "meditations": 20,
+  "designed": {
+   "k": 20,
+   "n": 20,
+   "share": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  },
+  "open_critic_passed_of_all": {
+   "k": 20,
+   "n": 20,
+   "share": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  },
+  "spark_critic_passed_of_all": {
+   "k": 20,
+   "n": 20,
+   "share": 1.0,
+   "ci95": [
+    0.839,
+    1.0
+   ]
+  },
+  "open_critic_mean": 8.75,
+  "spark_critic_mean": 8.95,
+  "design_s_median": 6.4,
+  "speed_ratio_spark_low_over_open_low": 1.35,
+  "limits": "only the run's summary was kept (no row per meditation): no paired difference and no interval"
+ },
+ "speed": {
+  "open_low_median_s": 4.75,
+  "spark_default_median_s": 14.5,
+  "spark_low_median_s": 6.4,
+  "open_vs_spark_default": 3.05,
+  "open_vs_spark_low": 1.35
+ },
+ "six_examples": {
+  "spark_default": {
+   "meditations": 6,
+   "made": 6,
+   "mean_score_open_critic": 8.67,
+   "median_design_s": 13.11,
+   "painted_twice": 2,
+   "mean_cost_usd": 0.0548,
+   "median_cost_usd": 0.0525
+  },
+  "open_low": {
+   "meditations": 6,
+   "made": 6,
+   "mean_score_open_critic": 8.83,
+   "median_design_s": 5.05,
+   "painted_twice": 1,
+   "mean_cost_usd": 0.0399,
+   "median_cost_usd": 0.034
+  }
+ }
+}

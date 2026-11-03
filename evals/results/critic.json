@@ -1,0 +1,299 @@
+{
+ "library": {
+  "worlds": 1101,
+  "by_run": {
+   "first": 443,
+   "push": 19,
+   "second": 639
+  },
+  "places": {
+   "first": 89,
+   "push": 19,
+   "second": 119
+  },
+  "sleep_worlds": 159,
+  "final_judge": {
+   "meta-models/muse-spark-open-1026": 1101
+  },
+  "judged_by_open_at_creation": 984,
+  "judged_again_by_open": 117,
+  "all_pass": true,
+  "scores": {
+   "7": 1,
+   "8": 10,
+   "9": 884,
+   "10": 206
+  },
+  "scores_by_run": {
+   "first": {
+    "7": 1,
+    "8": 7,
+    "9": 357,
+    "10": 78
+   },
+   "push": {
+    "9": 15,
+    "10": 4
+   },
+   "second": {
+    "8": 3,
+    "9": 512,
+    "10": 124
+   }
+  },
+  "mean_score": 9.18,
+  "share_scored_9": {
+   "k": 884,
+   "n": 1101,
+   "share": 0.803,
+   "ci95": [
+    0.778,
+    0.825
+   ]
+  }
+ },
+ "in_loop": {
+  "first_painting_turned_down": 28,
+  "by_run": {
+   "first": 21,
+   "push": 0,
+   "second": 7
+  },
+  "first_try_pass": {
+   "first": {
+    "k": 422,
+    "n": 443,
+    "share": 0.953,
+    "ci95": [
+     0.929,
+     0.969
+    ]
+   },
+   "push": {
+    "k": 19,
+    "n": 19,
+    "share": 1.0,
+    "ci95": [
+     0.832,
+     1.0
+    ]
+   },
+   "second": {
+    "k": 632,
+    "n": 639,
+    "share": 0.989,
+    "ci95": [
+     0.978,
+     0.995
+    ]
+   }
+  },
+  "scores_turned_down": {
+   "0": 9,
+   "4": 4,
+   "5": 7,
+   "6": 8
+  },
+  "scores_turned_down_by_run": {
+   "first": {
+    "0": 9,
+    "4": 1,
+    "5": 5,
+    "6": 6
+   },
+   "push": {},
+   "second": {
+    "4": 3,
+    "5": 2,
+    "6": 2
+   }
+  },
+  "score_0": 9,
+  "score_0_note": "critic.py reads a missing score as 0; the reasons are kept below",
+  "judges": {
+   "meta-models/muse-spark-open-1026": 28
+  },
+  "reasons": [
+   "6/10 by meta-models/muse-spark-open-1026: Painting shows the central red barn in snow-covered morning fields with a fenced lane but adds a large inverted duplicate barn in the foreground snow that is not part of the quiet winter barn design.",
+   "5/10 by meta-models/muse-spark-open-1026: The painting shows the sheltered misty morning bay with still water, soft green hills and diffused morning light and both designed sailboats are clearly visible, but it adds three extra distant sailboats not in the design.",
+   "6/10 by meta-models/muse-spark-open-1026: A central log cabin sits clearly at a forest edge in soft golden morning light, but the lit glowing window contradicts the specified non-glowing bright natural morning light.",
+   "6/10 by meta-models/muse-spark-open-1026: A moonlit northern lake at night with misty pine islands and a wooden canoe floating left on calm water matches the place and time, but the bright radiant moonbeams are harsh and dramatic rather than soft diffused gentle light for sleep.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows a steaming hot spring among snow-covered smooth rocks with falling snow and soft morning mist that matches the designed place and mood.",
+   "5/10 by meta-models/muse-spark-open-1026: A rickety broken jetty extends into calm blue water under bright midday haze, but its dilapidated missing planks feel sad and unsettling rather than calm and it is not whole and distinct as designed.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows weathered wooden jetty extending from left over glassy still water in soft morning mist with pale diffused light, matching the calm morning design.",
+   "0/10 by meta-models/muse-spark-open-1026: The painting shows the warm tropical lagoon at dawn with still turquoise water, white sand, palm trees, soft pink-golden light and morning haze, and both designed subjects are clearly visible and separate.",
+   "5/10 by meta-models/muse-spark-open-1026: Painting shows the correct night path and both stones as separate foreground subjects under moonlight, but adds numerous glowing firefly lights not in the design which changes the specified still non-glowing mood.",
+   "0/10 by meta-models/muse-spark-open-1026: A wooden hut is centered on a bright high meadow with sunlit peaks behind and a smooth stone in the near left foreground under clear morning light, matching the designed place time and calm mood.",
+   "4/10 by meta-models/muse-spark-open-1026: A smooth stone sits on a grassy hill under a starry night sky, but intense vertical beams of starlight illuminate the stone making it appear to glow, creating a dramatic, busy atmosphere instead of a quiet still one.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows desert oasis with palm trees around a clear turquoise pool among golden dunes under warm golden hour light and haze, both designed subjects clearly visible and separate, with calm warm mood and no safety concerns.",
+   "6/10 by meta-models/muse-spark-open-1026: A small round pond in an autumn meadow with golden hour light is shown with both stones visible, but falling leaves blowing in wind creates a busy, breezy feel that contradicts the designed mild still air and still water, breaking calm.",
+   "5/10 by meta-models/muse-spark-open-1026: Painting shows the autumn river bend with pale sandbanks and golden willows in warm light, but wind-blown falling leaves create a busy, chaotic feel that breaks the still, hazy calm.",
+   "6/10 by meta-models/muse-spark-open-1026: Painting shows a rose-covered arch at dusk with soft lilac light but the white bench stands distant behind the arch instead of directly beneath it in the near centre as designed.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows wide rolling grassland under clear morning sky with bright low eastern light, with smooth stone foreground left and wooden post mid-ground right both distinct and matching design.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows a clear stream curving between mossy banks in a golden autumn forest with soft morning light and drifting leaves, matching the design calm mood with both stones clearly visible and separate.",
+   "5/10 by meta-models/muse-spark-open-1026: Tea hills with golden hour light and haze match the design and both subjects are visible, but the teacup and basket are rendered at gigantic monumental scale dwarfing the hills which breaks realistic calm proportions.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows long striped red, yellow and pink tulip fields leading to a central old windmill under a bright midday sky, matching the design place, time and calm mood.",
+   "0/10 by meta-models/muse-spark-open-1026: Painting shows the moonlit Tuscan hills with cypresses and central stone farmhouse at night matching the design, but a tiny human figure is visible on the winding road in the lower middle distance.",
+   "6/10 by meta-models/muse-spark-open-1026: Painting shows the central snowy boulder in a moonlit night pine forest but heavy falling snow and swirling stormy mist break the required still, soft diffuse, hushed calm sleep mood.",
+   "4/10 by meta-models/muse-spark-open-1026: The valley and river are present but the pale blue ice is painted inverted in the sky like a mirrored cloud, making the scene surreal and disorienting rather than a crisp clear morning.",
+   "5/10 by meta-models/muse-spark-open-1026: Painting correctly shows the night hay meadow with both bales and hills but contains numerous glowing fireflies/insects which are animals in this place-alone world.",
+   "5/10 by meta-models/muse-spark-open-1026: Painting shows the correct pond and heath with both stones but the swirling airborne leaves create a windy, busy motion that breaks the designed still, soft morning haze and calm mood.",
+   "6/10 by meta-models/muse-spark-open-1026: The painting shows the magnolia park in soft morning light with both the smooth stone and wooden bench present and calm, but adds a prominent winding stream in the foreground not in the design.",
+   "4/10 by meta-models/muse-spark-open-1026: Valley and mist match but wind-blown swirling leaves create busy, chaotic motion contradicting the designed still, mild morning mood.",
+   "4/10 by meta-models/muse-spark-open-1026: The cliff meadow with both stones matches the design but the large duplicated water and grass band at the bottom creates a surreal mirror that is not the designed place.",
+   "6/10 by meta-models/muse-spark-open-1026: Calm northern lake with mirrored spruce forest and both boulders matches place and still morning mood but the pervasive mist and muted diffused light contradict the designed crisp clear morning air and bright clear light."
+  ]
+ },
+ "rejudge": {
+  "paintings": 120,
+  "first_critic": "muse-spark-1.3",
+  "passed_by_first_critic": 120,
+  "turned_down_by_open": {
+   "k": 3,
+   "n": 120,
+   "share": 0.025,
+   "ci95": [
+    0.009,
+    0.071
+   ]
+  },
+  "turned_down_why": [
+   "a designed white butterfly, under the place-alone rule (4/10)",
+   "a designed white butterfly, under the place-alone rule (4/10)",
+   "broken composition: a floating strip of meadow above the sea with grass below (4/10)"
+  ],
+  "same_score": {
+   "k": 85,
+   "n": 120,
+   "share": 0.708,
+   "ci95": [
+    0.622,
+    0.782
+   ]
+  },
+  "within_one": {
+   "k": 117,
+   "n": 120,
+   "share": 0.975,
+   "ci95": [
+    0.929,
+    0.991
+   ]
+  },
+  "mean_first": 9.27,
+  "mean_open": 9.03,
+  "mean_difference_open_minus_first": -0.23,
+  "mean_difference_ci95": [
+   -0.4,
+   -0.092
+  ],
+  "by_run": {
+   "first": 34,
+   "push": 0,
+   "second": 83
+  }
+ },
+ "known_bad": {
+  "paintings": 14,
+  "at_creation_passed": {
+   "k": 14,
+   "n": 14,
+   "share": 1.0,
+   "ci95": [
+    0.785,
+    1.0
+   ]
+  },
+  "at_creation_judge": {
+   "muse-spark-1.3": 14
+  },
+  "open_turned_down": {
+   "k": 14,
+   "n": 14,
+   "share": 1.0,
+   "ci95": [
+    0.785,
+    1.0
+   ]
+  },
+  "open_scores": {
+   "3": 5,
+   "4": 9
+  },
+  "open_figures_wrong": 14
+ },
+ "against_look_and_code": {
+  "second_run": {
+   "painted": 705,
+   "critic_passed": 704,
+   "critic_turned_down": 1,
+   "looked_at": 705,
+   "look_flagged": 10,
+   "passed_by_critic_turned_down_by_look": {
+    "k": 9,
+    "n": 704,
+    "share": 0.013,
+    "ci95": [
+     0.007,
+     0.024
+    ]
+   },
+   "look_kinds": {
+    "a broken picture (a seam or a floating strip)": 3,
+    "a cross (a signpost or a post)": 4,
+    "a possible figure, animal or face": 2
+   },
+   "look_scores_from_critic": {
+    "9": 9
+   },
+   "dead_by_code": 56,
+   "dead_passed_by_critic": {
+    "k": 56,
+    "n": 56,
+    "share": 1.0,
+    "ci95": [
+     0.936,
+     1.0
+    ]
+   },
+   "dead_scores_from_critic": {
+    "9": 48,
+    "10": 8
+   },
+   "critic_turned_down_alive_by_code": 1,
+   "in_library": 639
+  },
+  "push_run": {
+   "paintings": 25,
+   "critic_passed": 25,
+   "turned_down_by_look": 2,
+   "look_kinds": {
+    "a possible figure, animal or face": 1,
+    "a cross (a signpost or a post)": 1
+   },
+   "dead_by_code": 4,
+   "scores_of_not_kept": {
+    "9": 3,
+    "10": 3
+   }
+  },
+  "code_check_on_library": {
+   "checked": 1082,
+   "look_dead": 0,
+   "dead_ids": [],
+   "not_checked": 19,
+   "not_checked_why": "the 19 push worlds of 29-30 Oct kept only summary fields (no region coverage)"
+  }
+ },
+ "rules": {
+  "designed_butterfly_in_library": 20,
+  "by_run": {
+   "first": 20
+  },
+  "their_judges": {
+   "meta-models/muse-spark-open-1026": 20
+  },
+  "judged_again_under_place_alone_rule": 0,
+  "note": "judged on 26-27 Oct 2026 under that day's rule, which allowed an animal the design brings; the two such paintings judged again under the place-alone rule were turned down (4/10)"
+ }
+}
