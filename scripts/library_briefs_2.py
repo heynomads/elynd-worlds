@@ -1,13 +1,13 @@
 """The second library's themes (2 Nov 2026), one short meditation per world, written to library/briefs2/<id>.txt.
 
-2 Nov 2026: the library grows past a thousand worlds. The first library (scripts/library_briefs.py, 26-27 Oct)
-holds 90 places at a few times each.
-This bank adds about 720 NEW nature places, times, weathers and seasons: no place word here is a place of the first
-library, and no theme repeats a first-library title. No people and no animals in any theme (the painter paints the place alone). Every theme is
-written for a feeling, as the music is chosen (FEEL): calm, letting go, a push, focus, joy, gratitude, strength, or
-sleep; the closing sentence and the mood line of each brief say so, so the art director knows what the world is for
-(27 Oct: a library written only as "calm and safe" had almost no world with a way forward in it). About 15 % are
-sleep worlds (technique sleep_journey: a dark, quiet world).
+2 Nov 2026: the library grows past a thousand worlds. The first library (scripts/library_briefs.py, 26-30 Oct) holds
+90 places at a few times each and 20 push worlds. This bank adds 705 themes of 119 NEW nature places at their times,
+weathers and seasons: no place word here is a place of the first library, and no id is one of its ids (checked against
+its briefs, its push worlds and every first-library id in library/catalog.json). No people and no animals in any
+theme (the painter paints the place alone). Every theme is written for a feeling, as the music is chosen (FEEL): calm,
+letting go, a push, focus, joy, gratitude, strength, or sleep; the closing sentence and the mood line of each brief
+say so, so the art director knows what the world is for (27 Oct: a library written only as "calm and safe" had almost
+no world with a way forward in it). About 13 % are sleep worlds (technique sleep_journey: a dark, quiet world).
 
     .venv/bin/python scripts/library_briefs_2.py [library/briefs2]       # writes <id>.txt per theme + themes.json
     .venv/bin/elynd-worlds make library/briefs2/*.txt --out library/worlds --parallel 4
@@ -23,7 +23,7 @@ ENGINE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ENGINE / "scripts"))
 from library_briefs import LIBRARY as FIRST_LIBRARY, PLACES as FIRST_PLACES, PUSH as FIRST_PUSH, V as FIRST_V  # noqa: E402
 
-# The first library as the engine knows it (library/catalog.json): no new id or title repeats one of these.
+# The first library as the engine knows it (library/catalog.json): no new id or place repeats one of these.
 CATALOG = ENGINE / "library" / "catalog.json"
 
 # ─── Places: id -> (the place, what is there). Nature alone; no person, no animal. ─────────────────────────────
@@ -406,12 +406,15 @@ def feeling_of(place: str, variant: str) -> str:
 
 
 def first_library() -> tuple[set[str], set[str]]:
-    """(ids, titles) of the first library: its catalog, its briefs and its push worlds."""
+    """(ids, titles) of the first library: its catalog, its briefs and its push worlds. The catalog lists this
+    bank's own worlds too since 3 Nov 2026; they are left out here, so the themes come out the same as on 2 Nov."""
+    own = {f"{place}-{variant}" for place, variants in LIBRARY.items() for variant in variants}
     catalog = json.loads(CATALOG.read_text()) if CATALOG.exists() else []
-    entries = catalog if isinstance(catalog, list) else list(catalog.values())
-    ids = {e.get("id") for e in entries if isinstance(e, dict) and e.get("id")}
+    entries = [e for e in (catalog if isinstance(catalog, list) else list(catalog.values()))
+               if isinstance(e, dict) and e.get("id") not in own]
+    ids = {e.get("id") for e in entries if e.get("id")}
     ids |= {f"{p}-{v}" for p, vs in FIRST_LIBRARY.items() for v in vs} | set(FIRST_PUSH) | {f"{p}-v2" for p in FIRST_PUSH}
-    titles = {str(e.get("title", "")).lower() for e in entries if isinstance(e, dict)}
+    titles = {str(e.get("title", "")).lower() for e in entries}
     return ids, titles
 
 
