@@ -5,128 +5,258 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ELYND Worlds and Journeys</title>
 <meta name="description" content="Built during the Meta Global AI Developer Hackathon: ELYND Worlds, where every meditation in the ELYND app opens on a living painted world made with Meta's models, and ELYND Journeys, thirty days toward one goal planned by Llama 3.3.">
-<link rel="icon" href="data:,">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0F2427">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F2427'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%235BBFB5' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23E8F0EA'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/Poppins-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
 <style>
+  /* Poppins, ELYND's own typeface (SIL Open Font License 1.1, fonts/OFL.txt): headings, labels and buttons. */
+  @font-face { font-family: "Poppins"; src: url("fonts/Poppins-SemiBold.ttf") format("truetype"); font-weight: 600;
+    font-style: normal; font-display: swap; }
   :root {
-    --bg: #152c2e;
-    --bg-2: #1e3a3d;
-    --surface: #254547;
-    --line: rgba(255, 255, 255, 0.10);
-    --text: #ffffff;
-    --text-2: #a3d8e0;
-    --muted: #94cad0;
-    --accent: #5bbfb5;
-    --gold: #e8d2a2;
-    --bad: #ffb4ae;
-    --glass: rgba(15, 36, 38, 0.78);
+    --ground: #0F2427;
+    --deep: #0B1D20;
+    --card: #17312F;
+    --card-2: #1D3A3B;
+    --mist: #EEF7F5;
+    --slate: #AFC7C5;
+    --muted: #93AFAD;
+    --teal: #5BBFB5;
+    --gold: #E5CC98;
+    --bad: #FFB4AE;
+    --rule: rgba(238, 247, 245, 0.10);
+    --rule-2: rgba(238, 247, 245, 0.18);
+    --glass: rgba(11, 29, 32, 0.78);
+    --display: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --gutter: clamp(16px, 4vw, 48px);
+    --max: 1200px;
+    --nav-h: 60px;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--bg); color: var(--text); }
-  body {
-    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: radial-gradient(1200px 600px at 50% -200px, var(--bg-2), var(--bg));
-    min-height: 100vh;
-  }
-  a { color: var(--accent); }
-  :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  html { -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  html, body { margin: 0; background: var(--ground); color: var(--mist); }
+  body { font: 400 16px/1.6 var(--sans); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  [id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
+  section[id] { scroll-margin-top: var(--nav-h); }
+  a { color: var(--teal); text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .built { margin: 0; border-bottom: 1px solid var(--line); background: rgba(232, 210, 162, 0.07); }
-  .built span { display: block; max-width: 1160px; margin: 0 auto; padding: 10px 16px; color: var(--gold);
-    font-weight: 600; font-size: 14px; }
-  .built a { color: inherit; text-underline-offset: 3px; }
-  header, main, footer { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
-  header { padding-top: 36px; padding-bottom: 8px; }
-  .brand { letter-spacing: 0.32em; font-size: 12px; color: var(--accent); font-weight: 600; }
-  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; margin: 10px 0 12px; font-weight: 650; }
-  .lead { color: var(--text-2); max-width: 760px; font-size: 17px; margin: 0 0 18px; }
-  .models { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; counter-reset: model; }
-  .models li { border: 1px solid var(--line); background: rgba(255,255,255,0.05); border-radius: 999px;
-    padding: 5px 12px 5px 8px; font-size: 13px; color: var(--text-2); counter-increment: model; }
-  .models li::before { content: counter(model); display: inline-block; min-width: 18px; margin-right: 6px; border-radius: 9px;
-    background: rgba(232, 210, 162, 0.16); color: var(--gold); font-weight: 650; font-size: 11.5px; text-align: center; line-height: 18px; }
-  .models b { color: var(--text); font-weight: 620; }
-  .models i { font-style: normal; color: var(--muted); }
-  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  button.play, a.button { font: inherit; font-weight: 600; font-size: 14px; border-radius: 999px; padding: 10px 18px;
-    cursor: pointer; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
-  button.play { background: var(--accent); color: #0f2426; border: none; }
+  .skip { position: absolute; left: 12px; top: -60px; z-index: 40; padding: 10px 16px; border-radius: 999px;
+    background: var(--gold); color: var(--deep); font: 600 14px/1 var(--display); text-decoration: none; }
+  .skip:focus { top: 10px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; margin: 0; text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  /* The bar at the top: where things are, and the code */
+  .nav { position: sticky; top: 0; z-index: 20; background: rgba(15, 36, 39, 0.88); border-bottom: 1px solid var(--rule);
+    -webkit-backdrop-filter: saturate(140%) blur(14px); backdrop-filter: saturate(140%) blur(14px); }
+  .nav-in { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); height: var(--nav-h); display: flex;
+    align-items: center; gap: 20px; }
+  .mark { display: inline-flex; align-items: center; gap: 10px; flex: none; color: var(--mist); text-decoration: none;
+    font: 600 14px/1 var(--display); letter-spacing: 0.32em; }
+  .mark svg { width: 26px; height: 26px; flex: none; }
+  .nav-links { display: flex; align-items: center; gap: 2px; margin-left: auto; min-width: 0; overflow-x: auto;
+    scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { flex: none; padding: 8px 12px; border-radius: 999px; color: var(--slate); text-decoration: none;
+    font-size: 14px; line-height: 1.2; white-space: nowrap; }
+  .nav-links a:hover { color: var(--mist); }
+  .nav-links a[aria-current="true"] { color: var(--mist); background: rgba(238, 247, 245, 0.07); }
+  /* The row scrolls sideways (a phone), so the focus ring is drawn inside each link, never clipped. */
+  .nav-links a:focus-visible { outline-offset: -2px; }
+  .nav .code { flex: none; padding: 7px 14px; border-radius: 999px; color: var(--mist); border: 1px solid var(--rule-2);
+    text-decoration: none; font-size: 14px; line-height: 1.2; white-space: nowrap; }
+  .nav .code:hover { border-color: rgba(238, 247, 245, 0.36); }
+  .nav .code span { color: var(--muted); }
+
+  /* The first screen: what was built, both products, and what to press */
+  .hero { padding: clamp(24px, 3.2vw, 44px) 0 clamp(56px, 7vw, 96px);
+    background: radial-gradient(760px 520px at 82% 30%, rgba(229, 204, 152, 0.09), transparent 62%),
+      radial-gradient(1000px 560px at 8% -12%, rgba(91, 191, 181, 0.10), transparent 62%); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) clamp(230px, 19.5vw, 300px); column-gap: clamp(36px, 6vw, 88px); }
+  .hero-main, .hero-side { min-width: 0; }
+  .hero-side { display: flex; flex-direction: column; gap: 16px; }
+  .built { grid-column: 1 / -1; margin: 0 0 30px; color: var(--gold); font-size: 14px; line-height: 1.55; }
+  .built strong { font-weight: 600; }
+  .built .before { display: block; color: var(--muted); font-size: 13.5px; }
+  h1 { font-size: clamp(2.25rem, 1.2rem + 3vw, 3.5rem); line-height: 1.07; letter-spacing: -0.035em; margin: 0 0 22px; }
+  .lead { color: var(--slate); font-size: clamp(17px, 0.98rem + 0.3vw, 19.5px); line-height: 1.6; margin: 0 0 28px;
+    max-width: 36em; }
+  .lead a { color: var(--mist); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  button.play, a.button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px;
+    padding: 0 22px; border-radius: 999px; font: 600 15px/1 var(--display); text-decoration: none; cursor: pointer;
+    white-space: nowrap; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
+  /* Its width stays when it turns into Stop, so the buttons beside it do not move. */
+  button.play { min-width: 216px; background: var(--teal); color: var(--deep); border: 0; }
+  button.play:hover { background: #77CEC4; }
   button.play[aria-pressed="true"] { background: var(--gold); }
-  a.button { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,0.04); }
-  .session { position: fixed; z-index: 10; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    width: min(560px, calc(100% - 24px)); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px 12px;
-    padding: 10px 12px 10px 16px; border-radius: 16px; background: rgba(15, 36, 38, 0.92); border: 1px solid rgba(255,255,255,0.14);
-    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    color: var(--text-2); font-size: 14px; line-height: 1.4; }
-  .session[hidden] { display: none; }
-  .session b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .session .stop { font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 36px; padding: 0 14px;
-    border-radius: 999px; cursor: pointer; background: var(--gold); color: #0f2426; border: none; }
-  .bar { grid-column: 1 / -1; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
-  .bar i { display: block; height: 100%; width: 0; background: var(--gold); }
-  section > h2 { font-size: 22px; margin: 0 0 4px; font-weight: 640; }
-  .section-lead { color: var(--text-2); margin: 0; max-width: 820px; }
-  section.runs, section.examples { padding-top: 22px; }
-  section.examples { border-top: 1px solid var(--line); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; padding: 18px 0 40px; }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
-    display: flex; flex-direction: column; }
-  .view { position: relative; aspect-ratio: 9 / 16; background: #0f2426; overflow: hidden;
+  a.button { color: var(--mist); border: 1px solid var(--rule-2); background: rgba(238, 247, 245, 0.03); }
+  a.button:hover { border-color: rgba(238, 247, 245, 0.36); background: rgba(238, 247, 245, 0.07); }
+  .play-hint { margin: 12px 0 0; color: var(--muted); font-size: 13.5px; }
+  .hero-models { padding-top: 36px; }
+  .hero-world { margin: 0; }
+  .frame { position: relative; aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden; background: var(--deep) no-repeat;
+    box-shadow: 0 0 0 1px rgba(238, 247, 245, 0.09), 0 40px 80px -36px rgba(0, 0, 0, 0.75); }
+  .frame canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+  .frame .badge { max-width: calc(100% - 20px); }
+  .hero-world figcaption { margin-top: 10px; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.45; }
+  /* The other product, on the first screen too: a still from the climb, its line, and the way to it */
+  .j-card { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; padding: 11px 14px 11px 11px;
+    border-radius: 18px; background: var(--card); border: 1px solid var(--rule); color: var(--mist); text-decoration: none;
+    transition: border-color 0.2s, background-color 0.2s; }
+  .j-card:hover { border-color: rgba(229, 204, 152, 0.5); background: var(--card-2); }
+  .j-card img { display: block; width: 48px; height: 85px; object-fit: cover; border-radius: 9px; }
+  .j-card .j-title { display: block; color: var(--mist); font: 600 14.5px/1.35 var(--display); }
+  .j-card .j-line { display: block; margin-top: 3px; color: var(--slate); font-size: 14px; line-height: 1.45; }
+  .j-card .go { color: var(--gold); white-space: nowrap; }
+
+  /* Which model does what: one row a step, in order */
+  .flow-label { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px;
+    margin: 0 0 8px; color: var(--muted); font: 600 11.5px/1.5 var(--display); letter-spacing: 0.14em; text-transform: uppercase; }
+  .flow-label a { color: var(--gold); font-size: 14px; letter-spacing: 0; text-transform: none; text-decoration: none; }
+  .flow-label a:hover { text-decoration: underline; }
+  ol.flow { list-style: none; margin: 0; padding: 0; counter-reset: step; border-top: 1px solid var(--rule); }
+  ol.flow li { counter-increment: step; display: grid; grid-template-columns: 26px 270px minmax(0, 1fr);
+    column-gap: 14px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  ol.flow li::before { content: counter(step); width: 24px; height: 24px; margin-top: -1px; border-radius: 50%; display: grid;
+    place-items: center; color: var(--gold); background: rgba(229, 204, 152, 0.13); font: 600 11.5px/1 var(--display); }
+  ol.flow .who { color: var(--mist); font: 600 15px/1.45 var(--display); letter-spacing: -0.005em; }
+  ol.flow .what { color: var(--slate); font-size: 15px; line-height: 1.45; }
+  .ow { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--rule-2);
+    color: var(--slate); font: 600 10.5px/1.6 var(--display); letter-spacing: 0.08em; text-transform: uppercase; font-style: normal;
+    white-space: nowrap; vertical-align: 1px; }
+
+  /* Sections */
+  .sec { padding-top: clamp(72px, 9vw, 120px); }
+  .sec-head { max-width: 780px; margin: 0 0 clamp(28px, 4vw, 44px); }
+  .eyebrow { margin: 0 0 12px; color: var(--gold); font: 600 12px/1.4 var(--display); letter-spacing: 0.16em;
+    text-transform: uppercase; }
+  h2 { font-size: clamp(1.8rem, 1.1rem + 2vw, 2.6rem); line-height: 1.12; letter-spacing: -0.03em; margin: 0 0 14px; }
+  .clause { display: inline-block; }
+  .sec-lead { margin: 0; color: var(--slate); font-size: clamp(16.5px, 0.98rem + 0.2vw, 18px); line-height: 1.65; }
+
+  /* ELYND Journeys */
+  .j-grid { display: grid; grid-template-columns: clamp(250px, 27vw, 340px) minmax(0, 1fr); column-gap: clamp(36px, 6vw, 88px);
+    grid-template-areas: "view head" "view rest"; grid-template-rows: auto 1fr; }
+  .j-head { grid-area: head; }
+  .j-rest { grid-area: rest; }
+  .j-view { grid-area: view; align-self: start; position: sticky; top: calc(var(--nav-h) + 28px); aspect-ratio: 9 / 16; border-radius: 28px; overflow: hidden;
+    background: var(--deep); box-shadow: 0 0 0 1px rgba(238, 247, 245, 0.09), 0 40px 80px -36px rgba(0, 0, 0, 0.75); }
+  .j-view video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+  .j-again { position: absolute; right: 12px; bottom: 12px; z-index: 1; min-height: 40px; padding: 0 16px; border-radius: 999px;
+    font: 600 13.5px/1 var(--display); cursor: pointer; color: var(--deep); background: var(--gold); border: none; }
+  .j-again[hidden] { display: none; }
+  .j-head .sec-lead { max-width: 40em; }
+  .j-flow { margin: 32px 0 0; }
+  .j-plan { margin: 32px 0 0; padding: clamp(20px, 3vw, 28px); background: var(--card); border: 1px solid var(--rule);
+    border-radius: 24px; }
+  .j-plan h3 { font-size: 22px; line-height: 1.25; letter-spacing: -0.02em; margin: 0 0 8px; }
+  ol.weeks { list-style: none; padding: 0; margin: 18px 0 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px; }
+  ol.weeks li { background: rgba(238, 247, 245, 0.035); border: 1px solid var(--rule); border-radius: 14px; padding: 12px 14px;
+    color: var(--slate); font-size: 14.5px; line-height: 1.45; }
+  ol.weeks b { display: block; margin-bottom: 2px; color: var(--mist); font: 600 13.5px/1.4 var(--display); }
+  .day1 { margin: 0; color: var(--slate); font-size: 14.5px; }
+  .day1 b { color: var(--mist); font-weight: 600; }
+  ul.notes { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 10px; max-width: 40em; }
+  ul.notes li { position: relative; padding-left: 20px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  ul.notes li::before { content: ""; position: absolute; left: 0; top: 0.78em; width: 9px; height: 1.5px; background: var(--gold);
+    opacity: 0.8; }
+
+  /* Cards: the real runs and the example worlds */
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: 24px; overflow: hidden; display: flex;
+    flex-direction: column; }
+  .view { position: relative; aspect-ratio: 9 / 16; background: var(--deep); overflow: hidden;
     touch-action: pan-y pinch-zoom; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; }
   .view canvas, .view img.stage { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
   .view canvas.failed { opacity: 0.3; }
-  .badge { position: absolute; left: 10px; top: 10px; z-index: 1; border-radius: 999px; padding: 6px 11px; font-size: 12.5px;
-    font-weight: 600; background: var(--glass); color: var(--text); border: 1px solid rgba(255,255,255,0.16);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); pointer-events: none; }
+  .badge { position: absolute; left: 10px; top: 10px; z-index: 1; max-width: calc(100% - 120px); border-radius: 999px;
+    padding: 0 12px; min-height: 36px; display: inline-flex; align-items: center; font: 600 12.5px/1.2 var(--display);
+    background: var(--glass); color: var(--mist); border: 1px solid rgba(238, 247, 245, 0.16);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); pointer-events: none; }
+  .j-view .badge { max-width: calc(100% - 20px); }
   .badge.bad { color: var(--bad); border-color: rgba(255, 180, 174, 0.45); }
-  .body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
-  .card h2 { font-size: 18px; margin: 0 0 4px; font-weight: 620; }
-  .kicker { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 650; }
-  .meta { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
-  .small { color: var(--text-2); font-size: 13.5px; margin: 6px 0; }
-  .fine { color: var(--muted); font-size: 12.5px; margin: 8px 0 0; }
-  blockquote { margin: 0 0 12px; color: var(--text-2); font-style: italic; font-size: 14px; border-left: 2px solid var(--line);
-    padding-left: 10px; }
-  details { border-top: 1px solid var(--line); padding-top: 10px; }
-  summary { cursor: pointer; color: var(--text); font-weight: 600; font-size: 14px; }
-  ol.steps { margin: 10px 0 6px; padding-left: 20px; font-size: 13.5px; color: var(--text-2); }
-  ol.steps li { margin: 6px 0; }
-  ol.steps .who { color: var(--text); font-weight: 600; }
+  .body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+  .card h3 { font-size: 20px; line-height: 1.25; letter-spacing: -0.015em; margin: 0 0 8px; }
+  .kicker { margin: 0 0 8px; color: var(--gold); font: 600 11.5px/1.4 var(--display); letter-spacing: 0.14em; text-transform: uppercase; }
+  .meta { margin: 0 0 14px; color: var(--muted); font-size: 13.5px; }
+  .small { margin: 0 0 12px; color: var(--slate); font-size: 16px; line-height: 1.6; }
+  .small b { color: var(--mist); font-weight: 600; }
+  .fine { margin: 14px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  blockquote { margin: 0 0 16px; padding: 2px 0 2px 16px; border-left: 2px solid var(--rule-2); color: var(--slate);
+    font-size: 15px; line-height: 1.6; }
+  blockquote.said { padding: 12px 16px; border-left-color: var(--gold); border-radius: 0 14px 14px 0; background: rgba(238, 247, 245, 0.04);
+    color: var(--mist); }
+  blockquote.no { padding: 12px 16px; border-left-color: var(--bad); border-radius: 0 14px 14px 0; background: rgba(255, 180, 174, 0.05);
+    color: var(--mist); }
+  details { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 12px; }
+  summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 32px;
+    cursor: pointer; color: var(--mist); font: 600 14px/1.4 var(--display); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: ""; flex: none; width: 7px; height: 7px; margin: 0 4px 3px 0; border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); }
+  details[open] > summary::after { transform: rotate(-135deg); margin-bottom: -3px; }
+  ol.steps { margin: 10px 0 6px; padding-left: 20px; color: var(--slate); font-size: 14px; line-height: 1.5; }
+  ol.steps li { margin: 8px 0; }
+  ol.steps .who { color: var(--mist); font-weight: 600; }
   ol.steps .sec { color: var(--muted); }
-  .total { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
-  .score { color: var(--gold); font-weight: 600; }
-  ul.typed { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 6px 0 10px; }
-  ul.typed li { border: 1px solid rgba(232, 210, 162, 0.35); color: var(--gold); border-radius: 999px; padding: 3px 10px; font-size: 13px; }
+  .total { margin: 8px 0 0; color: var(--muted); font-size: 13.5px; }
+  .score { color: var(--gold); font-weight: 600; white-space: nowrap; }
+  ul.typed { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0 0 18px; }
+  ul.typed li { border: 1px solid rgba(229, 204, 152, 0.4); color: var(--gold); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
   ul.typed li::before { content: "\201C"; }
   ul.typed li::after { content: "\201D"; }
-  .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 4px 0 4px; }
-  .facts div { background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; }
-  .facts dt { font-size: 12px; color: var(--muted); }
-  .facts dd { margin: 0; font-size: 18px; font-weight: 650; color: var(--text); }
-  .facts dd small { font-size: 12px; font-weight: 500; color: var(--muted); }
-  .checks { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 4px 0 10px; }
-  .checks li { font-size: 12.5px; border-radius: 999px; padding: 3px 10px; border: 1px solid var(--line); color: var(--text-2); }
-  .checks li.no { color: var(--bad); border-color: rgba(255, 180, 174, 0.4); }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 4px 0 0; background: var(--rule);
+    border: 1px solid var(--rule); border-radius: 16px; overflow: hidden; }
+  .facts div { background: var(--card); padding: 12px 14px; }
+  .facts dt { color: var(--muted); font-size: 12.5px; }
+  .facts dd { margin: 2px 0 0; color: var(--mist); font: 600 22px/1.2 var(--display); letter-spacing: -0.02em; }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 16px; }
+  .checks li { font-size: 13px; border-radius: 999px; padding: 3px 11px; border: 1px solid var(--rule-2); color: var(--slate); }
+  .checks li.no { color: var(--bad); border-color: rgba(255, 180, 174, 0.45); }
   .verdict { color: var(--bad); font-weight: 650; }
+
+  /* Three real runs: on a wide screen, the picture beside its words */
+  .runs-band { margin-top: clamp(72px, 9vw, 120px); padding-bottom: clamp(72px, 9vw, 112px); background: var(--deep); }
+  .runs-band .sec { padding-top: clamp(64px, 8vw, 104px); }
+  .x-hint { display: flex; gap: 10px; align-items: flex-start; margin: 18px 0 0; color: var(--slate); font-size: 16px; line-height: 1.6; }
+  .x-hint svg { flex: none; width: 18px; height: 18px; margin-top: 3px; color: var(--gold); }
+  .x-hint b { color: var(--mist); font-weight: 600; }
+  .xray-toggle svg { width: 15px; height: 15px; flex: none; }
+  .runs-list { display: grid; gap: 28px; }
+  .runs-list .card { background: var(--card); }
+
   /* The climb's six paintings */
-  .thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 12px 18px 0; }
-  .thumbs button { padding: 0; border: 2px solid transparent; border-radius: 8px; overflow: hidden; background: #0f2426;
-    cursor: pointer; aspect-ratio: 9 / 16; display: block; }
-  .thumbs button[aria-pressed="true"] { border-color: var(--gold); }
+  .thumbs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 6px 0 16px; max-width: 540px; }
+  .thumbs button { padding: 0; border: 2px solid transparent; border-radius: 9px; overflow: hidden; background: var(--deep);
+    cursor: pointer; aspect-ratio: 9 / 16; display: block; opacity: 0.78; transition: opacity 0.2s, border-color 0.2s; }
+  .thumbs button:hover { opacity: 1; }
+  .thumbs button[aria-pressed="true"] { border-color: var(--gold); opacity: 1; }
   .thumbs img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+  /* The example worlds */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+
   /* X-ray */
-  .xray-toggle { position: absolute; top: 10px; right: 10px; z-index: 2; min-height: 36px; padding: 0 14px; border-radius: 999px;
-    font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; letter-spacing: 0.02em; cursor: pointer;
-    color: var(--text); background: var(--glass); border: 1px solid rgba(255,255,255,0.22);
-    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  .xray-toggle[aria-pressed="true"] { background: var(--gold); color: #0f2426; border-color: var(--gold); }
+  .xray-toggle { position: absolute; top: 10px; right: 10px; z-index: 2; display: inline-flex; align-items: center; gap: 7px;
+    min-height: 36px; padding: 0 14px 0 12px; border-radius: 999px; cursor: pointer; font: 600 12px/1 var(--display);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #F3E2BC; background: var(--glass); border: 1px solid rgba(229, 204, 152, 0.62);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); transition: background-color 0.2s, color 0.2s; }
+  .xray-toggle:hover { background: rgba(11, 29, 32, 0.86); border-color: var(--gold); }
+  .xray-toggle[aria-pressed="true"] { background: var(--gold); color: var(--deep); border-color: var(--gold); }
   .xray-nav { position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 2; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
   .xray-nav[hidden] { display: none; }
-  .xray-nav button { min-height: 40px; padding: 4px 2px; border-radius: 12px; cursor: pointer; color: var(--text);
-    font: 600 12.5px/1.15 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--glass);
-    border: 1px solid rgba(255,255,255,0.18); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-  .xray-nav .n { display: block; font-size: 10.5px; color: var(--muted); font-weight: 600; }
-  .xray-nav button[aria-current="step"] { background: var(--gold); color: #0f2426; border-color: var(--gold); }
-  .xray-nav button[aria-current="step"] .n { color: #3a4a3a; }
+  .xray-nav button { min-height: 44px; padding: 4px 2px; border-radius: 12px; cursor: pointer; color: var(--mist);
+    font: 600 12px/1.15 var(--display); background: var(--glass); border: 1px solid rgba(238, 247, 245, 0.18);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .xray-nav .n { display: block; margin-bottom: 1px; color: var(--muted); font-size: 10.5px; }
+  .xray-nav button[aria-current="step"] { background: var(--gold); color: var(--deep); border-color: var(--gold); }
+  .xray-nav button[aria-current="step"] .n { color: #4A4A33; }
   .swap { position: relative; flex: 1; display: flex; flex-direction: column; }
   .swap > .normal { flex: 1; display: flex; flex-direction: column; }
   .swap > .normal > details { margin-top: auto; }
@@ -137,81 +267,191 @@
   .card.xray-on .xray-panel { display: block; position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; }
   .card.xray-on .xray-panel.more { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent);
     mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent); padding-bottom: 14px; }
-  .x-head { margin: 0 0 6px; font-size: 14px; font-weight: 620; color: var(--text); }
-  .x-count { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; font-size: 11.5px;
-    background: rgba(232, 210, 162, 0.16); color: var(--gold); }
-  .x-cost { font-size: 12.5px; line-height: 1.4; color: var(--muted); margin: 0; padding-top: 3px; border-top: 1px solid var(--line); }
+  .x-head { margin: 0 0 6px; color: var(--mist); font: 600 14px/1.4 var(--display); }
+  .x-count { display: inline-block; margin-right: 6px; padding: 2px 9px; border-radius: 999px; font-size: 11.5px;
+    background: rgba(229, 204, 152, 0.16); color: var(--gold); }
+  .x-cost { margin: 0; padding-top: 5px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 12.5px; line-height: 1.45; }
   .x-rows { list-style: none; padding: 0; margin: 0; }
-  .x-rows li { font-size: 12.5px; line-height: 1.4; color: var(--text-2); padding: 3px 0; border-top: 1px solid var(--line); }
-  .x-rows b { color: var(--text); font-weight: 620; }
+  .x-rows li { padding: 5px 0; border-top: 1px solid var(--rule); color: var(--slate); font-size: 13px; line-height: 1.45; }
+  .x-rows b { color: var(--mist); font-weight: 600; }
   .x-rows .t { color: var(--muted); white-space: nowrap; }
-  .x-note { font-size: 12.5px; line-height: 1.4; color: var(--text-2); margin: 0; padding-top: 3px; border-top: 1px solid var(--line); }
+  .x-note { margin: 0; padding: 5px 0; border-top: 1px solid var(--rule); color: var(--slate); font-size: 13px; line-height: 1.45; }
   .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin: 0 4px 0 1px; vertical-align: -1px; background: var(--c); }
   .sw.box { background: none; border: 1.5px dashed var(--gold); }
   .sw.gold { background: #ffd68c; }
-  /* ELYND Journeys */
-  section.journeys { padding: 26px 0 30px; border-top: 1px solid var(--line); }
-  .j-grid { display: grid; grid-template-columns: minmax(220px, 320px) minmax(0, 1fr); gap: 28px; align-items: start; }
-  .j-view { position: relative; aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: #0f2426;
-    border: 1px solid var(--line); }
-  .j-view video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
-  .j-again { position: absolute; right: 10px; bottom: 10px; z-index: 1; min-height: 36px; padding: 0 14px; border-radius: 999px;
-    font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; cursor: pointer; color: #0f2426;
-    background: var(--gold); border: none; }
-  .j-again[hidden] { display: none; }
-  .j-body h2 { font-size: clamp(24px, 3.4vw, 32px); line-height: 1.16; margin: 8px 0 10px; font-weight: 650; }
-  .j-plan { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; margin: 4px 0 10px; }
-  .j-plan h3 { margin: 0 0 2px; font-size: 19px; font-weight: 630; }
-  ol.weeks { list-style: none; padding: 0; margin: 10px 0 8px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  ol.weeks li { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px;
-    font-size: 13.5px; line-height: 1.4; color: var(--text-2); }
-  ol.weeks b { display: block; color: var(--text); font-weight: 620; font-size: 13px; }
-  section.how { border-top: 1px solid var(--line); padding: 28px 0 8px; }
-  section.how h2 { font-size: 22px; margin: 0 0 10px; }
-  section.how p { color: var(--text-2); max-width: 820px; }
-  footer { color: var(--muted); font-size: 13px; padding-top: 16px; padding-bottom: 48px; border-top: 1px solid var(--line); }
-  footer p { margin: 0 0 8px; max-width: 900px; }
-  @media (max-width: 420px) {
-    .built span { padding: 8px 16px; font-size: 13.5px; }
-    header { padding-top: 22px; }
-    .lead { font-size: 16px; margin-bottom: 14px; }
-    .models { gap: 6px; margin-bottom: 16px; }
-    .models li { font-size: 12.5px; padding: 4px 10px 4px 7px; }
-    section.runs { padding-top: 18px; }
-    .grid { grid-template-columns: 1fr; }
-    ol.weeks { grid-template-columns: 1fr; }
+
+  /* What you are seeing */
+  .how-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3.4vw, 48px); }
+  .how-grid h3 { font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; margin: 0 0 10px; }
+  .how-grid h3::before { content: ""; display: block; width: 28px; height: 2px; margin-bottom: 16px; background: var(--gold); opacity: 0.85; }
+  .how-grid p { margin: 0; color: var(--slate); font-size: 15.5px; line-height: 1.7; }
+  .how-grid p + p { margin-top: 10px; }
+
+  /* The footer */
+  footer { margin-top: clamp(72px, 9vw, 120px); padding: 40px 0 56px; background: var(--deep); border-top: 1px solid var(--rule);
+    color: var(--muted); font-size: 13.5px; line-height: 1.65; }
+  .foot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 48px; align-items: start; }
+  .foot-notes p { margin: 0 0 10px; max-width: 62em; }
+  .foot-links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .foot .mark { margin-bottom: 18px; }
+  .copy { color: var(--slate); }
+
+  /* While a meditation plays: where it is, at the bottom of the screen */
+  .session { position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    width: min(540px, calc(100% - 32px)); display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 10px 14px;
+    padding: 12px 12px 12px 18px; border-radius: 18px; background: rgba(11, 29, 32, 0.92); border: 1px solid var(--rule-2);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 18px 44px -12px rgba(0, 0, 0, 0.6);
+    color: var(--slate); font-size: 14px; line-height: 1.4; }
+  .session[hidden] { display: none; }
+  .session b { color: var(--mist); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .session .stop { min-height: 40px; padding: 0 16px; border-radius: 999px; cursor: pointer; background: var(--gold);
+    color: var(--deep); border: none; font: 600 13.5px/1 var(--display); }
+  .bar { grid-column: 1 / -1; height: 3px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; background: var(--gold); }
+
+  @media (min-width: 760px) {
+    /* A real run: the picture on the left, its words on the right */
+    .runs-list .card { display: grid; grid-template-columns: clamp(260px, 29vw, 380px) minmax(0, 1fr);
+      grid-template-rows: auto 1fr; }
+    .runs-list .card > .view { grid-column: 1; grid-row: 1 / span 2; }
+    .runs-list .card > .body { grid-column: 2; grid-row: 1 / span 2; align-self: center; flex: none;
+      padding: clamp(24px, 3.2vw, 40px) clamp(24px, 3.6vw, 48px); }
+    .runs-list .body > * { max-width: 600px; }
+    .runs-list .card h3 { font-size: 24px; letter-spacing: -0.02em; }
+    .runs-list .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   }
-  @media (max-width: 720px) {
-    .j-grid { grid-template-columns: 1fr; gap: 18px; }
-    .j-view { width: min(100%, 340px); margin: 0 auto; }
+  @media (max-width: 1023px) {
+    .hero-grid { grid-template-columns: minmax(0, 1fr) clamp(220px, 30vw, 280px); }
+    ol.flow li { grid-template-columns: 26px minmax(150px, 0.42fr) minmax(0, 1fr); }
+    .how-grid { grid-template-columns: 1fr; max-width: 680px; }
+  }
+  @media (max-width: 759px) {
+    :root { --nav-h: 54px; }
+    .nav-in { gap: 12px; }
+    .nav .mark span { display: none; }
+    .nav-links { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+      mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); padding-right: 22px; }
+    .nav-links a { padding: 8px 9px; }
+    .nav .code { padding: 7px 12px; }
+    /* One column, in the order a phone reads it: what was built, both products, then the words and the buttons */
+    .hero-grid { grid-template-columns: minmax(0, 1fr); }
+    .hero-main, .hero-side { display: contents; }
+    .built { order: 1; margin-bottom: 20px; font-size: 13.5px; }
+    .built .before { font-size: 13px; }
+    .hero-head { order: 2; }
+    h1 { margin-bottom: 18px; }
+    .j-card { order: 3; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 9px 12px 9px 9px; border-radius: 14px; }
+    .j-card img { width: 30px; height: 53px; border-radius: 6px; }
+    .j-card .j-text { line-height: 1.5; }
+    .j-card .j-title, .j-card .j-line { display: inline; margin: 0; font-size: 14px; line-height: 1.5; }
+    .j-card .j-title::after { content: " · "; color: var(--muted); }
+    .hero-world { order: 4; margin-top: 18px; }
+    .hero-world .frame { aspect-ratio: 1 / 1; border-radius: 24px; }
+    .lead { order: 5; margin: 26px 0 24px; font-size: 16.5px; }
+    .hero-act { order: 6; }
+    .hero-models { order: 7; padding-top: 36px; }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .actions .play { grid-column: 1 / -1; }
+    a.button { padding: 0 14px; }
+    .j-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "view" "rest"; grid-template-rows: none; }
+    .j-view { position: relative; top: auto; width: min(100%, 340px); margin: 28px auto 0; }
+    ol.weeks { grid-template-columns: 1fr; }
+    .foot { grid-template-columns: 1fr; }
+    #climb .thumbs { order: -1; margin: 0 0 20px; }
+  }
+  @media (max-width: 559px) {
+    ol.flow li { grid-template-columns: 26px minmax(0, 1fr); row-gap: 2px; }
+    ol.flow .what { grid-column: 2; }
+    /* The plan's weeks as rows, not boxes inside a box */
+    ol.weeks { gap: 0; margin: 14px 0; }
+    ol.weeks li { background: none; border: 0; border-top: 1px solid var(--rule); border-radius: 0; padding: 10px 0; }
+    ol.weeks li:last-child { border-bottom: 1px solid var(--rule); }
+    .body { padding: 20px 18px 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
   }
 </style>
 </head>
-<body>
-<p class="built"><span>Built during the Meta Global AI Developer Hackathon, 26 Oct – 4 Nov 2026: <a href="#elynd-worlds">ELYND Worlds</a> and <a href="#journeys">ELYND Journeys</a></span></p>
-<header id="elynd-worlds">
-  <div class="brand">ELYND WORLDS</div>
-  <h1>Every meditation opens on a living painted world.</h1>
-  <p class="lead">In the <a href="https://elynd.app">ELYND</a> app, each guided meditation's world is a calm painted
-    place to arrive in and come back to, alive as such a place would be: one from a library Meta's models painted, or
-    a new one painted live for a very personal meditation.</p>
-  <ol class="models" aria-label="How a world is made, in order">
-    <li><b>Llama 3.3</b> turns the meditation into a place, nothing personal <i>· open weights</i></li>
-    <li><b>Muse Spark</b> designs the world</li>
-    <li><b>Muse Image</b> paints it</li>
-    <li><b>Muse Spark Open</b> judges it <i>· open weights</i></li>
-    <li><b>SAM 3.1</b> cuts out the subjects, maps the water, sky and grass</li>
-  </ol>
-  <div class="actions">
-    <button class="play" type="button" aria-pressed="false">▶ Play as a meditation</button>
-    <a class="button" href="https://elynd.app">Visit elynd.app</a>
-    <a class="button" href="https://github.com/heynomads/elynd-worlds">Code on GitHub</a>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="nav-in">
+    <a class="mark" href="#top" aria-label="ELYND Worlds and Journeys: back to the top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="glow-a" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E8F0EA"/><stop offset="0.45" stop-color="#E8F0EA" stop-opacity="0.5"/><stop offset="1" stop-color="#E8F0EA" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="26" fill="none" stroke="#5BBFB5" stroke-width="2.6"/><circle cx="32" cy="32" r="11" fill="url(#glow-a)"/><circle cx="32" cy="32" r="3.8" fill="#E8F0EA"/></svg>
+      <span>ELYND</span>
+    </a>
+    <nav class="nav-links" aria-label="On this page">
+      <a href="#elynd-worlds">Worlds</a>
+      <a href="#journeys">Journeys</a>
+      <a href="#runs">Real runs</a>
+      <a href="#examples">Examples</a>
+      <a href="#how">What you see</a>
+    </nav>
+    <a class="code" href="https://github.com/heynomads/elynd-worlds">Code <span aria-hidden="true">↗</span></a>
   </div>
 </header>
 
-<main>
-  <section class="journeys" id="journeys" aria-labelledby="journeys-title">
-    <div class="j-grid">
+<main id="main">
+  <section class="hero" id="elynd-worlds" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <p class="built">Built during the Meta Global AI Developer Hackathon, 26&nbsp;Oct&nbsp;– 4&nbsp;Nov&nbsp;2026:
+        <strong>ELYND Worlds</strong> and <strong>ELYND Journeys</strong>.
+        <span class="before">ELYND itself (writing, voices, player) existed before.</span></p>
+      <div class="hero-main">
+        <div class="hero-head">
+          <p class="eyebrow">ELYND Worlds</p>
+          <h1 id="hero-title">Every meditation opens on a living painted world.</h1>
+        </div>
+        <p class="lead">In the <a href="https://elynd.app">ELYND</a> app, each guided meditation's world is a calm painted
+          place to arrive in and come back to, alive as such a place would be: one from a library Meta's models painted,
+          or a new one painted live for a very personal meditation.</p>
+        <div class="hero-act">
+          <div class="actions">
+            <button class="play" type="button" aria-pressed="false" aria-describedby="play-hint">▶&#xFE0E; Play as a meditation</button>
+            <a class="button" href="https://elynd.app">Visit elynd.app</a>
+            <a class="button" href="https://github.com/heynomads/elynd-worlds">Code on GitHub</a>
+          </div>
+          <p class="play-hint" id="play-hint">A ten-minute session, sped up, on the worlds on the screen.</p>
+        </div>
+        <div class="hero-models">
+          <p class="flow-label"><span id="world-flow">How a world is made, in order</span>
+            <a href="#courtyard" data-xray="courtyard">See each step in the X-ray ↓</a></p>
+          <ol class="flow" aria-labelledby="world-flow">
+            <li><span class="who">Llama 3.3<i class="ow">open weights</i></span><span class="what">turns the meditation into a place, nothing personal</span></li>
+            <li><span class="who">Muse Spark</span><span class="what">designs the world</span></li>
+            <li><span class="who">Muse Image</span><span class="what">paints it</span></li>
+            <li><span class="who">Muse Spark Open<i class="ow">open weights</i></span><span class="what">judges it</span></li>
+            <li><span class="who">SAM 3.1</span><span class="what">cuts out the subjects, maps the water, sky and grass</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="hero-side">
+        <figure class="hero-world">
+          <div class="frame">
+            <canvas id="hero-world" role="img" aria-label="The courtyard: a sun-warmed courtyard in late afternoon light with an old olive tree, a red watering can and a dog asleep in the shade"></canvas>
+            <span class="badge">Painted on production</span>
+          </div>
+          <figcaption>The courtyard, from our own test words</figcaption>
+        </figure>
+        <a class="j-card" href="#journeys">
+          <img src="featured/climb/day01_thumb.webp" width="120" height="213" alt="">
+          <span class="j-text"><span class="j-title">Also built: ELYND&nbsp;Journeys</span>
+            <span class="j-line">Thirty days toward one goal, planned by Llama.&nbsp;<span class="go" aria-hidden="true">→</span></span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="journeys" aria-labelledby="journeys-title">
+    <div class="wrap j-grid">
+      <div class="j-head">
+        <p class="eyebrow">ELYND Journeys</p>
+        <h2 id="journeys-title"><span class="clause">Thirty days toward one goal,</span> <span class="clause">planned by Llama.</span></h2>
+        <p class="sec-lead">A guide on Llama 3.3 listens, then plans thirty days: each day's meditation offers one small
+          when-then step (“when …, I …”) for a situation you named, and the day before a moment you name, the
+          meditation rehearses it. The journey's world climbs one mountain, a step a day.</p>
+      </div>
       <div class="j-view">
         <video class="j-walk" muted playsinline preload="metadata" poster="featured/climb/day01.webp" width="720" height="1280"
           aria-label="The app's own walk up the journey's mountain, from day 1 before dawn in a pine forest at the foot of the path, across a meadow and up the ridge, to day 30 at the top above the clouds at sunrise">
@@ -220,20 +460,18 @@
         <span class="badge">The app's own walk · days 1 to 30</span>
         <button class="j-again" type="button" hidden>↻ Walk again</button>
       </div>
-      <div class="j-body">
-        <div class="brand">ELYND JOURNEYS</div>
-        <h2 id="journeys-title">Thirty days toward one goal, planned by Llama.</h2>
-        <p class="lead">A guide on Llama 3.3 listens, then plans thirty days: each day's meditation offers one small
-          when-then step (“when …, I …”) for a situation you named, and the day before a moment you name, the
-          meditation rehearses it. The journey's world climbs one mountain, a step a day.</p>
-        <ol class="models" aria-label="How a journey is made, in order">
-          <li><b>Llama 3.3</b> the guide listens and sums up what it heard <i>· open weights</i></li>
-          <li><b>Llama 3.3</b> plans the thirty days</li>
-          <li><b>Muse Image</b> paints the climb: six paintings up one mountain</li>
-          <li><b>Muse Spark Open</b> and <b>Muse Spark</b> judged each painting</li>
-        </ol>
+      <div class="j-rest">
+        <div class="j-flow">
+          <p class="flow-label"><span id="journey-flow">How a journey is made, in order</span></p>
+          <ol class="flow" aria-labelledby="journey-flow">
+            <li><span class="who">Llama 3.3<i class="ow">open weights</i></span><span class="what">the guide listens and sums up what it heard</span></li>
+            <li><span class="who">Llama 3.3</span><span class="what">plans the thirty days</span></li>
+            <li><span class="who">Muse Image</span><span class="what">paints the climb: six paintings up one mountain</span></li>
+            <li><span class="who">Muse Spark Open and Muse Spark</span><span class="what">judged each painting</span></li>
+          </ol>
+        </div>
         <div class="j-plan">
-          <p class="kicker">A real plan · made on production, 2 Nov 2026</p>
+          <p class="kicker">A real plan · made on production, 2&nbsp;Nov&nbsp;2026</p>
           <h3>“Speaking up in meetings”</h3>
           <p class="small">“To speak up in meetings with your thoughts, even if imperfect.” Ready about ten seconds
             after the guide's summary was confirmed; the answers were our own test words, not a listener's.</p>
@@ -243,23 +481,31 @@
             <li><b>Week 3 · Practising expression</b>Imagine sharing your thoughts with your manager present.</li>
             <li><b>Week 4 · Embodying confidence</b>Feel your body when you speak up in a meeting.</li>
           </ol>
-          <p class="small"><b>Day 1, “Starting to speak up”:</b> You begin to notice your thoughts in meetings.</p>
+          <p class="day1"><b>Day 1, “Starting to speak up”:</b> You begin to notice your thoughts in meetings.</p>
         </div>
-        <p class="fine">Each day's meditation is written and voiced by ELYND's own writer and voices, which existed
-          before the hackathon and are not Meta models. The guide and the planner run on Llama 3.3 on Amazon Bedrock,
-          in ELYND's own AWS account, so a listener's answers never reach Meta's Model API. The climb is painted once
-          and is the same for every listener; the walk steps into it with depth maps from Depth Anything V2 Small, made
-          once offline (not a Meta model).</p>
+        <ul class="notes">
+          <li>Each day's meditation is written and voiced by ELYND's own writer and voices, which existed before the
+            hackathon and are not Meta models.</li>
+          <li>The guide and the planner run on Llama 3.3 on Amazon Bedrock, in ELYND's own AWS account, so a listener's
+            answers never reach Meta's Model API.</li>
+          <li>The climb is painted once and is the same for every listener; the walk steps into it with depth maps from
+            Depth Anything V2 Small, made once offline (not a Meta model).</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="runs" aria-labelledby="runs-title">
-    <h2 id="runs-title">Three real runs</h2>
-    <p class="section-lead">A personal world painted on production, a journey's thirty days as one climb, and a
-      painting the judge turned down. <b>X-ray</b> steps through how a world is made: the painting, SAM 3.1's layers
-      and regions, the plate, the live shader, with models, times and cost.</p>
-    <div class="grid">
+  <div class="runs-band">
+  <section class="sec wrap" id="runs" aria-labelledby="runs-title">
+    <div class="sec-head">
+      <h2 id="runs-title">Three real runs</h2>
+      <p class="sec-lead">A personal world painted on production, a journey's thirty days as one climb, and a
+        painting the judge turned down.</p>
+      <p class="x-hint"><svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 1.8 14.2 5 8 8.2 1.8 5Z"/><path d="M1.8 8 8 11.2 14.2 8"/><path d="M1.8 11 8 14.2 14.2 11"/></svg>
+        <span><b>X-ray</b> steps through how a world is made: the painting, SAM 3.1's layers and regions, the plate,
+          the live shader, with models, times and cost.</span></p>
+    </div>
+    <div class="runs-list">
 
       <article class="card" id="courtyard">
         <div class="view">
@@ -267,18 +513,18 @@
           <span class="badge">Painted on production</span>
         </div>
         <div class="body">
-          <p class="kicker">A personal world · 2 Nov 2026</p>
-          <h2>The courtyard</h2>
+          <p class="kicker">A personal world · 2&nbsp;Nov&nbsp;2026</p>
+          <h3>The courtyard</h3>
           <div class="swap">
             <div class="normal">
               <p class="small">From what we typed into the app (our own test words, not a listener's):</p>
               <ul class="typed"><li>my grandmother's courtyard</li><li>her red watering can</li><li>my old dog Bruno</li></ul>
               <p class="small">Llama 3.3 reads the meditation and turns it into a place, with no names and nothing
                 about the listener, checked in code: from the meditation, only that description (with its technique,
-                length and language) reaches Meta's API. The same step, re-run on this meditation (1.3 s, $0.0006;
-                production keeps no copy):</p>
-              <blockquote>A courtyard in late afternoon, warm golden light, with a red watering can, an old olive tree,
-                and a dog asleep in its shade.</blockquote>
+                length and language) reaches Meta's API.</p>
+              <p class="small">The same step, re-run on this meditation (1.3&nbsp;s, $0.0006; production keeps no copy):</p>
+              <blockquote class="said">A courtyard in late afternoon, warm golden light, with a red watering can, an old
+                olive tree, and a dog asleep in its shade.</blockquote>
               <dl class="facts">
                 <div><dt>Painted in</dt><dd>44 s</dd></div>
                 <div><dt>Alive in</dt><dd>110 s</dd></div>
@@ -287,7 +533,7 @@
               </dl>
               <p class="fine">Times on the agent's own clock; the cost is Meta's Model API and Muse Spark Open's host
                 together. On production only Muse Spark Open may pass a painting (7/10 or more), at most two are
-                painted and a world may take up to 170 s; until it is ready, the listener sees a world from the
+                painted and a world may take up to 170&nbsp;s; until it is ready, the listener sees a world from the
                 library.</p>
             </div>
             <div class="xray-panel" aria-live="polite"></div>
@@ -301,39 +547,39 @@
             alt="Week 1: a path through dark pines at the foot of a misty mountain, before dawn">
           <span class="badge" id="climb-badge">Week 1 · days 1–7</span>
         </div>
-        <div class="thumbs" role="group" aria-label="The climb's six paintings">
-          <button type="button" aria-pressed="true" data-src="featured/climb/day01.webp" data-label="Week 1 · days 1–7"
-            data-made="the first painting of a journey's world, by Muse Image" data-judge="Muse Spark Open" data-score="10"
-            data-alt="Week 1: a path through dark pines at the foot of a misty mountain, before dawn">
-            <img src="featured/climb/day01_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 1</span></button>
-          <button type="button" aria-pressed="false" data-src="featured/climb/day08.webp" data-label="Week 2 · days 8–14"
-            data-made="a Muse Image edit of week 1" data-judge="Muse Spark" data-score="10"
-            data-alt="Week 2: the path crosses a meadow of long grass toward the mountain at first light">
-            <img src="featured/climb/day08_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 2</span></button>
-          <button type="button" aria-pressed="false" data-src="featured/climb/day15.webp" data-label="Week 3 · days 15–21"
-            data-made="a Muse Image edit of week 2" data-judge="Muse Spark Open" data-score="10"
-            data-alt="Week 3: the path climbs the lower slope in zigzags between heather and boulders as the dawn brightens">
-            <img src="featured/climb/day15_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 3</span></button>
-          <button type="button" aria-pressed="false" data-src="featured/climb/day22.webp" data-label="Week 4 · days 22–28"
-            data-made="a Muse Image edit of week 3, by way of a painting not shown" data-judge="Muse Spark" data-score="10"
-            data-alt="Week 4: the path follows a grassy ridge toward the summit above a sea of clouds at sunrise">
-            <img src="featured/climb/day22_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 4</span></button>
-          <button type="button" aria-pressed="false" data-src="featured/climb/day29.webp" data-label="The top · days 29–30"
-            data-made="a Muse Image edit of week 4" data-judge="Muse Spark Open" data-score="9"
-            data-alt="The top: the last steps up to a small cairn of stones above clouds lit gold by the risen sun">
-            <img src="featured/climb/day29_thumb.webp" width="120" height="213" alt=""><span class="sr-only">The top</span></button>
-          <button type="button" aria-pressed="false" data-src="featured/climb/view_back.webp" data-label="Day 30 · the view back"
-            data-made="a Muse Image edit of the top, turned around" data-judge="Muse Spark Open" data-score="9"
-            data-alt="The view back from the top: the path winding down the ridge into the misty valley in early light">
-            <img src="featured/climb/view_back_thumb.webp" width="120" height="213" alt=""><span class="sr-only">The view back</span></button>
-        </div>
         <div class="body">
           <p class="kicker">A journey · thirty days</p>
-          <h2>The climb: one place, six paintings</h2>
+          <h3><span class="clause">The climb:</span> <span class="clause">one place, six paintings</span></h3>
           <p class="small">A journey is thirty days toward one goal: Llama 3.3 plans each day, and ELYND writes the
             day's meditation. Its world is one walk up one mountain, a painting a week. Each after the first is a
             Muse Image edit of the painting before it, further along the same path, so it stays one place (one
             between weeks 3 and 4 is not shown; the last looks back from the top); a critic passed every one.</p>
+          <div class="thumbs" role="group" aria-label="The climb's six paintings">
+            <button type="button" aria-pressed="true" data-src="featured/climb/day01.webp" data-label="Week 1 · days 1–7"
+              data-made="the first painting of a journey's world, by Muse Image" data-judge="Muse Spark Open" data-score="10"
+              data-alt="Week 1: a path through dark pines at the foot of a misty mountain, before dawn">
+              <img src="featured/climb/day01_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 1</span></button>
+            <button type="button" aria-pressed="false" data-src="featured/climb/day08.webp" data-label="Week 2 · days 8–14"
+              data-made="a Muse Image edit of week 1" data-judge="Muse Spark" data-score="10"
+              data-alt="Week 2: the path crosses a meadow of long grass toward the mountain at first light">
+              <img src="featured/climb/day08_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 2</span></button>
+            <button type="button" aria-pressed="false" data-src="featured/climb/day15.webp" data-label="Week 3 · days 15–21"
+              data-made="a Muse Image edit of week 2" data-judge="Muse Spark Open" data-score="10"
+              data-alt="Week 3: the path climbs the lower slope in zigzags between heather and boulders as the dawn brightens">
+              <img src="featured/climb/day15_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 3</span></button>
+            <button type="button" aria-pressed="false" data-src="featured/climb/day22.webp" data-label="Week 4 · days 22–28"
+              data-made="a Muse Image edit of week 3, by way of a painting not shown" data-judge="Muse Spark" data-score="10"
+              data-alt="Week 4: the path follows a grassy ridge toward the summit above a sea of clouds at sunrise">
+              <img src="featured/climb/day22_thumb.webp" width="120" height="213" alt=""><span class="sr-only">Week 4</span></button>
+            <button type="button" aria-pressed="false" data-src="featured/climb/day29.webp" data-label="The top · days 29–30"
+              data-made="a Muse Image edit of week 4" data-judge="Muse Spark Open" data-score="9"
+              data-alt="The top: the last steps up to a small cairn of stones above clouds lit gold by the risen sun">
+              <img src="featured/climb/day29_thumb.webp" width="120" height="213" alt=""><span class="sr-only">The top</span></button>
+            <button type="button" aria-pressed="false" data-src="featured/climb/view_back.webp" data-label="Day 30 · the view back"
+              data-made="a Muse Image edit of the top, turned around" data-judge="Muse Spark Open" data-score="9"
+              data-alt="The view back from the top: the path winding down the ridge into the misty valley in early light">
+              <img src="featured/climb/view_back_thumb.webp" width="120" height="213" alt=""><span class="sr-only">The view back</span></button>
+          </div>
           <p class="small" id="climb-caption" aria-live="polite"><b>Week 1 · days 1–7:</b> the first painting of a
             journey's world, by Muse Image · <span class="score">Muse Spark Open 10/10</span></p>
           <p class="fine">Each day steps a little into the painting, by depth maps from Depth Anything V2 Small (Yang et
@@ -350,12 +596,13 @@
         </div>
         <div class="body">
           <p class="kicker">A real rejection</p>
-          <h2>The judge said no</h2>
+          <h3>The judge said no</h3>
           <p class="small">Muse Spark's design, for the world library: <q>A bright flower meadow runs to a high cliff
             edge above a calm blue sea.</q> Muse Spark Open looked at the painting:</p>
-          <blockquote><span class="verdict">4/10.</span> “Both the smooth stone and wooden post are visible in bright
-            midday light, but the meadow is rendered as a floating, disconnected strip above the sea with a mirrored
-            grass band below, breaking the continuous cliff-edge and creating a chaotic, unsettling spatial effect.”</blockquote>
+          <blockquote class="no"><span class="verdict">4/10.</span> “Both the smooth stone and wooden post are visible in
+            bright midday light, but the meadow is rendered as a floating, disconnected strip above the sea with a
+            mirrored grass band below, breaking the continuous cliff-edge and creating a chaotic, unsettling spatial
+            effect.”</blockquote>
           <ul class="checks" aria-label="The judge's checks">
             <li class="no">on brief: no</li><li class="no">calm: no</li><li>stray figures: none</li><li>text: none</li>
           </ul>
@@ -371,37 +618,66 @@
 
     </div>
   </section>
+  </div>
 
-  <section class="examples" aria-labelledby="examples-title">
-    <h2 id="examples-title">The example worlds</h2>
-    <p class="section-lead">Made by the agent for the example meditations in this repository, each alive as on the
-      phone. Open the X-ray on any of them.</p>
+  <section class="sec wrap" id="examples" aria-labelledby="examples-title">
+    <div class="sec-head">
+      <h2 id="examples-title">The example worlds</h2>
+      <p class="sec-lead">Made by the agent for the example meditations in this repository, each alive as on the
+        phone. Open the X-ray on any of them.</p>
+    </div>
     <div class="grid" id="worlds"></div>
   </section>
 
-  <section class="how">
-    <h2>What you are seeing</h2>
-    <p>Each world lives as such a place would: the water ripples and its reflections wobble, now and then
-      the sun glints on it; the clouds drift; the grass waves in the wind; a stream flows; a lantern
-      flickers; leaves, snow, pollen or fireflies drift through the air. The objects move as such things move:
-      a boat sinks a little on the swell and rolls, a butterfly floats and folds its wings, branches sway,
-      stones and posts stay still. <b>Play as a meditation</b> runs a ten-minute session sped up: the whole
-      world while the listener arrives, a glow while their eyes are closed, more of it in a long silence, all
-      of it at the end, when time has passed in the place too: a morning world's sun has climbed, a golden one's
-      glow has deepened. A sleep world stays dim, ends dark, and its light stays warm. This page draws it all with the phone's own
-      shader (WebGL 2), and the same timeline: the Python, Dart and JavaScript versions are tested against each
-      other frame by frame.</p>
+  <section class="sec wrap" id="how" aria-labelledby="how-title">
+    <div class="sec-head">
+      <h2 id="how-title">What you are seeing</h2>
+    </div>
+    <div class="how-grid">
+      <div>
+        <h3>Alive as such a place would be</h3>
+        <p>Each world lives as such a place would: the water ripples and its reflections wobble, now and then the sun
+          glints on it; the clouds drift; the grass waves in the wind; a stream flows; a lantern flickers; leaves, snow,
+          pollen or fireflies drift through the air.</p>
+        <p>The objects move as such things move: a boat sinks a little on the swell and rolls, a butterfly floats and
+          folds its wings, branches sway, stones and posts stay still.</p>
+      </div>
+      <div>
+        <h3>Play as a meditation</h3>
+        <p>A ten-minute session, sped up: the whole world while the listener arrives, a glow while their eyes are
+          closed, more of it in a long silence, all of it at the end, when time has passed in the place too: a morning
+          world's sun has climbed, a golden one's glow has deepened.</p>
+        <p>A sleep world stays dim, ends dark, and its light stays warm.</p>
+      </div>
+      <div>
+        <h3>The phone's own shader</h3>
+        <p>This page draws it all with the phone's own shader (WebGL 2), and the same timeline: the Python, Dart and
+          JavaScript versions are tested against each other frame by frame.</p>
+      </div>
+    </div>
   </section>
 </main>
 
 <footer>
-  <p>Built during the Meta Global AI Developer Hackathon, 26 Oct – 4 Nov 2026. The example meditations were written
-    for this repository; the courtyard was painted on ELYND's production server from our own test words, not a
-    listener's, and the worlds made for ELYND's listeners stay private to them. Every picture is marked as made by AI
-    in its metadata.</p>
-  <p>ELYND itself, the writing, voices and player of its meditations, existed before the hackathon; ELYND Worlds and
-    ELYND Journeys were built during it.</p>
-  <p>© 2026 Comads OÜ.</p>
+  <div class="wrap foot">
+    <div class="foot-notes">
+      <a class="mark" href="#top" aria-label="ELYND Worlds and Journeys: back to the top">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><defs><radialGradient id="glow-b" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E8F0EA"/><stop offset="0.45" stop-color="#E8F0EA" stop-opacity="0.5"/><stop offset="1" stop-color="#E8F0EA" stop-opacity="0"/></radialGradient></defs><circle cx="32" cy="32" r="26" fill="none" stroke="#5BBFB5" stroke-width="2.6"/><circle cx="32" cy="32" r="11" fill="url(#glow-b)"/><circle cx="32" cy="32" r="3.8" fill="#E8F0EA"/></svg>
+        <span>ELYND</span>
+      </a>
+      <p>Built during the Meta Global AI Developer Hackathon, 26&nbsp;Oct&nbsp;– 4&nbsp;Nov&nbsp;2026. The example meditations were written
+        for this repository; the courtyard was painted on ELYND's production server from our own test words, not a
+        listener's, and the worlds made for ELYND's listeners stay private to them. Every picture is marked as made by AI
+        in its metadata.</p>
+      <p>ELYND itself, the writing, voices and player of its meditations, existed before the hackathon; ELYND Worlds and
+        ELYND Journeys were built during it.</p>
+      <p class="copy">© 2026 Comads OÜ.</p>
+    </div>
+    <div class="foot-links">
+      <a class="button" href="https://elynd.app">Visit elynd.app</a>
+      <a class="button" href="https://github.com/heynomads/elynd-worlds">Code on GitHub</a>
+    </div>
+  </div>
 </footer>
 
 <!-- While a meditation plays: where it is, at the bottom of the screen wherever the page is scrolled. -->
@@ -429,7 +705,7 @@
     play();
   });
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-    again.textContent = "▶ Walk the thirty days";
+    again.textContent = "▶︎ Walk the thirty days";
     again.hidden = false;
     return;
   }
@@ -439,6 +715,27 @@
       else if (walk.paused && !walk.ended && again.hidden) play();
     }
   }, { threshold: 0.5 }).observe(walk);
+})();
+
+// The bar at the top: which part of the page is on the screen.
+(() => {
+  const links = [...document.querySelectorAll(".nav-links a[href^='#']")];
+  const parts = links.map((a) => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  if (!("IntersectionObserver" in window) || !parts.length) return;
+  const row = document.querySelector(".nav-links");
+  const mark = (part) => links.forEach((a) => {
+    if (a.getAttribute("href") !== `#${part.id}`) { a.removeAttribute("aria-current"); return; }
+    if (a.getAttribute("aria-current") === "true") return;
+    a.setAttribute("aria-current", "true");
+    // When the links scroll sideways (a phone), the current one comes into view; the page itself does not move.
+    if (row.scrollWidth > row.clientWidth) {
+      row.scrollTo({ left: a.offsetLeft - row.offsetLeft - 8, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    }
+  });
+  const spy = new IntersectionObserver((entries) => {
+    for (const entry of entries) if (entry.isIntersecting) mark(entry.target);
+  }, { rootMargin: "-35% 0px -60% 0px" });
+  parts.forEach((part) => spy.observe(part));
 })();
 </script>
 <script src="world.js"></script>
@@ -454,6 +751,7 @@
   const phaseText = sessionBar.querySelector(".phase");
   const barFill = sessionBar.querySelector(".bar i");
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const PLAY = "▶︎ Play as a meditation";
 
   const TECHNIQUE = { breath_awareness: "Breath awareness", body_scan: "Body scan", visualization: "Visualization",
     sleep: "Sleep", sleep_journey: "Sleep journey", grounding: "Grounding", loving_kindness: "Kindness" };
@@ -498,11 +796,34 @@
 
   const rank = (id) => (FIRST.includes(id) ? FIRST.indexOf(id) : LAST.includes(id) ? 1000 + LAST.indexOf(id) : 500);
   const views = [];
+  // Both records start loading at once.
+  const examples = fetch(`${BASE}/index.json`).then((response) => response.json());
+  const courtyardRecord = fetch("featured/courtyard/world.json").then((response) => response.json());
+
+  // Beside the headline: the courtyard, painted on production, alive at once and the first to react when a
+  // meditation plays. Until it draws, its frame shows the painting, cropped as the canvas crops it.
+  const heroCanvas = document.getElementById("hero-world");
+  const heroFrame = heroCanvas.parentElement;
+  try {
+    const world = await courtyardRecord;
+    const r = coverRect(heroFrame.clientWidth, heroFrame.clientHeight, world.aspect, world.focus);
+    heroFrame.style.backgroundImage = `url("featured/${world.id}/${world.painting}")`;
+    heroFrame.style.backgroundSize = `${r.width}px ${r.height}px`;
+    heroFrame.style.backgroundPosition = `${r.left}px ${r.top}px`;
+    const view = new WorldView(heroCanvas, world, "featured");
+    view.visible = true;
+    views.push(view);
+    // Once the canvas draws, only it shows: a played meditation fades it to a glow over the dark frame.
+    view.loaded.then(() => setTimeout(() => { heroFrame.style.backgroundImage = "none"; }, 300));
+  } catch (error) {
+    console.warn("ELYND Worlds: the world beside the headline could not be loaded", error);
+    heroCanvas.classList.add("failed");
+  }
 
   // The courtyard: a world painted on production, drawn like the others, with its X-ray.
   const courtyard = document.getElementById("courtyard");
   try {
-    const world = await (await fetch("featured/courtyard/world.json")).json();
+    const world = await courtyardRecord;
     const canvas = courtyard.querySelector("canvas");
     const view = new WorldView(canvas, world, "featured");
     view.visible = true;
@@ -516,7 +837,7 @@
 
   // The example worlds.
   try {
-    const { worlds } = await (await fetch(`${BASE}/index.json`)).json();
+    const { worlds } = await examples;
     const ordered = worlds.map((w, i) => [w, i]).sort((a, b) => rank(a[0].id) - rank(b[0].id) || a[1] - b[1]).map(([w]) => w);
     for (const world of ordered) {
       const card = document.createElement("article");
@@ -527,7 +848,7 @@
           <canvas role="img" aria-label="${esc(world.title)}: ${esc(world.design.place)}"></canvas>
         </div>
         <div class="body">
-          <h2>${esc(world.title)}</h2>
+          <h3>${esc(world.title)}</h3>
           <div class="swap">
             <div class="normal">
               <p class="meta">${esc(TECHNIQUE[m.technique] || m.technique)} · ${esc(LANGUAGE[m.language] || m.language)} · ${m.minutes} min${world.sleep ? " · sleep" : ""}</p>
@@ -550,6 +871,14 @@
     }
   } catch (error) {
     console.warn("ELYND Worlds: the example worlds could not be loaded", error);
+  }
+
+  // "See each step in the X-ray": to the card, with its X-ray open.
+  for (const link of document.querySelectorAll("a[data-xray]")) {
+    link.addEventListener("click", () => {
+      const toggle = document.querySelector(`#${link.dataset.xray} .xray-toggle`);
+      if (toggle && toggle.getAttribute("aria-pressed") !== "true") toggle.click();
+    });
   }
 
   // The climb: one painting a week; a thumbnail shows its week.
@@ -612,7 +941,7 @@
     if (playing) {
       playing = null;
       playButton.setAttribute("aria-pressed", "false");
-      playButton.textContent = "▶ Play as a meditation";
+      playButton.textContent = PLAY;
       sessionBar.hidden = true;
       phaseText.textContent = "";
       return;

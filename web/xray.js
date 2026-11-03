@@ -384,7 +384,10 @@ const XRay = (() => {
     toggle.className = "xray-toggle";
     toggle.setAttribute("aria-pressed", "false");
     toggle.setAttribute("aria-label", `X-ray: how ${title} was made`);
-    toggle.textContent = "X-ray";
+    // A layers glyph beside the word, so the X-ray reads as a control on the picture.
+    toggle.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4"'
+      + ' stroke-linejoin="round"><path d="M8 1.8 14.2 5 8 8.2 1.8 5Z"/><path d="M1.8 8 8 11.2 14.2 8"/>'
+      + '<path d="M1.8 11 8 14.2 14.2 11"/></svg>X-ray';
     const nav = document.createElement("div");
     nav.className = "xray-nav";
     nav.setAttribute("role", "group");
